@@ -30,7 +30,7 @@
                 <span class="svg-icon svg-icon-1 position-absolute ms-6">
                     <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
                 </span>
-                <input type="text" data-kt-datatable-table-filter="search" class="form-control form-control-solid w-400px ps-14" placeholder="Cari approvall peserta individu" />
+                <input type="text" data-kt-datatable-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Cari approvall peserta individu" />
             </div>
         </div>
 

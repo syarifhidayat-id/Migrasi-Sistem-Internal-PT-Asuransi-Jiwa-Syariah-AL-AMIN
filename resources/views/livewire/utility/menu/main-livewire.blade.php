@@ -1,6 +1,10 @@
 <div>
-{{-- <div wire:init="loadPosts"> --}}
-    {{-- Do your work, then step back. --}}
+{{-- <div wire:init="init">
+    @if ($loadData)
+
+    @else
+        Loading data...
+    @endif --}}
     @foreach ($menulist as $menu)
         @if (count($menu->childs) > 0)
             <div data-kt-menu-trigger="click" class="menu-item {{ (Request::is($menu->wmn_url) or Request::is($menu->wmn_url_o)) ? 'here show' : '' }} menu-accordion">

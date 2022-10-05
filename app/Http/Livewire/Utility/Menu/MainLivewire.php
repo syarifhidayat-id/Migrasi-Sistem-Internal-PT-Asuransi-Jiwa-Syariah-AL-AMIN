@@ -9,20 +9,18 @@ use Livewire\Component;
 
 class MainLivewire extends Component
 {
-    public $readyToLoad = false;
+    public $loadData = false;
 
-    public function loadPosts()
+    public function init()
     {
-        $this->readyToLoad = true;
+        $this->loadData = true;
     }
 
     public function render()
     {
         $menulist = Menu::select(
-            'wmn_kode', 'wmn_key', 'wmn_descp', 'wmn_icon', 'wmn_url', 'wmn_url_o', 'wmn_tipe', 'email', 'menu_tipe', 'wmj_wmn_kode', 'wmj_sjab_kode', 'wmj_aktif', 'wmn_urut'
-            // '*'
-            // 'user.*',
-            // 'jab.*'
+            '*'
+            // 'wmn_kode', 'wmn_key', 'wmn_descp', 'wmn_icon', 'wmn_url', 'wmn_url_o', 'wmn_tipe', 'email', 'menu_tipe', 'wmj_wmn_kode', 'wmj_sjab_kode', 'wmj_aktif', 'wmn_urut', 'jabatan'
         )
         ->leftJoin('user_accounts', 'wmn_tipe', '=', 'menu_tipe')
         ->leftJoin('web_menu_jabatan', 'wmn_kode', '=', 'wmj_wmn_kode')
@@ -34,11 +32,10 @@ class MainLivewire extends Component
             ['wmj_aktif', 1],
         ])
         ->orderBy('wmn_urut', 'ASC')
-        // ->paginate();
         ->get();
 
         return view('livewire.utility.menu.main-livewire')->with([
-            // 'menulist' => $this->readyToLoad ? $menulist : [],
+            // 'menulist' => $this->loadData ? $menulist : [],
             'menulist' => $menulist,
         ]);
     }

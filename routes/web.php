@@ -22,24 +22,12 @@ Route::get('/', function () {
     return view('pages.auth.login');
 });
 
-// Route::any('*', [MenuController::class, 'menuDashboard']);
-
 require __DIR__ . '/auth.php';
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/maintenance', [DashboardController::class, 'maintenance'])->name('maintenance');
 
-    // View::composer('*', function($view) {
-    //     $view->with([
-    //         'menulist' => MenuController::menuDashboard()
-    //     ]);
-    //     // return response()->json([
-    //     //     'menulist' => MenuController::menuDashboard()
-    //     // ]);
-    // });
-
-    // Route::get('/loadmenu', [MenuController::class, 'loadmenu']);
     // require __DIR__ . '/web/sdm.php';
     // require __DIR__ . '/web/legal.php';
     // require __DIR__ . '/web/devit.php';

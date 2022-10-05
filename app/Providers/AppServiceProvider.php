@@ -29,12 +29,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('*', function ($view) {
-            if (auth()->check()) {
-                $view->with([
-                    'menulist' => MenuController::menuDashboard()
-                ]);
-            }
-        });
+        // View::composer('*', function ($view) {
+        //     if (auth()->check()) {
+        //         $view->with([
+        //             'menulist' => MenuController::menuDashboard()
+        //         ]);
+        //     }
+        // });
     }
 }
