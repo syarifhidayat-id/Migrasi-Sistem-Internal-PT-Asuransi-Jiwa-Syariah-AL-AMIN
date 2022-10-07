@@ -11,9 +11,7 @@
 - git clone https://gitlab.com/akhmad.dharma.kasman/alamin_dev_blade.git
 - cp .env.exampe .env
 - composer install/ composer update
-- npm install/ npm update
-- npm run watch
-- php artisan migrate
+- php artisan migrate <i>yang ini di skip gpp<i/>
 - php artisan serve
 
 ## Al Amin Dev(blade) - Change repo
