@@ -124,7 +124,13 @@
                         <tr>
                             <td class="text-center">{{ ++$key }}.</td>
                             <td class="text-center">
+                                @if ($data->wmn_icon !== "" && $data->wmn_icon !== null)
                                 <i class="{{ $data->wmn_icon }}"></i>
+                                @else
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                @endif
                             </td>
                             <td>{{ $data->wmn_descp }}</td>
                             <td>{{ $data->wmn_tipe }}</td>

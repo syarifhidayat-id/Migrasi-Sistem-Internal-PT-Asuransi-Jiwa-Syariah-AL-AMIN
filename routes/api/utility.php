@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Utility\MenuController;
 use App\Http\Controllers\Utility\PermissionController;
+use App\Http\Controllers\Utility\WewenangJabatanController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/utility', 'as' => 'utility.'], function () {
@@ -12,6 +13,9 @@ Route::group(['prefix' => '/utility', 'as' => 'utility.'], function () {
         Route::get('/getTipe/{id}', [MenuController::class, 'getTipemenu']);
         Route::get('/edit/{id}', [MenuController::class, 'edit']);
         Route::get('/keyMenu/{id}', [MenuController::class, 'keyMenu']);
+    });
+    Route::group(['prefix' => '/wewenang-jabatan', 'as' => 'wewenang-jabatan.'], function() {
+        Route::get('/wmj_wmn_kode', [WewenangJabatanController::class, 'wmj_wmn_kode']);
     });
     // Route::resource('users', UserController::class);
     // Route::resource('permissions', PermissionController::class);

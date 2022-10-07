@@ -19,6 +19,19 @@ class KodeController extends Controller
         return $kodePK;
     }
 
+    public static function __getKey($num)
+    {
+        // $char = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $tahunNow = date('ymd');
+        $char = '0123456789';
+        $charLength = strlen($char);
+        $key = '';
+        for ($i = 0; $i < $length = $num; $i++) {
+            $key .= $char[rand(0, $charLength - 1)];
+        }
+        return $tahunNow.$key;
+    }
+
     public static function nullRequests($request)
     {
         // siapkan array kosong untuk menampung request yang null

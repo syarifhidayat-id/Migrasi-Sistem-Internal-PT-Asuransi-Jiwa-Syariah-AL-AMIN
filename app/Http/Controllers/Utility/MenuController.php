@@ -79,7 +79,7 @@ class MenuController extends Controller
         }
 
         if ($request->wmn_kode == "") {
-            $kode = KodeController::__getPK(Menu::all()->max('wmn_kode'), 15);
+            $kode = KodeController::__getKey(14);
 
             if ($request->wmn_url == "") {
                 $request->merge([

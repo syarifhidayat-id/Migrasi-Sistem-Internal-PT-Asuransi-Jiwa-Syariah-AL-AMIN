@@ -41,7 +41,8 @@
                     <i class="fa-sharp fa-solid fa-filter"></i> Filter
                 </button>
 
-                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
+                {{-- <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true"> --}}
+                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-500px" data-kt-menu="true">
                     <div class="px-7 py-5">
                         <div class="fs-5 text-dark fw-bolder">Filter Options</div>
                     </div>
@@ -52,16 +53,16 @@
                             <label class="form-label fs-6 fw-bold">Jabatan:</label>
                             <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false">
                                 <option></option>
-                                {{-- @foreach ($list_menu as $key=>$data)
-                                    <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                @endforeach --}}
+                                @foreach ($form_jab as $key=>$data)
+                                    <option value="{{ $data->sjab_kode }}">{{ $data->sjab_kode }} - {{ $data->sjab_ket }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="mb-10">
                             <label class="form-label fs-6 fw-bold">Jenis Menu:</label>
                             <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih jenis menu" data-allow-clear="true" data-kt-datatable-table-filter="jenis-menu" data-hide-search="false">
                                 <option></option>
-                                @foreach ($type_menu as $key=>$data)
+                                @foreach ($jns_menu as $key=>$data)
                                     <option value="{{ $data->wmt_kode }}">{{ $data->wmt_nama }}</option>
                                 @endforeach
                             </select>
@@ -102,10 +103,10 @@
                     </div>
                 </div>
 
-                {{-- <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-sharp fa-solid fa-plus"></i> Tambah Menu</button> --}}
+                <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-sharp fa-solid fa-plus"></i> Tambah Wewenang</button>
             </div>
 
-            {{-- @include('pages.utility.membuat-menu.modal.create') --}}
+            @include('pages.utility.wewenang-jabatan.modal.create')
         </div>
     </div>
 
@@ -113,16 +114,17 @@
         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_datatable">
             <thead>
                 <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                    <th class="min-w-50px">No.</th>
-                    <th class="min-w-125px">Kode</th>
-                    <th class="min-w-125px">Nama Menu</th>
-                    <th class="min-w-125px">Tipe</th>
-                    <th class="min-w-100px">Aktif</th>
+                    <th>No.</th>
+                    <th>Kode</th>
+                    <th>Nama Menu</th>
+                    <th>Tipe</th>
+                    <th>Jabatan</th>
+                    <th>Aktif</th>
                     {{-- <th class="text-end min-w-100px">Aksi</th> --}}
                 </tr>
             </thead>
             <tbody id="dataShow" class="text-gray-600 fw-bold">
-                @foreach ($list_menu as $key=>$data)
+                @foreach ($list as $key=>$data)
                     <tr>
                         <td>{{ ++$key }}.</td>
                         <td>{{ $data->wmj_wmn_kode }}</td>
@@ -130,30 +132,17 @@
                         <td>
                             <div class="badge badge-light-success fw-bolder">{{ $data->wmn_tipe }}</div>
                         </td>
+                        <td>
+                            <div class="badge badge-light fw-bolder">{{ $data->wmj_sjab_kode }}</div>
+                        </td>
                         <td class="text-end">
                             <label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                {{-- <input class="form-check-input" type="checkbox" value="1" checked="checked" /> --}}
                                 <input class="form-check-input" id="check_menu" type="checkbox" value="{{ $data->wmj_aktif }}" @if ($data->wmj_aktif == 1) checked="checked" @endif />
                                 <span class="form-check-label fw-bold text-muted">
                                     Aktif
                                 </span>
                             </label>
                         </td>
-                        {{-- <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                <span class="svg-icon svg-icon-5 m-0">
-                                    <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                </span>
-                            </a>
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                <div class="menu-item px-3">
-                                    <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="{{ $data->wmn_kode }}">Edit</a>
-                                </div>
-                                <div class="menu-item px-3">
-                                    <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="{{ $data->wmn_kode }}">Delete</a>
-                                </div>
-                            </div>
-                        </td> --}}
                     </tr>
                 @endforeach
             </tbody>
@@ -172,42 +161,9 @@
 
 @section('script')
     <script>
-        // $('#check_menu').change(function() {
-        //     if($(this).val() === 0) {
-        //         $(this).prop('checked', false);
-        //     } else {
-        //         $(this).prop('checked', true);
-        //     }
-        // });
-
-        $('#wmn_tipe').select2();
-        $('#wmn_key').select2({
-            tags: true,
-        });
-        $('#wmn_mrkn_kode').select2();
-        $('#wmn_mpol_kode').select2();
-
-        function menuMain() {
-            $('#wmn_tipe').change(function() {
-                // e.preventDefault();
-                var tipe = $(this).val(),
-                    url = "{{ url('api/utility/menu/getTipe') }}" + "/" + tipe;
-                if (tipe !== "") {
-                    $.get(url, function(res) {
-                        $('#wmn_key').empty();
-                        // $('#wmn_key').val(null).trigger('change');
-                        $('#wmn_key').append('<option></option>');
-                        $.each(res, function(key, val) {
-                            $('#wmn_key').append('<option value="'+ val.wmn_kode +'">'+ val.wmn_descp +'</option>');
-                        });
-                    });
-                } else {
-                    $('#wmn_key').empty();
-                    // $('#wmn_key').val(null).trigger('change');
-                    $('#wmn_key').append('<option></option>');
-                }
-            });
-        }
+        $('#wmj_wmn_kode').select2();
+        $('#wmj_sjab_kode').select2();
+        $('#wmj_aktif').select2();
 
         $(function () {
             $.ajaxSetup({
@@ -215,57 +171,54 @@
             });
 
             $('body').on('click', '#omodTam', function() {
-                $('#modalMenu').modal('show');
-                $('#tModMenu').text('Tambah Menu');
-                resetMod();
+                $('#modalWewenang').modal('show');
+                $('#tModWewenang').text('Tambah Wewenang');
+                // resetMod();
                 bsimpan('btn_simpan', 'Simpan');
                 $('#btn_reset').show();
-                menuMain();
             });
 
-            $('body').on('click', '#omodEdit', function() {
-                $('#tModMenu').text('Edit Menu');
-                bsimpan('btn_simpan', 'Update');
-                // resetMod();
-                // $('#wmn_key').empty();
-                $('#wmn_key').val(null).trigger('change');
-                $('#btn_reset').hide();
+            // $('body').on('click', '#omodEdit', function() {
+            //     $('#tModMenu').text('Edit Menu');
+            //     bsimpan('btn_simpan', 'Update');
+            //     // resetMod();
+            //     // $('#wmn_key').empty();
+            //     $('#wmn_key').val(null).trigger('change');
+            //     $('#btn_reset').hide();
 
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
-                    // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
+            //     var kode = $(this).attr('data-resouce'),
+            //         url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
+            //         // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
 
-                $.get(url, function(res) {
-                    menuMain();
-                    var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
-                    // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
-                    $('#modalMenu').modal('show');
-                    $('#wmn_kode').val(res.wmn_kode);
-                    $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
-                    $.get(key, function(data) {
-                        $('#wmn_key').val(data.wmn_kode).trigger('change');
-                    });
-                    $('#wmn_descp').val(res.wmn_descp);
-                    $('#wmn_icon').val(res.wmn_icon);
-                    $('#wmn_url').val(res.wmn_url);
-                    $('#wmn_urlkode').val(res.wmn_urlkode);
-                    $('#wmn_info').val(res.wmn_info);
-                    $('#wmn_url_o').val(res.wmn_url_o);
-                    $('#wmn_urut').val(res.wmn_urut);
-                    $('#wmn_mrkn_kode').val(res.wmn_mrkn_kode);
-                    $('#wmn_mpol_kode').val(res.wmn_mpol_kode);
-                });
-            });
+            //     $.get(url, function(res) {
+            //         menuMain();
+            //         var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
+            //         // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
+            //         $('#modalMenu').modal('show');
+            //         $('#wmn_kode').val(res.wmn_kode);
+            //         $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
+            //         $.get(key, function(data) {
+            //             $('#wmn_key').val(data.wmn_kode).trigger('change');
+            //         });
+            //         $('#wmn_descp').val(res.wmn_descp);
+            //         $('#wmn_icon').val(res.wmn_icon);
+            //         $('#wmn_url').val(res.wmn_url);
+            //         $('#wmn_urlkode').val(res.wmn_urlkode);
+            //         $('#wmn_info').val(res.wmn_info);
+            //         $('#wmn_url_o').val(res.wmn_url_o);
+            //         $('#wmn_urut').val(res.wmn_urut);
+            //         $('#wmn_mrkn_kode').val(res.wmn_mrkn_kode);
+            //         $('#wmn_mpol_kode').val(res.wmn_mpol_kode);
+            //     });
+            // });
 
-            // $('#frxx').submit(function(e) {
             $('#btn_simpan').click(function(e) {
                 e.preventDefault();
                 var dataFrx = $('#frxx').serialize();
-                // var formData = new FormData(this);
                 bsimpan('btn_simpan', 'Please wait..');
 
                 $.ajax({
-                    url: "{{ route('utility.menu.store') }}",
+                    url: "{{ route('utility.wewenang-jabatan.store') }}",
                     type: "POST",
                     data: dataFrx,
                     // cache: false,
@@ -282,8 +235,8 @@
                                 'success'
                             ).then((res) => {
                                 reset();
-                                $('#frxx').trigger("reset");
-                                $('#modalMenu').modal('hide');
+                                resetMod();
+                                $('#modalWewenang').modal('hide');
                                 bsimpan('btn_simpan', 'Simpan');
                             });
                         } else {
@@ -306,7 +259,7 @@
 
             $('body').on('click', '#omodDelete', function() {
                 var kode = $(this).attr('data-resouce'),
-                    url = "{{ route('utility.menu.store') }}" + "/" + kode;
+                    url = "{{ route('utility.wewenang-jabatan.store') }}" + "/" + kode;
 
                 console.log(kode);
                 Swal.fire({
@@ -357,12 +310,9 @@
 
         function resetMod() {
             $('#frxx').trigger('reset');
-            $('#wmn_tipe').val(null).trigger('change');
-            $('#wmn_key').val(null).trigger('change');
-            // $('#wmn_key').empty();
-            // $('#wmn_key').append('<option></option>');
-            $('#wmn_mrkn_kode').val(null).trigger('change');
-            $('#wmn_mpol_kode').val(null).trigger('change');
+            $('#wmj_wmn_kode').val(null).trigger('change');
+            $('#wmj_sjab_kode').val(null).trigger('change');
+            $('#wmj_aktif').val(null).trigger('change');
         }
     </script>
 @endsection

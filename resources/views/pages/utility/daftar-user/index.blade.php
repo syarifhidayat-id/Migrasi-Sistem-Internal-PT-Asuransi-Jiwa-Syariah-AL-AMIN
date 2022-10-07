@@ -41,7 +41,7 @@
                     <i class="fa-sharp fa-solid fa-filter"></i> Filter
                 </button>
 
-                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
+                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-500px" data-kt-menu="true">
                     <div class="px-7 py-5">
                         <div class="fs-5 text-dark fw-bolder">Filter Options</div>
                     </div>
@@ -78,7 +78,7 @@
             <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
                 <div id="kt_table_datatable_export" class="d-none"></div>
 
-                <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button>
+                <button type="button" id="btn_export" data-title="Data Daftar User" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button>
 
                 <div id="kt_table_datatable_export_menu" title-kt-export="Data Menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">
                     <div class="menu-item px-3">
