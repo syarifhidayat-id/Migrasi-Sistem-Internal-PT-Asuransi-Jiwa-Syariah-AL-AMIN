@@ -186,6 +186,15 @@
         });
         $('#dirshare').select2();
 
+        Inputmask({
+            "mask" : "999-9999-9999"
+        }).mask("#no_hp");
+
+        // $('#phone').keyup(function() {
+        //     var val = $(this).val();
+        //     $('#no_hp').val(val.toLowerCase().replaceAll('-', ''));
+        // });
+
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
@@ -232,23 +241,21 @@
                 });
             });
 
-            // $('#frxx').submit(function(e) {
-            $('#btn_simpan').click(function(e) {
+            // $('#btn_simpan').click(function(e) {
+            $('#frxx').submit(function(e) {
+                bsimpan('btn_simpan', 'Please wait..');
                 e.preventDefault();
                 var dataFrx = $('#frxx').serialize();
-                // var formData = new FormData(this);
-                bsimpan('btn_simpan', 'Please wait..');
+                let formData = new FormData(this);
 
                 $.ajax({
                     url: "{{ route('utility.daftar-user.store') }}",
-                    type: "POST",
-                    data: dataFrx,
-                    // cache: false,
-                    // contentType: false,
-                    // processData: false,
+                    type: $(this).attr('method'),
+                    data: formData,
+                    contentType: false,
+                    processData: false,
                     dataType: 'json',
                     success: function (res) {
-                        // window.location.reload();
                         if ($.isEmptyObject(res.error)){
                             console.log(res);
                             Swal.fire(
@@ -256,9 +263,9 @@
                                 res.success,
                                 'success'
                             ).then((res) => {
-                                reset();
-                                $('#frxx').trigger("reset");
-                                $('#modalUser').modal('hide');
+                                // reset();
+                                // $('#frxx').trigger("reset");
+                                // $('#modalUser').modal('hide');
                                 bsimpan('btn_simpan', 'Simpan');
                             });
                         } else {
@@ -269,6 +276,7 @@
                                 text: 'Field harus ter isi!',
                             });
                             messages(res.error);
+                            console.log(res.error);
                         }
 
                     },
