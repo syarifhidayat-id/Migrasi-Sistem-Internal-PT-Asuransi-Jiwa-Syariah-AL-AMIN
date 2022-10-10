@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/maintenance', [DashboardController::class, 'maintenance'])->name('maintenance');
 
     // require __DIR__ . '/web/sdm.php';
-    // require __DIR__ . '/web/legal.php';
+    require __DIR__ . '/web/legal.php';
     // require __DIR__ . '/web/devit.php';
     // require __DIR__ . '/web/master.php';
     // require __DIR__ . '/web/tehnik.php';
