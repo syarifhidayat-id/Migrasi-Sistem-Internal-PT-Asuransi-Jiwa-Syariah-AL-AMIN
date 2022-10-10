@@ -254,7 +254,6 @@
                     data: formData,
                     contentType: false,
                     processData: false,
-                    dataType: 'json',
                     success: function (res) {
                         if ($.isEmptyObject(res.error)){
                             console.log(res);
@@ -263,9 +262,9 @@
                                 res.success,
                                 'success'
                             ).then((res) => {
-                                // reset();
-                                // $('#frxx').trigger("reset");
-                                // $('#modalUser').modal('hide');
+                                reset();
+                                $('#frxx').trigger("reset");
+                                $('#modalUser').modal('hide');
                                 bsimpan('btn_simpan', 'Simpan');
                             });
                         } else {

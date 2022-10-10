@@ -64,112 +64,85 @@ class DaftarUserController extends Controller
                 'error' => $validasi->errors()
             ]);
         } else {
-            if ($request->id == "") {
+            if ($request->id == "" && $request->id == NULL) {
                 $kode = KodeController::__getKey(4);
-                $img_bukti = $request->file('img_bukti');
-                $img_foto = $request->file('img_foto');
-
-                if ($img_bukti) {
-                    $file = $img_bukti;
+                $data = $request->all();
+                if ($request->hasFile('img_bukti')) {
+                    $img_bukti = $request->file('img_bukti');
                     $dir = 'public/utility/daftar-user/formulir';
-                    $name = $kode . '-DaftarUser-' . $file->getClientOriginalName();
-                    $path = Storage::putFileAs(
-                        $dir,
-                        $file,
-                        $name
-                    );
-
-                    $request->merge([ 'img_bukti' => $name ]);
+                    $fileOri = $img_bukti->getClientOriginalName();
+                    $nameBukti = $kode . '-DaftarUser-' . $fileOri;
+                    $path = Storage::putFileAs($dir, $img_bukti, $nameBukti);
+                    $data['img_bukti'] = $nameBukti;
                 }
-
-                if ($img_foto) {
-                    $file = $img_foto;
+                if ($request->hasFile('img_foto')) {
+                    $img_foto = $request->file('img_foto');
                     $dir = 'public/utility/daftar-user/foto';
-                    $name = $kode . '-DaftarUser-' . $file->getClientOriginalName();
-                    $path = Storage::putFileAs(
-                        $dir,
-                        $file,
-                        $name
-                    );
-
-                    $request->merge([ 'img_foto' => $name ]);
+                    $fileOri = $img_foto->getClientOriginalName();
+                    $nameFoto = $kode . '-DaftarUser-' . $fileOri;
+                    $path = Storage::putFileAs($dir, $img_foto, $nameFoto);
+                    $data['img_foto'] = $nameFoto;
                 }
+                $data['id'] = $kode;
+                $data['no_hp'] = '0' . str_replace('-', '', $request->no_hp);
+                $data['email_user'] = $request->email_user . '@alamin.co.id';
+                $data['password'] = Hash::make($request->password);
+                $data['password_reg'] = '9';
+                $data['active'] = '1';
+                $data['groups'] = "['ALAMIN']";
+                $data['activation_key'] = 'NULL';
+                $data['extras'] = 'NULL';
+                $data['temp'] = 'NULL';
+                $data['lokasi'] = '01';
+                $data['korwil'] = 'NULL';
+                $data['menu_tipe_rpt'] = 'NULL';
+                $data['groupuser'] = 'ALAMIN';
+                $data['inbox'] = '0';
+                $data['iplocal'] = '0';
+                $data['lastlogin'] = '2022-10-01 21:28:51';
+                $data['islive'] = '0';
+                $data['jabatan'] = 'KBGIT';
+                $data['bagian'] = '0';
+                $data['ttdlevel'] = '0';
+                $data['mrkn_kode_induk'] = '0';
+                $data['mrkn_kode'] = '0';
+                $data['rekan_tipe'] = '0';
+                $data['ispst'] = '0';
+                $data['isaprovrkn'] = '0';
+                $data['isadmin'] = '0';
+                $data['isregandro'] = '0';
+                $data['tipemon'] = '0';
+                $data['wmds_kode'] = 'NULL';
+                $data['info'] = 'NULL';
+                $data['foto'] = 'NULL';
+                $data['mjns_kode'] = '07';
+                $data['mkm_kode'] = '0';
+                $data['mkm_kode2'] = '0';
+                $data['mpol_kode'] = '0';
+                $data['dboard'] = '0';
+                $data['chat_tipe'] = 'CAB';
+                $data['isautoemail'] = '0';
+                $data['ischat'] = '0';
+                $data['dirshare'] = '0';
+                $data['pst_kumpulan'] = '0';
+                $data['isdboard'] = '0';
+                $data['isnews'] = '0';
+                $data['pk_last'] = '0';
+                $data['pk_count'] = '0';
+                $data['pk_rpt'] = '0';
+                $data['livevideo_hak'] = '0';
+                $data['livevideo_ses'] = '01';
+                $data['byr_cabang'] = '0';
+                $data['tipe_login'] = '0';
+                $data['mui_mntp_kode'] = 'ALM';
+                $data['mui_mht_kode'] = 'HMALA';
+                $data['mui_mtt_kode'] = 'ALT';
+                $data['home_dash'] = '0';
+                $data['home_menu'] = 'DEVIT';
+                $data['mgu_kode'] = '000';
+                $data['isdevmode'] = '0';
 
-                $request->merge([
-                    'id' => $kode,
-                    'no_hp' => '0' . str_replace('-', '', $request->no_hp),
-                    'email_user' => $request->email_user . '@alamin.co.id',
-                    'password' => Hash::make($request->password),
-                    'password_reg' => '9',
-                    'active' => '1',
-                    'groups' => "['ALAMIN']",
-                    'activation_key' => 'NULL',
-                    'extras' => 'NULL',
-                    'temp' => 'NULL',
-                    'lokasi' => '01',
-                    'korwil' => 'NULL',
-                    'menu_tipe_rpt' => 'NULL',
-                    'groupuser' => 'ALAMIN',
-                    'inbox' => '0',
-                    'iplocal' => '0',
-                    'lastlogin' => '2022-10-01 21:28:51',
-                    'islive' => '0',
-                    'jabatan' => 'KBGIT',
-                    'bagian' => '0',
-                    'ttdlevel' => '0',
-                    'mrkn_kode_induk' => '0',
-                    'mrkn_kode' => '0',
-                    'rekan_tipe' => '0',
-                    'ispst' => '0',
-                    'isaprovrkn' => '0',
-                    'isadmin' => '0',
-                    'isregandro' => '0',
-                    'tipemon' => '0',
-                    'wmds_kode' => 'NULL',
-                    'vtmp1' => 'NULL',
-                    'vtmp2' => 'NULL',
-                    'vtmp3' => 'NULL',
-                    'info' => 'NULL',
-                    'foto' => 'NULL',
-                    'mjns_kode' => '07,13,',
-                    'mkm_kode' => '0',
-                    'mkm_kode2' => '0',
-                    'mpol_kode' => '0',
-                    'dboard' => '0',
-                    'chat_tipe' => 'CAB,',
-                    'isautoemail' => '0',
-                    'ischat' => '0',
-                    'dirshare' => '0',
-                    'pst_kumpulan' => '0',
-                    'isdboard' => '0',
-                    'isnews' => '0',
-                    'pk_last' => '0',
-                    'pk_count' => '0',
-                    'pk_rpt' => '0',
-                    'livevideo_hak' => '01',
-                    'livevideo_ses' => '01',
-                    'byr_cabang' => '0',
-                    'tipe_login' => '0',
-                    'mui_mntp_kode' => 'ALM',
-                    'mui_mht_kode' => 'HMALA',
-                    'mui_mtt_kode' => 'ALT',
-                    'home_dash' => '0',
-                    'home_menu' => 'DEVIT',
-                    'mgu_kode' => '000',
-                    'isdevmode' => '0',
-                ]);
-
-                // $nullRequests=[
-                //     'img_bukti',
-                //     'img_foto',
-                //     'foto',
-                // ];
-                // $nullRequests = array_merge_recursive($nullRequests, KodeController::nullRequests($request->all()));
-                DaftarUser::create($request->all());
-                // DB::table('user_accounts')->insert($request->except(['_token']));
-
-                // DaftarUser::create($request->except($nullRequests));
-                // return $request->all();
+                DaftarUser::create($data);
 
                 return response()->json([
                     'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'

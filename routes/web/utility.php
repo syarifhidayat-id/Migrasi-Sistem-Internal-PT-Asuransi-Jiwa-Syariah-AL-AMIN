@@ -11,7 +11,7 @@ Route::group(['prefix' => '/utility', 'as' => 'utility.'], function () {
 
     Route::resource('/menu', MenuController::class);
     Route::resource('/daftar-user', DaftarUserController::class);
-    Route::post('/simpan', [DaftarUserController::class, 'store'])->name('daftar-user.store');
+    Route::post('/daftar-user/store', [DaftarUserController::class, 'store'])->name('daftar-user.store');
     Route::resource('/wewenang-jabatan', WewenangJabatanController::class);
     // Route::prefix('/menu')->name('menu.')->controller(MenuController::class)->group(function() {
     //     Route::get('/getTipe/{id}', 'getTipemenu');

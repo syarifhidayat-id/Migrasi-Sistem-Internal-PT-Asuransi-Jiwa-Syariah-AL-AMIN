@@ -15,7 +15,7 @@ class DaftarUser extends Model
         $timestamps = false; // setup timestamps visibility
 
     protected
-        $connection = 'mysql',
+        // $connection = 'web_conf',
         $table = 'user_accounts',
         $fillable = [
             'id',
@@ -89,6 +89,5 @@ class DaftarUser extends Model
             'home_menu',
             'mgu_kode',
             'isdevmode',
-        ],
-        $keyType = 'string';
+        ];
     }

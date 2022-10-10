@@ -25,6 +25,7 @@ class User extends Authenticatable
         $timestamps = false; // setup timestamps visibility
 
     protected
+        // $connection = 'web_conf',
         $table = 'user_accounts',
         $fillable = [
             'id',

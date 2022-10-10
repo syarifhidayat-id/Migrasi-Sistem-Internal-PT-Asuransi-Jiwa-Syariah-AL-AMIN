@@ -18,6 +18,7 @@ class Menu extends Model
         $timestamps = false; // setup timestamps visibility
 
     protected
+        // $connection = 'web_conf',
         $table = 'web_menu',
         $fillable = [
             'wmn_kode',
