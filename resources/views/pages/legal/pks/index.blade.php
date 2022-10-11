@@ -132,7 +132,8 @@
                                     {{ ++$key }}
                                 </td>
                                 <td class="text-center">
-                                    <a href="#" id="bmoDetail" data-resouce="{{ $pks->mpks_pk }}" class="btn btn-active-success"> {{ $pks->mpks_nomor }}</a>
+                                    <a href="#" id="bmoDetail" data-resouce="{{ $pks->mpks_pk }}"
+                                        class="btn btn-light-success"> {{ $pks->mpks_nomor }}</a>
                                 </td>
                                 <td class="text-center">
                                     {{ $pks->mrkn_nama_induk }}
@@ -144,10 +145,10 @@
                                     {{ $pks->mpks_tentang }}
                                 </td>
                                 <td class="text-center">
-                                    {{ $pks->mpks_tgl_mulai }}
+                                    {{ $pks->awal_date }}
                                 </td>
                                 <td class="text-center">
-                                    {{ $pks->mpks_tgl_akhir }}
+                                    {{ $pks->akhir_date }}
                                 </td>
                                 <td class="text-center">
                                     {{ $pks->mpks_pic }}
@@ -222,7 +223,6 @@
 
 @section('script')
     <script>
-
         $(function() {
             $.ajaxSetup({
                 headers: {
@@ -231,15 +231,15 @@
             });
 
             $('body').on('click', '#omodTam', function() {
-                $('#modalMenu').modal('show');
-                $('#tModMenu').text('Tambah Menu');
+                $('#modalPks').modal('show');
+                $('#tModPks').text('Tambah PKS');
                 // resetMod();
                 // bsimpan('btn_simpan', 'Simpan');
-                // $('#btn_reset').show();
+                //$('#btn_reset').show();
                 // viewMain();
             });
 
-            $('body').on('click', '#bmoDetail', function(){
+            $('body').on('click', '#bmoDetail', function() {
                 $('#tModView').text('Rincian PKS');
                 // bsimpan('btn_simpan', 'Update');
                 // resetMod();
@@ -249,8 +249,8 @@
 
                 var kode = $(this).attr('data-resouce')
                 // console.log(kode);
-                    // url = "{{ route('legal.pks.index') }}" + "/" + kode + "/edit";
-                    url = "{{ url('legal/pks') }}" + "/" + kode;
+                // url = "{{ route('legal.pks.index') }}" + "/" + kode + "/edit";
+                url = "{{ url('legal/pks') }}" + "/" + kode;
                 // url = "{{ url('api/legal/pks/view-pks') }}" + "/" + kode;
 
 
@@ -259,15 +259,15 @@
                     // viewMain();
                     // var key = "{{ url('api/legal/pks/view-pks') }}" + "/" + res.mpks_pk;
 
-                    console.log(res.mpks_pk);
+                    console.log(res);
                     // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
                     $('#modalView').modal('show');
                     $('#mpks_instansi').val(res.mpks_instansi);
                     $('#mpks_mrkn_kode').val(res.mrkn_nama_induk);
                     $('#mpks_nomor').val(res.mpks_nomor);
                     $('#mpks_tentang').val(res.mpks_tentang);
-                    $('#mpks_tgl_mulai').val(res.mpks_tgl_mulai);
-                    $('#mpks_tgl_akhir').val(res.mpks_tgl_akhir);
+                    $('#mpks_tgl_mulai').val(res.awal_date);
+                    $('#mpks_tgl_akhir').val(res.akhir_date);
                     $('#mpks_pic').val(res.mpks_pic);
                     $('#mpks_pic_hp').val(res.mpks_pic_hp);
                     $('#mpks_pic_email').val(res.mpks_pic_email);
@@ -395,17 +395,33 @@
             //     })
             // });
 
-            // $('#btn_reset').click(function() {
-            //     resetMod();
-            // });
+            function x() {
+                $(document).ready(function() {
+                    $("button").click(function() {
+                        //$("#d").trigger("reset");
+                        //$("#d").get(0).reset();
+                        $("#frxx")[0].reset()
+                    });
+                });
+            }
 
-            $('#btn_close').click(function() {
-                reset();
+            $('#btn_close3').click(function() {
+                $('#modalView').modal('hide');
+                x();
+            });
+            $('#btn_close4').click(function() {
+                $('#modalView').modal('hide');
+               x();
+            });
+            $('#btn_closeCreate').click(function() {
+                $('#modalPks').modal('hide');
+                x();
+            });
+            $('#btn_tutup').click(function() {
+                $('#modalPks').modal('hide');
+               x();
             });
 
-            $('#btn_close2').click(function() {
-                reset();
-            });
         });
     </script>
 @endsection

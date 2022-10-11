@@ -4,7 +4,7 @@
             <div class="modal-header" id="modalMenu_header">
                 <h2 class="fw-bolder" id="tModView"></h2>
 
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close">
+                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close3">
                     <span class="svg-icon svg-icon-1">
                         <i class="fa-sharp fa-solid fa-xmark"></i>
                     </span>
@@ -13,32 +13,6 @@
 
             <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
                 @csrf
-
-                {{-- <div class="modal fade" tabindex="-1" id="kt_modal_1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title">Modal title</h3>
-
-                                <!--begin::Close-->
-                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                                    <span class="svg-icon svg-icon-1"></span>
-                                </div>
-                                <!--end::Close-->
-                            </div>
-
-                            <div class="modal-body">
-                                <p name="mpks_tgl_mulai"
-                                    id="mpks_tgl_mulai"></p>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
 
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-5">
                     <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalMenu_scroll" data-kt-scroll="true"
@@ -75,14 +49,14 @@
                             <div class="col-md-3">
                                 <div class="mb-5">
                                     <label class="form-label">Tgl Mulai</label>
-                                    <input type="date" class="form-control form-control-solid" name="mpks_tgl_mulai"
+                                    <input type="text" class="form-control form-control-solid" name="mpks_tgl_mulai"
                                         id="mpks_tgl_mulai" readonly />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-5">
                                     <label class="form-label">Tgl Akhir</label>
-                                    <input type="date" class="form-control form-control-solid" name="mpks_tgl_akhir"
+                                    <input type="text" class="form-control form-control-solid" name="mpks_tgl_akhir"
                                         id="mpks_tgl_akhir" readonly />
                                 </div>
                             </div>
@@ -127,7 +101,7 @@
                 </div>
                 <div class="modal-footer justify-content-center">
                     {{-- <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button> --}}
-                    <button type="button" class="btn btn-danger btn-sm" id="btn_close2"><i
+                    <button type="button" class="btn btn-danger btn-sm" id="btn_close4"><i
                             class="fa-solid fa-xmark" ></i> Tutup</button>
                 </div>
             </form>

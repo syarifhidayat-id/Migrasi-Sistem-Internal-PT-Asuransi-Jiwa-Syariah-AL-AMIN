@@ -22,7 +22,9 @@ class PksController extends Controller
     {
         $data = DB::table('eopr.mst_pks AS pks')
         ->join('emst.mst_rekanan AS rekanan', 'rekanan.mrkn_kode','=','pks.mpks_mrkn_kode')
-        ->select('rekanan.mrkn_nama_induk','pks.*')
+        ->select('rekanan.mrkn_nama_induk','pks.*',
+        DB::raw('DATE_FORMAT(mpks_tgl_mulai, "%d-%m-%Y") as awal_date'),
+        DB::raw('DATE_FORMAT(mpks_tgl_akhir, "%d-%m-%Y") as akhir_date'))
         ->get();
         return View('pages.legal.pks.index', ['data' => $data]);
     }
@@ -77,7 +79,9 @@ class PksController extends Controller
         $pks = DB::table('eopr.mst_pks AS pks')
         ->join('emst.mst_rekanan AS rekanan', 'rekanan.mrkn_kode', '=', 'pks.mpks_mrkn_kode')
         ->where('pks.mpks_pk', $id)
-        ->select('pks.*','rekanan.mrkn_nama_induk')
+        ->select('pks.*','rekanan.mrkn_nama_induk',
+        DB::raw('DATE_FORMAT(mpks_tgl_mulai, "%d-%m-%Y") as awal_date'),
+        DB::raw('DATE_FORMAT(mpks_tgl_akhir, "%d-%m-%Y") as akhir_date'))
         ->first();
         // $pks = Pks::findOrFail($id);
         return response()->json($pks);
