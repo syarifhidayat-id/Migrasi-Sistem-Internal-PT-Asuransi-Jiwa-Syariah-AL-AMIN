@@ -278,7 +278,7 @@
                     processData: false,
                     success: function (res) {
                         if ($.isEmptyObject(res.error)){
-                            console.log(res);
+                            // console.log(res);
                             Swal.fire(
                                 'Berhasil!',
                                 res.success,
