@@ -16,7 +16,19 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
     Route::group(['prefix' => '/pks', 'as' => 'pks.'], function() {
 
         // Route::get('/keyMenu/{id}', [MenuController::class, 'keyMenu']);
-        Route::get('/view-pks/{id}', [PksController::class, 'getPks']);
+        Route::get('/polis', function(){
+            $data = DB::table('emst.mst_rekanan')
+            ->select('mrkn_nama')
+            ->orderBy('mrkn_kode')
+            ->get();
+
+            return response()->json([
+                'data' => $data]);
+
+            // return response()->json([$data]);
+
+        });
+
         // Route::get('view-pks', function($id){
         //     $data = DB::table('eopr.mst_pks AS pks')->where('pks.mpks_pk', $id)->first();
         //     return response()->json([

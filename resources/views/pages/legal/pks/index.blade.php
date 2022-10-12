@@ -177,43 +177,6 @@
                                 </td>
                             </tr>
                         @endforeach
-                        {{-- @foreach ($list_menu as $key => $data)
-                        <tr>
-                            <td class="text-center">{{ ++$key }}.</td>
-                            <td class="text-center">
-                                @if ($data->wmn_icon !== '' && $data->wmn_icon !== null)
-                                <i class="{{ $data->wmn_icon }}"></i>
-                                @else
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                @endif
-                            </td>
-                            <td>{{ $data->wmn_descp }}</td>
-                            <td>{{ $data->wmn_tipe }}</td>
-                            <td>
-                                <div class="badge badge-light-success fw-bolder">@if ($data->wmn_url !== '') {{ $data->wmn_url }} @else - @endif</div>
-                            </td>
-                            <td>
-                                <div class="badge badge-light fw-bolder">@if ($data->wmn_url_o !== '' && $data->wmn_url_o !== null) {{ $data->wmn_url_o }} @else - @endif</div>
-                            </td>
-                            <td class="text-end">
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="{{ $data->wmn_kode }}">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="{{ $data->wmn_kode }}">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach --}}
                     </tbody>
                 </table>
             </div>
@@ -223,6 +186,13 @@
 
 @section('script')
     <script>
+        $('#dd_polis').select2({
+            placeholder: 'pilih',
+  ajax: {
+    url: '{{url('api/legal/pks/polis')}}',
+    }
+});
+
         $(function() {
             $.ajaxSetup({
                 headers: {
@@ -233,6 +203,11 @@
             $('body').on('click', '#omodTam', function() {
                 $('#modalPks').modal('show');
                 $('#tModPks').text('Tambah PKS');
+
+                // $.get('http://127.0.0.1:8000/api/legal/pks/polis', function(res) {
+
+                //     console.log(res);
+                // })
                 // resetMod();
                 // bsimpan('btn_simpan', 'Simpan');
                 //$('#btn_reset').show();
@@ -395,6 +370,8 @@
             //     })
             // });
 
+
+
             function x() {
                 $(document).ready(function() {
                     $("button").click(function() {
@@ -405,8 +382,8 @@
                 });
             }
 
-            $('#btn_reset').click(function(){
-               x();
+            $('#btn_reset').click(function() {
+                x();
             });
             $('#btn_close3').click(function() {
                 $('#modalView').modal('hide');
@@ -414,7 +391,7 @@
             });
             $('#btn_close4').click(function() {
                 $('#modalView').modal('hide');
-               x();
+                x();
             });
             $('#btn_closeCreate').click(function() {
                 $('#modalPks').modal('hide');
@@ -422,7 +399,7 @@
             });
             $('#btn_tutup').click(function() {
                 $('#modalPks').modal('hide');
-               x();
+                x();
             });
 
         });

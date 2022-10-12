@@ -21,14 +21,11 @@
                         <div class="row mb-5">
                             <div class="col-md-6 mb-5">
                                 <label class="form-label">Pemegang Polis</label>
-                                <select class="form-select" data-dropdown-parent="#modalPks" data-control="select2"
-                                    data-allow-clear="true" data-placeholder="pilih pemegang polis">
+                                <select class="form-select" data-dropdown-parent="#modalPks"
+                                id="dd_polis" name="dd_polis"
+                                    data-allow-clear="true">
+
                                     <option></option>
-                                    <option value="1">Option 1</option>
-                                    <option value="2">Option 2</option>
-                                    <option value="3">Option 3</option>
-                                    <option value="4">Option 4</option>
-                                    <option value="5">Option 5</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
