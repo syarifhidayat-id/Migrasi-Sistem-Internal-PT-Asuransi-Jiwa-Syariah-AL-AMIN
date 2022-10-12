@@ -345,6 +345,7 @@
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/datatables-serverside.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatables.min.js') }}"></script>
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
     <script src="{{ asset('dist/js/jquery-plugin.min.js') }}"></script>

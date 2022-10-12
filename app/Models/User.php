@@ -122,10 +122,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // public function menu()
-    // {
-    //     return $this->hasMany(Menu::class, 'wmn_tipe', 'menu_tipe');
-    // }
     public function getAuthPassword()
     {
         return $this->password_n;

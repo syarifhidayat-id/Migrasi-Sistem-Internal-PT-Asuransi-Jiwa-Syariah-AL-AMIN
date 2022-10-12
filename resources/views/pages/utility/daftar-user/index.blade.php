@@ -41,7 +41,7 @@
                     <i class="fa-sharp fa-solid fa-filter"></i> Filter
                 </button>
 
-                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-1000px" data-kt-menu="true">
+                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-700px" data-kt-menu="true">
                     <div class="px-7 py-5">
                         <div class="fs-5 text-dark fw-bolder">Filter Options</div>
                     </div>
@@ -179,13 +179,10 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            var dt = $('#serverSide').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ url('api/utility/daftar-user/lihat-data') }}",
-                },
-                columns: [
+            var datatables = serverSide(
+                "#serverSide",
+                "{{ url('api/utility/daftar-user/lihat-data') }}",
+                [
                     { data: "DT_RowIndex", className: "text-center" },
                     { data: "name" },
                     {
@@ -200,11 +197,7 @@
                             return '<div class="badge badge-light fw-bolder">'+row.no_hp+'</div>';
                         }
                     },
-                    { data: null },
-                ],
-                columnDefs: [
                     {
-                        targets: -1,
                         data: null,
                         orderable: false,
                         className: 'text-center',
@@ -227,11 +220,7 @@
                         },
                     },
                 ],
-            });
-
-            dt.on('draw', function () {
-                KTMenu.createInstances();
-            });
+            );
 
             $('body').on('click', '#omodTam', function() {
                 $('#modalUser').modal('show');
@@ -295,10 +284,10 @@
                                 res.success,
                                 'success'
                             ).then((res) => {
-                                reset();
                                 $('#frxx').trigger("reset");
                                 $('#modalUser').modal('hide');
                                 bsimpan('btn_simpan', 'Simpan');
+                                datatables;
                             });
                         } else {
                             bsimpan('btn_simpan', 'Simpan');
