@@ -35,6 +35,7 @@ class User extends Authenticatable
             'email_cc',
             'name',
             'password',
+            'password_n',
             'password_reg',
             'active',
             'groups',
@@ -108,7 +109,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'password_n',
         'remember_token',
     ];
 
@@ -125,4 +126,8 @@ class User extends Authenticatable
     // {
     //     return $this->hasMany(Menu::class, 'wmn_tipe', 'menu_tipe');
     // }
+    public function getAuthPassword()
+    {
+        return $this->password_n;
+    }
 }

@@ -41,30 +41,36 @@
                     <i class="fa-sharp fa-solid fa-filter"></i> Filter
                 </button>
 
-                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-500px" data-kt-menu="true">
+                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-1000px" data-kt-menu="true">
                     <div class="px-7 py-5">
                         <div class="fs-5 text-dark fw-bolder">Filter Options</div>
                     </div>
                     <div class="separator border-gray-200"></div>
 
                     <div class="px-7 py-5" data-kt-datatable-table-filter="form">
-                        <div class="mb-10">
-                            <label class="form-label fs-6 fw-bold">Nama User:</label>
-                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih user" data-allow-clear="true" data-kt-datatable-table-filter="nama-user" data-hide-search="false">
-                                <option></option>
-                                @foreach ($user as $key=>$data)
-                                    <option value="{{ $data->name }}">{{ $data->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-10">
-                            <label class="form-label fs-6 fw-bold">Nama Route:</label>
-                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false">
-                                <option></option>
-                                {{-- @foreach ($list_menu as $key=>$data)
-                                    <option value="{{ $data->wmn_url }}">{{ $data->wmn_url }}</option>
-                                @endforeach --}}
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-10">
+                                    <label class="form-label fs-6 fw-bold">Nama User:</label>
+                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih user" data-allow-clear="true" data-kt-datatable-table-filter="nama-user" data-hide-search="false">
+                                        <option></option>
+                                        @foreach ($user as $key=>$data)
+                                            <option value="{{ $data->name }}">{{ $data->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-10">
+                                    <label class="form-label fs-6 fw-bold">Nama Route:</label>
+                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false">
+                                        <option></option>
+                                        {{-- @foreach ($list_menu as $key=>$data)
+                                            <option value="{{ $data->wmn_url }}">{{ $data->wmn_url }}</option>
+                                        @endforeach --}}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-end">
@@ -107,7 +113,7 @@
 
     <div class="card-body py-10">
         <div class="table-responsive">
-            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="kt_table_datatable">
+            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                         <th>No.</th>
@@ -117,36 +123,9 @@
                         <th class="min-w-125px">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($user as $key=>$data)
-                        <tr>
-                            <td class="text-center">{{ ++$key }}.</td>
-                            <td>{{ $data->name }}</td>
-                            <td>
-                                <div class="badge badge-light-success fw-bolder">{{ $data->email_user }}</div>
-                            </td>
-                            <td>
-                                <div class="badge badge-light fw-bolder">{{ $data->no_hp }}</div>
-                            </td>
-                            <td class="text-end">
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="{{ $data->id }}">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="{{ $data->id }}">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
+                <tbody></tbody>
             </table>
+
         </div>
 
     </div>
@@ -198,6 +177,60 @@
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            });
+
+            var dt = $('#serverSide').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ url('api/utility/daftar-user/lihat-data') }}",
+                },
+                columns: [
+                    { data: "DT_RowIndex", className: "text-center" },
+                    { data: "name" },
+                    {
+                        data: "email_user",
+                        render: function(data, type, row, meta) {
+                            return '<div class="badge badge-light-success fw-bolder">'+row.email_user+'</div>';
+                        }
+                    },
+                    {
+                        data: "no_hp",
+                        render: function(data, type, row, meta) {
+                            return '<div class="badge badge-light fw-bolder">'+row.no_hp+'</div>';
+                        }
+                    },
+                    { data: null },
+                ],
+                columnDefs: [
+                    {
+                        targets: -1,
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return `
+                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
+                                    <span class="svg-icon svg-icon-5 m-0">
+                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                                    </span>
+                                </a>
+                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
+                                    <div class="menu-item px-3">
+                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="`+row.id+`">Edit</a>
+                                    </div>
+                                    <div class="menu-item px-3">
+                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="`+row.id+`">Delete</a>
+                                    </div>
+                                </div>
+                            `;
+                        },
+                    },
+                ],
+            });
+
+            dt.on('draw', function () {
+                KTMenu.createInstances();
             });
 
             $('body').on('click', '#omodTam', function() {

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
+use DataTables;
 
 class DaftarUserController extends Controller
 {
@@ -21,7 +23,7 @@ class DaftarUserController extends Controller
      */
     public function index()
     {
-        $user = User::all();
+        $user = DaftarUser::all();
         $ftipe_menu = DB::table('web_menu_tipe')
         ->select('wmt_kode','wmt_nama')
         ->get();
@@ -57,6 +59,10 @@ class DaftarUserController extends Controller
             'name' => 'required',
             'password' => 'required',
             'menu_tipe' => 'required',
+        ],[
+            'email.required'=>'Data username is required',
+            'no_hp.string'=>'Data No Hp must be a string',
+            'email.unique'=>'This data username is already taken',
         ]);
 
         if ($validasi->fails()) {
@@ -202,5 +208,15 @@ class DaftarUserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function datauser(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = DaftarUser::all();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
     }
 }

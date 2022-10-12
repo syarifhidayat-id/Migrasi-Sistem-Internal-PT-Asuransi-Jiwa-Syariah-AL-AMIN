@@ -136,9 +136,9 @@
                                     <label class="form-label">Menu Tipe</label>
                                     <select class="form-select form-select-solid" name="menu_tipe" id="menu_tipe" data-dropdown-parent="#modalUser" data-placeholder="Pilih Menu Tipe" data-allow-clear="true">
                                         <option></option>
-                                        @foreach ($tipe_menu as $key=>$data)
+                                        {{-- @foreach ($tipe_menu as $key=>$data)
                                             <option value="{{ $data->wmt_kode }}">{{ $data->wmt_nama }}</option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                     <span class="text-danger error-text menu_tipe_err"></span>
                                 </div>
