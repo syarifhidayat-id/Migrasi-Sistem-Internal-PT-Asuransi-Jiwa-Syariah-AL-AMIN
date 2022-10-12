@@ -20,10 +20,10 @@
                                 <div class="mb-5">
                                     <label class="required form-label">Menu Tipe</label>
                                     <select class="form-select form-select-solid readonly" name="wmn_tipe" id="wmn_tipe" data-dropdown-parent="#modalMenu" data-placeholder="Pilih tipe menu" data-allow-clear="true">
-                                        {{-- <option></option>
+                                        <option></option>
                                         @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
-                                        @endforeach --}}
+                                        @endforeach
                                     </select>
                                     <span class="text-danger error-text wmn_tipe_err"></span>
                                 </div>
