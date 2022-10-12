@@ -405,6 +405,9 @@
                 });
             }
 
+            $('#btn_reset').click(function(){
+               x();
+            });
             $('#btn_close3').click(function() {
                 $('#modalView').modal('hide');
                 x();
