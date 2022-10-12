@@ -93,13 +93,13 @@
     <div class="fv-row mb-10">
         <div class="d-flex flex-stack mb-2">
             <label class="form-label fw-bolder text-dark fs-6 mb-0">{{ __('Password') }}</label>
-            @if (Route::has('password.request'))
+            @if (Route::has('password_n.request'))
                 {{-- <a href="{{ route('password.request') }}" class="link-primary fs-6 fw-bolder">{{ __('Forgot Password ?') }}</a> --}}
             @endif
         </div>
-        <input class="form-control form-control-lg form-control-solid @error('password') is-invalid @enderror" type="password" name="password" placeholder="Masukkan password" required autocomplete="current-password" />
+        <input class="form-control form-control-lg form-control-solid @error('password_n') is-invalid @enderror" type="password" name="password_n" placeholder="Masukkan password" required autocomplete="current-password" />
 
-        @error('password')
+        @error('password_n')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
