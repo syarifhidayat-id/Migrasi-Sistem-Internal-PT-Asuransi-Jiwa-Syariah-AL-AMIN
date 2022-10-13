@@ -3,10 +3,11 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Utility\MenuController;
 use App\Http\Controllers\legal\PksController;
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Utility\PermissionController;
 use App\Http\Controllers\Utility\WewenangJabatanController;
 use Illuminate\Support\Facades\Route;
-use Facade\FlareClient\Http\Response;
+// use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 
@@ -15,19 +16,19 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
     // Route::resource('/menu', MenuController::class);
     Route::group(['prefix' => '/pks', 'as' => 'pks.'], function() {
 
-        // Route::get('/keyMenu/{id}', [MenuController::class, 'keyMenu']);
-        Route::get('/polis', function(){
-            $data = DB::table('emst.mst_rekanan')
-            ->select('mrkn_nama')
-            ->orderBy('mrkn_kode')
-            ->get();
+        Route::get('polis', [ApiController::class, 'polis'])->name('polis');
+        // Route::get('/polis', function(){
+        //     $data = DB::table('emst.mst_rekanan')
+        //     ->select('mrkn_nama')
+        //     ->orderBy('mrkn_kode')
+        //     ->get();
 
-            return response()->json([
-                'data' => $data]);
+        //     // return response()->json([
+        //     //     'data' => $data]);
 
-            // return response()->json([$data]);
+        //     return response()->json($data);
 
-        });
+        // });
 
         Route::prefix('/lihat')->name('lihat.')->controller(PksController::class)->group(function() {
             Route::get('/pks/{pk}', 'viewPks');

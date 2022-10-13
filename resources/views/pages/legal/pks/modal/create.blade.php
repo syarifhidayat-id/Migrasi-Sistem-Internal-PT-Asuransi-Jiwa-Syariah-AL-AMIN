@@ -22,10 +22,13 @@
                             <div class="col-md-6 mb-5">
                                 <label class="form-label">Pemegang Polis</label>
                                 <select class="form-select" data-dropdown-parent="#modalPks"
-                                id="dd_polis" name="dd_polis"
-                                    data-allow-clear="true">
+                                id="dd_polis" name="dd_polis">
+                                <option></option>
 
-                                    <option></option>
+                                @foreach ($polis as $key => $pks)
+                                <option value="{{$pks->mrkn_kode}}">{{$pks->mrkn_nama}}</option>
+                                @endforeach
+
                                 </select>
                             </div>
                             <div class="col-md-6">

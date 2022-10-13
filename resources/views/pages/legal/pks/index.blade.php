@@ -186,35 +186,14 @@
 
 @section('script')
     <script>
-        $('#dd_polis').select2({
-           allowClear: true,
-           placeholder: 'cari pemegang polis',
-           ajax: {
-            dataType: 'json',
-            url: 'http://127.0.0.1:8000/api/legal/pks/polis',
-            delay: 500,
-            data: function(params){
-                return{
-                    search:params.term
-                }
-            },
-            processResults: function(data, page){
-                return {
-                    results: $.map(data, function(obj) {
-                        return {
-                        id: obj.mrkn_nama,
-                        text: obj.mrkn_nama
-                        };
-                    })
-                };
-            },
+      
 
-            cache: true
-           }
-
+      $('#dd_polis').select2({
+        placeholder: 'pilih pemegang polis',
+        allowClear: true,
         });
 
-        $(function() {
+      $(function() {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

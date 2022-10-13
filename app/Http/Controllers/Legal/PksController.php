@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Legal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Facade\FlareClient\Http\Response;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Validator;
 use App\Models\Legal\Pks;
 
 
@@ -26,7 +26,13 @@ class PksController extends Controller
         DB::raw('DATE_FORMAT(mpks_tgl_mulai, "%d-%m-%Y") as awal_date'),
         DB::raw('DATE_FORMAT(mpks_tgl_akhir, "%d-%m-%Y") as akhir_date'))
         ->get();
-        return View('pages.legal.pks.index', ['data' => $data]);
+
+        $polis = DB::table('emst.mst_rekanan')
+        ->select('mrkn_nama','mrkn_mrkn_kode_induk', 'mrkn_kode')
+        ->orderBy('mrkn_mrkn_kode_induk')
+        ->get();
+        // return View('pages.legal.pks.index', ['data' => $data]);
+        return View('pages.legal.pks.index', compact('polis', 'data'));
     }
 
     /**
