@@ -48,7 +48,6 @@
                                     <select class="form-select form-select-solid readonly" name="wmn_key" id="wmn_key" data-dropdown-parent="#modalMenu" data-placeholder="ex. MAIN" data-allow-clear="true">
                                         {{-- <option></option> --}}
                                     </select>
-                                    {{-- <input type="text" class="form-control form-control-solid" name="wmn_key" id="wmn_key" placeholder="ex. MAIN" /> --}}
                                     <span class="text-danger error-text wmn_key_err"></span><br>
                                     <label class="required form-label">Isi MAIN jika menu utama</label>
                                 </div>

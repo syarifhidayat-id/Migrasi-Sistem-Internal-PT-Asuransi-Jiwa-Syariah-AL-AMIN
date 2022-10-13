@@ -11,13 +11,14 @@ Route::group(['prefix' => '/utility', 'as' => 'utility.'], function () {
 
     // Route::resource('/menu', MenuController::class);
     Route::group(['prefix' => '/menu', 'as' => 'menu.'], function() {
+        Route::get('/lihat-menu', [MenuController::class, 'datamenu']);
         Route::get('/getTipe/{id}', [MenuController::class, 'getTipemenu']);
         Route::get('/edit/{id}', [MenuController::class, 'edit']);
         Route::get('/keyMenu/{id}', [MenuController::class, 'keyMenu']);
     });
 
     Route::group(['prefix' => '/daftar-user', 'as' => 'daftar-user.'], function() {
-        Route::get('/lihat-data', [DaftarUserController::class, 'datauser'])->name('lihat-data');
+        Route::get('/lihat-user', [DaftarUserController::class, 'datauser']);
     });
 
     Route::group(['prefix' => '/wewenang-jabatan', 'as' => 'wewenang-jabatan.'], function() {

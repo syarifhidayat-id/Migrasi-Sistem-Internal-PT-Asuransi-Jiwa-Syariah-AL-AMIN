@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use DataTables;
 
 class MenuController extends Controller
 {
@@ -23,18 +24,13 @@ class MenuController extends Controller
         $type_menu = DB::table('web_menu_tipe')
         ->select('wmt_kode','wmt_nama')
         ->get();
-        // $menu_main = DB::table('web_menu')
-        // ->select('wmn_kode', 'wmn_descp', 'wmn_tipe')
-        // ->leftJoin('web_menu_tipe', 'wmn_tipe', '=', 'wmt_kode')
-        // ->where('wmn_tipe', '=', 'wmt_kode')
-        // ->get();
-        $listmenu = DB::table('web_menu')
-        ->select('*')
+        $nama_menu = DB::table('web_menu')
+        ->select('wmn_descp')
         ->get();
 
         return view('pages.utility.membuat-menu.index', [
             'type_menu' => $type_menu,
-            'list_menu' => $listmenu,
+            'nama_menu' => $nama_menu,
         ]);
     }
 
@@ -233,34 +229,13 @@ class MenuController extends Controller
         return response()->json($menulist);
     }
 
-    public static function menuDashboard()
+    public function datamenu(Request $request)
     {
-        $menulist = Menu::select(
-            'wmn_kode', 'wmn_key', 'wmn_descp', 'wmn_icon', 'wmn_url', 'wmn_url_o', 'wmn_tipe', 'email', 'menu_tipe', 'wmj_wmn_kode', 'wmj_sjab_kode', 'wmj_aktif', 'wmn_urut'
-            // '*'
-            // 'user.*',
-            // 'jab.*'
-        )
-        ->leftJoin('user_accounts', 'wmn_tipe', '=', 'menu_tipe')
-        ->leftJoin('web_menu_jabatan', 'wmn_kode', '=', 'wmj_wmn_kode')
-        ->where([
-            ['wmn_key', '=', 'MAIN'],
-            ['wmn_tipe', '=', Auth::user()->menu_tipe],
-            ['email', '=', Auth::user()->email],
-            ['wmj_sjab_kode', '=', Auth::user()->jabatan],
-            ['wmj_aktif', 1],
-        ])
-        ->orderBy('wmn_urut', 'ASC')
-        // ->paginate();
-        ->get();
-
-        return $menulist;
-
-        // return view('layouts.main-admin', [
-        //     'menulist' => $menulist
-        // ]);
-        // return response()->json([
-        //     'menulist' => $menulist
-        // ]);
+        if ($request->ajax()) {
+            $data = Menu::all();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
     }
 }
