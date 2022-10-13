@@ -1,7 +1,7 @@
 <div class="modal fade" id="modalView" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-950px">
         <div class="modal-content">
-            <div class="modal-header" id="modalMenu_header">
+            <div class="modal-header" id="modalView_header">
                 <h2 class="fw-bolder" id="tModView"></h2>
 
                 <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close3">
@@ -15,9 +15,9 @@
                 @csrf
 
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-5">
-                    <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalMenu_scroll" data-kt-scroll="true"
+                    <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalView_scroll" data-kt-scroll="true"
                         data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto"
-                        data-kt-scroll-dependencies="#modalMenu_header" data-kt-scroll-wrappers="#modalMenu_scroll"
+                        data-kt-scroll-dependencies="#modalView_header" data-kt-scroll-wrappers="#modalView_scroll"
                         data-kt-scroll-offset="300px">
                         <div class="row mb-5">
                             <div class="col-md-6">

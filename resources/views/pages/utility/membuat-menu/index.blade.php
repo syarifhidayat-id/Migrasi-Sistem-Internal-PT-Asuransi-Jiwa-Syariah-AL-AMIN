@@ -135,10 +135,10 @@
                             <td>{{ $data->wmn_descp }}</td>
                             <td>{{ $data->wmn_tipe }}</td>
                             <td>
-                                <div class="badge badge-light-success fw-bolder">@if ($data->wmn_url !== "") {{ $data->wmn_url }} @else - @endif</div>
+                                <div class="badge badge-light-success fw-bolder">@if ($data->wmn_url_n !== "") {{ $data->wmn_url_n }} @else - @endif</div>
                             </td>
                             <td>
-                                <div class="badge badge-light fw-bolder">@if ($data->wmn_url_o !== "" && $data->wmn_url_o !== null) {{ $data->wmn_url_o }} @else - @endif</div>
+                                <div class="badge badge-light fw-bolder">@if ($data->wmn_url_o_n !== "" && $data->wmn_url_o_n !== null) {{ $data->wmn_url_o_n }} @else - @endif</div>
                             </td>
                             <td class="text-end">
                                 <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
@@ -243,7 +243,7 @@
                     $('#wmn_url').val(res.wmn_url);
                     $('#wmn_urlkode').val(res.wmn_urlkode);
                     $('#wmn_info').val(res.wmn_info);
-                    $('#wmn_url_o').val(res.wmn_url_o);
+                    $('#wmn_url_o_n').val(res.wmn_url_o_n);
                     $('#wmn_urut').val(res.wmn_urut);
                     $('#wmn_mrkn_kode').val(res.wmn_mrkn_kode);
                     $('#wmn_mpol_kode').val(res.wmn_mpol_kode);

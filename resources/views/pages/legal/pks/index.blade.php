@@ -187,11 +187,32 @@
 @section('script')
     <script>
         $('#dd_polis').select2({
-            placeholder: 'pilih',
-  ajax: {
-    url: '{{url('api/legal/pks/polis')}}',
-    }
-});
+           allowClear: true,
+           placeholder: 'cari pemegang polis',
+           ajax: {
+            dataType: 'json',
+            url: 'http://127.0.0.1:8000/api/legal/pks/polis',
+            delay: 500,
+            data: function(params){
+                return{
+                    search:params.term
+                }
+            },
+            processResults: function(data, page){
+                return {
+                    results: $.map(data, function(obj) {
+                        return {
+                        id: obj.mrkn_nama,
+                        text: obj.mrkn_nama
+                        };
+                    })
+                };
+            },
+
+            cache: true
+           }
+
+        });
 
         $(function() {
             $.ajaxSetup({
@@ -224,19 +245,17 @@
 
                 var kode = $(this).attr('data-resouce')
                 // console.log(kode);
-                // url = "{{ route('legal.pks.index') }}" + "/" + kode + "/edit";
-                url = "{{ url('legal/pks') }}" + "/" + kode;
+                url = "{{ url('legal/pks/lihat/pks') }}" + "/" + kode;
                 // url = "{{ url('api/legal/pks/view-pks') }}" + "/" + kode;
 
 
+                console.log(url);
 
                 $.get(url, function(res) {
-                    // viewMain();
-                    // var key = "{{ url('api/legal/pks/view-pks') }}" + "/" + res.mpks_pk;
 
                     console.log(res);
-                    // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
                     $('#modalView').modal('show');
+                    // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
                     $('#mpks_instansi').val(res.mpks_instansi);
                     $('#mpks_mrkn_kode').val(res.mrkn_nama_induk);
                     $('#mpks_nomor').val(res.mpks_nomor);

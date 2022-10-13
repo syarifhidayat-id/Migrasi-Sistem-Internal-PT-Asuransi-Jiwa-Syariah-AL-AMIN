@@ -29,6 +29,10 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
 
         });
 
+        Route::prefix('/lihat')->name('lihat.')->controller(PksController::class)->group(function() {
+            Route::get('/pks/{pk}', 'viewPks');
+        });
+
         // Route::get('view-pks', function($id){
         //     $data = DB::table('eopr.mst_pks AS pks')->where('pks.mpks_pk', $id)->first();
         //     return response()->json([

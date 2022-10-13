@@ -9,8 +9,13 @@ use App\Http\Controllers\Legal\PksController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
-    Route::resource('pks', PksController::class);
-    Route::get('pks/{pk}', [PksController::class, 'viewPks'])->name('pks');
+    Route::group(['prefix' => '/pks', 'as' => 'pks.'], function () {
+        Route::resource('/lihat', PksController::class);
+        Route::prefix('/lihat')->name('lihat.')->controller(PksController::class)->group(function() {
+            Route::get('/pks/{pk}', 'viewPks');
+        });
+        // Route::get('lihat/pks/{pk}', [PksController::class, 'viewPks'])->name('lihat.pks');
+    });
     // Route::resource('ojk', LegalOjkController::class);
     // Route::resource('peraturan', PeraturanPerusahaanController::class);
     // Route::resource('pojk', PojkSeojkController::class);
