@@ -54,7 +54,7 @@
                                                                     <div class="menu-sub menu-sub-accordion {{ (Request::is($child4->wmn_url_n) or Request::is($child4->wmn_url_o_n)) ? 'menu-active-bg' : '' }}">
                                                                         <div class="menu-item">
                                                                             <a class="menu-link {{ (Request::is($child4->wmn_url_n) or Request::is($child4->wmn_url_o_n)) ? 'active' : '' }}" href="
-                                                                                @if ($child4->wmn_url_n === "maintenance" || $child4->wmn_url_n === "")
+                                                                                @if ($child4->wmn_url_n == "maintenance" || $child4->wmn_url_n == "")
                                                                                     #
                                                                                 @else
                                                                                 {{ route($child4->wmn_url_n) }}
@@ -71,7 +71,7 @@
                                                         @else
                                                             <div class="menu-item">
                                                                 <a class="menu-link {{ (Request::is($child3->wmn_url_n) or Request::is($child3->wmn_url_o_n)) ? 'active' : '' }}" href="
-                                                                    @if ($child3->wmn_url_n === "maintenance" || $child3->wmn_url_n === "")
+                                                                    @if ($child3->wmn_url_n == "maintenance" || $child3->wmn_url_n == "")
                                                                         #
                                                                     @else
                                                                     {{ route($child3->wmn_url_n) }}
@@ -89,7 +89,7 @@
                                         @else
                                             <div class="menu-item">
                                                 <a class="menu-link {{ (Request::is($child2->wmn_url_n) or Request::is($child2->wmn_url_o_n)) ? 'active' : '' }}" href="
-                                                    @if ($child2->wmn_url_n === "maintenance" || $child2->wmn_url_n === "")
+                                                    @if ($child2->wmn_url_n == "maintenance" || $child2->wmn_url_n == "")
                                                         #
                                                     @else
                                                     {{ route($child2->wmn_url_n) }}
@@ -107,7 +107,7 @@
                         @else
                             <div class="menu-item">
                                 <a class="menu-link {{ (Request::is($child->wmn_url_n) or Request::is($child->wmn_url_o_n)) ? 'active' : '' }}" href="
-                                    @if ($child->wmn_url_n === "maintenance" || $child->wmn_url_n === "")
+                                    @if ($child->wmn_url_n == "maintenance" || $child->wmn_url_n == "")
                                         #
                                     @else
                                     {{ route($child->wmn_url_n) }}
@@ -125,7 +125,7 @@
         @else
             <div class="menu-item">
                 <a class="menu-link {{ (Request::is($menu->wmn_url_n) or Request::is($menu->wmn_url_o_n)) ? 'active' : '' }}" href="
-                    @if ($menu->wmn_url_n === "maintenance" || $menu->wmn_url_n === "")
+                    @if ($menu->wmn_url_n == "maintenance" || $menu->wmn_url_n == "")
                         #
                     @else
                     {{ route($menu->wmn_url_n) }}

@@ -74,8 +74,8 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Route Menu</label>
-                                    <input type="text" class="form-control form-control-solid" name="wmn_url" id="wmn_url" placeholder="ex. utility.menu.create"/>
-                                    <span class="text-danger error-text wmn_url_err"></span>
+                                    <input type="text" class="form-control form-control-solid" name="wmn_url_n" id="wmn_url_n" placeholder="ex. utility.menu.create"/>
+                                    <span class="text-danger error-text wmn_url_n_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -93,8 +93,8 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">URL Menu</label>
-                                    <input type="text" class="form-control form-control-solid readonly" name="wmn_url_o" id="wmn_url_o" placeholder="ex. utility/menu"/>
-                                    <span class="text-danger error-text wmn_url_o_err"></span><br>
+                                    <input type="text" class="form-control form-control-solid readonly" name="wmn_url_o_n" id="wmn_url_o_n" placeholder="ex. utility/menu"/>
+                                    <span class="text-danger error-text wmn_url_o_n_err"></span><br>
                                     <label class="required form-label">jika main, ex. utility/*</label>
                                 </div>
                             </div>

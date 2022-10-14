@@ -285,9 +285,9 @@
                                 'success'
                             ).then((res) => {
                                 $('#frxx').trigger("reset");
+                                lodTable("#serverSide");
                                 $('#modalUser').modal('hide');
                                 bsimpan('btn_simpan', 'Simpan');
-                                lodTable("#serverSide");
                             });
                         } else {
                             bsimpan('btn_simpan', 'Simpan');

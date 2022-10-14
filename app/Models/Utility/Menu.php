@@ -37,6 +37,7 @@ class Menu extends Model
             'wmn_open_w',
             'wmn_url_o',
             'wmn_url_o_aktif',
+            'wmn_url_o_aktif_n',
             'wmn_bot',
             'wmn_url_bot',
         ],

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Utility;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Library\KodeController;
 use App\Models\Utility\Menu;
+use App\Models\Utility\WewenangJabatan;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,8 +64,8 @@ class MenuController extends Controller
             'wmn_key' => 'required',
             // 'wmn_icon' => 'required',
             'wmn_descp' => 'required',
-            // 'wmn_url' => 'required',
-            'wmn_url_o' => 'required',
+            // 'wmn_url_n' => 'required',
+            'wmn_url_o_n' => 'required',
             'wmn_urut' => 'required',
         ]);
 
@@ -79,7 +80,7 @@ class MenuController extends Controller
 
             if ($request->wmn_url == "") {
                 $request->merge([
-                    'wmn_url' => 'maintenance',
+                    'wmn_url_n' => 'maintenance',
                 ]);
             }
 
@@ -88,35 +89,11 @@ class MenuController extends Controller
                 'wmn_slide' => 0,
                 'wmn_timer' => 0,
                 'wmn_open_w' => 0,
-                'wmn_url_o_aktif' => 0,
+                'wmn_url_o_aktif_n' => 0,
                 'wmn_bot' => 0,
             ]);
 
             Menu::create($request->all());
-
-            // Menu::updateOrCreate(
-            // [
-            //     'wmn_kode' => $request->wmn_kode,
-            // ],
-            // [
-            //     'wmn_kode' => $kode,
-            //     'wmn_tipe' => $request->wmn_tipe,
-            //     'wmn_key' => $request->wmn_key,
-            //     'wmn_descp' => $request->wmn_descp,
-            //     'wmn_icon' => $request->wmn_icon,
-            //     'wmn_url' => $request->wmn_url,
-            //     'mrkn_alamat1' => $request->mrkn_alamat1,
-            //     'wmn_info' => $request->wmn_info,
-            //     'wmn_url_o' => $request->wmn_url_o,
-            //     'wmn_urut' => $request->wmn_urut,
-            //     'wmn_mrkn_kode' => $request->wmn_mrkn_kode,
-            //     'wmn_mpol_kode' => $request->wmn_mpol_kode,
-            //     'wmn_slide' => 0,
-            //     'wmn_timer' => 0,
-            //     'wmn_open_w' => 0,
-            //     'wmn_url_o_aktif' => 0,
-            //     'wmn_bot' => 0,
-            // ]);
 
             return response()->json([
                 'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
@@ -179,6 +156,7 @@ class MenuController extends Controller
     {
         $menu = Menu::findOrFail($id);
         $menu->delete();
+        WewenangJabatan::where('wmj_wmn_kode', $id)->delete();
 
         return response()->json([
             'success' => 'Data berhasil dihapus dengan Kode '.$menu->wmn_kode.'!'
@@ -194,11 +172,6 @@ class MenuController extends Controller
     public function getTipemenu($id)
     {
         $menuTipe = Menu::where('wmn_tipe', $id)
-        // ->where(function($row) {
-        //     $row->where('wmn_key', 'MAIN');
-        //     // ->orwhere('wmn_key', 'wmn_kode');
-        // })
-        // ->where('wmn_key', '=', $request->wmn_kode)
         ->get();
         return response()->json($menuTipe);
     }

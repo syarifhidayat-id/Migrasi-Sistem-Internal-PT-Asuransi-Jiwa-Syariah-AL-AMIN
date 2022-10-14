@@ -294,10 +294,10 @@
                     });
                     $('#wmn_descp').val(res.wmn_descp);
                     $('#wmn_icon').val(res.wmn_icon);
-                    $('#wmn_url').val(res.wmn_url_n);
+                    $('#wmn_url_n').val(res.wmn_url_n);
                     $('#wmn_urlkode').val(res.wmn_urlkode);
                     $('#wmn_info').val(res.wmn_info);
-                    $('#wmn_url_o').val(res.wmn_url_o_n);
+                    $('#wmn_url_o_n').val(res.wmn_url_o_n);
                     $('#wmn_urut').val(res.wmn_urut);
                     $('#wmn_mrkn_kode').val(res.wmn_mrkn_kode);
                     $('#wmn_mpol_kode').val(res.wmn_mpol_kode);
