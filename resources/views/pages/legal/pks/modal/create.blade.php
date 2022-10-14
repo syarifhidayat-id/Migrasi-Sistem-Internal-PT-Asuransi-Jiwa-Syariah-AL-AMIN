@@ -69,7 +69,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">PIC Reminder</label>
-                                    <input type="email" class="form-control" name="pks_pic" id="pks_pic"
+                                    <input type="text" class="form-control" name="pks_pic" id="pks_pic"
                                         placeholder="Masukan pic" required />
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Email Atasan</label>
-                                    <input type="text" class="form-control" name="pks_atasan_email"
+                                    <input type="email" class="form-control" name="pks_atasan_email"
                                         placeholder="Masukan email atasan" id="pks_atasan_email" required />
                                 </div>
                             </div>
@@ -120,7 +120,6 @@
 
                 </div>
                 <div class="modal-footer justify-content-center">
-                    {{-- <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button> --}}
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i
                             class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
