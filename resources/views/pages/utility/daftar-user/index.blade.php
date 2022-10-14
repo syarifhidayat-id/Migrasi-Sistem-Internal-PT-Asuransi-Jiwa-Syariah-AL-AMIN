@@ -179,9 +179,9 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            var datatables = serverSide(
+            serverSide(
                 "#serverSide",
-                "{{ url('api/utility/daftar-user/lihat-data') }}",
+                "{{ url('api/utility/daftar-user/lihat-user') }}",
                 [
                     { data: "DT_RowIndex", className: "text-center" },
                     { data: "name" },
@@ -285,9 +285,9 @@
                                 'success'
                             ).then((res) => {
                                 $('#frxx').trigger("reset");
+                                lodTable("#serverSide");
                                 $('#modalUser').modal('hide');
                                 bsimpan('btn_simpan', 'Simpan');
-                                datatables;
                             });
                         } else {
                             bsimpan('btn_simpan', 'Simpan');
@@ -333,8 +333,7 @@
                                 url: url,
                                 type: "DELETE",
                                 success: function(res) {
-                                    reset();
-                                    console.log('Success', res);
+                                lodTable("#serverSide");
                                 },
                                 error: function(err) {
                                     reset();

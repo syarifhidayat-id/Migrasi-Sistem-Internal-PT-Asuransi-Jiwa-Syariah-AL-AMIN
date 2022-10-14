@@ -57,7 +57,7 @@ class DaftarUserController extends Controller
             'email_user' => 'required',
             'email_cc' => 'required',
             'name' => 'required',
-            'password' => 'required',
+            'password_n' => 'required',
             'menu_tipe' => 'required',
         ],[
             'email.required'=>'Data username is required',
@@ -92,7 +92,7 @@ class DaftarUserController extends Controller
                 $data['id'] = $kode;
                 $data['no_hp'] = '0' . str_replace('-', '', $request->no_hp);
                 $data['email_user'] = $request->email_user . '@alamin.co.id';
-                $data['password'] = Hash::make($request->password);
+                $data['password_n'] = Hash::make($request->password_n);
                 $data['password_reg'] = '9';
                 $data['active'] = '1';
                 $data['groups'] = "['ALAMIN']";
@@ -148,14 +148,14 @@ class DaftarUserController extends Controller
                 $data['mgu_kode'] = '000';
                 $data['isdevmode'] = '0';
 
-                DaftarUser::create($data);
+                User::create($data);
 
                 return response()->json([
                     'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
                 ]);
 
             } else {
-                $user = DaftarUser::findOrFail($request->id);
+                $user = User::findOrFail($request->id);
                 $user->update($request->all());
 
                 return response()->json([

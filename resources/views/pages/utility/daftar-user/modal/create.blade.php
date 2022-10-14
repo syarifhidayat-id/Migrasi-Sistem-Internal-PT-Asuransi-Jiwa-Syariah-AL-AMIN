@@ -24,9 +24,9 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Password</label>
-                                    <input type="text" class="form-control form-control-solid" name="password" id="password" placeholder="Password" value="221001" />
+                                    <input type="text" class="form-control form-control-solid" name="password_n" id="password_n" placeholder="Password" value="221001" />
                                     <label class="required form-label">Standar Password 9</label>
-                                    <span class="text-danger error-text password_err"></span>
+                                    <span class="text-danger error-text password_n_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">

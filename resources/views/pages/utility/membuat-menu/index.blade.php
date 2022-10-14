@@ -41,30 +41,36 @@
                     <i class="fa-sharp fa-solid fa-filter"></i> Filter
                 </button>
 
-                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
+                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
                     <div class="px-7 py-5">
                         <div class="fs-5 text-dark fw-bolder">Filter Options</div>
                     </div>
                     <div class="separator border-gray-200"></div>
 
                     <div class="px-7 py-5" data-kt-datatable-table-filter="form">
-                        <div class="mb-10">
-                            <label class="form-label fs-6 fw-bold">Nama Menu:</label>
-                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false">
-                                <option></option>
-                                @foreach ($list_menu as $key=>$data)
-                                    <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-10">
-                            <label class="form-label fs-6 fw-bold">Nama Route:</label>
-                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false">
-                                <option></option>
-                                @foreach ($list_menu as $key=>$data)
-                                    <option value="{{ $data->wmn_url }}">{{ $data->wmn_url }}</option>
-                                @endforeach
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-10">
+                                    <label class="form-label fs-6 fw-bold">Tipe Menu:</label>
+                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe" onchange="tipe()">
+                                        <option></option>
+                                        @foreach ($type_menu as $type)
+                                            <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-10">
+                                    <label class="form-label fs-6 fw-bold">Nama Menu:</label>
+                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
+                                        <option></option>
+                                        {{-- @foreach ($nama_menu as $key=>$data)
+                                            <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
+                                        @endforeach --}}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-end">
@@ -107,7 +113,7 @@
 
     <div class="card-body py-10">
         <div class="table-responsive">
-            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="kt_table_datatable">
+            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                         <th>No.</th>
@@ -119,6 +125,7 @@
                         <th class="min-w-125px">Aksi</th>
                     </tr>
                 </thead>
+<<<<<<< HEAD
                 <tbody>
                     @foreach ($list_menu as $key=>$data)
                         <tr>
@@ -158,6 +165,9 @@
                         </tr>
                     @endforeach
                 </tbody>
+=======
+                <tbody></tbody>
+>>>>>>> 8110ecd62a79e51ababf1ee0ee6a07261cf598cd
             </table>
         </div>
     </div>
@@ -173,12 +183,37 @@
 
 @section('script')
     <script>
+        $('#tipe').select2();
+        $('#key').select2();
         $('#wmn_tipe').select2();
         $('#wmn_key').select2({
             tags: true,
         });
         $('#wmn_mrkn_kode').select2();
         $('#wmn_mpol_kode').select2();
+
+        function tipe() {
+            var tipe = $('#tipe').val(),
+                url = "{{ url('api/utility/menu/getTipe') }}" + "/" + tipe;
+            if (tipe !== "") {
+                $.get(url, function(res) {
+                    $('#key').empty();
+                    // $('#key').val(null).trigger('change');
+                    $('#key').append('<option></option>');
+                    $.each(res, function(key, val) {
+                        if (val.wmn_url_n !== "" && val.wmn_url_n !== null) {
+                            $('#key').append('<option value="'+ val.wmn_descp +'">'+ val.wmn_descp +' - ('+ val.wmn_url_n +')</option>');
+                        } else {
+                            $('#key').append('<option value="'+ val.wmn_descp +'">'+ val.wmn_descp +'</option>');
+                        }
+                    });
+                });
+            } else {
+                $('#key').empty();
+                // $('#key').val(null).trigger('change');
+                $('#key').append('<option></option>');
+            }
+        }
 
         function menuMain() {
             $('#wmn_tipe').change(function() {
@@ -207,8 +242,69 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
+            serverSide(
+                "#serverSide",
+                "{{ url('api/utility/menu/lihat-menu') }}",
+                [
+                    { data: "DT_RowIndex", className: "text-center" },
+                    {
+                        data: "wmn_icon",
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<i class="`+row.wmn_icon+`"></i>`;
+                        }
+                    },
+                    { data: "wmn_descp" },
+                    { data: "wmn_tipe" },
+                    {
+                        data: "wmn_url_n",
+                        render: function(data, type, row, meta) {
+                            var route = row.wmn_url_n;
+                            if (route !== "" && route !== null) {
+                                return `<div class="badge badge-light-success fw-bolder">`+row.wmn_url_n+`</div>`;
+                            } else {
+                                return `<div class="badge badge-light-success fw-bolder">-</div>`;
+                            }
+                        }
+                    },
+                    {
+                        data: "wmn_url_o_n",
+                        render: function(data, type, row, meta) {
+                            var url = row.wmn_url_o_n;
+                            if (url !== "" && url !== null) {
+                                return `<div class="badge badge-light fw-bolder">`+row.wmn_url_o_n+`</div>`;
+                            } else {
+                                return `<div class="badge badge-light fw-bolder">-</div>`;
+                            }
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return `
+                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
+                                    <span class="svg-icon svg-icon-5 m-0">
+                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                                    </span>
+                                </a>
+                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
+                                    <div class="menu-item px-3">
+                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Edit</a>
+                                    </div>
+                                    <div class="menu-item px-3">
+                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Delete</a>
+                                    </div>
+                                </div>
+                            `;
+                        },
+                    },
+                ],
+            );
+
             $('body').on('click', '#omodTam', function() {
-                $('#modalMenu').modal('show');
+                openModal('#modalMenu');
                 $('#tModMenu').text('Tambah Menu');
                 resetMod();
                 bsimpan('btn_simpan', 'Simpan');
@@ -232,7 +328,7 @@
                     menuMain();
                     var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
                     // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
-                    $('#modalMenu').modal('show');
+                    openModal('#modalMenu');
                     $('#wmn_kode').val(res.wmn_kode);
                     $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
                     $.get(key, function(data) {
@@ -240,7 +336,7 @@
                     });
                     $('#wmn_descp').val(res.wmn_descp);
                     $('#wmn_icon').val(res.wmn_icon);
-                    $('#wmn_url').val(res.wmn_url);
+                    $('#wmn_url_n').val(res.wmn_url_n);
                     $('#wmn_urlkode').val(res.wmn_urlkode);
                     $('#wmn_info').val(res.wmn_info);
                     $('#wmn_url_o_n').val(res.wmn_url_o_n);
@@ -261,23 +357,19 @@
                     url: "{{ route('utility.menu.store') }}",
                     type: "POST",
                     data: dataFrx,
-                    // cache: false,
-                    // contentType: false,
-                    // processData: false,
                     dataType: 'json',
                     success: function (res) {
-                        // window.location.reload();
                         if ($.isEmptyObject(res.error)){
-                            console.log(res);
+                            // console.log(res);
                             Swal.fire(
                                 'Berhasil!',
                                 res.success,
                                 'success'
                             ).then((res) => {
-                                reset();
-                                $('#frxx').trigger("reset");
-                                $('#modalMenu').modal('hide');
+                                resetMod();
                                 bsimpan('btn_simpan', 'Simpan');
+                                lodTable("#serverSide");
+                                closeModal('#modalMenu');
                             });
                         } else {
                             bsimpan('btn_simpan', 'Simpan');
@@ -301,7 +393,7 @@
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.store') }}" + "/" + kode;
 
-                console.log(kode);
+                // console.log(kode);
                 Swal.fire({
                     title: 'Apakah anda yakin?',
                     text: "Akan menghapus data menu dengan kode " + kode + " !",
@@ -322,12 +414,10 @@
                                 url: url,
                                 type: "DELETE",
                                 success: function(res) {
-                                    reset();
-                                    console.log('Success', res);
+                                    lodTable("#serverSide");
                                 },
                                 error: function(err) {
-                                    reset();
-                                    console.log('Error', err);
+                                    // console.log('Error', err);
                                 }
                             });
                         })
@@ -340,11 +430,11 @@
             });
 
             $('#btn_close').click(function() {
-                reset();
+                closeModal('#modalMenu');
             });
 
             $('#btn_close2').click(function() {
-                reset();
+                closeModal('#modalMenu');
             });
         });
 

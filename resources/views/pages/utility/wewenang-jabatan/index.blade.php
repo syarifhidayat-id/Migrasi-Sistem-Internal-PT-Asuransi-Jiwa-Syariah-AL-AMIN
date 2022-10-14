@@ -178,40 +178,6 @@
                 $('#btn_reset').show();
             });
 
-            // $('body').on('click', '#omodEdit', function() {
-            //     $('#tModMenu').text('Edit Menu');
-            //     bsimpan('btn_simpan', 'Update');
-            //     // resetMod();
-            //     // $('#wmn_key').empty();
-            //     $('#wmn_key').val(null).trigger('change');
-            //     $('#btn_reset').hide();
-
-            //     var kode = $(this).attr('data-resouce'),
-            //         url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
-            //         // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
-
-            //     $.get(url, function(res) {
-            //         menuMain();
-            //         var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
-            //         // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
-            //         $('#modalMenu').modal('show');
-            //         $('#wmn_kode').val(res.wmn_kode);
-            //         $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
-            //         $.get(key, function(data) {
-            //             $('#wmn_key').val(data.wmn_kode).trigger('change');
-            //         });
-            //         $('#wmn_descp').val(res.wmn_descp);
-            //         $('#wmn_icon').val(res.wmn_icon);
-            //         $('#wmn_url').val(res.wmn_url);
-            //         $('#wmn_urlkode').val(res.wmn_urlkode);
-            //         $('#wmn_info').val(res.wmn_info);
-            //         $('#wmn_url_o').val(res.wmn_url_o);
-            //         $('#wmn_urut').val(res.wmn_urut);
-            //         $('#wmn_mrkn_kode').val(res.wmn_mrkn_kode);
-            //         $('#wmn_mpol_kode').val(res.wmn_mpol_kode);
-            //     });
-            // });
-
             $('#btn_simpan').click(function(e) {
                 e.preventDefault();
                 var dataFrx = $('#frxx').serialize();
@@ -221,12 +187,8 @@
                     url: "{{ route('utility.wewenang-jabatan.store') }}",
                     type: "POST",
                     data: dataFrx,
-                    // cache: false,
-                    // contentType: false,
-                    // processData: false,
                     dataType: 'json',
                     success: function (res) {
-                        // window.location.reload();
                         if ($.isEmptyObject(res.error)){
                             console.log(res);
                             Swal.fire(
@@ -255,44 +217,6 @@
                         bsimpan('btn_simpan', 'Simpan');
                     }
                 });
-            });
-
-            $('body').on('click', '#omodDelete', function() {
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ route('utility.wewenang-jabatan.store') }}" + "/" + kode;
-
-                console.log(kode);
-                Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: "Akan menghapus data menu dengan kode " + kode + " !",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                        'Terhapus!',
-                        'Anda berhasil menghapus data menu dengan kode ' + kode + ".",
-                        'success'
-                        ).then((result) => {
-                            console.log(kode);
-                            $.ajax({
-                                url: url,
-                                type: "DELETE",
-                                success: function(res) {
-                                    reset();
-                                    console.log('Success', res);
-                                },
-                                error: function(err) {
-                                    reset();
-                                    console.log('Error', err);
-                                }
-                            });
-                        })
-                    }
-                })
             });
 
             $('#btn_reset').click(function() {
