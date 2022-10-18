@@ -1,7 +1,7 @@
 @extends('layouts.main-admin')
 
 @section('title')
-    Menu
+    Entry SOC
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
 
     <div class="card-header">
         <div class="card-title">
-            <h3>List Menu</h3>
+            <h3>Entry SOC</h3>
         </div>
 
         <div class="card-toolbar">
@@ -26,122 +26,147 @@
 
     <div class="card-header border-0 pt-6">
         <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
-            </div>
+            <div class="d-flex align-items-center position-relative my-1"></div>
         </div>
 
         <div class="card-toolbar">
-            <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
-
-                <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                    <i class="fa-sharp fa-solid fa-filter"></i> Filter
-                </button>
-
-                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
-                    <div class="px-7 py-5">
-                        <div class="fs-5 text-dark fw-bolder">Filter Options</div>
-                    </div>
-                    <div class="separator border-gray-200"></div>
-
-                    <div class="px-7 py-5" data-kt-datatable-table-filter="form">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-10">
-                                    <label class="form-label fs-6 fw-bold">Tipe Menu:</label>
-                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu" onchange="tipe()">
-                                        <option></option>
-                                        @foreach ($type_menu as $type)
-                                            <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-10">
-                                    <label class="form-label fs-6 fw-bold">Nama Menu:</label>
-                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
-                                        <option></option>
-                                        {{-- @foreach ($nama_menu as $key=>$data)
-                                            <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                        @endforeach --}}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-end">
-                            <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset">Reset</button>
-                            {{-- <button type="submit" class="btn btn-primary fw-bold px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter">Apply</button> --}}
-                        </div>
-                    </div>
-                </div>
+            <div class="d-flex align-items-center">
+                <span class="fs-7 text-gray-700 fw-bolder pe-3">Quick Tools:</span>
+                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-success me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru" id="btn_simpan"><i class="fa-solid fa-file-circle-plus fs-2x"></i></button>
+                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-success me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Endors" id="btn_endors"><i class="fa-solid fa-file-circle-question fs-2x"></i></button>
+                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-success me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Edit" id="btn_edit"><i class="fa-solid fa-file-circle-check fs-2x"></i></button>
+                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-success" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Batal" id="btn_Batal"><i class="fa-solid fa-file-circle-minus fs-2x"></i></button>
             </div>
 
-            <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
-                <div id="kt_table_datatable_export" class="d-none"></div>
-
-                <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button>
-
-                <div id="kt_table_datatable_export_menu" title-kt-export="Data Menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">
-                    <div class="menu-item px-3">
-                     <a href="#" class="menu-link px-3" data-kt-export="copy">Copy to clipboard</a>
-                    </div>
-
-                    <div class="menu-item px-3">
-                     <a href="#" class="menu-link px-3" data-kt-export="excel">Export as Excel</a>
-                    </div>
-
-                    <div class="menu-item px-3">
-                     <a href="#" class="menu-link px-3" data-kt-export="csv">Export as CSV</a>
-                    </div>
-
-                    <div class="menu-item px-3">
-                        <a href="#" class="menu-link px-3" data-kt-export="pdf">Export as PDF</a>
-                    </div>
-                </div>
-
-                <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-sharp fa-solid fa-plus"></i> Tambah Menu</button>
-            </div>
-
-            @include('pages.utility.membuat-menu.modal.create')
         </div>
     </div>
 
     <div class="card-body py-10">
-        <div class="table-responsive">
-            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
-                <thead>
-                    <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
-                        <th>No.</th>
-                        <th>Icon</th>
-                        <th>Nama Menu</th>
-                        <th>Tipe</th>
-                        <th>Route</th>
-                        <th>Url</th>
-                        <th class="min-w-125px">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+        <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="required form-label">Menu Tipe</label>
+                        <select class="form-select form-select-solid readonly" name="wmn_tipe" id="wmn_tipe" data-placeholder="Pilih tipe menu" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <span class="text-danger error-text wmn_tipe_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-5">
+                    <label class="form-label">PK Menu</label>
+                    <div class="input-group input-group-solid">
+                        <input type="text" class="form-control form-control-solid" name="wmn_kode" id="wmn_kode" placeholder="PK Menu"/>
+                        <div class="input-group-append">
+                            {{-- <button class="btn btn-primary" type="button"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></button> --}}
+                            {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+                                <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+                            </button> --}}
+                        </div>
+                    </div>
+                    <label class="required form-label">kosongkan jika baru</label>
+                    {{-- <label class="required form-label sm">kosongkan jika tidak edit</label> --}}
+                </div>
+                <div class="col-md-6 mb-5">
+                    <div class="mb-5">
+                        <label class="required form-label">Menu Main</label>
+                        <select class="form-select form-select-solid readonly" name="wmn_key" id="wmn_key" data-placeholder="ex. MAIN" data-allow-clear="true">
+                            {{-- <option></option> --}}
+                        </select>
+                        <span class="text-danger error-text wmn_key_err"></span><br>
+                        <label class="required form-label">Isi MAIN jika menu utama</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="form-label">Icon Menu</label>
+                        <div class="input-group input-group-solid">
+                            <input type="text" class="form-control form-control-solid" name="wmn_icon" id="wmn_icon" placeholder="ex. fa-solid fa-house"/>
+                            <div class="input-group-append">
+                                <a href="https://fontawesome.com/search?s=solid&f=classic&o=r" class="btn btn-primary" target="_blank"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></a>
+                            </div>
+                        </div>
+                        {{-- <span class="text-danger error-text wmn_icon_err"></span> --}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="required form-label">Nama Menu</label>
+                        <input type="text" class="form-control form-control-solid readonly" name="wmn_descp" id="wmn_descp" placeholder="ex. Sekper"/>
+                        <span class="text-danger error-text wmn_descp_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="form-label">Route Menu</label>
+                        <input type="text" class="form-control form-control-solid" name="wmn_url_n" id="wmn_url_n" placeholder="ex. utility.menu.create"/>
+                        <span class="text-danger error-text wmn_url_n_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="form-label">Alamat Menu</label>
+                        <textarea class="form-control form-control-solid" rows="3" name="wmn_urlkode" id="wmn_urlkode" placeholder="Alamat"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="form-label">Tips Menu</label>
+                        <input type="text" class="form-control form-control-solid" name="wmn_info" id="wmn_info" placeholder="Tips Menu"/>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-5">
+                    <div class="mb-5">
+                        <label class="required form-label">URL Menu</label>
+                        <input type="text" class="form-control form-control-solid readonly" name="wmn_url_o_n" id="wmn_url_o_n" placeholder="ex. utility/menu"/>
+                        <span class="text-danger error-text wmn_url_o_n_err"></span><br>
+                        <label class="required form-label">jika main, ex. utility/*</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="required form-label">Menu Urut</label>
+                        <input type="number" class="form-control form-control-solid readonly" name="wmn_urut" id="wmn_urut" placeholder="Urutan Menu"/>
+                        <span class="text-danger error-text wmn_urut_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="form-label">Pemegang Polis</label>
+                        {{-- <input type="text" class="form-control form-control-solid" name="wmn_mrkn_kode" id="wmn_mrkn_kode" placeholder="Pemegang Polis"/> --}}
+                        <select class="form-select form-select-solid" name="wmn_mrkn_kode" id="wmn_mrkn_kode" data-placeholder="pilih Pemegang Polis" data-allow-clear="true">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="form-label">Nomor Polis</label>
+                        {{-- <input type="text" class="form-control form-control-solid" name="wmn_mpol_kode" id="wmn_mpol_kode" placeholder="Nomor Polis"/> --}}
+                        <select class="form-select form-select-solid" name="wmn_mpol_kode" id="wmn_mpol_kode" data-placeholder="pilih Nomor Polis" data-allow-clear="true">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 
-    {{-- <div class="card-footer">
-        <div align="center">
-            <button type="button" class="btn btn-primary btn-sm"><i class="fa-sharp fa-solid fa-floppy-disk"></i> Simpan</button>&nbsp;
-            <button type="button" class="btn btn-danger btn-sm"><i class="fa-sharp fa-solid fa-trash"></i> Hapus</button>
-        </div>
-    </div> --}}
+    <div class="card-footer text-center">
+        <button type="submit" class="btn btn-primary btn-sm me-3" id="btn_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+        <button type="button" class="btn btn-warning btn-sm me-3" id="btn_reset"><i class="fa-solid fa-trash"></i> Hapus</button>
+        <button type="button" class="btn btn-danger btn-sm" id="btn_close2"><i class="fa-solid fa-xmark"></i> Tutup</button>
+    </div>
 </div>
 @endsection
 
 @section('script')
     <script>
-        $('#tipe_menu').select2();
+        $('#tipe').select2();
         $('#key').select2();
         $('#wmn_tipe').select2();
         $('#wmn_key').select2({
@@ -150,68 +175,15 @@
         $('#wmn_mrkn_kode').select2();
         $('#wmn_mpol_kode').select2();
 
-        function tipe() {
-            var tipe = $('#tipe_menu').val(),
-                url = "{{ url('api/utility/menu/getTipe') }}" + "/" + tipe;
-            if (tipe !== "") {
-                $.get(url, function(res) {
-                    $('#key').empty();
-                    // $('#key').val(null).trigger('change');
-                    $('#key').append('<option></option>');
-                    $.each(res, function(key, val) {
-                        if (val.wmn_url_n !== "" && val.wmn_url_n !== null) {
-                            $('#key').append('<option value="'+ val.wmn_descp +'">'+ val.wmn_descp +' - ('+ val.wmn_url_n +')</option>');
-                        } else {
-                            $('#key').append('<option value="'+ val.wmn_descp +'">'+ val.wmn_descp +'</option>');
-                        }
-                    });
-                });
-            } else {
-                $('#key').empty();
-                // $('#key').val(null).trigger('change');
-                $('#key').append('<option></option>');
-            }
-        }
-
-        function menuMain() {
-            $('#wmn_tipe').change(function() {
-                // e.preventDefault();
-                var tipe = $(this).val(),
-                    url = "{{ url('api/utility/menu/getTipe') }}" + "/" + tipe;
-                if (tipe !== "") {
-                    $.get(url, function(res) {
-                        $('#wmn_key').empty();
-                        // $('#wmn_key').val(null).trigger('change');
-                        $('#wmn_key').append('<option></option>');
-                        $.each(res, function(key, val) {
-                            $('#wmn_key').append('<option value="'+ val.wmn_kode +'">'+ val.wmn_descp +'</option>');
-                        });
-                    });
-                } else {
-                    $('#wmn_key').empty();
-                    // $('#wmn_key').val(null).trigger('change');
-                    $('#wmn_key').append('<option></option>');
-                }
-            });
-        }
-
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            filterOp('tipe_menu'); //isinya id select / input
-            filterOp('input[type="search"]'); //khusus type search inputan
-            filterOp('key'); //isinya id select / input
-
-            serverSide( //datatable serverside
-                "{{ url('api/utility/menu/lihat-menu') }}", //url api/route
-                function(d) {    // di isi sesuai dengan data yang akan di filter ->
-                    d.wmn_tipe = $('#tipe_menu').val(),
-                    d.wmn_descp = $('#key').val(),
-                    d.search = $('input[type="search"]').val()
-                },
-                [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
+            serverSide(
+                "#serverSide",
+                "{{ url('api/utility/menu/lihat-menu') }}",
+                [
                     { data: "DT_RowIndex", className: "text-center" },
                     {
                         data: "wmn_icon",
@@ -334,7 +306,7 @@
                             ).then((res) => {
                                 resetMod();
                                 bsimpan('btn_simpan', 'Simpan');
-                                lodTable();
+                                lodTable("#serverSide");
                                 closeModal('#modalMenu');
                             });
                         } else {
@@ -380,7 +352,7 @@
                                 url: url,
                                 type: "DELETE",
                                 success: function(res) {
-                                    lodTable();
+                                    lodTable("#serverSide");
                                 },
                                 error: function(err) {
                                     // console.log('Error', err);

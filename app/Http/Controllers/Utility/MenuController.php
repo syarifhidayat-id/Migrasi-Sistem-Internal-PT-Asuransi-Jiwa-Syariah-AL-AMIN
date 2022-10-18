@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use DataTables;
 
 class MenuController extends Controller
@@ -205,9 +206,32 @@ class MenuController extends Controller
     public function datamenu(Request $request)
     {
         if ($request->ajax()) {
-            $data = Menu::all();
+            // $data = Menu::all();
+            $data = DB::table('web_menu')->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"));
+            // $data = DB::select('select * from web_menu');
+
+            // $data = DB::table('web_menu');
             return Datatables::of($data)
+            // return Datatables::of($data)
                 ->addIndexColumn()
+                ->filter (function ($instance) use ($request) {
+                    // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
+                    //     return $instance->where('wmn_tipe', $request->wmn_tipe);
+                    // }
+                    if (!empty($request->get('wmn_tipe'))) {
+                        $instance->where('wmn_tipe', $request->get('wmn_tipe'));
+                    }
+                    if (!empty($request->get('wmn_descp'))) {
+                        $instance->where('wmn_descp', $request->get('wmn_descp'));
+                    }
+                    if (!empty($request->get('search'))) {
+                        $instance->where(function($w) use($request){
+                           $search = $request->get('search');
+                           $w->orWhere('wmn_tipe', 'LIKE', "%$search%")
+                           ->orWhere('wmn_descp', 'LIKE', "%$search%");
+                        });
+                    }
+                })
                 ->make(true);
         }
     }
