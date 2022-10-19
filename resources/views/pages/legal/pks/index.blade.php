@@ -185,15 +185,12 @@
 @endsection
 
 @section('script')
-    <script>
-
-
-      $('#dd_polis').select2({
-        placeholder: 'pilih pemegang polis',
-        allowClear: true,
+    <script type="text/javascript">
+        $("#dd_polis").select2({
+            placeholder: 'pilih polis',
         });
 
-      $(function() {
+        $(function() {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -244,126 +241,123 @@
                 });
             });
 
-            // $('body').on('click', '#omodEdit', function() {
-            //     $('#tModMenu').text('Edit Menu');
-            //     bsimpan('btn_simpan', 'Update');
-            //     // resetMod();
-            //     // $('#wmn_key').empty();
-            //     $('#wmn_key').val(null).trigger('change');
-            //     $('#btn_reset').hide();
+            $('body').on('click', '#omodEdit', function() {
+                $('#tModPks').text('Edit PKS');
+                 bsimpan('btn_simpan', 'Update');
+                 // resetMod();
+                 // $('#wmn_key').empty();
+                 // $('#wmn_key').val(null).trigger('change');
+                 // $('#btn_reset').hide();
 
-            //     var kode = $(this).attr('data-resouce'),
-            //         url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
-            //     // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
+                 var kode = $(this).attr('data-resouce'),
+                     url = "{{ url('legal/pks/lihat') }}" + "/" + kode + "/edit";
+                 // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
 
-            //     $.get(url, function(res) {
-            //         viewMain();
-            //         var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
-            //         // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
-            //         $('#modalMenu').modal('show');
-            //         $('#wmn_kode').val(res.wmn_kode);
-            //         $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
-            //         $.get(key, function(data) {
-            //             $('#wmn_key').val(data.wmn_kode).trigger('change');
-            //         });
-            //         $('#wmn_descp').val(res.wmn_descp);
-            //         $('#wmn_icon').val(res.wmn_icon);
-            //         $('#wmn_url').val(res.wmn_url);
-            //         $('#wmn_urlkode').val(res.wmn_urlkode);
-            //         $('#wmn_info').val(res.wmn_info);
-            //         $('#wmn_url_o').val(res.wmn_url_o);
-            //         $('#wmn_urut').val(res.wmn_urut);
-            //         $('#wmn_mrkn_kode').val(res.wmn_mrkn_kode);
-            //         $('#wmn_mpol_kode').val(res.wmn_mpol_kode);
-            //     });
-            // });
-
-             $('#frxx').submit(function(e) {
-             $('#btn_simpan').click(function(e) {
-                 e.preventDefault();
-                 var dataFrx = $('#frxx').serialize();
-                 // var formData = new FormData(this);
-                 bsimpan('btn_simpan', 'Please wait..');
-
-                 $.ajax({
-                     url: "{{ route('legal.pks.lihat.store') }}",
-                     type: "POST",
-                     data: dataFrx,
-                     // cache: false,
-                     // contentType: false,
-                     // processData: false,
-                     dataType: 'json',
-                     success: function(res) {
-                         // window.location.reload();
-                         if ($.isEmptyObject(res.error)) {
-                             console.log(res);
-                             Swal.fire(
-                                 'Berhasil!',
-                                 res.success,
-                                 'success'
-                             ).then((res) => {
-                                 reset();
-                                 $('#frxx').trigger("reset");
-                                 $('#modalPks').modal('hide');
-                                 bsimpan('btn_simpan', 'Simpan');
-                             });
-                         } else {
-                             bsimpan('btn_simpan', 'Simpan');
-                             Swal.fire({
-                                 icon: 'error',
-                                 title: 'Oops...',
-                                 text: 'Field harus ter isi!',
-                             });
-                             messages(res.error);
-                         }
-
-                     },
-                     error: function(err) {
-                         console.log('Error:', err);
-                         bsimpan('btn_simpan', 'Simpan');
-                     }
+                 $.get(url, function(res) {
+                    console.log(kode);
+                    // viewMain();
+                    // var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
+                     // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
+                     $('#modalPks').modal('show');
+                    $('#mpks_pk').val(kode);
+                    $('#pks_instansi').val(res.mpks_instansi);
+                    $('#pks_mrkn_kode').val(res.mrkn_nama_induk);
+                    $('#pks_nomor').val(res.mpks_nomor);
+                    $('#pks_tentang').val(res.mpks_tentang);
+                    $('#pks_tgl_mulai').val(res.awal_date);
+                    $('#pks_tgl_akhir').val(res.akhir_date);
+                    $('#pks_pic').val(res.mpks_pic);
+                    $('#pks_pic_hp').val(res.mpks_pic_hp);
+                    $('#pks_pic_email').val(res.mpks_pic_email);
+                    $('#pks_atasan_hp').val(res.mpks_atasan_hp);
+                    $('#pks_atasan_email').val(res.mpks_atasan_email);
                  });
              });
 
+            // $('#frxx').submit(function(e) {
+            $('#btn_simpan').click(function(e) {
+                e.preventDefault();
+                var dataFrx = $('#frxx').serialize();
+                // var formData = new FormData(this);   //jika ada input file atau dokumen
+                bsimpan('btn_simpan', 'Please wait..');
+
+                $.ajax({
+                    url: "{{ route('legal.pks.lihat.store') }}",
+                    type: "POST",
+                    data: dataFrx,
+                    // cache: false,   //jika ada input file atau dokumen
+                    // contentType: false,   //jika ada input file atau dokumen
+                    // processData: false,   //jika ada input file atau dokumen
+                    dataType: 'json',
+                    success: function(res) {
+                        // window.location.reload();
+                        if ($.isEmptyObject(res.error)) {
+                            console.log(res);
+                           // Swal.fire(
+                             //   'Berhasil!',
+                              //  res.success,
+                              //  'success'
+                          //  ).then((res) => {
+                                //   reset();
+                                 //   $('#frxx').trigger("reset");
+                                 //   $('#modalPks').modal('hide');
+                                 //  bsimpan('btn_simpan', 'Simpan');
+                           // });
+                        } else {
+                            bsimpan('btn_simpan', 'Simpan');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Field harus ter isi!',
+                            });
+                            messages(res.error);
+                        }
+
+                    },
+                    error: function(err) {
+                        console.log('Error:', err);
+                        bsimpan('btn_simpan', 'Simpan');
+                    }
+                });
             });
 
-            // $('body').on('click', '#omodDelete', function() {
-            //     var kode = $(this).attr('data-resouce'),
-            //         url = "{{ route('utility.menu.store') }}" + "/" + kode;
+             $('body').on('click', '#omodDelete', function() {
+                 var kode = $(this).attr('data-resouce'),
+                     url = "{{ url('legal/pks/lihat') }}" + "/" + kode;
 
-            //     console.log(kode);
-            //     Swal.fire({
-            //         title: 'Apakah anda yakin?',
-            //         text: "Akan menghapus data menu dengan kode " + kode + " !",
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         confirmButtonColor: '#3085d6',
-            //         cancelButtonColor: '#d33',
-            //         confirmButtonText: 'Ya, hapus!'
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             Swal.fire(
-            //                 'Terhapus!',
-            //                 'Anda berhasil menghapus data menu dengan kode ' + kode + ".",
-            //                 'success'
-            //             ).then((result) => {
-            //                 console.log(kode);
-            //                 $.ajax({
-            //                     url: url,
-            //                     type: "DELETE",
-            //                     success: function(res) {
-            //                         reset();
-            //                         console.log('Success', res);
-            //                     },
-            //                     error: function(err) {
-            //                         reset();
-            //                         console.log('Error', err);
-            //                     }
-            //                 });
-            //             })
-            //         }
-            //     })
-            // });
+                 console.log(kode);
+                 Swal.fire({
+                     title: 'Apakah anda yakin?',
+                     text: "Akan menghapus data menu dengan kode " + kode + " !",
+                     icon: 'warning',
+                     showCancelButton: true,
+                     confirmButtonColor: '#3085d6',
+                     cancelButtonColor: '#d33',
+                     confirmButtonText: 'Ya, hapus!'
+                 }).then((result) => {
+                     if (result.isConfirmed) {
+                         Swal.fire(
+                             'Terhapus!',
+                             'Anda berhasil menghapus data menu dengan kode ' + kode + ".",
+                             'success'
+                         ).then((result) => {
+                             console.log(kode);
+                             $.ajax({
+                                 url: url,
+                                 type: "DELETE",
+                                 success: function(res) {
+                                     reset();
+                                     console.log('Success', res);
+                                 },
+                                 error: function(err) {
+                                     reset();
+                                     console.log('Error', err);
+                                 }
+                             });
+                         })
+                     }
+                 })
+             });
 
 
 

@@ -19,6 +19,14 @@
                         data-kt-scroll-dependencies="#modalMenu_header" data-kt-scroll-wrappers="#modalMenu_scroll"
                         data-kt-scroll-offset="300px">
                         <div class="row mb-5">
+                            <div class="col-md-6">
+                                <div class="mb-5">
+                                    <label class="required form-label">Nomor PK</label>
+                                    <input class="form-control" name="mpks_pk" id="mpks_pk" type="text"
+                                        data-allow-clear="false" placeholder="Masukan instansi" readonly/>
+                                </div>
+
+                            </div>
                             <div class="col-md-6 mb-5">
                                 <label class="form-label">Pemegang Polis</label>
                                 <select class="form-select" data-dropdown-parent="#modalPks"
@@ -38,7 +46,7 @@
                                         data-allow-clear="true" placeholder="Masukan instansi" required />
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-5">
+                            {{--  <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Nomor PKS</label>
                                     <input class="form-control" name="pks_nomor" id="pks_nomor" type="text"
@@ -114,7 +122,7 @@
                                     <input type="file" class="form-control" name="pks_dokumen"
                                         id="pks_dokumen" />
                                 </div>
-                            </div>
+                            </div>  --}}
                         </div>
                     </div>
 

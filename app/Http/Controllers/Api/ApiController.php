@@ -20,7 +20,9 @@ class ApiController extends Controller
         ->select('mrkn_nama')
         ->orderBy('mrkn_kode')
         ->get();
-        return response()->json($data);
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
 

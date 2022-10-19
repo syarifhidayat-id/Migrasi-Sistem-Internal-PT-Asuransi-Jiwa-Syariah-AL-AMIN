@@ -15,8 +15,31 @@ class Pks extends Model
     $timestamps = false; // setup timestamps visibility
 
     protected
-    $connection = 'eopr',
+        $connection = 'eopr',
         $table = 'mst_pks',
-        $fillable = [],
+        $fillable = [
+            'mpks_pk',
+            'mpks_nomor',
+            'mpks_instansi',
+            'mpks_tentang',
+            'mpks_tgl_mulai',
+            'mpks_tgl_akhir',
+            'mpks_mrkn_kode',
+            'mpks_pic',
+            'mpks_pic_hp',
+            'mpks_pic_email',
+            'mpks_atasan_hp',
+            'mpks_atasan_email',
+            'mpks_ket',
+            'mpks_nomor_ori' ,
+            'mpks_endos' ,
+            'mpks_mrkn_kode',
+            'mpks_endos_idx',
+            'mpks_indexfolder',
+            'mpks_hapus',
+            'mpks_ins_user',
+            'mpks_ins_date'
+        ],
         $keyType = 'string';
+
 }
