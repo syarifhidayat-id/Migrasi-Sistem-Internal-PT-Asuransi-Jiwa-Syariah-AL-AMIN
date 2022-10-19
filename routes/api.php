@@ -19,8 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 require __DIR__ . '/api/utility.php';
-<<<<<<< HEAD
 require __DIR__ . '/api/tehnik.php';
-=======
 require __DIR__ . '/api/legal.php';
->>>>>>> e015ff30a0a5f1193a41430b4b221d40a27946f6
