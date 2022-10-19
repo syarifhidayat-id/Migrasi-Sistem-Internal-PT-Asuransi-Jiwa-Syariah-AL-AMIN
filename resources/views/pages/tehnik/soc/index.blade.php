@@ -1,7 +1,7 @@
 @extends('layouts.main-admin')
 
 @section('title')
-    Menu
+    Lihat SOC
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
 
     <div class="card-header">
         <div class="card-title">
-            <h3>List Menu</h3>
+            <h3>List Lihat SOC</h3>
         </div>
 
         <div class="card-toolbar">
@@ -30,7 +30,7 @@
                 <span class="svg-icon svg-icon-1 position-absolute ms-6">
                     <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
                 </span>
-                <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
+                <input type="text" data-kt-datatable-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
             </div>
         </div>
 
@@ -52,11 +52,11 @@
                             <div class="col-md-6">
                                 <div class="mb-10">
                                     <label class="form-label fs-6 fw-bold">Tipe Menu:</label>
-                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu" onchange="tipe()">
+                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe" onchange="tipe()">
                                         <option></option>
-                                        @foreach ($type_menu as $type)
+                                        {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
                             </div>
@@ -74,8 +74,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset">Reset</button>
-                            {{-- <button type="submit" class="btn btn-primary fw-bold px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter">Apply</button> --}}
+                            <button type="reset" class="btn btn-light btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset">Reset</button>
+                            <button type="submit" class="btn btn-primary fw-bold px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter">Apply</button>
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                 <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-sharp fa-solid fa-plus"></i> Tambah Menu</button>
             </div>
 
-            @include('pages.utility.membuat-menu.modal.create')
+            {{-- @include('pages.utility.membuat-menu.modal.create') --}}
         </div>
     </div>
 
@@ -117,57 +117,33 @@
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                         <th>No.</th>
-                        <th>Icon</th>
-                        <th>Nama Menu</th>
-                        <th>Tipe</th>
-                        <th>Route</th>
-                        <th>Url</th>
+                        <th>No SOC</th>
+                        <th>Kode SOC</th>
+                        <th>Nama Pemegang Polis</th>
+                        <th>Jenis Nasabah</th>
+                        <th>Segmen Pasar</th>
+                        <th>Mekanisme 1 (Umum)</th>
+                        <th>Mekanisme 2 (Penutupan)</th>
+                        <th>Jenis Pekerjaan</th>
+                        <th>Manfaat Asuransi</th>
+                        <th>Pembayaran</th>
+                        <th>Jaminan</th>
+                        <th>Program Asuransi</th>
+                        <th>Cover Polis</th>
+                        <th>SOC</th>
+                        <th>Disposisi</th>
+                        <th>Cetak</th>
+                        <th>Tanggal Input</th>
+                        <th>Umur Input</th>
+                        <th>Status Approval</th>
+                        <th>Kode Polis</th>
+                        <th>Approval Polis</th>
+                        <th>Status Polis</th>
+                        <th>Online Polis</th>
                         <th class="min-w-125px">Aksi</th>
                     </tr>
                 </thead>
-<<<<<<< HEAD
-                <tbody>
-                    @foreach ($list_menu as $key=>$data)
-                        <tr>
-                            <td class="text-center">{{ ++$key }}.</td>
-                            <td class="text-center">
-                                @if ($data->wmn_icon !== "" && $data->wmn_icon !== null)
-                                <i class="{{ $data->wmn_icon }}"></i>
-                                @else
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                @endif
-                            </td>
-                            <td>{{ $data->wmn_descp }}</td>
-                            <td>{{ $data->wmn_tipe }}</td>
-                            <td>
-                                <div class="badge badge-light-success fw-bolder">@if ($data->wmn_url_n !== "") {{ $data->wmn_url_n }} @else - @endif</div>
-                            </td>
-                            <td>
-                                <div class="badge badge-light fw-bolder">@if ($data->wmn_url_o_n !== "" && $data->wmn_url_o_n !== null) {{ $data->wmn_url_o_n }} @else - @endif</div>
-                            </td>
-                            <td class="text-end">
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="{{ $data->wmn_kode }}">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="{{ $data->wmn_kode }}">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-=======
                 <tbody></tbody>
->>>>>>> 8110ecd62a79e51ababf1ee0ee6a07261cf598cd
             </table>
         </div>
     </div>
@@ -183,7 +159,7 @@
 
 @section('script')
     <script>
-        $('#tipe_menu').select2();
+        $('#tipe').select2();
         $('#key').select2();
         $('#wmn_tipe').select2();
         $('#wmn_key').select2({
@@ -192,68 +168,15 @@
         $('#wmn_mrkn_kode').select2();
         $('#wmn_mpol_kode').select2();
 
-        function tipe() {
-            var tipe = $('#tipe_menu').val(),
-                url = "{{ url('api/utility/menu/getTipe') }}" + "/" + tipe;
-            if (tipe !== "") {
-                $.get(url, function(res) {
-                    $('#key').empty();
-                    // $('#key').val(null).trigger('change');
-                    $('#key').append('<option></option>');
-                    $.each(res, function(key, val) {
-                        if (val.wmn_url_n !== "" && val.wmn_url_n !== null) {
-                            $('#key').append('<option value="'+ val.wmn_descp +'">'+ val.wmn_descp +' - ('+ val.wmn_url_n +')</option>');
-                        } else {
-                            $('#key').append('<option value="'+ val.wmn_descp +'">'+ val.wmn_descp +'</option>');
-                        }
-                    });
-                });
-            } else {
-                $('#key').empty();
-                // $('#key').val(null).trigger('change');
-                $('#key').append('<option></option>');
-            }
-        }
-
-        function menuMain() {
-            $('#wmn_tipe').change(function() {
-                // e.preventDefault();
-                var tipe = $(this).val(),
-                    url = "{{ url('api/utility/menu/getTipe') }}" + "/" + tipe;
-                if (tipe !== "") {
-                    $.get(url, function(res) {
-                        $('#wmn_key').empty();
-                        // $('#wmn_key').val(null).trigger('change');
-                        $('#wmn_key').append('<option></option>');
-                        $.each(res, function(key, val) {
-                            $('#wmn_key').append('<option value="'+ val.wmn_kode +'">'+ val.wmn_descp +'</option>');
-                        });
-                    });
-                } else {
-                    $('#wmn_key').empty();
-                    // $('#wmn_key').val(null).trigger('change');
-                    $('#wmn_key').append('<option></option>');
-                }
-            });
-        }
-
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            filterOp('tipe_menu'); //isinya id select / input
-            filterOp('input[type="search"]'); //khusus type search inputan
-            filterOp('key'); //isinya id select / input
-
-            serverSide( //datatable serverside
-                "{{ url('api/utility/menu/lihat-menu') }}", //url api/route
-                function(d) {    // di isi sesuai dengan data yang akan di filter ->
-                    d.wmn_tipe = $('#tipe_menu').val(),
-                    d.wmn_descp = $('#key').val(),
-                    d.search = $('input[type="search"]').val()
-                },
-                [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
+            serverSide(
+                "#serverSide",
+                "{{ url('api/utility/menu/lihat-menu') }}",
+                [
                     { data: "DT_RowIndex", className: "text-center" },
                     {
                         data: "wmn_icon",
@@ -376,7 +299,7 @@
                             ).then((res) => {
                                 resetMod();
                                 bsimpan('btn_simpan', 'Simpan');
-                                lodTable();
+                                lodTable("#serverSide");
                                 closeModal('#modalMenu');
                             });
                         } else {
@@ -422,7 +345,7 @@
                                 url: url,
                                 type: "DELETE",
                                 success: function(res) {
-                                    lodTable();
+                                    lodTable("#serverSide");
                                 },
                                 error: function(err) {
                                     // console.log('Error', err);

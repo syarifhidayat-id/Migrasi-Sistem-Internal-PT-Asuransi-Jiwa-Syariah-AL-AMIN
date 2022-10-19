@@ -22,12 +22,12 @@ class Menu extends Model
         $table = 'web_menu',
         $fillable = [
             'wmn_kode',
-            'wmn_icon',
             'wmn_descp',
             'wmn_urut',
             'wmn_tipe',
             'wmn_key',
             'wmn_url',
+            'wmn_url_n',
             'wmn_urlkode',
             'wmn_slide',
             'wmn_timer',
@@ -36,10 +36,13 @@ class Menu extends Model
             'wmn_mpol_kode',
             'wmn_open_w',
             'wmn_url_o',
+            'wmn_url_o_n',
             'wmn_url_o_aktif',
             'wmn_url_o_aktif_n',
             'wmn_bot',
             'wmn_url_bot',
+            'wmn_icon',
+
         ],
         $keyType = 'string';
 
