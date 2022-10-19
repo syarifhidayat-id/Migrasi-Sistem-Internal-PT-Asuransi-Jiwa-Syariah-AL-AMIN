@@ -27,6 +27,7 @@
     <link href="{{ asset('dist/css/custom.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dist/css/preload.min.css') }}" rel="stylesheet" type="text/css" />
 
+
     @yield('style')
     @livewireStyles
 </head>
