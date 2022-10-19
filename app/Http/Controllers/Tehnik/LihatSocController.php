@@ -83,14 +83,4 @@ class LihatSocController extends Controller
     {
         //
     }
-
-    public function lihatsoc(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = Menu::all();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->make(true);
-        }
-    }
 }

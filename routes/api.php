@@ -1,10 +1,7 @@
 <?php
 
-use App\Http\Controllers\Utility\MenuController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\View;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +30,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // });
 
 require __DIR__ . '/api/utility.php';
+require __DIR__ . '/api/tehnik.php';

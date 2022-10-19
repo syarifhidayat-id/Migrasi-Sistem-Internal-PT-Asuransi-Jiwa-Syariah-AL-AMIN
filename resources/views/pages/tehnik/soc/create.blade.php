@@ -26,16 +26,18 @@
 
     <div class="card-header border-0 pt-6">
         <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1"></div>
+            <div class="d-flex align-items-center position-relative my-1">
+                <button type="button" class="btn btn-light-primary btn-sm" id="title_action">Buat SOC Baru</button>
+            </div>
         </div>
 
         <div class="card-toolbar">
             <div class="d-flex align-items-center">
                 <span class="fs-7 text-gray-700 fw-bolder pe-3">Quick Tools:</span>
-                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-success me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru" id="btn_simpan"><i class="fa-solid fa-file-circle-plus fs-2x"></i></button>
-                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-success me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Endors" id="btn_endors"><i class="fa-solid fa-file-circle-question fs-2x"></i></button>
-                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-success me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Edit" id="btn_edit"><i class="fa-solid fa-file-circle-check fs-2x"></i></button>
-                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-success" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Batal" id="btn_Batal"><i class="fa-solid fa-file-circle-minus fs-2x"></i></button>
+                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-primary me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru" id="btn_baru"><i class="fa-solid fa-file-circle-plus fs-2x"></i></button>
+                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-primary me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Endors" id="btn_endors"><i class="fa-solid fa-file-circle-question fs-2x"></i></button>
+                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-primary me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Edit" id="btn_edit"><i class="fa-solid fa-file-circle-check fs-2x"></i></button>
+                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-primary" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Batal" id="btn_Batal"><i class="fa-solid fa-file-circle-minus fs-2x"></i></button>
             </div>
 
         </div>
@@ -44,112 +46,552 @@
     <div class="card-body py-10">
         <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
             @csrf
-            <div class="row mb-5">
-                <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
                     <div class="mb-5">
-                        <label class="required form-label">Menu Tipe</label>
-                        <select class="form-select form-select-solid readonly" name="wmn_tipe" id="wmn_tipe" data-placeholder="Pilih tipe menu" data-allow-clear="true">
+                        <label class="required form-label">Nama Pemegang Polis</label>
+                        <select class="form-select form-select-solid" name="msoc_mrkn_nama" id="msoc_mrkn_nama" data-placeholder="Pilih pemegang polis" data-allow-clear="true">
                             <option></option>
                             {{-- @foreach ($type_menu as $type)
                                 <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
                             @endforeach --}}
                         </select>
-                        <span class="text-danger error-text wmn_tipe_err"></span>
+                        <span class="text-danger error-text msoc_mrkn_nama_err"></span>
                     </div>
                 </div>
-                <div class="col-md-6 mb-5">
-                    <label class="form-label">PK Menu</label>
-                    <div class="input-group input-group-solid">
-                        <input type="text" class="form-control form-control-solid" name="wmn_kode" id="wmn_kode" placeholder="PK Menu"/>
-                        <div class="input-group-append">
-                            {{-- <button class="btn btn-primary" type="button"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></button> --}}
-                            {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
-                                <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
-                            </button> --}}
-                        </div>
-                    </div>
-                    <label class="required form-label">kosongkan jika baru</label>
-                    {{-- <label class="required form-label sm">kosongkan jika tidak edit</label> --}}
-                </div>
-                <div class="col-md-6 mb-5">
+                <div class="col-md-4">
                     <div class="mb-5">
-                        <label class="required form-label">Menu Main</label>
-                        <select class="form-select form-select-solid readonly" name="wmn_key" id="wmn_key" data-placeholder="ex. MAIN" data-allow-clear="true">
-                            {{-- <option></option> --}}
+                        <label class="required form-label">Nasabah Bank/Peserta</label>
+                        <select class="form-select form-select-solid" name="msoc_mjns_kode" id="msoc_mjns_kode" data-placeholder="Pilih nasabah bank" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
                         </select>
-                        <span class="text-danger error-text wmn_key_err"></span><br>
-                        <label class="required form-label">Isi MAIN jika menu utama</label>
+                        <input type="text" class="form-control form-control-solid" name="msoc_mssp_kode" id="msoc_mssp_kode" placeholder="msoc_mssp_kode" hidden />
+                        <input type="text" class="form-control form-control-solid" name="mpid_mssp_kode" id="mpid_mssp_kode" placeholder="mpid_mssp_kode" hidden />
+                        <span class="text-danger error-text msoc_mjns_kode_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Segmen Pasar</label>
+                        <select class="form-select form-select-solid" name="msoc_mssp_nama" id="msoc_mssp_nama" data-placeholder="Pilih segmen pasar" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <input type="text" class="form-control form-control-solid" name="msoc_mssp_kode" id="msoc_mssp_kode" placeholder="msoc_mssp_kode" hidden />
+                        <input type="text" class="form-control form-control-solid" name="mpid_mssp_kode" id="mpid_mssp_kode" placeholder="mpid_mssp_kode" hidden />
+                        <span class="text-danger error-text msoc_mssp_nama_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Nomor SPAJ</label>
+                        <select class="form-select form-select-solid" name="msoc_mspaj_nama" id="msoc_mspaj_nama" data-placeholder="Pilih segmen pasar" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <input type="text" class="form-control form-control-solid" name="msoc_mspaj_nomor" id="msoc_mspaj_nomor" placeholder="msoc_mspaj_nomor" hidden />
+                        <span class="text-danger error-text msoc_mspaj_nama_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Mekanisme 1 (Umum)</label>
+                        <select class="form-select form-select-solid" name="msoc_mekanisme" id="msoc_mekanisme" data-placeholder="Pilih mkanisme 1" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <span class="text-danger error-text msoc_mekanisme_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="form-label">Mekanisme 2 (Penutupan)</label>
+                        <select class="form-select form-select-solid" name="msoc_mekanisme2" id="msoc_mekanisme2" data-placeholder="Pilih mekanisme 2" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <span class="text-danger error-text msoc_mekanisme2_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Manfaat Asuransi</label>
+                        <select class="form-select form-select-solid" name="msoc_mft_kode" id="msoc_mft_kode" data-placeholder="Pilih manfaat asuransi" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <input type="text" class="form-control form-control-solid" name="msoc_approve" id="msoc_approve" placeholder="msoc_approve" hidden />
+                        <input type="text" class="form-control form-control-solid" name="edit_akses" id="edit_akses" placeholder="edit_akses" hidden />
+                        <span class="text-danger error-text msoc_mft_kode_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Pembayaran Kontribusi</label>
+                        <select class="form-select form-select-solid" name="msoc_jenis_bayar" id="msoc_jenis_bayar" data-placeholder="Pilih kontribusi" data-allow-clear="true">
+                            <option></option>
+                            <option value="0">Sekaligus</option>
+                            <option value="1">Per Tahun</option>
+                            <option value="2">Per Bulan</option>
+                        </select>
+                        <span class="text-danger error-text msoc_jenis_bayar_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Jenis Pekerjaan</label>
+                        <select class="form-select form-select-solid" name="msoc_jns_perusahaan" id="msoc_jns_perusahaan" data-placeholder="Pilih jenis pekarjaan" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <span class="text-danger error-text msoc_jns_perusahaan_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Jaminan Asuransi</label>
+                        <select class="form-select form-select-solid" name="msoc_mjm_kode" id="msoc_mjm_kode" data-placeholder="Pilih jaminan asuransi" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <input type="text" class="form-control form-control-solid" name="msoc_mspaj_nomor" id="msoc_mspaj_nomor" placeholder="msoc_mspaj_nomor" hidden />
+                        <span class="text-danger error-text msoc_mjm_kode_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Jenis Produk</label>
+                        <input type="text" class="form-control form-control-solid" name="msoc_mpid_kode" id="msoc_mpid_kode" placeholder="jenis produk" />
+                        <input type="text" class="form-control form-control-solid" name="msoc_mjns_mpid_kode" id="msoc_mjns_mpid_kode" placeholder="msoc_mjns_mpid_kode" hidden />
+                        <span class="text-danger error-text msoc_mpid_kode_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Program Asuransi</label>
+                        <select class="form-select form-select-solid" name="msoc_mpras_kode" id="msoc_mpras_kode" data-placeholder="Pilih program asuransi" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <span class="text-danger error-text msoc_mpras_kode_err"></span>
+                        <label class="required form-label">Urutan Nomor filter/penyaringan harus benar !</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator my-7"></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Saluran Distribusi</label>
+                        <select class="form-select form-select-solid" name="msoc_mslr_kode" id="msoc_mslr_kode" data-placeholder="Pilih saluran distribusi" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <input type="text" class="form-control form-control-solid" name="msoc_endos" id="msoc_endos" placeholder="msoc_endos" hidden />
+                        <span class="text-danger error-text msoc_mslr_kode_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Nama Produk Ojk</label>
+                        <select class="form-select form-select-solid" name="msoc_mpojk_kode" id="msoc_mpojk_kode" data-placeholder="Pilih produk ojk" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <span class="text-danger error-text msoc_mpojk_kode_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Cabang Alamin</label>
+                        <select class="form-select form-select-solid" name="msoc_mlok_kode" id="msoc_mlok_kode" data-placeholder="Pilih cabang alamin" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <span class="text-danger error-text msoc_mssp_nama_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Marketing</label>
+                        <select class="form-select form-select-solid" name="msoc_mkar_kode_mkr" id="msoc_mkar_kode_mkr" data-placeholder="Pilih marketing" data-allow-clear="true">
+                            <option></option>
+                            {{-- @foreach ($type_menu as $type)
+                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                            @endforeach --}}
+                        </select>
+                        <span class="text-danger error-text msoc_mkar_kode_mkr_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Pimpinan Cabang</label>
+                        <input type="text" class="form-control form-control-solid" name="msoc_mkar_kode_pim" id="msoc_mkar_kode_pim" placeholder="Pimpinan cabang" />
+                        <span class="text-danger error-text msoc_mkar_kode_pim_err"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator my-10"></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="required form-label">Penanggung Pajak Fee</label>
+                        <select class="form-select form-select-solid" name="msoc_pajakfee" id="msoc_pajakfee" data-placeholder="Pilih pajak fee" data-allow-clear="true">
+                            <option></option>
+                            <option value="0">-</option>
+                            <option value="1">PPN & PPH Tidak Potongan/Nambah Kontribusi</option>
+                            <option value="2">Rekanan</option>
+                            <option value="3">PPN Potong Kontribusi & PPH Tambah Kontribusi</option>
+                        </select>
+                        <span class="text-danger error-text msoc_pajakfee_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="required form-label">Fee PPN</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" name="msoc_handlingfee" id="msoc_handlingfee" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_handlingfee_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="required form-label">Fee PPH 23</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" name="msoc_handlingfee2" id="msoc_handlingfee2" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_handlingfee2_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="form-label">Ujrah</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mujh_persen" id="msoc_mujh_persen" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_mujh_persen_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="required form-label">Managemen Fee</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" name="msoc_mmfe_persen" id="msoc_mmfe_persen" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_mmfe_persen_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="form-label">Overreding</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_overreding" id="msoc_overreding" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_overreding_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="form-label">Kom. Tidak Potong</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mkom_persen" id="msoc_mkom_persen" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_mkom_persen_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="form-label">Kom. Potong</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mkomdisc_persen" id="msoc_mkomdisc_persen" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_mkomdisc_persen_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="form-label">Referal</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_referal" id="msoc_referal" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_referal_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="form-label">Maintenance</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_maintenance" id="msoc_maintenance" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_maintenance_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="form-label">Fee Base Tidak Potong</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mfee_persen" id="msoc_mfee_persen" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_mfee_persen_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-5">
+                        <label class="form-label">Fee Base Potong</label>
+                        <div class="input-group input-group-solid flex-nowrap">
+                            <div class="overflow-hidden flex-grow-1">
+                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mdr_kode" id="msoc_mdr_kode" data-placeholder="Pilih">
+                                    <option></option>
+                                    {{-- @foreach ($type_menu as $type)
+                                        <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span class="text-danger error-text msoc_mdr_kode_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-5">
+                        <label class="form-label">Status SOC</label>
+                        <select class="form-select form-select-solid" data-control="select2" name="msoc_status" id="msoc_status" data-placeholder="Pilih status SOC" data-allow-clear="true">
+                            <option></option>
+                            <option selected value="0">-</option>
+                            <option value="1">SOC Migrasi Lapse</option>
+                            <option value="2">SOC Migrasi Inforce</option>
+                            <option value="3">Lapse</option>
+                        </select>
+                        <span class="text-danger error-text msoc_status_err"></span>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-5">
-                        <label class="form-label">Icon Menu</label>
-                        <div class="input-group input-group-solid">
-                            <input type="text" class="form-control form-control-solid" name="wmn_icon" id="wmn_icon" placeholder="ex. fa-solid fa-house"/>
-                            <div class="input-group-append">
-                                <a href="https://fontawesome.com/search?s=solid&f=classic&o=r" class="btn btn-primary" target="_blank"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></a>
+                        <label class="form-label">No Surat Endors</label>
+                        <input type="text" class="form-control form-control-solid" name="msoc_no_endors" id="msoc_no_endors" placeholder="No surat endors" />
+                        <span class="text-danger error-text msoc_no_endors_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="form-label">Keterangan Endors</label>
+                        <textarea class="form-control form-control-solid" name="msoc_ket_endors" id="msoc_ket_endors" cols="3" rows="3" placeholder="Keterangan endors"></textarea>
+                        <span class="text-danger error-text msoc_ket_endors_err"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator my-10"></div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="form-label">Nomor SOC</label>
+                        <input type="text" class="form-control form-control-solid" name="msoc_nomor" id="msoc_nomor" placeholder="No surat endors" />
+                        <span class="text-danger error-text msoc_nomor_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-5">
+                        <label class="form-label">Kode SOC</label>
+                        <input type="text" class="form-control form-control-solid" name="msoc_kode" id="msoc_kode" placeholder="No surat endors" />
+                        <span class="text-danger error-text msoc_kode_err"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="mb-5">
+                        <label class="form-label">Import Tarif</label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-5">
+                                    <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_jenis_tarif" id="msoc_jenis_tarif" data-placeholder="Pilih">
+                                        <option></option>
+                                        <option value="0">Usia</option>
+                                        <option value="1">Masa</option>
+                                    </select>
+                                    <span class="text-danger error-text msoc_jenis_tarif_err"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="mb-5">
+                                    <div class="input-group input-group-solid flex-nowrap">
+                                        <div class="overflow-hidden flex-grow-1">
+                                            <select class="form-select form-select-solid rounded-0 border-start border-end" name="msoc_mth_nomor" id="msoc_mth_nomor" data-placeholder="Pilih">
+                                                <option></option>
+                                                {{-- @foreach ($type_menu as $type)
+                                                    <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                                @endforeach --}}
+                                            </select>
+                                            <span class="text-danger error-text msoc_mth_nomor_err"></span>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
+                                        <button type="button" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        {{-- <span class="text-danger error-text wmn_icon_err"></span> --}}
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="mb-5">
-                        <label class="required form-label">Nama Menu</label>
-                        <input type="text" class="form-control form-control-solid readonly" name="wmn_descp" id="wmn_descp" placeholder="ex. Sekper"/>
-                        <span class="text-danger error-text wmn_descp_err"></span>
+                        <label class="form-label">Import Underwriting</label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-5">
+                                    <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_tipe_uw" id="msoc_tipe_uw" data-placeholder="Pilih">
+                                        <option></option>
+                                        <option value="0">Usia</option>
+                                        <option value="1">X+N</option>
+                                    </select>
+                                    <span class="text-danger error-text msoc_tipe_uw_err"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="mb-5">
+                                    <div class="input-group input-group-solid flex-nowrap">
+                                        <div class="overflow-hidden flex-grow-1">
+                                            <select class="form-select form-select-solid rounded-0 border-start border-end" name="msoc_mpuw_nomor" id="msoc_mpuw_nomor" data-placeholder="Pilih">
+                                                <option></option>
+                                                {{-- @foreach ($type_menu as $type)
+                                                    <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                                @endforeach --}}
+                                            </select>
+                                            <span class="text-danger error-text msoc_mpuw_nomor_err"></span>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
+                                        <button type="button" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="mb-5">
-                        <label class="form-label">Route Menu</label>
-                        <input type="text" class="form-control form-control-solid" name="wmn_url_n" id="wmn_url_n" placeholder="ex. utility.menu.create"/>
-                        <span class="text-danger error-text wmn_url_n_err"></span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-5">
-                        <label class="form-label">Alamat Menu</label>
-                        <textarea class="form-control form-control-solid" rows="3" name="wmn_urlkode" id="wmn_urlkode" placeholder="Alamat"></textarea>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-5">
-                        <label class="form-label">Tips Menu</label>
-                        <input type="text" class="form-control form-control-solid" name="wmn_info" id="wmn_info" placeholder="Tips Menu"/>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-5">
-                    <div class="mb-5">
-                        <label class="required form-label">URL Menu</label>
-                        <input type="text" class="form-control form-control-solid readonly" name="wmn_url_o_n" id="wmn_url_o_n" placeholder="ex. utility/menu"/>
-                        <span class="text-danger error-text wmn_url_o_n_err"></span><br>
-                        <label class="required form-label">jika main, ex. utility/*</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-5">
-                        <label class="required form-label">Menu Urut</label>
-                        <input type="number" class="form-control form-control-solid readonly" name="wmn_urut" id="wmn_urut" placeholder="Urutan Menu"/>
-                        <span class="text-danger error-text wmn_urut_err"></span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-5">
-                        <label class="form-label">Pemegang Polis</label>
-                        {{-- <input type="text" class="form-control form-control-solid" name="wmn_mrkn_kode" id="wmn_mrkn_kode" placeholder="Pemegang Polis"/> --}}
-                        <select class="form-select form-select-solid" name="wmn_mrkn_kode" id="wmn_mrkn_kode" data-placeholder="pilih Pemegang Polis" data-allow-clear="true">
-                            <option></option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-5">
-                        <label class="form-label">Nomor Polis</label>
-                        {{-- <input type="text" class="form-control form-control-solid" name="wmn_mpol_kode" id="wmn_mpol_kode" placeholder="Nomor Polis"/> --}}
-                        <select class="form-select form-select-solid" name="wmn_mpol_kode" id="wmn_mpol_kode" data-placeholder="pilih Nomor Polis" data-allow-clear="true">
-                            <option></option>
-                        </select>
+                        <label class="form-label">Dokumen SOC</label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-5">
+                                    <div class="input-group input-group-solid flex-nowrap">
+                                        <div class="overflow-hidden flex-grow-1">
+                                            <input type="file" class="form-control form-control-solid" name="msoc_dok" id="msoc_dok" placeholder="pilih file" />
+                                            <span class="text-danger error-text msoc_dok_err"></span>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -166,122 +608,86 @@
 
 @section('script')
     <script>
-        $('#tipe').select2();
-        $('#key').select2();
-        $('#wmn_tipe').select2();
-        $('#wmn_key').select2({
-            tags: true,
-        });
-        $('#wmn_mrkn_kode').select2();
-        $('#wmn_mpol_kode').select2();
+        // implement select2 : ambil nama id saja
+        // selectOp() select2 jika not required
+        // selectOpReq() select2 jika required
+        // setTextReq() inputan jika required
+        // setTextReadOnly() inputan jika required + readonly
+        // setSelectReadOnly() select2 jika required + readonly
+        // selectServerSide() select2 jika not required ambil data dari api/route
+        // selectServerSideReq() select2 jika required ambil data dari api/route
+
+        selectOpReq('msoc_mjns_kode');
+        selectOpReq('msoc_mssp_nama');
+        selectOpReq('msoc_mspaj_nama');
+        selectOpReq('msoc_mekanisme');
+        selectOpReq('msoc_mekanisme2');
+        selectOpReq('msoc_mft_kode');
+        selectOpReq('msoc_jenis_bayar');
+        selectOpReq('msoc_jns_perusahaan');
+        selectOpReq('msoc_mjm_kode');
+        selectOpReq('msoc_mpras_kode');
+        setTextReq('msoc_mpid_kode', true);
+        selectOpReq('msoc_mslr_kode');
+        selectOpReq('msoc_mpojk_kode');
+        selectOpReq('msoc_mlok_kode');
+        selectOpReq('msoc_mkar_kode_mkr');
+        setTextReadOnly('msoc_mkar_kode_pim', true);
+
+        selectOpReq('msoc_pajakfee');
+        selectOpReq('msoc_handlingfee');
+        selectOpReq('msoc_handlingfee2');
+        setSelectReadOnly('msoc_mmfe_persen', true);
+
+        setText('msoc_no_endors', '-');
+        setTextReadOnly('msoc_nomor', true);
+        setTextReadOnly('msoc_kode', true);
+
+        selectOpReq('msoc_mth_nomor');
+        selectOpReq('msoc_mpuw_nomor');
 
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            serverSide(
-                "#serverSide",
-                "{{ url('api/utility/menu/lihat-menu') }}",
-                [
-                    { data: "DT_RowIndex", className: "text-center" },
-                    {
-                        data: "wmn_icon",
-                        className: "text-center",
-                        render: function(data, type, row, meta) {
-                            return `<i class="`+row.wmn_icon+`"></i>`;
-                        }
-                    },
-                    { data: "wmn_descp" },
-                    { data: "wmn_tipe" },
-                    {
-                        data: "wmn_url_n",
-                        render: function(data, type, row, meta) {
-                            var route = row.wmn_url_n;
-                            if (route !== "" && route !== null) {
-                                return `<div class="badge badge-light-success fw-bolder">`+row.wmn_url_n+`</div>`;
-                            } else {
-                                return `<div class="badge badge-light-success fw-bolder">-</div>`;
+            selectServerSideReq( //select server side with api/route
+                'msoc_mrkn_nama', //kode select
+                '{{ url("api/tehnik/soc/entry-soc/select-pmgpolis") }}', //url
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                text: d.nama, // text nama
+                                id: d.kode // kode value
                             }
-                        }
-                    },
-                    {
-                        data: "wmn_url_o_n",
-                        render: function(data, type, row, meta) {
-                            var url = row.wmn_url_o_n;
-                            if (url !== "" && url !== null) {
-                                return `<div class="badge badge-light fw-bolder">`+row.wmn_url_o_n+`</div>`;
-                            } else {
-                                return `<div class="badge badge-light fw-bolder">-</div>`;
-                            }
-                        }
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function (data, type, row) {
-                            return `
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Delete</a>
-                                    </div>
-                                </div>
-                            `;
-                        },
-                    },
-                ],
+                        })
+                    };
+                },
             );
 
-            $('body').on('click', '#omodTam', function() {
-                openModal('#modalMenu');
-                $('#tModMenu').text('Tambah Menu');
-                resetMod();
+            $('body').on('click', '#btn_baru', function() {
+                $('#title_action').text('Buat SOC Baru');
+                resetForm();
                 bsimpan('btn_simpan', 'Simpan');
-                $('#btn_reset').show();
-                menuMain();
             });
 
-            $('body').on('click', '#omodEdit', function() {
-                $('#tModMenu').text('Edit Menu');
-                bsimpan('btn_simpan', 'Update');
-                // resetMod();
-                // $('#wmn_key').empty();
-                $('#wmn_key').val(null).trigger('change');
-                $('#btn_reset').hide();
+            $('body').on('click', '#btn_endors', function() {
+                $('#title_action').text('SOC Diendos');
+                resetForm();
+                bsimpan('btn_simpan', 'Simpan');
+            });
 
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
-                    // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
+            $('body').on('click', '#btn_edit', function() {
+                $('#title_action').text('SOC Edit');
+                resetForm();
+                bsimpan('btn_simpan', 'Simpan');
+            });
 
-                $.get(url, function(res) {
-                    menuMain();
-                    var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
-                    // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
-                    openModal('#modalMenu');
-                    $('#wmn_kode').val(res.wmn_kode);
-                    $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
-                    $.get(key, function(data) {
-                        $('#wmn_key').val(data.wmn_kode).trigger('change');
-                    });
-                    $('#wmn_descp').val(res.wmn_descp);
-                    $('#wmn_icon').val(res.wmn_icon);
-                    $('#wmn_url_n').val(res.wmn_url_n);
-                    $('#wmn_urlkode').val(res.wmn_urlkode);
-                    $('#wmn_info').val(res.wmn_info);
-                    $('#wmn_url_o_n').val(res.wmn_url_o_n);
-                    $('#wmn_urut').val(res.wmn_urut);
-                    $('#wmn_mrkn_kode').val(res.wmn_mrkn_kode);
-                    $('#wmn_mpol_kode').val(res.wmn_mpol_kode);
-                });
+            $('body').on('click', '#btn_Batal', function() {
+                $('#title_action').text('SOC Dibatalkan');
+                resetForm();
+                bsimpan('btn_simpan', 'Simpan');
             });
 
             // $('#frxx').submit(function(e) {
@@ -364,7 +770,7 @@
             });
 
             $('#btn_reset').click(function() {
-                resetMod();
+                resetForm();
             });
 
             $('#btn_close').click(function() {
@@ -376,14 +782,24 @@
             });
         });
 
-        function resetMod() {
+        function bersih(tipe) {
+            if (getText("e_bersih")=="1") {
+                return ;
+            }
+            if (tipe==1) {
+                setText("e_manfaat","");
+                setText("e_pras","");
+                setText("msoc_nomor","");
+                setText("msoc_mpras_kode","");
+                setText("msoc_mjm_kode","");
+            }
+            if (tipe==2) {
+                setText("msoc_mrkn_nama","");
+            }
+        }
+
+        function resetForm() {
             $('#frxx').trigger('reset');
-            $('#wmn_tipe').val(null).trigger('change');
-            $('#wmn_key').val(null).trigger('change');
-            // $('#wmn_key').empty();
-            // $('#wmn_key').append('<option></option>');
-            $('#wmn_mrkn_kode').val(null).trigger('change');
-            $('#wmn_mpol_kode').val(null).trigger('change');
         }
     </script>
 @endsection
