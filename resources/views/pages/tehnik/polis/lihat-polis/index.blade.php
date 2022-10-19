@@ -49,7 +49,7 @@
 
                     <div class="px-7 py-5" data-kt-datatable-table-filter="form">
                         <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-3">
-                            <div class="col">
+                            {{-- <div class="col">
                                 <div class="fv-row mb-7">
                                     <label class="form-label fs-6 fw-bold">Cabang AL AMIN:</label>
                             <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih Cabang" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false">
@@ -59,7 +59,7 @@
                                 @endforeach
                             </select>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="col">
                                 <div class="fv-row mb-7">
@@ -88,10 +88,46 @@
                             <div class="col">
                                 <div class="fv-row mb-7">
                                     <label class="form-label fs-6 fw-bold">Pemegang Polis:</label>
-                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih nasabah" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false">
+                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih pemegang polis" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false">
+                                <option></option>
+                                @foreach ($carirekanan as $key=>$data)
+                                    <option value="{{ $data->mrkn_nama }}">{{ $data->mrkn_nama }}</option>
+                                @endforeach
+                            </select>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="fv-row mb-7">
+                                    <label class="form-label fs-6 fw-bold">Program Asuransi:</label>
+                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih program" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false">
+                                <option></option>
+                                @foreach ($cariprogram as $key=>$data)
+                                    <option value="{{ $data->mpras_nama }}">{{ $data->mpras_nama }}</option>
+                                @endforeach
+                            </select>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="fv-row mb-7">
+                                    <label class="form-label fs-6 fw-bold">Nomor Polis:</label>
+                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih nomor polis" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false">
                                 <option></option>
                                 @foreach ($caripolis as $key=>$data)
-                                    <option value="{{ $data->mpol_mrkn_nama }}">{{ $data->mpol_mrkn_nama }}</option>
+                                    <option value="{{ $data->mpol_kode }}">{{ $data->mpol_kode }}</option>
+                                @endforeach
+                            </select>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="fv-row mb-7">
+                                    <label class="form-label fs-6 fw-bold">Nomor SOC:</label>
+                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih nomor soc" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false">
+                                <option></option>
+                                @foreach ($carisoc as $key=>$data)
+                                    <option value="{{ $data->mpol_msoc_kode }}">{{ $data->mpol_msoc_kode }}</option>
                                 @endforeach
                             </select>
                                 </div>
