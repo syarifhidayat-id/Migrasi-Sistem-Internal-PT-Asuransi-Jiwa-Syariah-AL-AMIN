@@ -666,6 +666,9 @@
                 },
             );
 
+            // logSelect('msoc_mrkn_nama');
+            // logInput('msoc_ket_endors');
+
             $('body').on('click', '#btn_baru', function() {
                 $('#title_action').text('Buat SOC Baru');
                 resetForm();
