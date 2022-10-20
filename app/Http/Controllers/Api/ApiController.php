@@ -15,14 +15,22 @@ class ApiController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function polis() {
-        $data = DB::table('emst.mst_rekanan')
-        ->select('mrkn_nama')
-        ->orderBy('mrkn_kode')
-        ->get();
-        return response()->json([
-            'data' => $data
-        ]);
+    public function polis(Request $request) {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('emst.mst_rekanan')
+            ->select('mrkn_kode', 'mrkn_nama')
+            ->where('mrkn_nama','like',"%$search%")
+            ->orderBy('mrkn_kode')
+            ->get();
+        } else {
+            $data = DB::table('emst.mst_rekanan')
+            ->select('mrkn_kode', 'mrkn_nama')
+            ->orderBy('mrkn_kode')
+            ->get();
+        }
+        return response()->json($data);
     }
 
 

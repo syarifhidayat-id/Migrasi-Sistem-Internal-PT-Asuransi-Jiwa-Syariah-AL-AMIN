@@ -186,9 +186,9 @@
 
 @section('script')
     <script type="text/javascript">
-        $("#dd_polis").select2({
-            placeholder: 'pilih polis',
-        });
+      //   $("#dd_polis").select2({
+      //      placeholder: 'pilih polis',
+      //  });
 
         $(function() {
             $.ajaxSetup({
@@ -196,6 +196,21 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            selectServerSide( //select server side with api/route
+                'dd_polis', //kode select
+                '{{ url("api/legal/pks/polis") }}', //url
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                text: d.mrkn_nama, // text nama
+                                id: d.mrkn_kode // kode value
+                            }
+                        })
+                    };
+                },
+            );
 
             $('body').on('click', '#omodTam', function() {
                 $('#modalPks').modal('show');
@@ -220,7 +235,7 @@
                 url = "{{ url('legal/pks/lihat/pks') }}" + "/" + kode;
 
 
-                console.log(url);
+                // console.log(url);
 
                 $.get(url, function(res) {
 
@@ -238,6 +253,7 @@
                     $('#mpks_pic_email').val(res.mpks_pic_email);
                     $('#mpks_atasan_hp').val(res.mpks_atasan_hp);
                     $('#mpks_atasan_email').val(res.mpks_atasan_email);
+                    $('#mpks_ket').val(res.pks_ket);
                 });
             });
 
@@ -274,35 +290,35 @@
                  });
              });
 
-            // $('#frxx').submit(function(e) {
-            $('#btn_simpan').click(function(e) {
+            $('#frxx').submit(function(e) {
+            // $('#btn_simpan').click(function(e) {
                 e.preventDefault();
-                var dataFrx = $('#frxx').serialize();
-                // var formData = new FormData(this);   //jika ada input file atau dokumen
+                // var dataFrx = $('#frxx').serialize();
+                var formData = new FormData(this);   //jika ada input file atau dokumen
                 bsimpan('btn_simpan', 'Please wait..');
 
                 $.ajax({
                     url: "{{ route('legal.pks.lihat.store') }}",
                     type: "POST",
-                    data: dataFrx,
-                    // cache: false,   //jika ada input file atau dokumen
-                    // contentType: false,   //jika ada input file atau dokumen
-                    // processData: false,   //jika ada input file atau dokumen
-                    dataType: 'json',
+                    data: formData,
+                    cache: false,   //jika ada input file atau dokumen
+                    contentType: false,   //jika ada input file atau dokumen
+                    processData: false,   //jika ada input file atau dokumen
+                    // dataType: 'json',
                     success: function(res) {
                         // window.location.reload();
                         if ($.isEmptyObject(res.error)) {
                             console.log(res);
-                           // Swal.fire(
-                             //   'Berhasil!',
-                              //  res.success,
-                              //  'success'
-                          //  ).then((res) => {
-                                //   reset();
-                                 //   $('#frxx').trigger("reset");
-                                 //   $('#modalPks').modal('hide');
-                                 //  bsimpan('btn_simpan', 'Simpan');
-                           // });
+                           Swal.fire(
+                               'Berhasil!',
+                               res.success,
+                               'success'
+                           ).then((res) => {
+                                  reset();
+                                   $('#frxx').trigger("reset");
+                                   $('#modalPks').modal('hide');
+                                  bsimpan('btn_simpan', 'Simpan');
+                           });
                         } else {
                             bsimpan('btn_simpan', 'Simpan');
                             Swal.fire({

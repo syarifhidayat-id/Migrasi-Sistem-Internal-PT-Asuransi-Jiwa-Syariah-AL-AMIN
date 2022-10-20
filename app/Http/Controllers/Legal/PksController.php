@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Legal\Pks;
 use App\Http\Controllers\Library\KodeController;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -31,12 +32,12 @@ class PksController extends Controller
         ->orderBy('rekanan.mrkn_kode')
         ->get();
 
-        $polis = DB::table('emst.mst_rekanan')
-        ->select('mrkn_nama','mrkn_mrkn_kode_induk', 'mrkn_kode')
-        ->orderBy('mrkn_kode')
-        ->get();
+        // $polis = DB::table('emst.mst_rekanan')
+        // ->select('mrkn_nama','mrkn_mrkn_kode_induk', 'mrkn_kode')
+        // ->orderBy('mrkn_kode')
+        // ->get();
         // return View('pages.legal.pks.index', ['data' => $data]);
-        return View('pages.legal.pks.index', compact('polis', 'data'));
+        return View('pages.legal.pks.index', compact('data'));
     }
 
     /**
@@ -57,14 +58,43 @@ class PksController extends Controller
      */
     public function store(Request $request)
     {
-
-
         // return $request;
         if ($request->mpks_pk == "") {
 
-            return response()->json([
-                    'success' => 'tambah data'
-                ]);
+            $kode = KodeController::__getKey(14);
+            $data = $request->all();
+
+            if ($request->hasFile('pks_dokumen')) {
+                $pks_dokumen = $request->file('pks_dokumen');
+                $dir = 'public/legal/pks';
+                $fileOri = $pks_dokumen->getClientOriginalName();
+                $nameBukti = $kode . '_pks_' . $fileOri;
+                $path = Storage::putFileAs($dir, $pks_dokumen, $nameBukti);
+                $data['mpks_dokumen'] = $nameBukti;
+            }
+
+            $data['mpks_pk'] = $kode;
+            $data['mpks_nomor'] = $request->pks_nomor;
+            $data['mpks_instansi'] = $request->pks_instansi;
+            $data['mpks_tentang'] = $request->pks_tentang;
+            $data['mpks_tgl_mulai'] = $request->pks_tgl_mulai;
+            $data['mpks_tgl_akhir'] = $request->pks_tgl_akhir;
+            $data['mpks_mrkn_kode'] = $request->dd_polis;
+            $data['mpks_pic_hp'] = $request->pks_pic_hp;
+            $data['mpks_pic_email'] = $request->pks_pic_email;
+            $data['mpks_atasan_hp'] = $request->pks_atasan_hp;
+            $data['mpks_atasan_email'] = $request->pks_atasan_email;
+            $data['mpks_ket'] = $request->pks_ket;
+            $data['mpks_ins_user'] = $request->user()->email;
+            $data['mpks_ins_date'] = date('Y-m-d H:i:s');
+            $data['mpks_nomor_ori'] = 0;
+            $data['mpks_endos'] = 0;
+            $data['mpks_endos_idx'] = 0;
+            $data['mpks_indexfolder'] = 0;
+            $data['mpks_hapus'] = 0;
+
+            // return dd($data);
+
         //     // $kode = KodeController::__getKey(14);
         //     // $mpks_uns_user = $request->user()->email;
 
@@ -94,13 +124,13 @@ class PksController extends Controller
 
         //     // // return $request;
 
-        //     //     Pks::create($request->all());
+                Pks::create($data);
         //     // // DB::table('eopr.mst_pks')->insert($request->all());
 
 
-        //     // return response()->json([
-        //     //     'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
-        //     // ]);
+            return response()->json([
+                'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
+            ]);
 
         } else {
             $menu = Pks::findOrFail($request->mpks_pk);

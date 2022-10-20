@@ -38,7 +38,8 @@ class Pks extends Model
             'mpks_indexfolder',
             'mpks_hapus',
             'mpks_ins_user',
-            'mpks_ins_date'
+            'mpks_ins_date',
+            'mpks_dokumen'
         ],
         $keyType = 'string';
 

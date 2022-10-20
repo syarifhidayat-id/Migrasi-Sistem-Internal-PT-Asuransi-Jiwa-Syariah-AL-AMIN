@@ -19,24 +19,14 @@
                         data-kt-scroll-dependencies="#modalMenu_header" data-kt-scroll-wrappers="#modalMenu_scroll"
                         data-kt-scroll-offset="300px">
                         <div class="row mb-5">
-                            <div class="col-md-6">
-                                <div class="mb-5">
-                                    <label class="required form-label">Nomor PK</label>
-                                    <input class="form-control" name="mpks_pk" id="mpks_pk" type="text"
-                                        data-allow-clear="false" placeholder="Masukan instansi" readonly/>
-                                </div>
 
-                            </div>
+                            <input class="form-control" name="mpks_pk" id="mpks_pk" type="hidden"
+                                data-allow-clear="false" placeholder="Masukan instansi" readonly />
                             <div class="col-md-6 mb-5">
                                 <label class="form-label">Pemegang Polis</label>
-                                <select class="form-select" data-dropdown-parent="#modalPks"
-                                id="dd_polis" name="dd_polis">
-                                <option></option>
-
-                                @foreach ($polis as $key => $pks)
-                                <option value="{{$pks->mrkn_kode}}">{{$pks->mrkn_nama}}</option>
-                                @endforeach
-
+                                <select class="form-select" data-dropdown-parent="#modalPks" id="dd_polis"
+                                    name="dd_polis" data-placeholder="Pilih pemegang polis" data-allow-clear="true">
+                                    <option></option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -46,7 +36,7 @@
                                         data-allow-clear="true" placeholder="Masukan instansi" required />
                                 </div>
                             </div>
-                            {{--  <div class="col-md-6 mb-5">
+                            <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Nomor PKS</label>
                                     <input class="form-control" name="pks_nomor" id="pks_nomor" type="text"
@@ -119,10 +109,10 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Upload Dokumen</label>
-                                    <input type="file" class="form-control" name="pks_dokumen"
+                                    <input type="file" class="form-control" name="pks_dokumen" placeholder="pilih file"
                                         id="pks_dokumen" />
                                 </div>
-                            </div>  --}}
+                            </div>
                         </div>
                     </div>
 
