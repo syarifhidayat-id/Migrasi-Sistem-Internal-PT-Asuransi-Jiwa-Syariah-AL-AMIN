@@ -10,6 +10,8 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
 
         Route::group(['prefix' => '/entry-soc', 'as' => 'entry-soc.'], function() {
             Route::get('/select-pmgpolis', [EntrySocController::class, 'selectPmgPolis']);
+            Route::get('/select-jnsnasabah', [EntrySocController::class, 'selectJnsNasabah']);
+            Route::get('/select-segmen/{kode}', [EntrySocController::class, 'selectSegmen']);
         });
 
         // Route::resource('/lihat-soc-data', [LihatSocController::class]);

@@ -74,39 +74,40 @@ class MenuController extends Controller
             return response()->json([
                 'error' => $validasi->errors()
             ]);
-        }
+        } else {
 
-        if ($request->wmn_kode == "") {
-            $kode = KodeController::__getKey(14);
+            if (empty($request->wmn_kode)) {
+                $kode = KodeController::__getKey(14);
 
-            if ($request->wmn_url == "") {
+                if (empty($request->wmn_url)) {
+                    $request->merge([
+                        'wmn_url_n' => 'maintenance',
+                    ]);
+                }
+
                 $request->merge([
-                    'wmn_url_n' => 'maintenance',
+                    'wmn_kode' => $kode,
+                    'wmn_slide' => 0,
+                    'wmn_timer' => 0,
+                    'wmn_open_w' => 0,
+                    'wmn_url_o_aktif_n' => 0,
+                    'wmn_bot' => 0,
+                ]);
+
+                Menu::create($request->all());
+
+                return response()->json([
+                    'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
+                ]);
+
+            } else {
+                $menu = Menu::findOrFail($request->wmn_kode);
+                $menu->update($request->all());
+
+                return response()->json([
+                    'success' => 'Data berhasil diupdate dengan Kode '.$request->wmn_kode.'!'
                 ]);
             }
-
-            $request->merge([
-                'wmn_kode' => $kode,
-                'wmn_slide' => 0,
-                'wmn_timer' => 0,
-                'wmn_open_w' => 0,
-                'wmn_url_o_aktif_n' => 0,
-                'wmn_bot' => 0,
-            ]);
-
-            Menu::create($request->all());
-
-            return response()->json([
-                'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
-            ]);
-
-        } else {
-            $menu = Menu::findOrFail($request->wmn_kode);
-            $menu->update($request->all());
-
-            return response()->json([
-                'success' => 'Data berhasil diupdate dengan Kode '.$request->wmn_kode.'!'
-            ]);
         }
     }
 
@@ -206,18 +207,13 @@ class MenuController extends Controller
     public function datamenu(Request $request)
     {
         if ($request->ajax()) {
-            // $data = Menu::all();
             $data = DB::table('web_menu')->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"));
-            // $data = DB::select('select * from web_menu');
 
             // $data = DB::table('web_menu');
             return Datatables::of($data)
             // return Datatables::of($data)
                 ->addIndexColumn()
                 ->filter (function ($instance) use ($request) {
-                    // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
-                    //     return $instance->where('wmn_tipe', $request->wmn_tipe);
-                    // }
                     if (!empty($request->get('wmn_tipe'))) {
                         $instance->where('wmn_tipe', $request->get('wmn_tipe'));
                     }

@@ -30,7 +30,7 @@
                 <span class="svg-icon svg-icon-1 position-absolute ms-6">
                     <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
                 </span>
-                <input type="text" data-kt-datatable-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Cari user" />
+                <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid w-250px ps-14" placeholder="Cari user" />
             </div>
         </div>
 
@@ -74,8 +74,7 @@
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="reset" class="btn btn-light btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset">Reset</button>
-                            <button type="submit" class="btn btn-primary fw-bold px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter">Apply</button>
+                            <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset">Reset</button>
                         </div>
                     </div>
                 </div>
@@ -179,9 +178,15 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
+            filterOp('input[type="search"]'); //khusus type search inputan
+
             serverSide(
-                "#serverSide",
                 "{{ url('api/utility/daftar-user/lihat-user') }}",
+                function(d) {    // di isi sesuai dengan data yang akan di filter ->
+                    // d.wmn_tipe = $('#tipe_menu').val(),
+                    // d.wmn_descp = $('#key').val(),
+                    d.search = $('input[type="search"]').val()
+                },
                 [
                     { data: "DT_RowIndex", className: "text-center" },
                     { data: "name" },

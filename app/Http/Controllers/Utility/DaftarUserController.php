@@ -70,7 +70,7 @@ class DaftarUserController extends Controller
                 'error' => $validasi->errors()
             ]);
         } else {
-            if ($request->id == "" && $request->id == NULL) {
+            if (empty($request->id)) {
                 $kode = KodeController::__getKey(4);
                 $data = $request->all();
                 if ($request->hasFile('img_bukti')) {
@@ -213,9 +213,25 @@ class DaftarUserController extends Controller
     public function datauser(Request $request)
     {
         if ($request->ajax()) {
-            $data = DaftarUser::all();
+            // $data = DaftarUser::all();
+            $data = DB::table('user_accounts')->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"));
             return Datatables::of($data)
                 ->addIndexColumn()
+                ->filter (function ($instance) use ($request) {
+                    // if (!empty($request->get('wmn_tipe'))) {
+                    //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
+                    // }
+                    // if (!empty($request->get('wmn_descp'))) {
+                    //     $instance->where('wmn_descp', $request->get('wmn_descp'));
+                    // }
+                    if (!empty($request->get('search'))) {
+                        $instance->where(function($w) use($request){
+                           $search = $request->get('search');
+                           $w->orWhere('name', 'LIKE', "%$search%")
+                           ->orWhere('email', 'LIKE', "%$search%");
+                        });
+                    }
+                })
                 ->make(true);
         }
     }
