@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables;
 
 class DaftarUserController extends Controller
 {
