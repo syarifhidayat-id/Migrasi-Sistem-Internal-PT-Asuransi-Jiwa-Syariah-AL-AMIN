@@ -1,7 +1,7 @@
 @extends('layouts.main-admin')
 
 @section('title')
-    Lihat PKS
+    Lihat Draft PKS
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
 
         <div class="card-header">
             <div class="card-title">
-                <h3>Daftar PKS</h3>
+                <h3>Daftar Draft PKS</h3>
             </div>
         </div>
 
@@ -19,8 +19,8 @@
                     <span class="svg-icon svg-icon-1 position-absolute ms-6">
                         <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" data-kt-datatable-table-filter="search"
-                        class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
+                    <input type="search" data-kt-datatable-table-filter="search" id="search"
+                        class="form-control form-control-solid w-250px ps-14" placeholder="Cari draft pks" />
                 </div>
             </div>
 
@@ -110,74 +110,20 @@
 
         <div class="card-body py-10">
             <div class="table-responsive">
-                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="kt_table_datatable">
+                {{-- <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="kt_table_datatable"> --}}
+                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                             <th>No.</th>
-                            <th>No. PKS</th>
-                            <th class="min-w-250px">Pemegang Polis</th>
-                            <th>Instansi</th>
-                            <th>Perihal</th>
-                            <th>Tanggal Mulai</th>
-                            <th>Tanggal Berakhir</th>
-                            <th>PIC</th>
-                            <th class="min-w-125px">Status PKS</th>
+                            <th>Nomor</th>
+                            <th class="min-w-250px">Tentang</th>
+                            <th>User Input</th>
+                            <th>Tanggal Input</th>
+                            <th>Dokumen</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($data as $key => $pks)
-                            <tr>
-                                <td class="text-center">
-                                    {{ ++$key }}
-                                </td>
-                                <td class="text-center">
-                                    <a href="#" id="bmoDetail" data-resouce="{{ $pks->mpks_pk }}"
-                                        class="btn btn-light-success"> {{ $pks->mpks_nomor }}</a>
-                                </td>
-                                <td class="text-center">
-                                    {{ $pks->mrkn_nama_induk }}
-                                </td>
-                                <td class="text-center">
-                                    {{ $pks->mpks_instansi }}
-                                </td>
-                                <td class="text-center">
-                                    {{ $pks->mpks_tentang }}
-                                </td>
-                                <td class="text-center">
-                                    {{ $pks->awal_date }}
-                                </td>
-                                <td class="text-center">
-                                    {{ $pks->akhir_date }}
-                                </td>
-                                <td class="text-center">
-                                    {{ $pks->mpks_pic }}
-                                </td>
-                                <td class="text-center">
-                                    Edit
-                                </td>
-                                <td class="text-end">
-                                    <a href="#" class="btn btn-light btn-active-light-primary btn-sm"
-                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                        <span class="svg-icon svg-icon-5 m-0">
-                                            <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                        </span>
-                                    </a>
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
-                                        data-kt-menu="true">
-                                        <div class="menu-item px-3">
-                                            <a href="#" id="omodEdit" class="menu-link px-3"
-                                                data-resouce="{{ $pks->mpks_pk }}">Edit</a>
-                                        </div>
-                                        <div class="menu-item px-3">
-                                            <a href="#" id="omodDelete" class="menu-link px-3"
-                                                data-resouce="{{ $pks->mpks_pk }}">Delete</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+                    {{-- <tbody></tbody> --}}
                 </table>
             </div>
         </div>
@@ -186,13 +132,96 @@
 
 @section('script')
     <script type="text/javascript">
-
         $(function() {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            filterOp('input[type="search"]'); //khusus type search inputan
+
+            serverSide( //datatable serverside
+                "{{ url('api/legal/pks/draft_pks') }}", //url api/route
+                function(d) {    // di isi sesuai dengan data yang akan di filter ->
+                    d.wmn_tipe = $('#tipe_menu').val(),
+                    d.wmn_descp = $('#key').val(),
+                    d.search = $('input[type="search"]').val()
+                },
+                [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
+                    { data: "DT_RowIndex", className: "text-center" },
+                    { data: 'mdp_pk' },
+                    { data: 'mdp_tentang'},
+                    { data: 'mdp_ins_user'},
+                    { data: 'mdp_ins_date'},
+                    { data: 'mdp_dokumen' },
+                    {
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return `
+                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
+                                    <span class="svg-icon svg-icon-5 m-0">
+                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                                    </span>
+                                </a>
+                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
+                                    <div class="menu-item px-3">
+                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Edit</a>
+                                    </div>
+                                    <div class="menu-item px-3">
+                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Delete</a>
+                                    </div>
+                                </div>
+                            `;
+                        },
+                    },
+                ],
+            );
+
+            // $('#kt_datatable_example_1').DataTable({
+            //     processing: true,
+            //     serverSide: true,
+            //     ajax: '{!! route('legal.pks.draft_pks') !!}', // memanggil route yang menampilkan data json
+            //     columns: [{
+            //             render: function(data, type, row, meta) {
+            //                 return meta.row + meta.settings._iDisplayStart + 1;
+            //             }
+            //         },
+            //         { // mengambil & menampilkan kolom sesuai tabel database
+            //             data: 'mdp_pk',
+            //             name: 'mdp_pk'
+            //         },
+            //         {
+            //             data: 'mdp_tentang',
+            //             name: 'mdp_tentang'
+            //         },
+            //         {
+            //             data: 'mdp_ins_user',
+            //             name: 'mdp_ins_user'
+            //         },
+            //         {
+            //             data: 'mdp_ins_date',
+            //             name: 'mdp_ins_date'
+            //         },
+            //         {
+            //             data: 'mdp_dokumen',
+            //             name: 'mdp_dokumen'
+            //         }
+            //     ],
+
+            //     columnDefs: [{
+            //         // targets: -1,
+            //         data: null,
+            //         sorting: false,
+            //         render: function(data, type, row, meta) {
+            //             return ' <a href="#" class="btn btn-light btn-active-light-primary btn-sm"data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi<span class="svg-icon svg-icon-5 m-0"><i class="fa-sharp fa-solid fa-chevron-down"></i></span></a><div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"data-kt-menu="true"><div class="menu-item px-3"><a href="#" id="omodEdit" class="menu-link px-3" data-resouce="+data.mdp_pk+">Edit</a></div></div>';
+            //         }
+            //     }]
+            // });
+
+
 
             selectServerSide( //select server side with api/route
                 'dd_polis', //kode select
@@ -252,8 +281,9 @@
                 $.get(url, function(res) {
                     $('#modalPks').modal('show');
                     $('#mpks_pk').val(kode);
+                    $('#dd_polis').val(res.mpks_mrkn_kode)
                     $('#pks_instansi').val(res.mpks_instansi);
-                    $('#dd_polis').val(res.mpks_mrkn_kode);
+                    // $('#pks_mrkn_kode').val(res.mrkn_nama_induk);
                     $('#pks_nomor').val(res.mpks_nomor);
                     $('#pks_tentang').val(res.mpks_tentang);
                     $('#pks_tgl_mulai').val(res.awal_date);
@@ -286,16 +316,16 @@
                         // window.location.reload();
                         if ($.isEmptyObject(res.error)) {
                             console.log(res);
-                            Swal.fire(
-                                'Berhasil!',
-                                res.success,
-                                'success'
-                            ).then((res) => {
-                                reset();
-                                $('#frxx').trigger("reset");
-                                $('#modalPks').modal('hide');
-                                bsimpan('btn_simpan', 'Simpan');
-                            });
+                            // Swal.fire(
+                            //     'Berhasil!',
+                            //     res.success,
+                            //     'success'
+                            // ).then((res) => {
+                            //     reset();
+                            //     $('#frxx').trigger("reset");
+                            //     $('#modalPks').modal('hide');
+                            //     bsimpan('btn_simpan', 'Simpan');
+                            // });
                         } else {
                             bsimpan('btn_simpan', 'Simpan');
                             Swal.fire({
@@ -305,6 +335,7 @@
                             });
                             messages(res.error);
                         }
+
                     },
                     error: function(err) {
                         console.log('Error:', err);
@@ -351,6 +382,8 @@
                 })
             });
 
+
+
             function x() {
                 $(document).ready(function() {
                     $("button").click(function() {
@@ -358,6 +391,7 @@
                     });
                 });
             }
+
             $('#btn_reset').click(function() {
                 x();
             });

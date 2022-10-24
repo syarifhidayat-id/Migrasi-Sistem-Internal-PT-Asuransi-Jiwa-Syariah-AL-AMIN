@@ -17,18 +17,7 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
     Route::group(['prefix' => '/pks', 'as' => 'pks.'], function() {
 
         Route::get('polis', [ApiController::class, 'polis'])->name('polis');
-        // Route::get('/polis', function(){
-        //     $data = DB::table('emst.mst_rekanan')
-        //     ->select('mrkn_nama')
-        //     ->orderBy('mrkn_kode')
-        //     ->get();
-
-        //     // return response()->json([
-        //     //     'data' => $data]);
-
-        //     return response()->json($data);
-
-        // });
+        Route::get('draft_pks', [ApiController::class, 'draftPks'])->name('draft_pks');
 
         Route::prefix('/lihat')->name('lihat.')->controller(PksController::class)->group(function() {
             Route::get('/pks/{pk}', 'viewPks');

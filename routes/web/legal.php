@@ -5,6 +5,7 @@ use App\Http\Controllers\Legal\uuAsuransiController;
 use App\Http\Controllers\Legal\PojkSeojkController;
 use App\Http\Controllers\Legal\LegalOjkController;
 use App\Http\Controllers\Legal\PksController;
+use App\Http\Controllers\Legal\DraftController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,7 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
             Route::get('/pks/{pk}', 'viewPks');
         });
         // Route::get('lihat/pks/{pk}', [PksController::class, 'viewPks'])->name('lihat.pks');
+        Route::resource('draft', DraftController::class);
     });
     // Route::resource('ojk', LegalOjkController::class);
     // Route::resource('peraturan', PeraturanPerusahaanController::class);
