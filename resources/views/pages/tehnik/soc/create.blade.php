@@ -584,6 +584,9 @@
                         })
                     };
                 },
+                function(res) {
+                    setText('msoc_mrkn_kode', res.params.data.id);
+                },
             );
             selectServerSideReq(
                 'e_nasabah',
@@ -591,13 +594,15 @@
                 function(data) {
                     return {
                         results: $.map(data, function(d) {
-                            $('#msoc_mjns_kode').val(d.mjns_keterangan);
                             return {
                                 text: d.mjns_keterangan,
                                 id: d.mjns_kode
                             }
                         })
                     };
+                },
+                function(res) {
+                    setText('msoc_mjns_kode', res.params.data.id);
                 },
             );
             changeSelect(
@@ -614,29 +619,33 @@
                         })
                     };
                 },
+                function(res) {
+                    setText('msoc_mssp_kode', res.params.data.id);
+                    setText('msoc_mssp_nama', res.params.data.text);
+                },
             );
 
             $('body').on('click', '#btn_baru', function() {
                 $('#title_action').text('Buat SOC Baru');
-                resetForm();
+                clearForm('frxx');
                 bsimpan('btn_simpan', 'Simpan');
             });
 
             $('body').on('click', '#btn_endors', function() {
                 $('#title_action').text('SOC Diendos');
-                resetForm();
+                clearForm('frxx');
                 bsimpan('btn_simpan', 'Simpan');
             });
 
             $('body').on('click', '#btn_edit', function() {
                 $('#title_action').text('SOC Edit');
-                resetForm();
+                clearForm('frxx');
                 bsimpan('btn_simpan', 'Simpan');
             });
 
             $('body').on('click', '#btn_Batal', function() {
                 $('#title_action').text('SOC Dibatalkan');
-                resetForm();
+                clearForm('frxx');
                 bsimpan('btn_simpan', 'Simpan');
             });
 
@@ -720,7 +729,7 @@
             });
 
             $('#btn_reset').click(function() {
-                resetForm();
+                clearForm('frxx');
             });
 
             $('#btn_close').click(function() {
@@ -746,10 +755,6 @@
             if (tipe==2) {
                 setText("msoc_mrkn_nama","");
             }
-        }
-
-        function resetForm() {
-            $('#frxx').trigger('reset');
         }
     </script>
 @endsection
