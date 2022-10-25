@@ -44,108 +44,70 @@ class DraftController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->mpks_pk == "") {
-
+        if ($request->mdp_pk == "") {
             $kode = KodeController::__getKey(14);
             $data = $request->all();
+            $data = request()->except(['_token']);
 
-            if ($request->hasFile('pks_dokumen')) {
-                $pks_dokumen = $request->file('pks_dokumen');
-                $dir = 'public/legal/pks';
-                $fileOri = $pks_dokumen->getClientOriginalName();
-                $nameBukti = $kode . '_pks_' . $fileOri;
-                $path = Storage::putFileAs($dir, $pks_dokumen, $nameBukti);
-                $data['mpks_dokumen'] = $nameBukti;
+            if ($request->hasFile('mdp_dokumen')) {
+                $mdp_dokumen = $request->file('mdp_dokumen');
+                $dir = 'public/legal/pks/draftpks';
+                $fileOri = $mdp_dokumen->getClientOriginalName();
+                $nameBukti = $kode . '_draftpks_' . $fileOri;
+                $path = Storage::putFileAs($dir, $mdp_dokumen, $nameBukti);
+                $data['mdp_dokumen'] = $nameBukti;
             }
 
-            $data['mpks_pk'] = $kode;
-            $data['mpks_nomor'] = $request->pks_nomor;
-            $data['mpks_instansi'] = $request->pks_instansi;
-            $data['mpks_tentang'] = $request->pks_tentang;
-            $data['mpks_tgl_mulai'] = $request->pks_tgl_mulai;
-            $data['mpks_tgl_akhir'] = $request->pks_tgl_akhir;
-            $data['mpks_mrkn_kode'] = $request->dd_polis;
-            $data['mpks_pic_hp'] = $request->pks_pic_hp;
-            $data['mpks_pic_email'] = $request->pks_pic_email;
-            $data['mpks_atasan_hp'] = $request->pks_atasan_hp;
-            $data['mpks_atasan_email'] = $request->pks_atasan_email;
-            $data['mpks_ket'] = $request->pks_ket;
-            $data['mpks_ins_user'] = $request->user()->email;
-            $data['mpks_ins_date'] = date('Y-m-d H:i:s');
-            $data['mpks_nomor_ori'] = 0;
-            $data['mpks_endos'] = 0;
-            $data['mpks_endos_idx'] = 0;
-            $data['mpks_indexfolder'] = 0;
-            $data['mpks_hapus'] = 0;
+            $data['mdp_pk'] = $kode;
+            $data['mdp_ins_user'] = $request->user()->email;
+            $data['mdp_ins_date'] = date('Y-m-d H:i:s');
+            $data['mdp_indexfolder'] = 0;
+            $insert = DB::table('emst.mst_draft_pks')->insert($data);
 
-            //     // $kode = KodeController::__getKey(14);
-            //     // $mpks_uns_user = $request->user()->email;
-
-            //     // $request->merge([
-            //     //     'mpks_pk' => $kode,
-            //     //     'mpks_nomor' => $request->pks_nomor,
-            //     //     'mpks_instansi' => $request->pks_instansi,
-            //     //     'mpks_tentang' => $request->pks_tentang,
-            //     //     'mpks_tgl_mulai' => $request->pks_tgl_mulai,
-            //     //     'mpks_tgl_akhir' => $request->pks_tgl_akhir,
-            //     //     'mpks_mrkn_kode' => $request->dd_polis,
-            //     //     'mpks_pic' => $request->pks_pic,
-            //     //     'mpks_pic_hp' => $request->pks_pic_hp,
-            //     //     'mpks_pic_email' => $request->pks_pic_email,
-            //     //     'mpks_atasan_hp' => $request->pks_atasan_hp,
-            //     //     'mpks_atasan_email' => $request->pks_atasan_email,
-            //     //     'mpks_ket' => $request->pks_ket,
-            //     //     'mpks_nomor_ori' => '0',
-            //     //     'mpks_endos' => 0,
-            //     //     'mpks_endos_idx' => 0,
-            //     //     'mpks_indexfolder' => 0,
-            //     //     'mpks_hapus' => '0',
-            //     //     'mpks_ins_user' => $request->user()->email,
-            //     //     'mpks_ins_date' => date('Y-m-d H:i:s'),
-            //     //     // 'mpks_upd_date' => date('Y-m-d H:i:s'),
-            //     // ]);
-
-            //     // // return $request;
-
-            // DB::table('eopr.mst_pks')->insert($request->all());
-
-
-            Pks::create($data);
-            return response()->json([
-                'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
-            ]);
+            if ($insert) {
+                return response()->json([
+                    'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 'Data gagal disimpan !'
+                ]);
+            }
         } else {
-            $menu = Pks::findOrFail($request->mpks_pk);
-            $request->merge([
-                'mpks_nomor' => $request->pks_nomor,
-                'mpks_instansi' => $request->pks_instansi,
-                'mpks_tentang' => $request->pks_tentang,
-                'mpks_tgl_mulai' => $request->pks_tgl_mulai,
-                'mpks_tgl_akhir' => $request->pks_tgl_akhir,
-                'mpks_mrkn_kode' => $request->dd_polis,
-                'mpks_pic' => $request->pks_pic,
-                'mpks_pic_hp' => $request->pks_pic_hp,
-                'mpks_pic_email' => $request->pks_pic_email,
-                'mpks_atasan_hp' => $request->pks_atasan_hp,
-                'mpks_atasan_email' => $request->pks_atasan_email,
-                'mpks_ket' => $request->pks_ket,
-                'mpks_nomor_ori' => '0',
-                'mpks_endos' => 0,
-                'mpks_endos_idx' => 0,
-                'mpks_indexfolder' => 0,
-                'mpks_hapus' => '0',
-                'mpks_ins_user' => $request->user()->email,
-                'mpks_upd_date' => date('Y-m-d H:i:s'),
-            ]);
+            $data = $request->all();
+            $draft = DB::table('emst.mst_draft_pks')
+                ->where('mdp_pk', '=', $request->mdp_pk)
+                ->first();
 
-            $menu->update($request->all());
+            $data = request()->except(['_token']);
+            $oldFile = 'public/legal/pks/draftpks/' . $draft->mdp_dokumen;
 
+            if ($request->hasFile('mdp_dokumen')) {
+                $mdp_dokumen = $request->file('mdp_dokumen');
+                $dir = 'public/legal/pks/draftpks';
+                $fileOri = $mdp_dokumen->getClientOriginalName();
+                $nameBukti = $request->mdp_pk . '_draftpks_' . $fileOri;
+                Storage::delete($oldFile);
+                $path = Storage::putFileAs($dir, $mdp_dokumen, $nameBukti);
+                $data['mdp_dokumen'] = $nameBukti;
+            }
 
+            $data['mdp_upd_user'] = $request->user()->email;
+            $data['mdp_upd_date'] = date('Y-m-d H:i:s');
 
+            $update = DB::table('emst.mst_draft_pks')
+                ->where('mdp_pk', '=', $request->mdp_pk)
+                ->update($data);
 
-            return response()->json([
-                'success' => 'Data berhasil diupdate dengan Kode ' . $request->mpks_pk . '!'
-            ]);
+            if ($update) {
+                return response()->json([
+                    'success' => 'Data berhasil diupdate dengan Kode ' . $request->mdp_pk . '!'
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 'Data dengan kode ' . $request->mdp_pk . ' gagal di update !'
+                ]);
+            }
         }
     }
 
@@ -169,15 +131,8 @@ class DraftController extends Controller
 
     public function edit($id)
     {
-        $pks = DB::table('eopr.mst_pks')
-            ->where('mpks_pk', $id)
-            ->select(
-                'mst_pks.*',
-                // $pks = Pks::findOrFail($id);
-                // $menu = Menu::findOrFail($id);
-                DB::raw('DATE_FORMAT(mpks_tgl_mulai, "%d/%m/%Y") as awal_date'),
-                DB::raw('DATE_FORMAT(mpks_tgl_akhir, "%d/%m/%Y") as akhir_date')
-            )
+        $pks = DB::table('emst.mst_draft_pks')
+            ->where('mdp_pk', $id)
             ->first();
         return response()->json($pks);
     }
@@ -219,12 +174,26 @@ class DraftController extends Controller
      */
     public function destroy($id)
     {
-        $pks = Pks::findOrFail($id);
-        $pks->delete();
-        // WewenangJabatan::where('wmj_wmn_kode', $id)->delete();
+        $draft = DB::table('emst.mst_draft_pks')
+            ->where('mdp_pk', '=', $id)
+            ->first();
+        $oldFile = 'public/legal/pks/draftpks/' . $draft->mdp_dokumen;
 
-        return response()->json([
-            'success' => 'Data berhasil dihapus dengan Kode ' . $pks->mpks_pk . '!'
-        ]);
+        if ($oldFile) {
+            Storage::delete($oldFile);
+        }
+
+        $delete = DB::table('emst.mst_draft_pks')
+            ->where('mdp_pk', '=', $id)
+            ->delete();
+        if ($delete) {
+            return response()->json([
+                'success' => 'Data berhasil dihapus dengan Kode ' . $draft->mdp_pk . '!'
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'Gagal menghapus data dengan kode' . $draft->mdp_pk . '!'
+            ]);
+        }
     }
 }

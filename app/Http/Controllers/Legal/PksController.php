@@ -55,7 +55,6 @@ class PksController extends Controller
     public function store(Request $request)
     {
         if ($request->mpks_pk == "") {
-
             $kode = KodeController::__getKey(14);
             $data = $request->all();
 
@@ -96,7 +95,7 @@ class PksController extends Controller
         } else {
             $data = $request->all();
             $menu = Pks::findOrFail($request->mpks_pk);
-            $oldFile = 'public/legal/pks/'. $menu->mpks_dokumen;
+            $oldFile = 'public/legal/pks/' . $menu->mpks_dokumen;
             if ($request->hasFile('pks_dokumen')) {
                 $pks_dokumen = $request->file('pks_dokumen');
                 $dir = 'public/legal/pks';
@@ -105,7 +104,6 @@ class PksController extends Controller
                 Storage::delete($oldFile);
                 $path = Storage::putFileAs($dir, $pks_dokumen, $nameBukti);
                 $data['mpks_dokumen'] = $nameBukti;
-
             }
 
             $data['mpks_nomor'] = $request->pks_nomor;
@@ -127,18 +125,10 @@ class PksController extends Controller
             $data['mpks_upd_user'] = $request->user()->email;
             $data['mpks_upd_date'] = date('Y-m-d H:i:s');
 
-
-            // return dd($data);
-
-
             $menu->update($data);
-
             return response()->json([
                 $menu
             ]);
-            // return response()->json([
-            //     'success' => 'Data berhasil diupdate dengan Kode ' . $request->mpks_pk . '!'
-            // ]);
         }
     }
 
@@ -166,14 +156,11 @@ class PksController extends Controller
             ->where('mpks_pk', $id)
             ->select(
                 'mst_pks.*',
-                // $pks = Pks::findOrFail($id);
-                // $menu = Menu::findOrFail($id);
                 DB::raw('DATE_FORMAT(mpks_tgl_mulai, "%Y-%m-%d") as awal_date'),
                 DB::raw('DATE_FORMAT(mpks_tgl_akhir, "%Y-%m-%d") as akhir_date')
             )
             ->first();
         return response()->json($pks);
-        // return dd($pks);
     }
 
 
@@ -189,7 +176,6 @@ class PksController extends Controller
                 DB::raw('DATE_FORMAT(mpks_tgl_akhir, "%d-%m-%Y") as akhir_date')
             )
             ->first();
-        // $pks = Pks::findOrFail($id);
         return response()->json($pks);
     }
 
@@ -215,10 +201,8 @@ class PksController extends Controller
     {
         $pks = Pks::findOrFail($id);
         $pks->delete();
-        $oldFile = 'public/legal/pks/'. $pks->mpks_dokumen;
+        $oldFile = 'public/legal/pks/' . $pks->mpks_dokumen;
         Storage::delete($oldFile);
-        // WewenangJabatan::where('wmj_wmn_kode', $id)->delete();
-
         return response()->json([
             'success' => 'Data berhasil dihapus dengan Kode ' . $pks->mpks_pk . '!'
         ]);

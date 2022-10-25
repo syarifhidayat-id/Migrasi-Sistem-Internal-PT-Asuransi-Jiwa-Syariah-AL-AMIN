@@ -35,6 +35,23 @@ class ApiController extends Controller
     }
 
 
+    public function mssp_kode(Request $request){
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('emst.mst_produk_segment')
+            ->select('mssp_kode', 'mssp_nama')
+            ->where('mssp_nama','like',"%$search%")
+            ->get();
+        } else {
+            $data = DB::table('emst.mst_produk_segment')
+            ->select('mssp_kode', 'mssp_nama')
+            ->get();
+        }
+        return response()->json($data);
+    }
+
+
 
     public function draftPks(Request $request) {
         // $data = DB::table('emst.mst_draft_pks')->get();
@@ -45,7 +62,10 @@ class ApiController extends Controller
 
         // if ($request->ajax()) {
             // $data = Menu::all();
-            $data = DB::connection('emst')->table('mst_draft_pks')->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"));
+            $data = DB::table('emst.mst_draft_pks')->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            DB::raw('DATE_FORMAT(mdp_ins_date, "%d-%m-%Y") as ins_date'))
+            ->orderBy('mdp_ins_date', 'DESC')
+            ;
             // $data = DB::select('select * from web_menu');
 
             // $data = DB::table('web_menu');

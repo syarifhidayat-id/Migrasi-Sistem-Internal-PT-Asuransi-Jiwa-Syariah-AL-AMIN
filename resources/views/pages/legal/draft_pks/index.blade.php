@@ -103,8 +103,8 @@
                             class="fa-sharp fa-solid fa-plus"></i> Tambah PKS</button>
                 </div>
 
-                @include('pages.legal.pks.modal.create')
-                @include('pages.legal.pks.modal.view')
+                @include('pages.legal.draft_pks.modal.create')
+                @include('pages.legal.draft_pks.modal.view')
             </div>
         </div>
 
@@ -143,23 +143,36 @@
 
             serverSide( //datatable serverside
                 "{{ url('api/legal/pks/draft_pks') }}", //url api/route
-                function(d) {    // di isi sesuai dengan data yang akan di filter ->
+                function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.wmn_tipe = $('#tipe_menu').val(),
-                    d.wmn_descp = $('#key').val(),
-                    d.search = $('input[type="search"]').val()
+                        d.wmn_descp = $('#key').val(),
+                        d.search = $('input[type="search"]').val()
                 },
                 [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
-                    { data: "DT_RowIndex", className: "text-center" },
-                    { data: 'mdp_pk' },
-                    { data: 'mdp_tentang'},
-                    { data: 'mdp_ins_user'},
-                    { data: 'mdp_ins_date'},
-                    { data: 'mdp_dokumen' },
+                    {
+                        data: "DT_RowIndex",
+                        className: "text-center"
+                    },
+                    {
+                        data: 'mdp_pk'
+                    },
+                    {
+                        data: 'mdp_tentang'
+                    },
+                    {
+                        data: 'mdp_ins_user'
+                    },
+                    {
+                        data: 'ins_date'
+                    },
+                    {
+                        data: 'mdp_dokumen'
+                    },
                     {
                         data: null,
                         orderable: false,
                         className: 'text-center',
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             return `
                                 <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
                                     <span class="svg-icon svg-icon-5 m-0">
@@ -168,10 +181,11 @@
                                 </a>
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
                                     <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Edit</a>
+                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.mdp_pk + `">Edit</a>
                                     </div>
                                     <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Delete</a>
+                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
+                                .mdp_pk + `">Delete</a>
                                     </div>
                                 </div>
                             `;
@@ -180,58 +194,15 @@
                 ],
             );
 
-            // $('#kt_datatable_example_1').DataTable({
-            //     processing: true,
-            //     serverSide: true,
-            //     ajax: '{!! route('legal.pks.draft_pks') !!}', // memanggil route yang menampilkan data json
-            //     columns: [{
-            //             render: function(data, type, row, meta) {
-            //                 return meta.row + meta.settings._iDisplayStart + 1;
-            //             }
-            //         },
-            //         { // mengambil & menampilkan kolom sesuai tabel database
-            //             data: 'mdp_pk',
-            //             name: 'mdp_pk'
-            //         },
-            //         {
-            //             data: 'mdp_tentang',
-            //             name: 'mdp_tentang'
-            //         },
-            //         {
-            //             data: 'mdp_ins_user',
-            //             name: 'mdp_ins_user'
-            //         },
-            //         {
-            //             data: 'mdp_ins_date',
-            //             name: 'mdp_ins_date'
-            //         },
-            //         {
-            //             data: 'mdp_dokumen',
-            //             name: 'mdp_dokumen'
-            //         }
-            //     ],
-
-            //     columnDefs: [{
-            //         // targets: -1,
-            //         data: null,
-            //         sorting: false,
-            //         render: function(data, type, row, meta) {
-            //             return ' <a href="#" class="btn btn-light btn-active-light-primary btn-sm"data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi<span class="svg-icon svg-icon-5 m-0"><i class="fa-sharp fa-solid fa-chevron-down"></i></span></a><div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"data-kt-menu="true"><div class="menu-item px-3"><a href="#" id="omodEdit" class="menu-link px-3" data-resouce="+data.mdp_pk+">Edit</a></div></div>';
-            //         }
-            //     }]
-            // });
-
-
-
             selectServerSide( //select server side with api/route
-                'dd_polis', //kode select
-                '{{ url('api/legal/pks/polis') }}', //url
+                'mdp_mssp_kode', //kode select
+                '{{ url('api/legal/pks/mssp_kode') }}', //url
                 function(data) {
                     return {
                         results: $.map(data, function(d) {
                             return {
-                                text: d.mrkn_nama, // text nama
-                                id: d.mrkn_kode // kode value
+                                text: d.mssp_nama, // text nama
+                                id: d.mssp_kode // kode value
                             }
                         })
                     };
@@ -239,13 +210,9 @@
             );
 
             $('body').on('click', '#omodTam', function() {
-                $('#modalPks').modal('show');
+                $('#modalDraftPks').modal('show');
                 bsimpan('btn_simpan', 'Simpan');
-                $('#tModPks').text('Tambah PKS');
-                // $.get('http://127.0.0.1:8000/api/legal/pks/polis', function(res) {
-                //     console.log(res);
-                // })
-                // resetMod();
+                $('#judul').text('Form Upload Draft PKS');
                 bsimpan('btn_simpan', 'Simpan');
             });
 
@@ -273,59 +240,48 @@
             });
 
             $('body').on('click', '#omodEdit', function() {
-                $('#tModPks').text('Edit PKS');
+                $('#judul').text('Form Edit Draft PKS');
                 bsimpan('btn_simpan', 'Update');
                 var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/pks/lihat') }}" + "/" + kode + "/edit";
+                    url = "{{ url('legal/pks/draft') }}" + "/" + kode + "/edit";
                 // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
                 $.get(url, function(res) {
-                    $('#modalPks').modal('show');
-                    $('#mpks_pk').val(kode);
-                    $('#dd_polis').val(res.mpks_mrkn_kode)
-                    $('#pks_instansi').val(res.mpks_instansi);
-                    // $('#pks_mrkn_kode').val(res.mrkn_nama_induk);
-                    $('#pks_nomor').val(res.mpks_nomor);
-                    $('#pks_tentang').val(res.mpks_tentang);
-                    $('#pks_tgl_mulai').val(res.awal_date);
-                    $('#pks_tgl_akhir').val(res.akhir_date);
-                    $('#pks_pic').val(res.mpks_pic);
-                    $('#pks_pic_hp').val(res.mpks_pic_hp);
-                    $('#pks_pic_email').val(res.mpks_pic_email);
-                    $('#pks_atasan_hp').val(res.mpks_atasan_hp);
-                    $('#pks_atasan_email').val(res.mpks_atasan_email);
-                    $('#pks_ket').val(res.mpks_ket);
+
+                    console.log(res);
+                    $('#modalDraftPks').modal('show');
+                    $('#mdp_pk').val(kode);
+                    $('#mdp_mssp_kode').val(res.mdp_mssp_kode);
+                    $('#mdp_tentang').val(res.mdp_tentang);
+
                 });
             });
 
             $('#frxx').submit(function(e) {
-                // $('#btn_simpan').click(function(e) {
                 e.preventDefault();
-                // var dataFrx = $('#frxx').serialize();
                 var formData = new FormData(this); //jika ada input file atau dokumen
                 bsimpan('btn_simpan', 'Please wait..');
 
                 $.ajax({
-                    url: "{{ route('legal.pks.lihat.store') }}",
+                    url: "{{ route('legal.pks.draft.store') }}",
                     type: "POST",
                     data: formData,
                     cache: false, //jika ada input file atau dokumen
                     contentType: false, //jika ada input file atau dokumen
                     processData: false, //jika ada input file atau dokumen
-                    // dataType: 'json',
                     success: function(res) {
                         // window.location.reload();
                         if ($.isEmptyObject(res.error)) {
                             console.log(res);
-                            // Swal.fire(
-                            //     'Berhasil!',
-                            //     res.success,
-                            //     'success'
-                            // ).then((res) => {
-                            //     reset();
-                            //     $('#frxx').trigger("reset");
-                            //     $('#modalPks').modal('hide');
-                            //     bsimpan('btn_simpan', 'Simpan');
-                            // });
+                            Swal.fire(
+                                'Berhasil!',
+                                res.success,
+                                'success'
+                            ).then((res) => {
+                                reset();
+                                $('#frxx').trigger("reset");
+                                $('#modalDraftPks').modal('hide');
+                                bsimpan('btn_simpan', 'Simpan');
+                            });
                         } else {
                             bsimpan('btn_simpan', 'Simpan');
                             Swal.fire({
@@ -346,7 +302,7 @@
 
             $('body').on('click', '#omodDelete', function() {
                 var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/pks/lihat') }}" + "/" + kode;
+                    url = "{{ url('legal/pks/draft') }}" + "/" + kode;
 
                 console.log(kode);
                 Swal.fire({
@@ -404,11 +360,11 @@
                 x();
             });
             $('#btn_closeCreate').click(function() {
-                $('#modalPks').modal('hide');
+                $('#modalDraftPks').modal('hide');
                 x();
             });
             $('#btn_tutup').click(function() {
-                $('#modalPks').modal('hide');
+                $('#modalDraftPks').modal('hide');
                 x();
             });
 

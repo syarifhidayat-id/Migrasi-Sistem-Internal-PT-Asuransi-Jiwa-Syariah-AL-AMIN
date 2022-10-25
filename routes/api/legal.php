@@ -17,6 +17,7 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
     Route::group(['prefix' => '/pks', 'as' => 'pks.'], function() {
 
         Route::get('polis', [ApiController::class, 'polis'])->name('polis');
+        Route::get('mssp_kode', [ApiController::class, 'mssp_kode'])->name('mssp_kode');
         Route::get('draft_pks', [ApiController::class, 'draftPks'])->name('draft_pks');
 
         Route::prefix('/lihat')->name('lihat.')->controller(PksController::class)->group(function() {
