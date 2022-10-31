@@ -22,7 +22,7 @@ Route::get('/', function () {
     return view('pages.auth.login');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__ . './auth.php';
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

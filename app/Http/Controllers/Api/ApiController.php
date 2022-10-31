@@ -54,21 +54,12 @@ class ApiController extends Controller
 
 
     public function draftPks(Request $request) {
-        // $data = DB::table('emst.mst_draft_pks')->get();
-
-        // return response()->json(['data' => $data]);
-
-        // return DataTables::of(Draft_pks::query())->toJson();
-
-        // if ($request->ajax()) {
-            // $data = Menu::all();
+        
             $data = DB::table('emst.mst_draft_pks')->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"),
             DB::raw('DATE_FORMAT(mdp_ins_date, "%d-%m-%Y") as ins_date'))
             ->orderBy('mdp_ins_date', 'DESC')
             ;
-            // $data = DB::select('select * from web_menu');
-
-            // $data = DB::table('web_menu');
+           
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->filter(function ($instance) use ($request) {
@@ -92,5 +83,58 @@ class ApiController extends Controller
                 ->make(true);
         // }
     }
+
+    public function uu_asuransi(Request $request) {
+        
+        $data = DB::table('emst.mst_uu_asuransi')->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"),
+        DB::raw('DATE_FORMAT(mua_ins_date, "%d-%m-%Y") as ins_date'))
+        ->orderBy('mua_ins_date', 'DESC')
+        ;
+       
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->filter(function ($instance) use ($request) {
+                // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
+                //     return $instance->where('wmn_tipe', $request->wmn_tipe);
+                // }
+                // if (!empty($request->get('wmn_tipe'))) {
+                //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
+                // }
+                // if (!empty($request->get('wmn_descp'))) {
+                //     $instance->where('wmn_descp', $request->get('wmn_descp'));
+                // }
+                if (!empty($request->get('search'))) {
+                    $instance->where(function ($w) use ($request) {
+                        $search = $request->get('search');
+                        $w->orWhere('mua_tentang', 'LIKE', "%$search%")
+                            ->orWhere('mua_nomor', 'LIKE', "%$search%");
+                    });
+                }
+            })
+            ->make(true);
+    // }
+}
+
+
+public function viewPdf($id)
+    {
+        $data = DB::table('emst.mst_uu_asuransi')
+        ->where('mua_pk', $id)
+        ->first();
+
+        $pdf = 'public/legal/pks/draftpks/' . $data->mua_dokumen;
+
+        return response()->$pdf;
+
+    }
+
+
+public function get_uu($id){
+    $data = DB::table('emst.mst_uu_asuransi')
+    ->where('mua_pk', '=', $id)
+    ->get();
+
+    return response()->json($data);
+}
 
 }

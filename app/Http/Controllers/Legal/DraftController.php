@@ -80,6 +80,7 @@ class DraftController extends Controller
                 ->first();
 
             $data = request()->except(['_token']);
+            
             $oldFile = 'public/legal/pks/draftpks/' . $draft->mdp_dokumen;
 
             if ($request->hasFile('mdp_dokumen')) {
