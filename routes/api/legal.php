@@ -14,7 +14,7 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
     // Route::resource('/menu', MenuController::class);
     Route::get('uu_asuransi', [ApiController::class, 'uu_asuransi'])->name('uu_asuransi');
     Route::get('get_uu_asuransi', [ApiController::class, 'get_uu']);
-    // Route::get('viewPdf', [ApiController::class, 'viewPdf']);
+    Route::get('viewPdf/{file}', [ApiController::class, 'viewPdf']);
 
     Route::group(['prefix' => '/pks', 'as' => 'pks.'], function() {
 

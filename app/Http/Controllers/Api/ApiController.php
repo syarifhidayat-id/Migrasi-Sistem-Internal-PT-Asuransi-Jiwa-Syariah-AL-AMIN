@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Legal\Draft_pks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+
+
 
 class ApiController extends Controller
 {
@@ -119,13 +123,15 @@ class ApiController extends Controller
 public function viewPdf($id)
     {
         $data = DB::table('emst.mst_uu_asuransi')
-        ->where('mua_pk', $id)
-        ->first();
+        ->where('mua_pk', $id)->first();
 
-        $pdf = 'public/legal/pks/draftpks/' . $data->mua_dokumen;
+        $path = Storage::get('public/legal/uu_asuransi/' . $data->mua_dokumen);
 
-        return response()->$pdf;
+        $file = File::get($path);
 
+        $response = Response::make($file,200);
+        $response->header('Content-Type', 'application/pdf');
+        return $response;
     }
 
 

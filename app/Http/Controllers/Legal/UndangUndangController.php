@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Legal;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Controller;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Library\KodeController;
 
 class UndangUndangController extends Controller
 {
@@ -157,8 +157,30 @@ class UndangUndangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $uu = DB::table('emst.mst_uu_asuransi')
+            ->where('mua_pk', '=', $id)
+            ->first();
+        $oldFile = 'public/legal/uu_asuransi/' . $uu->mua_dokumen;
+
+        if ($oldFile) {
+            Storage::delete($oldFile);
+        }
+
+        $delete = DB::table('emst.mst_uu_asuransi')
+            ->where('mua_pk', '=', $id)
+            ->delete();
+        if ($delete) {
+            return response()->json([
+                'success' => 'Data berhasil dihapus dengan Kode ' . $uu->mua_pk . '!'
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'Gagal menghapus data dengan kode' . $uu->mua_pk . '!'
+            ]);
+        }
     }
+
+    
 
 
    

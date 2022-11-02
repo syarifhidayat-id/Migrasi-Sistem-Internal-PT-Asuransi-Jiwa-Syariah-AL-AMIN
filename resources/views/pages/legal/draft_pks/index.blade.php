@@ -277,7 +277,7 @@
                                 res.success,
                                 'success'
                             ).then((res) => {
-                                reset();
+                                lodTable();
                                 $('#frxx').trigger("reset");
                                 $('#modalDraftPks').modal('hide');
                                 bsimpan('btn_simpan', 'Simpan');
