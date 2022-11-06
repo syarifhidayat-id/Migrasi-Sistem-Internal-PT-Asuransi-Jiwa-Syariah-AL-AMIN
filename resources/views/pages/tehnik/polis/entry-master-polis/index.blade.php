@@ -1703,23 +1703,23 @@
                         console.log(res);
                         if ($.isEmptyObject(res.error)){
                             console.log(res);
-                            // Swal.fire(
-                            //     'Berhasil!',
-                            //     res.success,
-                            //     'success'
-                            // ).then((res) => {
-                            //     // $('#frxxPolis').trigger("reset");
-                            //     // $('#modalMenu').modal('hide');
-                            //     bsimpan('btn_simpan', 'Simpan');
-                            // });
+                            Swal.fire(
+                                'Berhasil!',
+                                res.success,
+                                'success'
+                            ).then((res) => {
+                                $('#frxxPolis').trigger("reset");
+                                // $('#modalMenu').modal('hide');
+                                bsimpan('btn_simpan', 'Simpan');
+                            });
                         } else {
                             bsimpan('btn_simpan', 'Simpan');
-                            // Swal.fire({
-                            //     icon: 'error',
-                            //     title: 'Oops...',
-                            //     text: 'Field harus ter isi!',
-                            // });
-                            // messages(res.error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Field harus ter isi!',
+                            });
+                            messages(res.error);
                         }
 
                     },
