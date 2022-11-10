@@ -94,8 +94,36 @@ class EntryPolisController extends Controller
      */
     public function store(Request $request)
     {
+
+        //PK MANUAL
+    //     $validasi = Validator::make($request->all(), [
+    //         // 'mpol_kode' => 'required',
+    //         // 'sdir_ket' => 'required',
+    //         // 'sdir_kode_surat' => 'required',
+    //     ]);
+
+    //      if ($validasi->fails()) {
+    //         return response()->json([
+    //             'error' => $validasi->errors()
+    //         ]);
+    //     }
+
+    //     $vTable = DB::connection('eopr')->table('mst_polis');
+    //     $data = $request->all();
+    //     $data = $request->except('_token');
+
+    //     $vTable->insert($data);
+
+    //     return response()->json([
+    //         'success' => 'Data berhasil disimpan dengan Kode '.$request->mpol_kode.'!'
+    //     ]);
+
+    // }
+
+
+        //PK OTOMATIS
         $validasi = Validator::make($request->all(), [
-            'mpol_mrkn_nama' => 'required',
+            // 'mpol_nomor' => 'required',
         ]);
 
         if ($validasi->fails()) {
@@ -105,104 +133,18 @@ class EntryPolisController extends Controller
         }
 
         if ($request->mpol_kode == "") {
-            $kode = KodeController::__getKey(14);
+            $vTable = DB::table('eopr.mst_polis');
+            $kode = KodeController::__getPK($vTable->max('mpol_kode'), 14);
             $data = $request->all();
             $data = $request->except('_token');
 
             $data['mpol_kode'] = $kode;
-            $data['mpol_mrkn_nama'] = $request->mpol_mrkn_nama;
-            // $request->merge([
-            //         'mpol_kode' => $kode,
-            //         'mpol_kode_ori'  => '0',
-            //         'mpol_endos' => '0',
-            //         'mpol_aktif' => '0',
-            //         'mpol_mekanisme' => '0',
-            //         'mpol_mekanisme2' => '0',
-            //         'mpol_endos_idx' => '0',
-            //         'mpol_file_page' => '0',
-            //         'mpol_max_up' => '0',
-            //         'mpol_openpolis' => '0',
-            //         'mpol_mgol_kode' => '0',
-            //         'mpol_mgp_kode' => '0',
-            //         'mpol_mgs_kode' => '0',
-            //         'mpol_mlu_kode' => '0',
-            //         'mpol_jns_perusahaan' => '0',
-            //         'mpol_mja_kode' => '0',
-            //         'mpol_mgpp_kode' => '0',
-            //         'mpol_usia_min' => '0',
-            //         'mpol_usia_max' => '0',
-            //         'mpol_jatuh_tempo' => '0',
-            //         'mpol_lapor_data' => '0',
-            //         'mpol_lapor_stnc' => '0',
-            //         'mpol_byr_premi' => '0',
-            //         'mpol_mujh_persen' => '0',
-            //         'mpol_mkomdisc_persen' => '0',
-            //         'mpol_referal' => '0',
-            //         'mpol_maintenance' => '0',
-            //         'mpol_pajakfee' => '0',
-            //         'mpol_handlingfee' => '0',
-            //         'mpol_pajakfee_persen' => '0',
-            //         'mpol_pajakkom_persen' => '0',
-            //         'mpol_jns_tarif' => '0',
-            //         'mpol_max_pst' => '0',
-            //         'mpol_tipe_uw'=> '0',
-            //         'mpol_kadaluarsa_klaim'=> '0',
-            //         'mpol_mmft_kode_gu'=> '0',
-            //         'mpol_mmft_kode_wp_swasta'=> '0',
-            //         'mpol_mmft_kode_wp_pns'=> '0',
-            //         'mpol_mmft_kode_phk_pensiun'=> '0',
-            //         'mpol_mmft_kode_phk_swasta'=> '0',
-            //         'mpol_mmft_kode_phk_pns'=> '0',
-            //         'mpol_mmft_kode_tlo'=> '0',
-            //         'mpol_mmft_kode_fire'=> '0',
-            //         'mpol_mmft_kode_jiwa'=> '0',
-            //         'mpol_approve'=> '0',
-            //         'mpol_ins_date'=> date('Y-m-d'),
-            //         'mpol_ins_user'=> '0',
-            //         'mpol_upd_date'=> date('Y-m-d'),
-            //         'mpol_upd_user'=> '0',
-            //         'mpol_jl'=> '0',
-            //         'mpol_jl_pst'=> '0',
-            //         'mpol_jl_pasangan'=> '0',
-            //         'mpol_aprove_fc'=> '0',
-            //         'mpol_sts_akun'=> '0',
-            //         'mpol_jenis_cetak'=> '0',
-            //         'mpol_jenis_bayar'=> '0',
-            //         'mpol_cetak_lunas'=> '0',
-            //         'mpol_online'=> '0',
-            //         'mpol_online_individual'=> '0',
-            //         'mpol_online_rekan'=> '0',
-            //         'mpol_surat_tambah'=> '0',
-            //         'mpol_va'=> '0',
-            //         'mpol_ketagihan'=> '0',
-            //         'mpol_indexfolder'=> '0',
-            //         'mpol_surplus'=> '0',
-            //         'mpol_disc_lain'=> '0',
-            //         'mpol_nomor_cetak'=> '0',
-            //         'mpol_jenis_login'=> '0',
-            //         'mpol_alias'=> '0',
-            //         'mpol_status_polis'=> '0',
-            //         'mpol_note'=> '0',
-            //         'mpol_fee_tampil'=> '0',
-            //         'mpol_ujroh_treaty'=> '0',
-            //         'mpol_trbr_date'=> date('Y-m-d'),
-            //         'mpol_sync'=> '0',
-            //         'mpol_payonline'=> '0',
-            //         'mpol_agent'=> '0',
-            //         'mpol_pemgroupusaha'=> '0',
-            //         'mpol_standar_perlindungan'=> '0',
-            //         'mpol_standar_premi'=> '0',
-            //         'mpol_host2host'=> '0',
-            //         'mpol_convert_img'=> '0',
-            //         'mpol_iscopy'=> '0',
-            //         'mpol_pilihan_cetak'=> '0',
-            //         'mpol_mjasu_kode'=> '0',
-            //         'mpol_acc_tek'=> '0',
-            // ])->except('_token');
-
-            // return $request;
-            // Polis::create($request->all());
-            $vTable = DB::table('eopr.mst_polis');
+            //NILAI JIKA CUSTOM NULL DI TABEL
+            // $data['mpol_kode'] = $request->mpol_kode.'01234';
+            //  $data['mpol_mrkn_nama'] = $request->mpol_mrkn_nama;
+            //  $data['mpol_msoc_kode'] = $request->mpol_msoc_kode;
+            //  $data['mpol_mspaj_nomor'] = $request->mpol_mspaj_nomor;
+            // $data['mpol_mrkn_nama'] = $request->mpol_mrkn_nama;
             $vTable->insert($data);
             return response()->json([
                 'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
@@ -210,15 +152,9 @@ class EntryPolisController extends Controller
             // return $data;
 
         }
-        // else {
-        //     $menu = Polis::findOrFail($request->wmn_kode);
-        //     $menu->update($request->all());
 
-        //     return response()->json([
-        //         'success' => 'Data berhasil diupdate dengan Kode '.$request->wmn_kode.'!'
-        //     ]);
-        // }
     }
+
 
     /**
      * Display the specified resource.

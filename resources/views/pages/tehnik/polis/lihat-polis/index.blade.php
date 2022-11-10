@@ -166,7 +166,7 @@
                         <a href="#" class="menu-link px-3" data-kt-export="pdf">Export as PDF</a>
                     </div>
                 </div>
-{{--
+                        {{--
                 <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-sharp fa-solid fa-plus"></i> Tambah Menu</button> --}}
             </div>
 

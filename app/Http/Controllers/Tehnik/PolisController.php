@@ -13,6 +13,7 @@ use App\Models\Tehnik\Programasuransi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class PolisController extends Controller
 {
@@ -127,49 +128,62 @@ class PolisController extends Controller
      */
     public function store(Request $request)
     {
-        // $validasi = Validator::make($request->all(), [
-        //     'email' => 'required',
-        //     'no_hp' => 'required',
-        //     'email_user' => 'required',
-        //     'email_cc' => 'required',
-        //     'name' => 'required',
-        //     'password' => 'required',
-        //     'menu_tipe' => 'required',
-        // ]);
+        $validasi = Validator::make(
+            $request->all(),
+            [
+                'mpol_mrkn_nama' => 'required',
 
-        // if ($validasi->fails()) {
-        //     return response()->json([
-        //         'error' => $validasi->errors()
-        //     ]);
-        // }
+            ],
+           [
+            'mpol_mrkn_nama.required' => 'Pemegang Polis tidak boleh kosong!',
 
-        // if ($request->id == "") {
-        //     $kode = KodeController::__getPK(User::all()->max('id'), 15);
+            ]
+        );
 
-        //     // if ($request->wmn_url == "") {
-        //     //     $request->merge([
-        //     //         'wmn_url' => 'maintenance',
-        //     //     ]);
-        //     // }
+        if ($validasi->fails()) {
+            return response()->json([
+                'error' => $validasi->errors()
+            ]);
+        }else{
+            if ($request->mpol_kode == "") {
+                $kode = KodeController::__getKey(14);
+                $data = $request->all();
+                $data = request()->except(['_token']);
 
-        //     $request->merge([
-        //         'id' => $kode,
-        //     ]);
+                // if ($request->hasFile('mpks_dokumen')) {
+                //     $mpks_dokumen = $request->file('mpks_dokumen');
+                //     $dir = 'public/legal/pks';
+                //     $fileOri = $mpks_dokumen->getClientOriginalName();
+                //     $nameBukti = $kode . '_pks_' . $fileOri;
+                //     $path = Storage::putFileAs($dir, $mpks_dokumen, $nameBukti);
+                //     $data['mpks_dokumen'] = $nameBukti;
+                // }
 
-        //     User::create($request->all());
+                $data['mpol_kode'] = $kode;
+                $data['mpol_ins_user'] = $request->user()->email;
+                $data['mpol_ins_date'] = date('Y-m-d H:i:s');
+                // $data['mpks_nomor_ori'] = 0;
+                // $data['mpks_endos'] = 0;
+                // $data['mpks_endos_idx'] = 0;
+                // $data['mpks_indexfolder'] = 0;
+                // $data['mpks_hapus'] = 0;
 
-        //     return response()->json([
-        //         'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
-        //     ]);
+                // Pks::create($data);
 
-        // } else {
-        //     $user = User::findOrFail($request->id);
-        //     $user->update($request->all());
+                $insert = DB::table('eopr.mst_polis')->insert($data);
 
-        //     return response()->json([
-        //         'success' => 'Data berhasil diupdate dengan Kode '.$request->id.'!'
-        //     ]);
-        // }
+                if ($insert) {
+                    return response()->json([
+                        'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
+                    ]);
+                } else {
+                    return response()->json([
+                        'error' => 'Data gagal disimpan !'
+                    ]);
+                }
+            }
+
+        }
     }
 
     /**
