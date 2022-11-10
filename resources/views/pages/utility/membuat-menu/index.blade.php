@@ -270,8 +270,8 @@
             );
 
             $('body').on('click', '#omodTam', function() {
-                openModal('#modalMenu');
-                $('#tModMenu').text('Tambah Menu');
+                openModal('modalMenu');
+                titleAction('tModMenu', 'Tambah Menu');
                 resetMod();
                 bsimpan('btn_simpan', 'Simpan');
                 $('#btn_reset').show();
@@ -279,7 +279,7 @@
             });
 
             $('body').on('click', '#omodEdit', function() {
-                $('#tModMenu').text('Edit Menu');
+                titleAction('tModMenu', 'Edit Menu');
                 bsimpan('btn_simpan', 'Update');
                 // resetMod();
                 // $('#wmn_key').empty();
@@ -294,7 +294,7 @@
                     menuMain();
                     var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
                     // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
-                    openModal('#modalMenu');
+                    openModal('modalMenu');
                     $('#wmn_kode').val(res.wmn_kode);
                     $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
                     $.get(key, function(data) {
@@ -312,48 +312,17 @@
                 });
             });
 
-            // $('#frxx').submit(function(e) {
-            $('#btn_simpan').click(function(e) {
-                e.preventDefault();
-                var dataFrx = $('#frxx').serialize();
-                // var formData = new FormData(this);
-                bsimpan('btn_simpan', 'Please wait..');
-
-                $.ajax({
-                    url: "{{ route('utility.menu.store') }}",
-                    type: "POST",
-                    data: dataFrx,
-                    dataType: 'json',
-                    success: function (res) {
-                        if ($.isEmptyObject(res.error)){
-                            // console.log(res);
-                            Swal.fire(
-                                'Berhasil!',
-                                res.success,
-                                'success'
-                            ).then((res) => {
-                                resetMod();
-                                bsimpan('btn_simpan', 'Simpan');
-                                lodTable();
-                                closeModal('#modalMenu');
-                            });
-                        } else {
-                            bsimpan('btn_simpan', 'Simpan');
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Field harus ter isi!',
-                            });
-                            messages(res.error);
-                        }
-
-                    },
-                    error: function (err) {
-                        console.log('Error:', err);
-                        bsimpan('btn_simpan', 'Simpan');
-                    }
-                });
-            });
+            submitForm(
+                "frxx",
+                "btn_simpan",
+                "{{ route('utility.menu.store') }}",
+                (res) => {
+                    resetMod();
+                    bsimpan('btn_simpan', 'Simpan');
+                    lodTable();
+                    closeModal('modalMenu');
+                }
+            );
 
             $('body').on('click', '#omodDelete', function() {
                 var kode = $(this).attr('data-resouce'),
@@ -396,11 +365,11 @@
             });
 
             $('#btn_close').click(function() {
-                closeModal('#modalMenu');
+                closeModal('modalMenu');
             });
 
             $('#btn_close2').click(function() {
-                closeModal('#modalMenu');
+                closeModal('modalMenu');
             });
         });
 
@@ -413,5 +382,11 @@
             $('#wmn_mrkn_kode').val(null).trigger('change');
             $('#wmn_mpol_kode').val(null).trigger('change');
         }
+
+        hidePesan('wmn_tipe');
+        hidePesan('wmn_key');
+        hidePesan('wmn_descp');
+        hidePesan('wmn_url_o_n');
+        hidePesan('wmn_urut');
     </script>
 @endsection

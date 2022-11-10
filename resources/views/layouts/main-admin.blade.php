@@ -351,6 +351,8 @@
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
     <script src="{{ asset('dist/js/jquery-plugin.min.js') }}"></script>
     <script src="{{ asset('dist/js/jquery.capitalize.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/pdf-view/pdf.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/pdf-view/pdf.worker.js') }}"></script>
     <script>
         $('.menu-title').capitalize();
     </script>

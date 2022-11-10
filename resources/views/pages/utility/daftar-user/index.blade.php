@@ -228,15 +228,16 @@
             );
 
             $('body').on('click', '#omodTam', function() {
-                $('#modalUser').modal('show');
-                $('#tModUser').text('Tambah User');
+                openModal('modalUser');
+                titleAction('tModUser', 'Tambah User');
                 resetMod();
                 bsimpan('btn_simpan', 'Simpan');
                 $('#btn_reset').show();
             });
 
             $('body').on('click', '#omodEdit', function() {
-                $('#tModMenu').text('Edit Menu');
+                openModal('modalUser');
+                titleAction('tModUser', 'Edit User');
                 bsimpan('btn_simpan', 'Update');
                 // resetMod();
                 // $('#wmn_key').empty();
@@ -250,7 +251,7 @@
                 $.get(url, function(res) {
                     var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
                     // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
-                    $('#modalUser').modal('show');
+                    openModal('modalUser');
                     $('#wmn_kode').val(res.wmn_kode);
                     $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
                     // $.get(key, function(data) {
@@ -291,7 +292,7 @@
                             ).then((res) => {
                                 $('#frxx').trigger("reset");
                                 lodTable("#serverSide");
-                                $('#modalUser').modal('hide');
+                                closeModal('modalUser');
                                 bsimpan('btn_simpan', 'Simpan');
                             });
                         } else {
