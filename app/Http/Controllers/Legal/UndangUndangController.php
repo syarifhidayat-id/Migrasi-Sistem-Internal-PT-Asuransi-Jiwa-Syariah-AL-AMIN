@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Library\KodeController;
+use Illuminate\Support\Facades\Validator;
+
 
 class UndangUndangController extends Controller
 {
@@ -39,74 +41,81 @@ class UndangUndangController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->mua_pk == "") {
-            $kode = KodeController::__getKey(14);
-            $data = $request->all();
-            $data = request()->except(['_token']);
 
-            if ($request->hasFile('mua_dokumen')) {
-                $mua_dokumen = $request->file('mua_dokumen');
-                $dir = 'public/legal/uu_asuransi';
-                $fileOri = $mua_dokumen->getClientOriginalName();
-                $nameBukti = $kode . '_uuasuransi_' . $fileOri;
-                $path = Storage::putFileAs($dir, $mua_dokumen, $nameBukti);
-                $data['mua_dokumen'] = $nameBukti;
-            }
+        $validasi = Validator::make(
+            $request->all(),
+            [
 
-            $data['mua_pk'] = $kode;
-            $data['mua_ins_user'] = $request->user()->email;
-            $data['mua_ins_date'] = date('Y-m-d H:i:s');
-            $data['mua_indexfolder'] = 0;
+                'mua_nomor' => 'required',
+                'mua_tentang' => 'required',
+                'mua_dokumen' => 'mimes:pdf',
+            ],
+            [
+                'mua_nomor.required' => 'Tidak boleh kosong!',
+                'mua_tentang.required' => 'Tidak boleh kosong!',
+                'mua_dokumen.mimes' => 'File harus format pdf!',
+            ]
+        );
 
+        if ($validasi->fails()) {
+            return response()->json([
+                'error' => $validasi->errors()
+            ]);
+        } else {
 
-            // return $data;
-            $insert = DB::table('emst.mst_uu_asuransi')->insert($data);
+            if ($request->mua_pk == "") {
+                $kode = KodeController::__getKey(14);
+                $data = $request->all();
+                $data = request()->except(['_token']);
 
-            if ($insert) {
+                if ($request->hasFile('mua_dokumen')) {
+                    $mua_dokumen = $request->file('mua_dokumen');
+                    $dir = 'public/legal/uu_asuransi';
+                    $fileOri = $mua_dokumen->getClientOriginalName();
+                    $nameBukti = $kode . '_uuasuransi_' . $fileOri;
+                    $path = Storage::putFileAs($dir, $mua_dokumen, $nameBukti);
+                    $data['mua_dokumen'] = $nameBukti;
+                }
+
+                $data['mua_pk'] = $kode;
+                $data['mua_ins_user'] = $request->user()->email;
+                $data['mua_ins_date'] = date('Y-m-d H:i:s');
+                $data['mua_indexfolder'] = 0;
+                $insert = DB::table('emst.mst_uu_asuransi')->insert($data);
                 return response()->json([
                     'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
                 ]);
             } else {
-                return response()->json([
-                    'error' => 'Data gagal disimpan !'
-                ]);
-            }
-        } else {
-            $data = $request->all();
-            $uu = DB::table('emst.mst_uu_asuransi')
-                ->where('mua_pk', '=', $request->mua_pk)
-                ->first();
+                $data = $request->all();
+                $uu = DB::table('emst.mst_uu_asuransi')
+                    ->where('mua_pk', '=', $request->mua_pk)
+                    ->first();
 
-            $data = request()->except(['_token']);
+                $data = request()->except(['_token']);
 
-            $oldFile = 'public/legal/uu_asuransi/' . $uu->mua_dokumen;
+                $oldFile = 'public/legal/uu_asuransi/' . $uu->mua_dokumen;
 
-            if ($request->hasFile('mua_dokumen')) {
-                $mua_dokumen = $request->file('mua_dokumen');
-                $dir = 'public/legal/uu_asuransi';
-                $fileOri = $mua_dokumen->getClientOriginalName();
-                $nameBukti = $request->mua_pk . '_uuasuransi_' . $fileOri;
-                Storage::delete($oldFile);
-                $path = Storage::putFileAs($dir, $mua_dokumen, $nameBukti);
-                $data['mua_dokumen'] = $nameBukti;
-            }
+                if ($request->hasFile('mua_dokumen')) {
+                    $mua_dokumen = $request->file('mua_dokumen');
+                    $dir = 'public/legal/uu_asuransi';
+                    $fileOri = $mua_dokumen->getClientOriginalName();
+                    $nameBukti = $request->mua_pk . '_uuasuransi_' . $fileOri;
+                    Storage::delete($oldFile);
+                    $path = Storage::putFileAs($dir, $mua_dokumen, $nameBukti);
+                    $data['mua_dokumen'] = $nameBukti;
+                }
 
-            $data['mua_upd_user'] = $request->user()->email;
-            $data['mua_upd_date'] = date('Y-m-d H:i:s');
+                $data['mua_upd_user'] = $request->user()->email;
+                $data['mua_upd_date'] = date('Y-m-d H:i:s');
 
-            // return $data;
+                // return $data;
 
-            $update = DB::table('emst.mst_uu_asuransi')
-                ->where('mua_pk', '=', $request->mua_pk)
-                ->update($data);
+                $update = DB::table('emst.mst_uu_asuransi')
+                    ->where('mua_pk', '=', $request->mua_pk)
+                    ->update($data);
 
-            if ($update) {
                 return response()->json([
                     'success' => 'Data berhasil diupdate dengan Kode ' . $request->mua_pk . '!'
-                ]);
-            } else {
-                return response()->json([
-                    'error' => 'Data dengan kode ' . $request->mua_pk . ' gagal di update !'
                 ]);
             }
         }
@@ -179,10 +188,4 @@ class UndangUndangController extends Controller
             ]);
         }
     }
-
-    
-
-
-   
-
 }

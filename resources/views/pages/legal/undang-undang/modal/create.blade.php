@@ -41,7 +41,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
-                                    <label class="form-label">Upload Dokumen</label>
+                                    <label class="required form-label">Upload Dokumen</label>
                                     <input type="file" class="form-control" name="mua_dokumen"
                                         placeholder="pilih file" id="mua_dokumen" />
                                     <span class="text-danger error-text mua_dokumen_err"></span>

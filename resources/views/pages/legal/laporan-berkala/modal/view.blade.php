@@ -10,14 +10,14 @@
                     </span>
                 </div>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modal-body">
                 <Object id="pdf" type="application/pdf" width="100%" height="500"></Object>
             </div>
            
                 <div class="modal-footer justify-content-center">
-                    {{-- <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button> --}}
-                    <button type="button" class="btn btn-danger btn-sm" id="btn_close4"><i
-                            class="fa-solid fa-xmark" ></i> Tutup</button>
+                    <button type="button" class="btn btn-light btn-sm" id="btn_close4">Close</button>
+                    {{-- <button type="button" class="btn btn-danger btn-sm" onclick="close_pojk()"><i
+                            class="fa-solid fa-xmark" ></i> Tutup</button> --}}
                 </div>
             {{-- </form> --}}
         </div>

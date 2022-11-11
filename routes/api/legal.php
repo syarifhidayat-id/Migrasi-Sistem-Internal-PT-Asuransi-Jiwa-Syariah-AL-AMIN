@@ -12,8 +12,19 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
 
     // Route::resource('/menu', MenuController::class);
-    Route::get('uu_asuransi', [ApiController::class, 'uu_asuransi'])->name('uu_asuransi');
+    Route::get('get_mojk_jenis', [ApiController::class, 'get_mojk_jenis'])->name('get_mojk_jenis');
+    Route::get('jns-doc/{kode}', [ApiController::class, 'getJnsDoc']);
+            Route::get('uu_asuransi', [ApiController::class, 'uu_asuransi'])->name('uu_asuransi');
     Route::get('get_uu_asuransi', [ApiController::class, 'get_uu']);
+    Route::get('pojk_seojk', [ApiController::class, 'pojk_seojk']);
+    Route::get('peraturan_perusahaan', [ApiController::class, 'Peraturan_perusahaan']);
+    Route::get('m_laporan_berkala', [ApiController::class, 'm_laporan_berkala']);
+    Route::get('laporan_berkala', [ApiController::class, 'laporan_berkala']);
+    Route::get('unit_laporan_berkala', [ApiController::class, 'unit_laporan_berkala']);
+    Route::get('ojk', [ApiController::class, 'ojk']);
+    
+    
+    
     Route::get('viewPdf/{file}', [ApiController::class, 'viewPdf']);
 
     Route::group(['prefix' => '/pks', 'as' => 'pks.'], function() {

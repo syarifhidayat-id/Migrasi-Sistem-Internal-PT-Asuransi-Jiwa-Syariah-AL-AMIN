@@ -1,7 +1,7 @@
 @extends('layouts.main-admin')
 
 @section('title')
-    Lihat Undang-undang Asuransi
+    Lihat Peraturan Perusahaan
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
 
         <div class="card-header">
             <div class="card-title">
-                <h3>Daftar Undang-undang Asuransi</h3>
+                <h3>Daftar Peraturan Perusahaan</h3>
             </div>
         </div>
 
@@ -20,7 +20,7 @@
                         <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
                     </span>
                     <input type="search" data-kt-datatable-table-filter="search" id="search"
-                        class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
+                        class="form-control form-control-solid w-250px ps-14" placeholder="Cari Peraturan Perusahaan" />
                 </div>
             </div>
 
@@ -103,8 +103,8 @@
                             class="fa-sharp fa-solid fa-plus"></i> Tambah Dokumen</button>
                 </div>
 
-                @include('pages.legal.undang-undang.modal.create')
-                @include('pages.legal.undang-undang.modal.view')
+                @include('pages.legal.peraturan.modal.create')
+                @include('pages.legal.peraturan.modal.view')
             </div>
         </div>
 
@@ -116,6 +116,9 @@
                             <th>No.</th>
                             <th>Nomor</th>
                             <th class="min-w-250px">Tentang</th>
+                            <th>Jenis</th>
+                            <th>Bulan</th>
+                            <th>Tahun</th>
                             <th>User Input</th>
                             <th>Tanggal Input</th>
                             <th>Dokumen</th>
@@ -141,7 +144,7 @@
             filterOp('input[type="search"]'); //khusus type search inputan
 
             serverSide( //datatable serverside
-                "{{ url('api/legal/uu_asuransi') }}", //url api/route
+                "{{ url('api/legal/peraturan_perusahaan') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.wmn_tipe = $('#tipe_menu').val(),
                         d.wmn_descp = $('#key').val(),
@@ -152,40 +155,49 @@
                         data: "DT_RowIndex",
                         className: "text-center"
                     },
-                    {
-                        data: 'mua_nomor'
-                        // data: null,
-                        // orderable: false,
-                        // className: 'text-center',
-                        // render: function(data, type, row) {
-                        //     return `
-                    // <a href="#" id="bmoDetail" data-resouce="`+ row.mua_pk +`"
-                    //                 class="btn btn-light-success"> `+  row.mua_nomor +`</a>`}
+                    // {
+                    //     data: null,
+                    //     orderable: false,
+                    //     className: 'text-center',
+                    //     render: function(data, type, row) {
+                    //         return `
+                    //     <button type="button" id="bmoViewPdf" data-resouce="` + row.mpojk_pk + `" data-show-pdf="` + row
+                    //             .mpojk_dokumen + `"
+                    //                     class="btn btn-light-success" target="blank"> Lihat </button>`
+                    //     }
 
+                    // },
+                    {
+                        data: 'map_nomor'
                     },
                     {
-                        data: 'mua_tentang'
+                        data: 'map_tentang'
                     },
                     {
-                        data: 'mua_ins_user'
+                        data: 'map_jenis'
                     },
                     {
-                        data: 'ins_date'
+                        data: 'map_bulan'
                     },
                     {
-                        // data: 'mua_dokumen'
-
+                        data: 'map_tahun'
+                    },
+                    {
+                        data: 'map_ins_user'
+                    },
+                    {
+                        data: 'map_ins_date'
+                    },
+                    {
                         data: null,
                         orderable: false,
                         className: 'text-center',
                         render: function(data, type, row) {
                             return `
-                        <a href="#" id="bmoViewPdf" data-resouce="` + row.mua_pk + `" data-show-pdf="` + row
-                                .mua_dokumen + `"
-                                        class="btn btn-light-success"> ` + row.mua_dokumen + `</a>`
-                        }
-
-                    },
+                        <button type="button" id="bmoViewPdf" data-resouce="` + row.map_pk + `" data-show-pdf="` + row
+                                .map_dokumen + `"
+                                        class="btn btn-light-success" target="blank"> Lihat </button>`}
+                        },
                     {
                         data: null,
                         orderable: false,
@@ -199,11 +211,11 @@
                                 </a>
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
                                     <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.mua_pk + `">Edit</a>
+                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.map_pk + `">Edit</a>
                                     </div>
                                     <div class="menu-item px-3">
                                         <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
-                                .mua_pk + `">Delete</a>
+                                .map_pk + `">Delete</a>
                                     </div>
                                 </div>
                             `;
@@ -212,49 +224,57 @@
                 ],
             );
 
-            selectServerSide( //select server side with api/route
-                'mpks_mrkn_kode', //kode select
-                '{{ url('api/legal/pks/polis') }}', //url
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                text: d.mrkn_nama, // text nama
-                                id: d.mrkn_kode // kode value
-                            }
-                        })
-                    };
-                },
-            );
+            // selectServerSide( //select server side with api/route
+            //     'map_nomor', //kode select
+            //     '{{ url('api/legal/pks/polis') }}', //url
+            //     function(data) {
+            //         return {
+            //             results: $.map(data, function(d) {
+            //                 return {
+            //                     text: d.mrkn_nama, // text nama
+            //                     id: d.mrkn_kode // kode value
+            //                 }
+            //             })
+            //         };
+            //     },
+            // );
 
             $('body').on('click', '#omodTam', function() {
-                $('#modalPks').modal('show');
+                $('#modal').modal('show');
                 bsimpan('btn_simpan', 'Simpan');
-                $('#tModPks').text('Tambah Dokumen Undang-undang Asuransi');
+                $('#tMod').text('Tambah data');
                 bsimpan('btn_simpan', 'Simpan');
             });
 
             $('body').on('click', '#bmoViewPdf', function() {
                 // $('#tModView').text('Rincian PKS');
                 var kode = $(this).attr('data-show-pdf');
+                var loc2 = $(location).attr('origin') + '/storage/legal/peraturan/' + kode;
+                $('#modalView').modal('show')
                 $('#tModView').text('File : ' + kode);
+                $('#pdf').attr('data', loc2);
 
-                var loc = $(location).attr('origin') + '/storage/legal/uu_asuransi/' + kode;
-                $('#modalView').modal('show');
-                $('#pdf').attr('data', loc);
+                $("#modalView").on("hidden.bs.modal", function() {
+                $("#modal-body").html("");
+                $('#pdf').attr('data', loc2);
+                });
+                console.log(loc2);
             });
 
             $('body').on('click', '#omodEdit', function() {
-                $('#tModPks').text('Edit Data Undang-undang Asuransi');
+                $('#tMod').text('Edit Data');
                 bsimpan('btn_simpan', 'Update');
                 var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/uu_asuransi') }}" + "/" + kode + "/edit";
-                // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
+                    url = "{{ url('legal/peraturan-perusahaan') }}" + "/" + kode + "/edit";
                 $.get(url, function(res) {
-                    $('#modalPks').modal('show');
-                    $('#mua_pk').val(kode);
-                    $('#mua_nomor').val(res.mua_nomor);
-                    $('#mua_tentang').val(res.mua_tentang);
+                    $('#modal').modal('show');
+                    $('#map_pk').val(kode);
+                    $('#map_nomor').val(res.map_nomor);
+                    $('#map_bulan').val(res.map_bulan);
+                    $('#map_tahun').val(res.map_tahun);
+                    $('#map_tentang').val(res.map_tentang);
+                    $('#map_jenis').val(res.map_jenis);
+                    $('#map_online').val(res.map_online);
                 });
             });
 
@@ -266,7 +286,7 @@
                 bsimpan('btn_simpan', 'Please wait..');
 
                 $.ajax({
-                    url: "{{ route('legal.uu_asuransi.store') }}",
+                    url: "{{ route('legal.peraturan-perusahaan.store') }}",
                     type: "POST",
                     data: formData,
                     cache: false, //jika ada input file atau dokumen
@@ -283,9 +303,11 @@
                                 'success'
                             ).then((res) => {
                                 lodTable();
-                                $("#frxx")[0].reset();
-                                $('#modalPks').modal('hide');
+                                // reset();
+                                // $('#frxx').trigger("reset");
+                                $('#modal').modal('hide');
                                 bsimpan('btn_simpan', 'Simpan');
+                                // x();
                             });
                         } else {
                             bsimpan('btn_simpan', 'Simpan');
@@ -306,7 +328,7 @@
 
             $('body').on('click', '#omodDelete', function() {
                 var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/uu_asuransi/') }}" + "/" + kode;
+                    url = "{{ url('legal/peraturan-perusahaan') }}" + "/" + kode;
 
                 console.log(kode);
                 Swal.fire({
@@ -360,21 +382,31 @@
             });
             $('#btn_close3').click(function() {
                 $('#modalView').modal('hide');
+                // lodTable();
                 x();
             });
             $('#btn_close4').click(function() {
+                // var kode = $(this).attr('data-resouce'),
+                // var loc2 = $(location).attr('origin') + '/storage/legal/pojk/' + kode;
                 $('#modalView').modal('hide');
                 x();
+                
             });
+
             $('#btn_closeCreate').click(function() {
-                $('#modalPks').modal('hide');
+                $('#modal').modal('hide');
                 x();
             });
             $('#btn_tutup').click(function() {
-                $('#modalPks').modal('hide');
+                $('#modal').modal('hide');
                 x();
             });
 
         });
+
+        // function close_pojk () {
+        //     $('#modalView').modal('hide');
+        //     $('#pdf').attr('data', '');
+        // }
     </script>
 @endsection

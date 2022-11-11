@@ -1,8 +1,8 @@
-<div class="modal fade" id="modalPks" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-950px">
         <div class="modal-content">
             <div class="modal-header" id="modalMenu_header">
-                <h2 class="fw-bolder" id="tModPks"></h2>
+                <h2 class="fw-bolder" id="tMod"></h2>
 
                 <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_closeCreate">
                     <span class="svg-icon svg-icon-1">
@@ -20,31 +20,44 @@
                         data-kt-scroll-offset="300px">
                         <div class="row mb-5">
 
-                            <input class="form-control" name="mua_pk" id="mua_pk" type="hidden"
-                                data-allow-clear="false" placeholder="Masukan instansi" readonly />
+                            <input class="form-control" name="mpojk_pk" id="mpojk_pk" type="hidden"
+                                data-allow-clear="false" readonly />
                             <div class="col-md-6">
                                 <div class="mb-5">
-                                    <label class="required form-label">Undang-undang Nomor</label>
-                                    <input class="form-control" name="mua_nomor" id="mua_nomor" type="text"
-                                        data-allow-clear="true" placeholder="Masukan nomor undang-undang" />
-                                    <span class="text-danger error-text mua_nomor_err"></span>
+                                    <label class="required form-label">Nomor</label>
+                                    <input class="form-control" name="mpojk_nomor" id="mpojk_nomor" type="text"
+                                        data-allow-clear="true" placeholder="Masukan nomor pojk / seojk" />
+                                    <span class="text-danger error-text mpojk_nomor_err"></span>
 
                                 </div>
                             </div>
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
-                                    <label class="required form-label">Tentang</label>
-                                    <input class="form-control" name="mua_tentang" id="mua_tentang" type="text"
-                                        data-allow-clear="true" placeholder="Masukan nomor pks" />
-                                    <span class="text-danger error-text mua_tentang_err"></span>
+                                    <label class="required form-label">Jenis</label>
+                                    <select class="form-control" name="mpojk_jenis" id="mpojk_jenis" type="text"
+                                        data-allow-clear="true" placeholder="Masukan nomor pks" >
+                                        <option value="" selected disabled> - pilih -</option>
+                                        <option value="1"> SEOJK </option>
+                                        <option value="2"> POJK </option>
+                                    </select>
+                                    <span class="text-danger error-text mpojk_jenis_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
-                                    <label class="form-label">Upload Dokumen</label>
-                                    <input type="file" class="form-control" name="mua_dokumen"
-                                        placeholder="pilih file" id="mua_dokumen" />
-                                    <span class="text-danger error-text mua_dokumen_err"></span>
+                                    <label class="required form-label">Tentang</label>
+                                    <input class="form-control" name="mpojk_tentang" id="mpojk_tentang" type="text"
+                                        data-allow-clear="true" placeholder="Masukan perihal surat / dokumen" />
+                                    <span class="text-danger error-text mpojk_tentang_err"></span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-5">
+                                    <label class="required form-label">Upload Dokumen</label>
+                                    <input type="file" class="form-control" name="mpojk_dokumen"
+                                        placeholder="pilih file" id="mpojk_dokumen" />
+                                    <span class="text-danger error-text mpojk_dokumen_err"></span>
                                 </div>
                             </div>
                         </div>
