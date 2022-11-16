@@ -134,7 +134,8 @@ class EntryPolisController extends Controller
 
         if ($request->mpol_kode == "") {
             $vTable = DB::table('eopr.mst_polis');
-            $kode = KodeController::__getPK($vTable->max('mpol_kode'), 14);
+            $kode = KodeController::__getKey(14);
+            // $kode = KodeController::__getPK($vTable->max('mpol_kode'), 14);
             $data = $request->all();
             $data = $request->except('_token');
 

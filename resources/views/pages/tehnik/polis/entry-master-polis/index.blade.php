@@ -1288,12 +1288,141 @@
         </div>
         <div class="px-7 py-5">
 
+            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
 
+                <div class="col">
+                    <div class="fv-row mb-7">
+                        <label class="form-label fs-6 fw-bold">Virtual Account :</label>
+                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="--- pilih ---" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" name="mpol_va" id="mpol_va">
+                            <option selected value=''>--- pilih ujrah ---</option>
+                            <option value="0">NO</option>
+                            <option value="1">YES</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="fv-row mb-7">
+                        <label class="form-label fs-6 fw-bold">VIA :</label>
+                        <input class="form-control d-flex align-items-center" value="" id="mpol_va_via" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+
+                <div class="col">
+                    <div class="fv-row mb-7">
+                        <label class="form-label fs-6 fw-bold">Pembayaran Online :</label>
+                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="--- pilih ---" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" name="mpol_payonline" id="mpol_payonline">
+                            <option selected value=''>--- pilih ujrah ---</option>
+                            <option value="0">NO</option>
+                            <option value="1">YES</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="fv-row mb-7">
+                        <label class="form-label fs-6 fw-bold">VIA :</label>
+                        <input class="form-control d-flex align-items-center" id="mpol_playonline_via" />
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+
+                <div class="col">
+                    <div class="fv-row mb-7 ">
+                        <label class="form-label fs-6 fw-bold">Pembayaran Retail/Agent :</label>
+                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="--- pilih ---" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" name="mpol_agent" id="mpol_agent">
+                            <option selected value=''>--- pilih ujrah ---</option>
+                            <option value="0">NO</option>
+                            <option value="1">YES</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="fv-row mb-7">
+                        <label class="form-label fs-6 fw-bold">VIA :</label>
+                        <input class="form-control d-flex align-items-center" id="mpol_agent_via" />
+                    </div>
+                </div>
+
+            </div>
 
         </div>
       </div>
       {{-- AKHIR PAYMENT MODE POLIS --}}
 
+       {{-- AWAL LAIN-LAIN --}}
+       <div class="card mb-5 mb-xxl-10">
+        <div class="card-header" style="background-color: #0350BF;">
+            <h1 class="d-flex align-items-center text-white fw-bolder fs-3 my-1" >LAIN-LAIN</h1>
+        </div>
+        <div class="px-7 py-5">
+
+            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-3">
+
+                <div class="col">
+                    <div class="fv-row mb-7">
+                        <label class="form-label fs-6 fw-bold">Jenis Web Login:</label>
+                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="--- pilih ---" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" name="mpol_jenis_login" id="mpol_jenis_login">
+                            <option selected value=''>--- pilih ujrah ---</option>
+                            <option value="0">TIDAK ADA AKSES</option>
+                            <option value="1">MENU SISWA</option>
+                            <option value="2">MENU MAHASISWA</option>
+                            <option value="3">MENU BADAL</option>
+                            <option value="4">MENU INDIVIDU </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="fv-row mb-7">
+                        <label class="form-label fs-6 fw-bold">Persetujuan Teknis Klaim:</label>
+                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="--- pilih ---" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" name="mpol_acc_tek" id="mpol_acc_tek">
+                            <option selected value=''>--- pilih ujrah ---</option>
+                            <option value="0">Tampil</option>
+                            <option value="1">Tidak Tampil</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="fv-row mb-7">
+                        <label class="form-label fs-6 fw-bold">Catatan :</label>
+                        <input type="text" class="form-control form-control-solid"   name="mpol_note" id="mpol_note" />
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-3">
+
+                <div class="col">
+                    <div class="fv-row mb-7">
+                        <label class="form-label fs-6 fw-bold">No Surat Endors :</label>
+                        <input type="text" class="form-control form-control-solid"   name="mpol_no_endors" id="mpol_no_endors" />
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="fv-row mb-7">
+                        <label class="form-label fs-6 fw-bold">Keterangan Endors :</label>
+                        <input type="text" class="form-control form-control-solid"   name="mpol_ket_endors" id="mpol_ket_endors" />
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    {{-- AKHIR LAIN-LAIN --}}
 
      {{-- AWAL BUTTON --}}
     <div class="modal-footer justify-content-center">
@@ -1396,5 +1525,173 @@
         });
 
     });
+
+    var inputVA = document.querySelector('#mpol_va_via');
+    var inputOnline = document.querySelector('#mpol_playonline_via');
+
+    const VirtualAccount = [
+        { value: 1, name: 'Bank Syariah Mandiri', avatar: 'https://dev.alamin.co.id/sharefile/tcpdf/ic_bsi.png', bank: 'Bank opsi 1'},
+        { value: 2, name: 'Bank Mandiri', avatar: 'https://dev.alamin.co.id/sharefile/tcpdf/ic_mandiri.png' , bank: 'Bank opsi 2'},
+        { value: 3, name: 'Bank Permata', avatar: 'https://dev.alamin.co.id/sharefile/tcpdf/ic_permatasyariah.png' , bank: 'Bank opsi 3'},
+        { value: 4, name: 'Bank Permata Syariah', avatar: 'https://dev.alamin.co.id/sharefile/tcpdf/ic_permata.png' , bank: 'Bank opsi 4'}
+    ];
+
+    const PembayaranOnline = [
+        { value: 1, name: 'GOPAY', avatar: 'https://dev.alamin.co.id/sharefile/tcpdf/ic_gopay.png', bank: 'Pembayaran melalui GOPAY'},
+        { value: 2, name: 'OVO', avatar: 'https://dev.alamin.co.id/sharefile/tcpdf/ic_ovo.png' , bank: 'Pembayaran melalui OVO'},
+        { value: 3, name: 'TOKOPEDIA', avatar: 'https://dev.alamin.co.id/sharefile/tcpdf/ic_tokped.png' , bank: 'Pembayaran melalui TOKOPEDIA'}
+    ];
+
+function tagTemplate(tagData) {
+    return `
+        <tag title="${(tagData.title || tagData.bank)}"
+                contenteditable='false'
+                spellcheck='false'
+                tabIndex="-1"
+                class="${this.settings.classNames.tag} ${tagData.class ? tagData.class : ""}"
+                ${this.getAttributes(tagData)}>
+            <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+            <div class="d-flex align-items-center">
+                <div class='tagify__tag__avatar-wrap ps-0'>
+                    <img onerror="this.style.visibility='hidden'" class="rounded-circle w-25px me-2" src="${tagData.avatar}">
+                </div>
+                <span class='tagify__tag-text'>${tagData.name}</span>
+            </div>
+        </tag>
+    `
+}
+
+function tagTemplate(tagData1) {
+    return `
+        <tag title="${(tagData1.title || tagData1.bank)}"
+                contenteditable='false'
+                spellcheck='false'
+                tabIndex="-1"
+                class="${this.settings.classNames.tag} ${tagData1.class ? tagData1.class : ""}"
+                ${this.getAttributes(tagData1)}>
+            <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+            <div class="d-flex align-items-center">
+                <div class='tagify__tag__avatar-wrap ps-0'>
+                    <img onerror="this.style.visibility='hidden'" class="rounded-circle w-25px me-2" src="${tagData1.avatar}">
+                </div>
+                <span class='tagify__tag-text'>${tagData1.name}</span>
+            </div>
+        </tag>
+    `
+}
+
+function suggestionItemTemplate(tagData) {
+    return `
+        <div ${this.getAttributes(tagData)}
+            class='tagify__dropdown__item d-flex align-items-center ${tagData.class ? tagData.class : ""}'
+            tabindex="0"
+            role="option">
+
+            ${tagData.avatar ? `
+                    <div class='tagify__dropdown__item__avatar-wrap me-2'>
+                        <img onerror="this.style.visibility='hidden'"  class="rounded-circle w-50px me-2" src="${tagData.avatar}">
+                    </div>` : ''
+                }
+
+            <div class="d-flex flex-column">
+                <strong>${tagData.name}</strong>
+                <span>${tagData.bank}</span>
+            </div>
+        </div>
+    `
+}
+
+
+function suggestionItemTemplate(tagData1) {
+    return `
+        <div ${this.getAttributes(tagData1)}
+            class='tagify__dropdown__item d-flex align-items-center ${tagData1.class ? tagData1.class : ""}'
+            tabindex="0"
+            role="option">
+
+            ${tagData1.avatar ? `
+                    <div class='tagify__dropdown__item__avatar-wrap me-2'>
+                        <img onerror="this.style.visibility='hidden'"  class="rounded-circle w-50px me-2" src="${tagData1.avatar}">
+                    </div>` : ''
+                }
+
+            <div class="d-flex flex-column">
+                <strong>${tagData1.name}</strong>
+                <span>${tagData1.bank}</span>
+            </div>
+        </div>
+    `
+}
+
+// initialize Tagify on the above input node reference
+var tagify = new Tagify(inputVA, {
+    tagTextProp: 'name', // very important since a custom template is used with this property as text. allows typing a "value" or a "name" to match input with whitelist
+    enforceWhitelist: true,
+    skipInvalid: true, // do not remporarily add invalid tags
+    dropdown: {
+        closeOnSelect: false,
+        enabled: 0,
+        classname: 'users-list',
+        searchKeys: ['name', 'bank']  // very important to set by which keys to search for suggesttions when typing
+    },
+    templates: {
+        tag: tagTemplate,
+        dropdownItem: suggestionItemTemplate
+    },
+    whitelist: VirtualAccount
+})
+
+
+// initialize Tagify on the above input node reference
+var tagify = new Tagify(inputOnline, {
+    tagTextProp: 'name', // very important since a custom template is used with this property as text. allows typing a "value" or a "name" to match input with whitelist
+    enforceWhitelist: true,
+    skipInvalid: true, // do not remporarily add invalid tags
+    dropdown: {
+        closeOnSelect: false,
+        enabled: 0,
+        classname: 'users-list',
+        searchKeys: ['name', 'bank']  // very important to set by which keys to search for suggesttions when typing
+    },
+    templates: {
+        tag: tagTemplate,
+        dropdownItem: suggestionItemTemplate
+    },
+    whitelist: PembayaranOnline
+})
+
+tagify.on('dropdown:show dropdown:updated', onDropdownShow)
+tagify.on('dropdown:select', onSelectSuggestion)
+
+var addAllSuggestionsElm;
+
+function onDropdownShow(e) {
+    var dropdownContentElm = e.detail.tagify.DOM.dropdown.content;
+
+    if (tagify.suggestedListItems.length > 1) {
+        addAllSuggestionsElm = getAddAllSuggestionsElm();
+
+        // insert "addAllSuggestionsElm" as the first element in the suggestions list
+        dropdownContentElm.insertBefore(addAllSuggestionsElm, dropdownContentElm.firstChild)
+    }
+}
+
+function onSelectSuggestion(e) {
+    if (e.detail.elm == addAllSuggestionsElm)
+        tagify.dropdown.selectAll.call(tagify);
+}
+
+// // create a "add all" custom suggestion element every time the dropdown changes
+// function getAddAllSuggestionsElm() {
+//     // suggestions items should be based on "dropdownItem" template
+//     return tagify.parseTemplate('dropdownItem', [{
+//         class: "addAll",
+//         name: "Tambahkan Semua",
+//         bank: tagify.settings.whitelist.reduce(function (remainingSuggestions, item) {
+//             return tagify.isTagDuplicate(item.value) ? remainingSuggestions : remainingSuggestions + 1
+//         }, 0) + " Bank"
+//     }]
+//     )
+// }
 </script>
 @endsection
