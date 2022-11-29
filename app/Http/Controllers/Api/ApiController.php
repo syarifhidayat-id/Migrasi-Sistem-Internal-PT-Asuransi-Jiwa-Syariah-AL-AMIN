@@ -41,31 +41,8 @@ class ApiController extends Controller
         return response()->json($data);
     }
 
-
-   
-
-    // public function map_nomor(Request $request)
-    // {
-    //     $data = [];
-    //     if ($request->has('q')) {
-    //         $search = $request->q;
-    //         $data = DB::table('emst.mst_produk_segment')
-    //             ->select('mssp_kode', 'mssp_nama')
-    //             ->where('mssp_nama', 'like', "%$search%")
-    //             ->get();
-    //     } else {
-    //         $data = DB::table('emst.mst_produk_segment')
-    //             ->select('mssp_kode', 'mssp_nama')
-    //             ->get();
-    //     }
-    //     return response()->json($data);
-    // }
-
-
-
     public function draftPks(Request $request)
     {
-
         $data = DB::table('emst.mst_draft_pks')->select(
             '*',
             DB::raw("@no:=@no+1 AS DT_RowIndex"),
@@ -99,7 +76,6 @@ class ApiController extends Controller
 
     public function uu_asuransi(Request $request)
     {
-
         $data = DB::table('emst.mst_uu_asuransi')->select(
             '*',
             DB::raw("@no:=@no+1 AS DT_RowIndex"),
@@ -133,7 +109,6 @@ class ApiController extends Controller
 
     public function pojk_seojk(Request $request)
     {
-
         $data = DB::table('emst.mst_pojk')->select(
             '*',
             DB::raw("@no:=@no+1 AS DT_RowIndex"),
@@ -167,7 +142,6 @@ class ApiController extends Controller
 
     public function peraturan_perusahaan(Request $request)
     {
-
         $data = DB::table('emst.mst_atur_perusahaan')->select(
             '*',
             // DB::raw("@no:=@no+1 AS DT_RowIndex"),
@@ -272,7 +246,6 @@ class ApiController extends Controller
 
     public function ojk(Request $request)
     {
-
         $data = DB::table('emst.mst_ojk')->select(
             '*',
             // DB::raw("@no:=@no+1 AS DT_RowIndex"),
@@ -309,11 +282,8 @@ class ApiController extends Controller
     {
         $data = DB::table('emst.mst_uu_asuransi')
             ->where('mua_pk', $id)->first();
-
         $path = Storage::get('public/legal/uu_asuransi/' . $data->mua_dokumen);
-
         $file = File::get($path);
-
         $response = Response::make($file, 200);
         $response->header('Content-Type', 'application/pdf');
         return $response;
@@ -321,22 +291,19 @@ class ApiController extends Controller
 
     public function unit_laporan_berkala(Request $request)
     {
-
-            $data = [];
+        $data = [];
         if ($request->has('q')) {
             $search = $request->q;
             $data = DB::table('emst.mst_unit_lap_berkala')
-            ->select('id', 'nama')
-            ->where('nama', 'like', "%$search%")
-            ->get();
-
+                ->select('id', 'nama')
+                ->where('nama', 'like', "%$search%")
+                ->get();
         } else {
             $data = DB::table('emst.mst_unit_lap_berkala')
-            ->select('id', 'nama')
-            ->orderBy('id')
-            ->get();
-            }
-
+                ->select('id', 'nama')
+                ->orderBy('id')
+                ->get();
+        }
         return response()->json($data);
     }
 
@@ -356,30 +323,23 @@ class ApiController extends Controller
         }
         return response()->json($data);
     }
-    
-
 
     public function getPojkPdf($id)
     {
         $data = DB::table('emst.mst_pojk')
             ->where('mpojk_pk', $id)->first();
-
         $path = Storage::get('public/legal/pojk/' . $data->mpojk_dokumen);
-
         $file = File::get($path);
-
         $response = Response::make($file, 200);
         $response->header('Content-Type', 'application/pdf');
         return $response;
     }
-
 
     public function get_uu($id)
     {
         $data = DB::table('emst.mst_uu_asuransi')
             ->where('mua_pk', '=', $id)
             ->get();
-
         return response()->json($data);
     }
 
@@ -398,16 +358,6 @@ class ApiController extends Controller
                 ->select('mlapbkl_jenis', 'mlapbkl_pk')
                 ->get();
         }
-        return response()->json($data);
-    }
-
-    public function getJnsDoc($kode)
-    {
-        $data =  DB::table('emst.mst_laporan_berkala')
-        ->select('mlapbkl_jenis', 'mlapbkl_pk')
-        ->where('mlapbkl_pk', $kode)
-        ->first();
-
         return response()->json($data);
     }
 }

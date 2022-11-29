@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Library;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class KodeController extends Controller
 {

@@ -4,14 +4,10 @@ namespace App\Http\Controllers\Sekper;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Library\KodeController;
-use App\Http\Requests\Sekper\SuratMasuk\EditSuratMasukRequest;
-use App\Http\Requests\Sekper\SuratMasuk\InputSuratMasukRequest;
-use App\Models\Sekper\SuratMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-use Inertia\Inertia;
+use Yajra\DataTables\Facades\DataTables;
 
 class SuratMasukController extends Controller
 {
@@ -22,19 +18,7 @@ class SuratMasukController extends Controller
      */
     public function index()
     {
-        $data = SuratMasuk::
-        select('*', 'user.*',
-          DB::raw('DATE_FORMAT(tsm_tanggal, "%d-%m-%Y") as tgl_tsm'),
-          DB::raw('DATE_FORMAT(tsm_ins_date, "%d-%m-%Y") as dt_ins'),
-        )
-        ->leftJoin('user_accounts as user', 'tsm_ins_user', '=', 'user.id')
-        ->where('tsm_proses', '!=', 1)
-        ->orderby('tsm_ins_date','DESC')
-        ->limit(10)
-        ->get();
-        // $suratmasuk = $suratmasuk->paginate(10);
-
-        return Inertia::render('Sekper/Suratmasuk/Index', ['data' => $data]);
+        return view('pages.sekper.suratmasuk.index');
     }
 
     /**
@@ -44,7 +28,6 @@ class SuratMasukController extends Controller
      */
     public function create()
     {
-      return Inertia::render('Sekper/Suratmasuk/Create');
     }
 
     /**
@@ -56,44 +39,89 @@ class SuratMasukController extends Controller
 
     public function store(Request $request)
     {
-        $smBaru = SuratMasuk::all()->max('tsm_pk');
-        $kodeBaru = KodeController::__getPK($smBaru, 15);
-        $fileDoc = $request->file('file_upload');
-          if ($fileDoc) {
-              $file = $fileDoc;
-              $dir = 'public/sekper/suratmasuk';
-              // $name = $request->tsm_doksurat;
-              $name = $kodeBaru . '-SuratMasuk-' . $file->getClientOriginalName();
-              $path = Storage::putFileAs(
-                  $dir,
-                  $file,
-                  $name
-              );
+        // $validasi = Validator::make(
+        //     $request->all(),
+        //     [
 
-              $request->merge([ 'tsm_doksurat' => $name ]);
-          }
+        //         'mua_nomor' => 'required',
+        //         'mua_tentang' => 'required',
+        //         'mua_dokumen' => 'mimes:pdf',
+        //     ],
+        //     [
+        //         'mua_nomor.required' => 'Tidak boleh kosong!',
+        //         'mua_tentang.required' => 'Tidak boleh kosong!',
+        //         'mua_dokumen.mimes' => 'File harus format pdf!',
+        //     ]
+        // );
 
-          $tsm_tanggal = str_replace('/', '-', $request->tsm_tanggal);
+        // if ($validasi->fails()) {
+        //     return response()->json([
+        //         'error' => $validasi->errors()
+        //     ]);
+        // } else {
 
-          $request->merge([
-            'tsm_pk' => $kodeBaru,
-            'tsm_tanggal' => date('Y-m-d', strtotime($tsm_tanggal)),
-            'tsm_ins_date' => date('Y-m-d H:i:s'),
-            'tsm_upd_date' => date('Y-m-d H:i:s'),
-            'tsm_ins_user' => auth()->user()->email,
-            'tsm_upd_user' => auth()->user()->email,
-            'tsm_halkhusus' => 0,
-          ]);
+        if ($request->tsm_pk == "") {
+            $kode = KodeController::__getKey(14);
+            $data = $request->all();
+            $data = request()->except(['_token']);
 
-          $nullRequest=['file_upload'];
-          $nullRequest = array_merge_recursive($nullRequest, KodeController::nullRequests($request->all()));
+            if ($request->hasFile('tsm_disposisi')) {
+                $dok = $request->file('tsm_disposisi');
+                $dir = 'public/sekper/suratmasuk';
+                $fileOri = $dok->getClientOriginalName();
+                $nameBukti = $kode . '_disposisi_srtmasuk_' . $fileOri;
+                $path = Storage::putFileAs($dir, $dok, $nameBukti);
+                $data['tsm_disposisi'] = $nameBukti;
+            }
 
-          SuratMasuk::create($request->except($nullRequest));
+            $data['tsm_pk'] = $kode;
+            $data['tsm_ins_user'] = $request->user()->email;
+            $data['tsm_ins_date'] = date('Y-m-d H:i:s');
+            $data['tsm_indexfolder'] = 0;
+            $data['tsm_halkhusus'] = 0;
+            $data['tsm_proses'] = 0;
 
-          return Redirect::route('sekper.suratmasuk.create')->with([
-            'message' => 'Surat Masuk dengan nomor '.$request->tsm_pk.' berhasil disimpan!',
-            'type' => 'success',
-          ]);
+            $insert = DB::table('eopr.trs_surat_masuk')->insert($data);
+            // return response()->json([
+            //     'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
+            // ]);
+
+            return $data;
+        } else {
+            $data = $request->all();
+            $uu = DB::table('eopr.trs_surat_masuk')
+                ->where('tsm_pk', '=', $request->tsm_pk)
+                ->first();
+
+            $data = request()->except(['_token']);
+
+            $oldFile = 'public/sekper/suratmasuk/' . $uu->tsm_disposisi;
+
+            if ($request->hasFile('tsm_disposisi')) {
+                $dok = $request->file('tsm_disposisi');
+                $dir = 'public/sekper/suratmasuk';
+                $fileOri = $dok->getClientOriginalName();
+                $nameBukti = $request->tsm_pk . '_disposisi_srtmasuk_' . $fileOri;
+                Storage::delete($oldFile);
+                $path = Storage::putFileAs($dir, $dok, $nameBukti);
+                $data['tsm_disposisi'] = $nameBukti;
+            }
+
+            $data['tsm_upd_user'] = $request->user()->email;
+            $data['tsm_upd_date'] = date('Y-m-d H:i:s');
+
+
+            $update = DB::table('eopr.trs_surat_masuk')
+                ->where('tsm_pk', '=', $request->tsm_pk)
+                ->update($data);
+
+            // return response()->json([
+            //     'success' => 'Data berhasil diupdate dengan Kode ' . $request->tsm_pk . '!'
+            // ]);
+
+            return $data;
+        }
+        // }
     }
 
     /**
@@ -115,45 +143,13 @@ class SuratMasukController extends Controller
      */
     public function edit($id)
     {
-        $suratmasuk = SuratMasuk::where('tsm_pk', $id)->first();
-
-        return response()->json([
-          'suratmasuk' => $suratmasuk,
-        ]);
+        $data = DB::table('eopr.trs_surat_masuk')
+            ->where('tsm_pk', $id)
+            ->first();
+        return response()->json($data);
     }
 
-    public function updatedata(Request $request, $id)
-    {
-        $sm = SuratMasuk::findOrFail($id);
-        $fileDocOld = 'public/sekper/suratmasuk/' . $request->tsm_doksurat;
-        // $tsm_tanggal = str_replace('/', '-', $request->tsm_tanggal);
 
-        if ($request->file('file_upload')) {
-            $fileDoc = $request->file('file_upload');
-            $dir = 'public/sekper/suratmasuk';
-            $name = $id . '-SuratMasuk-' . $fileDoc->getClientOriginalName();
-            Storage::delete($fileDocOld);
-            Storage::putFileAs(
-                $dir,
-                $fileDoc,
-                $name
-            );
-
-            $request->merge([ 'tsm_doksurat' => $name ]);
-        }
-
-        $request->merge([
-          'tsm_tanggal' => $request->tsm_tanggal,
-          'tsm_upd_date' => date('Y-m-d H:i:s'),
-          'tsm_upd_user' => auth()->user()->email,
-        ]);
-
-        $nullRequest=['file_upload'];
-        $nullRequest = array_merge_recursive($nullRequest, KodeController::nullRequests($request->all()) );
-        $sm->update($request->except($nullRequest));
-
-        return Redirect::route('sekper.suratmasuk.create')->with('message', 'Surat Masuk dengan nomor '.$id.' berhasil diperbaharui!');
-    }
 
     /**
      * Update the specified resource in storage.
@@ -164,35 +160,6 @@ class SuratMasukController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        // $sm = SuratMasuk::findOrFail($id);
-        // $fileDocOld = 'public/sekper/suratmasuk/' . $request->tsm_doksurat;
-        // // $tsm_tanggal = str_replace('/', '-', $request->tsm_tanggal);
-
-        // if (Storage::exists($fileDocOld)) {
-        //     $fileDoc = $request->file('file_upload');
-        //     $dir = 'public/sekper/suratmasuk';
-        //     $name = $id . '-SuratMasuk-' . $fileDoc->getClientOriginalName();
-        //     Storage::delete($fileDocOld);
-        //     Storage::putFileAs(
-        //         $dir,
-        //         $fileDoc,
-        //         $name
-        //     );
-
-        //     $request->merge([ 'tsm_doksurat' => $name ]);
-        // }
-
-        // $request->merge([
-        //   'tsm_tanggal' => $request->tsm_tanggal,
-        //   'tsm_upd_date' => date('Y-m-d H:i:s'),
-        // ]);
-
-        // $nullRequest=['file_upload'];
-        // $nullRequest = array_merge_recursive($nullRequest, KodeController::nullRequests($request->all()) );
-        // $sm->update($request->except($nullRequest));
-
-        // return Redirect::route('sekper.suratmasuk.create')->with('message', 'Surat Masuk dengan nomor '.$id.' berhasil diubah!');
     }
 
     /**
@@ -203,80 +170,57 @@ class SuratMasukController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = DB::table('eopr.trs_surat_masuk')
+            ->where('tsm_pk', '=', $id)
+            ->first();
+        $oldFile = 'public/sekper/suratmasuk/' . $data->tsm_disposisi;
+
+        if ($oldFile) {
+            Storage::delete($oldFile);
+        }
+
+        $delete = DB::table('eopr.trs_surat_masuk')
+            ->where('tsm_pk', '=', $id)
+            ->delete();
+
+        return response()->json([
+            'success' => 'Data berhasil dihapus dengan Kode ' . $data->tsm_pk . '!'
+        ]);
     }
 
-    public function lov()
+
+    public function surat_masuk(Request $request)
     {
-      $suratmasuk = DB::table('trs_surat_masuk AS sm')
-              ->select('sm.*', 'user.*',
-                  DB::raw('DATE_FORMAT(sm.tsm_tanggal, "%d-%m-%Y") as tgl_surat'),
-                  DB::raw('DATE_FORMAT(sm.tsm_ins_date, "%d-%m-%Y") as ins_user'),
-                )
-              ->leftJoin('user_accounts AS user', 'sm.tsm_ins_user', '=', 'user.id')
-              ->where('sm.tsm_proses', '!=', 1)
-              ->orderby('sm.tsm_upd_date','DESC')
-              // ->paginate(5);
-              ->get();
+        $data = DB::table('eopr.trs_surat_masuk')->select(
+            '*',
+            DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            DB::raw('DATE_FORMAT(tsm_ins_date, "%d-%m-%Y") as ins_date')
+        )
+            ->orderBy('tsm_ins_date', 'DESC');
 
-      return response()->json([
-        'data' => $suratmasuk,
-      ]);
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->filter(function ($instance) use ($request) {
+                // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
+                //     return $instance->where('wmn_tipe', $request->wmn_tipe);
+                // }
+                // if (!empty($request->get('wmn_tipe'))) {
+                //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
+                // }
+                // if (!empty($request->get('wmn_descp'))) {
+                //     $instance->where('wmn_descp', $request->get('wmn_descp'));
+                // }
+                if (!empty($request->get('search'))) {
+                    $instance->where(function ($w) use ($request) {
+                        $search = $request->get('search');
+                        $w->orWhere('tsm_nomor', 'LIKE', "%$search%")
+                            ->orWhere('tsm_dr_instansi', 'LIKE', "%$search%");
+                    });
+                }
+            })
+            ->make(true);
+        // }
     }
 
-    // public function lovAjax(Request $request)
-    // {
-    //     ## Read value
-    //     $draw = $request->get('draw');
-    //     $start = $request->get("start");
-    //     $rowperpage = $request->get("length"); // total number of rows per page
-
-    //     $columnIndex_arr = $request->get('order');
-    //     $columnName_arr = $request->get('columns');
-    //     $order_arr = $request->get('order');
-    //     $search_arr = $request->get('search');
-
-    //     $columnIndex = $columnIndex_arr[0]['column']; // Column index
-    //     $columnName = $columnName_arr[$columnIndex]['data']; // Column name
-    //     $columnSortOrder = $order_arr[0]['dir']; // asc or desc
-    //     $searchValue = $search_arr['value']; // Search value
-
-    //     // Total records
-    //     $totalRecords = SuratMasuk::select('count(*) as allcount')->count();
-    //     $totalRecordswithFilter = SuratMasuk::select('count(*) as allcount')->where('tsm_hal', 'like', '%' . $searchValue . '%')->count();
-
-    //     // Get records, also we have included search filter as well
-    //     $records = DB::table('trs_surat_masuk AS sm')
-    //         ->orderBy($columnName, $columnSortOrder)
-    //         // ->orderBy('sm.tsm_ins_date', 'DESC')
-    //         ->where('sm.tsm_hal', 'like', '%' . $searchValue . '%')
-    //         // ->orWhere('sm.*', 'like', '%' . $searchValue . '%')
-    //         // ->orWhere('sm.tsm_nomor', 'like', '%' . $searchValue . '%')
-    //         // ->orWhere('sm.tsm_pk', 'like', '%' . $searchValue . '%')
-    //         ->select('sm.*')
-    //         ->skip($start)
-    //         ->take($rowperpage)
-    //         ->get();
-
-    //     $data_arr = array();
-
-    //     foreach ($records as $record) {
-    //         $data_arr[] = $record;
-    //         // $data_arr[] = array(
-    //         //     "tsm_pk" => $record->tsm_pk,
-    //         //     "tsm_nomor" => $record->tsm_nomor,
-    //         //     "tsm_hal" => $record->tsm_hal,
-    //         //     "tsm_tanggal" => $record->tsm_tanggal,
-    //         // );
-    //     }
-
-    //     $response = array(
-    //         "draw" => intval($draw),
-    //         "iTotalRecords" => $totalRecords,
-    //         "iTotalDisplayRecords" => $totalRecordswithFilter,
-    //         "aaData" => $data_arr,
-    //     );
-
-    //     echo json_encode($response);
-    // }
+    
 }
