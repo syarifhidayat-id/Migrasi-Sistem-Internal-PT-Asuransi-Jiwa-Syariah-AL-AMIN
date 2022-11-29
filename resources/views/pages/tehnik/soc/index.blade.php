@@ -27,10 +27,10 @@
     <div class="card-header border-0 pt-6">
         <div class="card-title">
             <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" data-kt-datatable-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
+                <div class="input-group input-group-solid flex-nowrap">
+                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid w-250px" placeholder="Cari Soc" />
+                    <button type="submit" class="btn btn-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                </div>
             </div>
         </div>
 
@@ -51,18 +51,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-10">
-                                    <label class="form-label fs-6 fw-bold">Tipe Menu:</label>
-                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe" onchange="tipe()">
-                                        <option></option>
-                                        {{-- @foreach ($type_menu as $type)
-                                            <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
-                                        @endforeach --}}
-                                    </select>
+                                    <label class="form-label fs-6 fw-bold">Kode SOC:</label>
+                                    <input type="text" class="form-control form-control-solid" name="msoc_kode" id="msoc_kode" data-kt-datatable-table-filter="search" placeholder="Kode SOC" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-10">
-                                    <label class="form-label fs-6 fw-bold">Nama Menu:</label>
+                                    <label class="form-label fs-6 fw-bold">Jaminan Asuransi:</label>
                                     <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
                                         <option></option>
                                         {{-- @foreach ($nama_menu as $key=>$data)
@@ -74,8 +69,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="reset" class="btn btn-light btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset">Reset</button>
-                            <button type="submit" class="btn btn-primary fw-bold px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter">Apply</button>
+                            <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                            <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
                         </div>
                     </div>
                 </div>
@@ -84,9 +79,9 @@
             <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
                 <div id="kt_table_datatable_export" class="d-none"></div>
 
-                <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button>
+                <button type="button" id="btn_export" data-title="Data List SOC" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button>
 
-                <div id="kt_table_datatable_export_menu" title-kt-export="Data Menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">
+                <div id="kt_table_datatable_export_menu" title-kt-export="Data List SOC" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">
                     <div class="menu-item px-3">
                      <a href="#" class="menu-link px-3" data-kt-export="copy">Copy to clipboard</a>
                     </div>
@@ -103,44 +98,36 @@
                         <a href="#" class="menu-link px-3" data-kt-export="pdf">Export as PDF</a>
                     </div>
                 </div>
-
-                <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-sharp fa-solid fa-plus"></i> Tambah Menu</button>
             </div>
-
-            {{-- @include('pages.utility.membuat-menu.modal.create') --}}
         </div>
     </div>
 
     <div class="card-body py-10">
         <div class="table-responsive">
-            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
+            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="datalistSoc">
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
-                        <th>No.</th>
+                        <th class="min-w-80px">No.</th>
                         <th>No SOC</th>
-                        <th>Kode SOC</th>
-                        <th>Nama Pemegang Polis</th>
-                        <th>Jenis Nasabah</th>
-                        <th>Segmen Pasar</th>
-                        <th>Mekanisme 1 (Umum)</th>
-                        <th>Mekanisme 2 (Penutupan)</th>
-                        <th>Jenis Pekerjaan</th>
-                        <th>Manfaat Asuransi</th>
-                        <th>Pembayaran</th>
-                        <th>Jaminan</th>
-                        <th>Program Asuransi</th>
-                        <th>Cover Polis</th>
-                        <th>SOC</th>
-                        <th>Disposisi</th>
-                        <th>Cetak</th>
-                        <th>Tanggal Input</th>
-                        <th>Umur Input</th>
-                        <th>Status Approval</th>
-                        <th>Kode Polis</th>
-                        <th>Approval Polis</th>
-                        <th>Status Polis</th>
-                        <th>Online Polis</th>
-                        <th class="min-w-125px">Aksi</th>
+                        <th class="min-w-300px">Kode SOC</th>
+                        <th class="min-w-250px">Nama Pemegang Polis</th>
+                        <th class="min-w-250px">Jenis Nasabah</th>
+                        <th class="min-w-250px">Segmen Pasar</th>
+                        <th class="min-w-250px">Mekanisme 1 (Umum)</th>
+                        <th class="min-w-250px">Mekanisme 2 (Penutupan)</th>
+                        <th class="min-w-250px">Jenis Pekerjaan</th>
+                        <th class="min-w-150px">Manfaat Asuransi</th>
+                        <th class="min-w-150px">Pembayaran</th>
+                        <th class="min-w-150px">Jaminan</th>
+                        <th class="min-w-150px">Program Asuransi</th>
+                        <th class="min-w-150px">Tanggal Input</th>
+                        <th class="min-w-125px">Umur Input</th>
+                        <th class="min-w-125px">User Input</th>
+                        <th class="min-w-125px">Status Approval</th>
+                        <th class="min-w-150px">Kode Polis</th>
+                        <th class="min-w-125px">Approval Polis</th>
+                        <th class="min-w-125px">Status Polis</th>
+                        <th class="min-w-125px">Online Polis</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -159,80 +146,146 @@
 
 @section('script')
     <script>
-        $('#tipe').select2();
-        $('#key').select2();
-        $('#wmn_tipe').select2();
-        $('#wmn_key').select2({
-            tags: true,
-        });
-        $('#wmn_mrkn_kode').select2();
-        $('#wmn_mpol_kode').select2();
 
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
+            filterAll('input[type="search"]', 'datalistSoc');
             serverSide(
-                "#serverSide",
-                "{{ url('api/utility/menu/lihat-menu') }}",
+                "datalistSoc",
+                "{{ url('api/tehnik/soc/lihat-soc/list-soc') }}",
+                function(d) {    // di isi sesuai dengan data yang akan di filter ->
+                    // d.wmn_tipe = $('#tipe_menu').val(),
+                    d.msoc_kode = $('#msoc_kode').val(),
+                    d.search = $('input[type="search"]').val()
+                },
                 [
                     { data: "DT_RowIndex", className: "text-center" },
+                    { data: "msli_nomor" },
                     {
-                        data: "wmn_icon",
+                        data: "msoc_kode",
                         className: "text-center",
                         render: function(data, type, row, meta) {
-                            return `<i class="`+row.wmn_icon+`"></i>`;
-                        }
-                    },
-                    { data: "wmn_descp" },
-                    { data: "wmn_tipe" },
-                    {
-                        data: "wmn_url_n",
-                        render: function(data, type, row, meta) {
-                            var route = row.wmn_url_n;
-                            if (route !== "" && route !== null) {
-                                return `<div class="badge badge-light-success fw-bolder">`+row.wmn_url_n+`</div>`;
-                            } else {
-                                return `<div class="badge badge-light-success fw-bolder">-</div>`;
+                            var sts = row.msoc_approve;
+                            var kode = row.msoc_kode;
+                            if (sts == "belum") {
+                                var html = `
+                                    <label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
+                                        <input class="form-check-input" id="approv_soc" data-kode="`+kode+`" type="checkbox" value="1" />
+                                        <span class="form-check-label fw-bold text-muted">
+                                            Approve
+                                        </span>
+                                    </label>
+                                `;
+                            } else if (sts == "sudah") {
+                                var html = `
+                                    <button type="button" id="kode" title="Lihat Detail" class="btn btn-sm btn-light-primary">`+kode+`</button>
+                                `;
                             }
-                        }
-                    },
-                    {
-                        data: "wmn_url_o_n",
-                        render: function(data, type, row, meta) {
-                            var url = row.wmn_url_o_n;
-                            if (url !== "" && url !== null) {
-                                return `<div class="badge badge-light fw-bolder">`+row.wmn_url_o_n+`</div>`;
-                            } else {
-                                return `<div class="badge badge-light fw-bolder">-</div>`;
-                            }
-                        }
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function (data, type, row) {
                             return `
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Delete</a>
-                                    </div>
-                                </div>
+                            <div class="input-group input-group-solid flex-nowrap">
+                                `+html+`
+                                <span class="input-group-text"> | </span>
+                                <button type="button" id="lihatUwTb" title="Lihat Table" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Uw Table</button>
+                            </div>
                             `;
-                        },
+                        }
+                    },
+                    // { data: "msoc_kode" },
+                    { data: "msli_mrkn_nama" },
+                    { data: "mjns_nama" },
+                    { data: "mssp_nama" },
+                    { data: "mkm_nama" },
+                    { data: "mkm_ket2" },
+                    { data: "mker_nama" },
+                    { data: "mft_nama" },
+                    { data: "bayar" },
+                    { data: "mjm_nama" },
+                    { data: "mpras_nama" },
+                    { data: "ins_date" },
+                    { data: "umur" },
+                    { data: "msoc_ins_user" },
+                    {
+                        data: "msoc_approve",
+                        render: function(data, type, row, meta) {
+                            var sts = row.msoc_approve;
+                            if (sts == "sudah") {
+                                var text = "success";
+                            } else if (sts == "belum") {
+                                var text = "danger";
+                            }
+                            return `<div class="badge badge-light-`+text+` fw-bolder">`+row.msoc_approve+`</div>`;
+                        }
+                    },
+                    { data: "mpol_kode" },
+                    {
+                        data: "mpol_approve",
+                        render: function(data, type, row, meta) {
+                            var sts = row.mpol_approve;
+                            if (sts == "sudah") {
+                                var text = "success";
+                            } else if (sts == "belum") {
+                                var text = "danger";
+                            }
+                            return `<div class="badge badge-light-`+text+` fw-bolder">`+row.mpol_approve+`</div>`;
+                        }
+                    },
+                    {
+                        data: "aktif",
+                        render: function(data, type, row, meta) {
+                            var sts = row.aktif;
+                            if (sts == "aktif") {
+                                var text = "success";
+                            } else if (sts == "suspend") {
+                                var text = "warning";
+                            } else if (sts == "mati") {
+                                var text = "danger";
+                            }
+                            return `<div class="badge badge-light-`+text+` fw-bolder">`+row.aktif+`</div>`;
+                        }
+                    },
+                    {
+                        data: "online",
+                        render: function(data, type, row, meta) {
+                            var sts = row.online;
+                            if (sts == "aktif") {
+                                var text = "success";
+                            } else if (sts == "mati") {
+                                var text = "danger";
+                            }
+                            return `<div class="badge badge-light-`+text+` fw-bolder">`+row.online+`</div>`;
+                        }
                     },
                 ],
             );
+
+            tombol ('change', 'approv_soc', function () {
+                var kode = $(this).attr('data-kode');
+                var val = $(this).val();
+                validate(
+                    "Data dengan kode berikut " + kode + " akan di approve!",
+                    (result) => {
+                        if (result.isConfirmed) {
+                            post(
+                                "{{ url('api/tehnik/soc/lihat-soc/update-status-approval') }}" + "/" + kode + "/" + val,
+                                function(data) {
+                                    // console.log(data);
+                                    message(
+                                        'success',
+                                        'Data berhasil di approve dengan kode ' + kode + ' !',
+                                    );
+                                    setCheck(this, true);
+                                    lodTable('datalistSoc');
+                                },
+                            );
+                        } else {
+                            setCheck(this, false);
+                        }
+                    }
+                );
+            });
 
             $('body').on('click', '#omodTam', function() {
                 openModal('#modalMenu');

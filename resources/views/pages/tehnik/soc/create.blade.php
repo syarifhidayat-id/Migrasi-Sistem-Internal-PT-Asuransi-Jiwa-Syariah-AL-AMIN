@@ -27,19 +27,20 @@
     <div class="card-header border-0 pt-6">
         <div class="card-title">
             <div class="d-flex align-items-center position-relative my-1">
-                <button type="button" class="btn btn-light-primary btn-sm" id="title_action">Buat SOC Baru</button>
+                <button type="button" class="btn btn-light-primary" disabled id="title_action">Buat SOC Baru</button>
             </div>
         </div>
 
         <div class="card-toolbar">
-            <div class="d-flex align-items-center">
-                <span class="fs-7 text-gray-700 fw-bolder pe-3">Quick Tools:</span>
-                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-primary me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru" id="btn_baru"><i class="fa-solid fa-file-circle-plus fs-2x"></i></button>
-                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-primary me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Endors" id="btn_endors"><i class="fa-solid fa-file-circle-question fs-2x"></i></button>
-                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-primary me-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Edit" id="btn_edit"><i class="fa-solid fa-file-circle-check fs-2x"></i></button>
-                <button type="button" class="btn btn-sm btn-icon btn-icon-muted btn-active-icon-primary" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Batal" id="btn_Batal"><i class="fa-solid fa-file-circle-minus fs-2x"></i></button>
-            </div>
+            {{-- <div class="d-flex align-items-center">
 
+            </div> --}}
+            <div class="input-group input-group-solid">
+                <button type="button" class="btn btn-light-primary" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru" onclick="cekTombol(0)">Baru</button>
+                <button type="button" class="btn btn-light-primary" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Endors" onclick="cekTombol(2)">Endors</button>
+                <button type="button" class="btn btn-light-primary" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Edit" onclick="cekTombol(1)">Edit</button>
+                <button type="button" class="btn btn-light-primary" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Batal" onclick="cekTombol(3)">Batal</button>
+            </div>
         </div>
     </div>
 
@@ -95,7 +96,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-5">
-                                    <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mspaj_nomor" id="msoc_mspaj_nomor" data-placeholder="Pilih nomor spaj" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" data-control="select2" name="msoc_mspaj_nomor" id="msoc_mspaj_nomor" data-placeholder="Pilih nomor spaj" data-allow-clear="true">
                                         <option></option>
                                     </select>
                                     <span class="text-danger error-text msoc_mspaj_nomor_err"></span>
@@ -265,7 +266,7 @@
                         <label class="required form-label">Fee PPN</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end required_sel" data-control="select2" name="msoc_handlingfee" id="msoc_handlingfee" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid required_sel" data-control="select2" name="msoc_handlingfee" id="msoc_handlingfee" data-placeholder="Pilih">
                                     <option></option>
                                 </select>
                             </div>
@@ -279,7 +280,7 @@
                         <label class="required form-label">Fee PPH 23</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end required_sel" data-control="select2" name="msoc_handlingfee2" id="msoc_handlingfee2" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid required_sel" data-control="select2" name="msoc_handlingfee2" id="msoc_handlingfee2" data-placeholder="Pilih">
                                     <option></option>
                                 </select>
                             </div>
@@ -293,7 +294,7 @@
                         <label class="form-label">Ujrah</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mujh_persen" id="msoc_mujh_persen" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid" data-control="select2" name="msoc_mujh_persen" id="msoc_mujh_persen" data-placeholder="Pilih">
                                     <option></option>
                                 </select>
                             </div>
@@ -307,7 +308,7 @@
                         <label class="required form-label">Managemen Fee</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mmfe_persen" id="msoc_mmfe_persen" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid" data-control="select2" name="msoc_mmfe_persen" id="msoc_mmfe_persen" data-placeholder="Pilih">
                                     <option></option>
                                 </select>
                             </div>
@@ -321,7 +322,7 @@
                         <label class="form-label">Overreding</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_overreding" id="msoc_overreding" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid" data-control="select2" name="msoc_overreding" id="msoc_overreding" data-placeholder="Pilih">
                                     <option></option>
                                     <option value="0">0</option>
                                     <option value="25">25</option>
@@ -337,7 +338,7 @@
                         <label class="form-label">Kom. Tidak Potong</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mkom_persen" id="msoc_mkom_persen" data-placeholder="Pilih" onchange="cekkomisi()">
+                                <select class="form-select form-select-solid" data-control="select2" name="msoc_mkom_persen" id="msoc_mkom_persen" data-placeholder="Pilih" onchange="cekkomisi()">
                                     <option></option>
                                 </select>
                             </div>
@@ -351,7 +352,7 @@
                         <label class="form-label">Kom. Potong</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mkomdisc_persen" id="msoc_mkomdisc_persen" data-placeholder="Pilih" onchange="cekkomisi()">
+                                <select class="form-select form-select-solid" data-control="select2" name="msoc_mkomdisc_persen" id="msoc_mkomdisc_persen" data-placeholder="Pilih" onchange="cekkomisi()">
                                     <option></option>
                                 </select>
                             </div>
@@ -365,7 +366,7 @@
                         <label class="form-label">Referal</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_referal" id="msoc_referal" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid" data-control="select2" name="msoc_referal" id="msoc_referal" data-placeholder="Pilih">
                                     <option></option>
                                 </select>
                             </div>
@@ -379,7 +380,7 @@
                         <label class="form-label">Maintenance</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_maintenance" id="msoc_maintenance" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid" data-control="select2" name="msoc_maintenance" id="msoc_maintenance" data-placeholder="Pilih">
                                     <option></option>
                                 </select>
                             </div>
@@ -393,7 +394,7 @@
                         <label class="form-label">Fee Base Tidak Potong</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mfee_persen" id="msoc_mfee_persen" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid" data-control="select2" name="msoc_mfee_persen" id="msoc_mfee_persen" data-placeholder="Pilih">
                                     <option></option>
                                 </select>
                             </div>
@@ -407,7 +408,7 @@
                         <label class="form-label">Fee Base Potong</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_mdr_kode" id="msoc_mdr_kode" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid" data-control="select2" name="msoc_mdr_kode" id="msoc_mdr_kode" data-placeholder="Pilih">
                                     <option></option>
                                 </select>
                             </div>
@@ -468,7 +469,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="mb-5">
-                                    <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_jenis_tarif" id="msoc_jenis_tarif" data-placeholder="Pilih">
+                                    <select class="form-select form-select-solid" data-control="select2" name="msoc_jenis_tarif" id="msoc_jenis_tarif" data-placeholder="Pilih">
                                         <option></option>
                                         <option value="0">Usia</option>
                                         <option value="1">Masa</option>
@@ -480,7 +481,7 @@
                                 <div class="mb-5">
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid rounded-0 border-start border-end required_sel" data-control="select2" name="e_tarif" id="e_tarif" data-placeholder="Pilih">
+                                            <select class="form-select form-select-solid required_sel" data-control="select2" name="e_tarif" id="e_tarif" data-placeholder="Pilih">
                                                 <option></option>
                                             </select>
                                             <input type="text" class="form-control form-control-solid" name="msoc_mth_nomor" id="msoc_mth_nomor" placeholder="msoc_mth_nomor" hidden />
@@ -500,7 +501,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="mb-5">
-                                    <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="msoc_tipe_uw" id="msoc_tipe_uw" data-placeholder="Pilih">
+                                    <select class="form-select form-select-solid" data-control="select2" name="msoc_tipe_uw" id="msoc_tipe_uw" data-placeholder="Pilih">
                                         <option></option>
                                         <option value="0">Usia</option>
                                         <option value="1">X+N</option>
@@ -512,7 +513,7 @@
                                 <div class="mb-5">
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid rounded-0 border-start border-end required_sel" data-control="select2" name="e_uw" id="e_uw" data-placeholder="Pilih">
+                                            <select class="form-select form-select-solid required_sel" data-control="select2" name="e_uw" id="e_uw" data-placeholder="Pilih">
                                                 <option></option>
                                             </select>
                                             <input type="text" class="form-control form-control-solid" name="msoc_mpuw_nomor" id="msoc_mpuw_nomor" placeholder="msoc_mpuw_nomor" hidden />
@@ -531,15 +532,11 @@
                         <label class="form-label">Dokumen SOC</label>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="mb-5">
-                                    <div class="input-group input-group-solid flex-nowrap">
-                                        <div class="overflow-hidden flex-grow-1">
-                                            <input type="file" class="form-control form-control-solid" name="msoc_dok" id="msoc_dok" accept="application/pdf" placeholder="pilih file" />
-                                            <span class="text-danger error-text msoc_dok_err"></span>
-                                        </div>
-                                        <button type="button" id="lihatDocSoc" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
-                                    </div>
+                                <div class="input-group input-group-solid mb-5">
+                                    <input type="file" class="form-control" name="msoc_dok" id="msoc_dok" accept="application/pdf" placeholder="pilih file" />
+                                    <button type="button" id="lihatDocSoc" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
                                 </div>
+                                <span class="text-danger error-text msoc_dok_err"></span>
                             </div>
                         </div>
                     </div>
@@ -554,8 +551,11 @@
     </form>
     @include('pages.tehnik.soc.modal.program-asuransi')
     @include('pages.tehnik.soc.modal.import-tarif')
+    @include('pages.tehnik.soc.modal.show-konfirmtarif')
     @include('pages.tehnik.soc.modal.lihat-tarif')
     @include('pages.tehnik.soc.modal.import-uw')
+    @include('pages.tehnik.soc.modal.lihat-uw')
+    @include('pages.tehnik.soc.modal.show-konfirmuw')
     @include('pages.tehnik.soc.modal.lihat-docsoc')
 </div>
 @endsection
@@ -571,6 +571,7 @@
         // selectServerSide() select2 jika not required ambil data dari api/route
         // selectServerSideReq() select2 jika required ambil data dari api/route
         selectOpReq('msoc_jenis_bayar');
+        // setTextReadOnly('e_manfaat_pol', true);
         setTextReadOnly('e_pras', true);
         setTextReadOnly('mpid_nama', true);
         setTextReadOnly('msoc_mspaj_nama', true);
@@ -582,6 +583,9 @@
         setText('msoc_no_endors', '-');
         setTextReadOnly('msoc_nomor', true);
         setTextReadOnly('msoc_kode', true);
+        selectOpTag('mth_kolom');
+        selectOpTag('mth_baris');
+        selectOpTag('mpuw_baris');
 
         $(function () {
             $.ajaxSetup({
@@ -985,6 +989,27 @@
                 },
             );
 
+            // selectTable(
+            //     "e_pras",
+            //     "{{ url('api/tehnik/soc/entry-soc/pilih-program-asuransi') }}",
+            //     "mpras_nama",
+            //     "mpras_nama",
+            //     ['mpras_nama','msoc_kode','mpras_kode','mpras_uptambah','mpras_ujrah_referal','mpras_disc_rate','mpras_mmft_kode_jiwa'],
+            //     [
+            //         {name:'mpras_nama',text:'Program Asuransi'},
+            //         {name:'msoc_kode',text:'Nomor SOC'},
+            //         {name:'mpras_kode',text:'Kode Program Asuransi'},
+            //         {name:'mpras_uptambah',text:'Up Tambahan'},
+            //         {name:'mpras_ujrah_referal',text:'Ujrah Referal'},
+            //         {name:'mpras_disc_rate',text:'Discount Rate'},
+            //         {name:'mpras_mmft_kode_jiwa',text:'Tambahan Jiwa'}
+            //     ],
+            //     // function(res) {
+            //     //     // setText('msoc_mpuw_nomor', res.params.data.id);
+            //     //     console.log(res);
+            //     // },
+            // );
+
             $('body').on('click', '#programAsur', function() {
                 const mpid = document.getElementById("mpid").value = getText('msoc_mpid_kode'),
                     // mkm = document.getElementById("mkm").value = getText('msoc_mekanisme'),
@@ -998,7 +1023,7 @@
                     perush = document.getElementById("perush").value = getText('msoc_jns_perusahaan');
 
                 // if (mpid !=="" && mkm !=="" && mkm2 !=="" && mft !=="" && mrkn !=="" && mssp !=="" && mjm !=="" && mjns !=="" && byr !=="" && perush !=="") {
-                if (mpid !=="") {
+                // if (mpid !=="") {
                     openModal('modalProg');
                     titleAction('titleModal', 'Pilih Program Asuransi');
                     dtTable(
@@ -1028,13 +1053,13 @@
                         ],
                         [2, 'asc'],
                     );
-                } else {
-                    message(
-                        'error',
-                        'Oops...',
-                        'Isian form masih ada yang kosong, isi terlebih dahulu.'
-                    );
-                }
+                // } else {
+                //     message(
+                //         'error',
+                //         'Oops...',
+                //         'Isian form masih ada yang kosong, isi terlebih dahulu.'
+                //     );
+                // }
             });
 
             $('body').on('click', '#btn_pilih', function() {
@@ -1045,17 +1070,25 @@
                 messageValidate(
                     info,
                     'warning',
-                    'Ya, yakin!',
+                    'Oke..!',
+                    'Tidak..!',
                     (result) => {
                         if (result.isConfirmed) {
-                            Swal.fire(
-                                'Berhasil!',
-                                'Data ditampilkan.',
-                                'success'
-                            ).then((res) => {
-                                setText('e_pras', name);
-                                setText('msoc_mpras_kode', id);
-                            });
+                            setText('e_pras', name);
+                            setText('msoc_mpras_kode', id);
+                            setTextReadOnly('e_pras', true);
+                            // Swal.fire(
+                            //     'Berhasil!',
+                            //     'Data ditampilkan.',
+                            //     'success'
+                            // ).then((res) => {
+                            //     setText('e_pras', name);
+                            //     setText('msoc_mpras_kode', id);
+                            // });
+                        } else if (result.isDenied) {
+                            setText('e_pras', name);
+                            setText('msoc_mpras_kode', id);
+                            setTextReadOnly('e_pras', false);
                         } else {
                             console.log('Batal');
                         }
@@ -1067,7 +1100,6 @@
                 openModal('modalTarif');
                 titleAction('titleTarif', 'Upload File Table Tarif');
                 clearForm('frxx_uploadTarif');
-
             });
 
             $('body').on('click', '#lihatTarif', function() {
@@ -1075,102 +1107,7 @@
                 if (kode !== "" && kode !== null) {
                     openModal('modalLihatTarif');
                     titleAction('titleLihatTarif', 'Table Tarif');
-                    dtTable(
-                        "listTableTarif",
-                        false,
-                        "{{ url('api/tehnik/soc/entry-soc/lihat-tarif') }}" + "/" + kode,
-                        [
-                            { data: "mstuj_usia", className: "text-center" },
-                            { data: "mstuj_0", className: "text-center" },
-                            { data: "mstuj_1", className: "text-center" },
-                            { data: "mstuj_2", className: "text-center" },
-                            { data: "mstuj_3", className: "text-center" },
-                            { data: "mstuj_4", className: "text-center" },
-                            { data: "mstuj_5", className: "text-center" },
-                            { data: "mstuj_6", className: "text-center" },
-                            { data: "mstuj_7", className: "text-center" },
-                            { data: "mstuj_8", className: "text-center" },
-                            { data: "mstuj_9", className: "text-center" },
-                            { data: "mstuj_10", className: "text-center" },
-                            { data: "mstuj_11", className: "text-center" },
-                            { data: "mstuj_12", className: "text-center" },
-                            { data: "mstuj_13", className: "text-center" },
-                            { data: "mstuj_14", className: "text-center" },
-                            { data: "mstuj_15", className: "text-center" },
-                            { data: "mstuj_16", className: "text-center" },
-                            { data: "mstuj_17", className: "text-center" },
-                            { data: "mstuj_18", className: "text-center" },
-                            { data: "mstuj_19", className: "text-center" },
-                            { data: "mstuj_20", className: "text-center" },
-                            { data: "mstuj_21", className: "text-center" },
-                            { data: "mstuj_22", className: "text-center" },
-                            { data: "mstuj_23", className: "text-center" },
-                            { data: "mstuj_24", className: "text-center" },
-                            { data: "mstuj_25", className: "text-center" },
-                            { data: "mstuj_26", className: "text-center" },
-                            { data: "mstuj_27", className: "text-center" },
-                            { data: "mstuj_28", className: "text-center" },
-                            { data: "mstuj_29", className: "text-center" },
-                            { data: "mstuj_30", className: "text-center" },
-                            { data: "mstuj_31", className: "text-center" },
-                            { data: "mstuj_32", className: "text-center" },
-                            { data: "mstuj_33", className: "text-center" },
-                            { data: "mstuj_34", className: "text-center" },
-                            { data: "mstuj_35", className: "text-center" },
-                            { data: "mstuj_36", className: "text-center" },
-                            { data: "mstuj_37", className: "text-center" },
-                            { data: "mstuj_38", className: "text-center" },
-                            { data: "mstuj_39", className: "text-center" },
-                            { data: "mstuj_40", className: "text-center" },
-                            { data: "mstuj_41", className: "text-center" },
-                            { data: "mstuj_42", className: "text-center" },
-                            { data: "mstuj_43", className: "text-center" },
-                            { data: "mstuj_44", className: "text-center" },
-                            { data: "mstuj_45", className: "text-center" },
-                            { data: "mstuj_46", className: "text-center" },
-                            { data: "mstuj_47", className: "text-center" },
-                            { data: "mstuj_48", className: "text-center" },
-                            { data: "mstuj_49", className: "text-center" },
-                            { data: "mstuj_50", className: "text-center" },
-                            { data: "mstuj_51", className: "text-center" },
-                            { data: "mstuj_52", className: "text-center" },
-                            { data: "mstuj_53", className: "text-center" },
-                            { data: "mstuj_54", className: "text-center" },
-                            { data: "mstuj_55", className: "text-center" },
-                            { data: "mstuj_56", className: "text-center" },
-                            { data: "mstuj_57", className: "text-center" },
-                            { data: "mstuj_58", className: "text-center" },
-                            { data: "mstuj_59", className: "text-center" },
-                            { data: "mstuj_60", className: "text-center" },
-                            { data: "mstuj_61", className: "text-center" },
-                            { data: "mstuj_62", className: "text-center" },
-                            { data: "mstuj_63", className: "text-center" },
-                            { data: "mstuj_64", className: "text-center" },
-                            { data: "mstuj_65", className: "text-center" },
-                            { data: "mstuj_66", className: "text-center" },
-                            { data: "mstuj_67", className: "text-center" },
-                            { data: "mstuj_68", className: "text-center" },
-                            { data: "mstuj_69", className: "text-center" },
-                            { data: "mstuj_70", className: "text-center" },
-                            // { data: "mstuj_71", className: "text-center" },
-                            // { data: "mstuj_72", className: "text-center" },
-                            // { data: "mstuj_73", className: "text-center" },
-                            // { data: "mstuj_74", className: "text-center" },
-                            // { data: "mstuj_75", className: "text-center" },
-                            // { data: "mstuj_76", className: "text-center" },
-                            // { data: "mstuj_77", className: "text-center" },
-                            // { data: "mstuj_78", className: "text-center" },
-                            // { data: "mstuj_79", className: "text-center" },
-                            // { data: "mstuj_80", className: "text-center" },
-                            // { data: "mstuj_81", className: "text-center" },
-                            // { data: "mstuj_82", className: "text-center" },
-                            // { data: "mstuj_83", className: "text-center" },
-                            // { data: "mstuj_84", className: "text-center" },
-                            // { data: "mstuj_85", className: "text-center" },
-                            // { data: "mstuj_86", className: "text-center" },
-                        ],
-                        [0, 'asc'],
-                    );
+                    showTarifTable("listTableTarif", kode);
                 } else {
                     message(
                         'error',
@@ -1180,73 +1117,134 @@
                 }
             });
 
+            $('body').on('click', '#lihatUw', function() {
+                var kode = document.getElementById("mpuw_nomor").value = getText('msoc_mpuw_nomor');
+                if (kode !== "" && kode !== null) {
+                    openModal('modalLihatUw');
+                    titleAction('titleLihatUw', 'Table Uw');
+                    showUwTable("listTableUw", kode);
+                } else {
+                    message(
+                        'error',
+                        'Oops...',
+                        'Pilih dulu ketentuan uw!'
+                    );
+                }
+            });
+
             $('body').on('click', '#importUw', function() {
                 openModal('modalUw');
                 titleAction('titleUw', 'Upload File Table Uw');
                 clearForm('frxx_uploadUw');
-
             });
 
             $('body').on('click', '#lihatDocSoc', function() {
-                openModal('modalLihatDoc');
-                titleAction('titleLihatDoc', 'Lihat Dokumen');
+                var file = getText('msoc_dok');
+                if (file == null || file == "") {
+                    message(
+                        "error",
+                        "Ops..",
+                        "File dokumen kosong, harap di isi dulu!"
+                    );
+                } else {
+                    openModal('modalLihatDoc');
+                    titleAction('titleLihatDoc', 'Lihat Dokumen');
+                    setText('current_page', 1);
+                }
             });
 
-            viewPdf("msoc_dok", "pdfView");
+            viewPdf(
+                "msoc_dok",
+                "viewPdfFile",
+                "go_previous",
+                "go_next",
+                "current_page",
+                "tot_page",
+                "zoom_in",
+                "zoom_out"
+            );
 
-            $('body').on('click', '#btn_baru', function() {
-                titleAction('title_action', 'Buat SOC Baru');
-                clearForm('frxx');
-                clearSelect();
-                bsimpan('btn_simpan', 'Simpan');
-            });
-
-            $('body').on('click', '#btn_endors', function() {
-                titleAction('title_action', 'SOC Diendos');
-                clearForm('frxx');
-                clearSelect();
-                bsimpan('btn_simpan', 'Simpan');
-            });
-
-            $('body').on('click', '#btn_edit', function() {
-                titleAction('title_action', 'SOC Edit');
-                clearForm('frxx');
-                clearSelect();
-                bsimpan('btn_simpan', 'Simpan');
-            });
-
-            $('body').on('click', '#btn_Batal', function() {
-                titleAction('title_action', 'SOC Dibatalkan');
-                clearForm('frxx');
-                clearSelect();
-                bsimpan('btn_simpan', 'Simpan');
-            });
-
-            submitFormWithFile(
+            submitForm(
                 "frxx",
                 "btn_simpan",
+                "POST",
                 "{{ route('tehnik.soc.entry-soc.store') }}",
-                (res) => {
+                (resSuccess) => {
                     clearForm("frxx");
                     clearSelect();
                     bsimpan("btn_simpan", 'Simpan');
-                }
+                },
+                (resError) => {
+                    console.log(resError);
+                },
             );
 
             submitImportSoc(
                 "frxx_uploadTarif",
                 "btnImportTarif_simpan",
-                "Apakah anda yakin data tarif yang di upload sudah benar?",
+                "Apakah data yang di upload sudah benar?",
                 "{{ url('api/tehnik/soc/entry-soc/upload-tarif') }}",
-                "modalTarif"
+                "kode_import_tarif",
+                (res) => {
+                    clearForm("frxx_uploadTarif");
+                    clearSelect();
+                    bsimpan('btnImportTarif_simpan', 'Simpan');
+                    closeModal("modalTarif");
+                    openModal("modalShowKonfirmTarif");
+                    titleAction("titleShowKonfirmTarif", "Konfirmasi Tabel Tarif");
+                    var kode = getText("kode_import_tarif");
+                    showTarifTable("showTarif", kode);
+                },
+            );
+
+            submitForm(
+                "frxx_tarifKonfim",
+                "btnTarifKonfim_simpan",
+                "POST",
+                "{{ url('api/tehnik/soc/entry-soc/update-upload-tarif') }}",
+                (resSukses) => {
+                    clearForm("frxx_tarifKonfim");
+                    clearSelect();
+                    bsimpan('btnTarifKonfim_simpan', 'Simpan');
+                    closeModal("modalShowKonfirmTarif");
+                },
+                (resError) => {
+                    console.log(resError);
+                },
             );
 
             submitImportSoc(
                 "frxx_uploadUw",
                 "btnImportUw_simpan",
-                "Apakah anda yakin data uw yang di upload sudah benar?",
+                "Apakah data yang di upload sudah benar?",
                 "{{ url('api/tehnik/soc/entry-soc/upload-uw') }}",
-                "modalUw"
+                "kode_import_uw",
+                (res) => {
+                    clearForm("frxx_uploadUw");
+                    clearSelect();
+                    bsimpan('btnImportUw_simpan', 'Simpan');
+                    closeModal("modalUw");
+                    openModal("modalShowKonfirmUw");
+                    titleAction("titleShowKonfirmUw", "Konfirmasi Tabel UW");
+                    var kode = getText("kode_import_uw");
+                    showUwTable("showUw", kode);
+                },
+            );
+
+            submitForm(
+                "frxx_uwKonfim",
+                "btnUwKonfim_simpan",
+                "POST",
+                "{{ url('api/tehnik/soc/entry-soc/update-upload-uw') }}",
+                (resSukses) => {
+                    clearForm("frxx_uwKonfim");
+                    clearSelect();
+                    bsimpan('btnUwKonfim_simpan', 'Simpan');
+                    closeModal("modalShowKonfirmUw");
+                },
+                (resError) => {
+                    console.log(resError);
+                },
             );
 
             $('#btn_reset').click(function() {
@@ -1265,8 +1263,137 @@
             });
         });
 
+        cekTombol(0);
+        cekField();
+        function cekTombol (tipe) {
+            clearForm('frxx');
+            cekField();
+            clearSelect();
+            bsimpan('btn_simpan', 'Simpan');
+
+            if (tipe=='0') {
+                titleAction('title_action', 'Buat SOC Baru');
+                setTextReadOnly("msoc_mrkn_nama",false);
+                setTextReadOnly("e_manfaat_pol",false);
+                setTextReadOnly("e_nasabah",false);
+                setTextReadOnly("msoc_mspaj_nama",true);
+                setTextReadOnly("msoc_mssp_nama",false);
+                setTextReadOnly("msoc_jns_perusahaan",false);
+            }
+
+            if (tipe=='1') {
+                titleAction('title_action', 'SOC Edit');
+                setTextReadOnly("e_manfaat_pol",false);
+                setTextReadOnly("msoc_mrkn_nama",false);
+                setTextReadOnly("e_nasabah",false);
+                setTextReadOnly("msoc_mspaj_nama",false);
+                setTextReadOnly("msoc_mssp_nama",false);
+                setTextReadOnly("msoc_jns_perusahaan",false);
+
+            }
+
+            if (tipe=='2') {
+                titleAction('title_action', 'SOC Diendos');
+                setTextReadOnly("msoc_mrkn_nama",false);
+                setTextReadOnly("e_nasabah",false);
+                setTextReadOnly("e_manfaat_pol",false);
+                setTextReadOnly("msoc_mspaj_nama",false);
+                setTextReadOnly("msoc_mssp_nama",false);
+                setTextReadOnly("msoc_jns_perusahaan",false);
+            }
+
+            if (tipe=='3') {
+                titleAction('title_action', 'SOC Dibatalkan');
+                setTextReadOnly("msoc_mrkn_nama",false);
+                setTextReadOnly("e_nasabah",false);
+                setTextReadOnly("msoc_mspaj_nama",false);
+                setTextReadOnly("e_manfaat_pol",false);
+                setTextReadOnly("msoc_mssp_nama",false);
+                setTextReadOnly("msoc_jns_perusahaan",false);
+            }
+            setText("msoc_endos",tipe);
+        }
+
+        function cekField () {
+            setText('msoc_endos','0');
+			setText('msoc_mfee_persen','0');
+			setText('msoc_mkom_persen','0');
+			setText('msoc_overreding','0');
+			setText('msoc_mmfe_persen','0');
+			setText('msoc_mujh_persen','0');
+			setText('msoc_mujhrf_kode','0');
+			setText('msoc_mdr_kode','0');
+			setText('msoc_mut_kode','0');
+			setText('msoc_referal','0');
+			setText('msoc_maintenance','0');
+			setText('msoc_no_endors','-');
+			// setCombo("msoc_tipe_uw","0");
+			// setCombo("typerpt","web");
+        }
+
+        function cekkomisi () {
+            // var id = getSelect('msoc_mkom_persen');
+            // if (id == 0) {
+            //     alert(id);
+            // }
+            var xkompot=getText('msoc_mkomdisc_persen');
+            var xkomtdkpot=getText('msoc_mkom_persen');
+
+            if (xkomtdkpot == 0) {
+                setTextReadOnly('msoc_mkomdisc_persen',false);
+                setTextReadOnly('msoc_mkom_persen',false);
+            }
+
+            if (xkomtdkpot > 0) {
+                setTextReadOnly('msoc_mkom_persen',false);
+                setTextReadOnly('msoc_mkomdisc_persen',true);
+                setText('msoc_mkomdisc_persen','0');
+            }
+
+            if (xkompot > 0) {
+                setTextReadOnly('msoc_mkom_persen',true);
+                setTextReadOnly('msoc_mkomdisc_persen',false);
+                setSelect('msoc_mkom_persen','0');
+                pesan('Apakah anda yakin komisi mengurangi kontribusi Tagih/Netto ?');
+            }
+        }
+
+        function cekdiscrate () {
+            setTextReadOnly("msoc_mdr_kode",true);
+            if (getText("msoc_mfee_persen")==0) {
+                pesan("Silakan Isi Discount Rate Jika anda yakin kontribusi dibayarkan Nett");
+                setTextReadOnly("msoc_mfee_persen",true);
+                setTextReadOnly("msoc_mdr_kode",false);
+            } else {
+                pesan("Apakah Anda Yakin kontribusi dibayarkan Gross?? ");
+            }
+        }
+
+        function muncul1(uptambah,ujrah_referal,discrate,mmft_kode_jiwa) {
+            setComboReadOnly("msoc_mmft_kode_jiwa",true);
+            if (mmft_kode_jiwa=="1") {
+                setComboReadOnly("msoc_mmft_kode_jiwa",false);
+            }
+
+            setComboReadOnly("msoc_mut_kode",true);
+            if (uptambah=="1") {
+                setComboReadOnly("msoc_mut_kode",false);
+            }
+
+            setComboReadOnly("msoc_mujhrf_kode",true);
+            if (ujrah_referal=="1") {
+                setComboReadOnly("msoc_mujhrf_kode",false);
+            }
+
+            setComboReadOnly("msoc_mdr_kode",false);
+            if (discrate=="1") {
+                setComboReadOnly("msoc_mdr_kode",true);
+            }
+        }
+
         function clear_f () {
             clearForm('frxx_uploadTarif');
+            clearForm('frxx_uploadUw');
             clearSelect();
         }
 
@@ -1276,44 +1403,134 @@
             clearSelect();
         }
 
-        function close_proAsur () {
-            closeModal('modalProg');
+        function close_mUw () {
+            closeModal('modalUw');
+            clearForm('frxx_uploadUw');
+            clearSelect();
         }
 
-        function close_tblTarif () {
-            closeModal('modalLihatTarif');
-        }
-
-        function close_mDoc () {
+        function close_lihatDoc () {
             closeModal('modalLihatDoc');
-            $('#pdfView').attr('data', '');
+            $('#lihatFileDoc').attr("data","");
         }
 
-        function cekkomisi () {
-            // var id = getSelect('msoc_mkom_persen');
-            // if (id == 0) {
-            //     alert(id);
-            // }
-            var xkompot=getSelect('msoc_mkomdisc_persen');
-            var xkomtdkpot=getSelect('msoc_mkom_persen');
+        function showTarifTable (idTable, kode) {
+            dtTable(
+                idTable,
+                false,
+                "{{ url('api/tehnik/soc/entry-soc/lihat-tarif') }}" + "/" + kode,
+                [
+                    { data: "mstuj_usia", className: "text-center" },
+                    { data: "mstuj_0", className: "text-center" },
+                    { data: "mstuj_1", className: "text-center" },
+                    { data: "mstuj_2", className: "text-center" },
+                    { data: "mstuj_3", className: "text-center" },
+                    { data: "mstuj_4", className: "text-center" },
+                    { data: "mstuj_5", className: "text-center" },
+                    { data: "mstuj_6", className: "text-center" },
+                    { data: "mstuj_7", className: "text-center" },
+                    { data: "mstuj_8", className: "text-center" },
+                    { data: "mstuj_9", className: "text-center" },
+                    { data: "mstuj_10", className: "text-center" },
+                    { data: "mstuj_11", className: "text-center" },
+                    { data: "mstuj_12", className: "text-center" },
+                    { data: "mstuj_13", className: "text-center" },
+                    { data: "mstuj_14", className: "text-center" },
+                    { data: "mstuj_15", className: "text-center" },
+                    { data: "mstuj_16", className: "text-center" },
+                    { data: "mstuj_17", className: "text-center" },
+                    { data: "mstuj_18", className: "text-center" },
+                    { data: "mstuj_19", className: "text-center" },
+                    { data: "mstuj_20", className: "text-center" },
+                    { data: "mstuj_21", className: "text-center" },
+                    { data: "mstuj_22", className: "text-center" },
+                    { data: "mstuj_23", className: "text-center" },
+                    { data: "mstuj_24", className: "text-center" },
+                    { data: "mstuj_25", className: "text-center" },
+                    { data: "mstuj_26", className: "text-center" },
+                    { data: "mstuj_27", className: "text-center" },
+                    { data: "mstuj_28", className: "text-center" },
+                    { data: "mstuj_29", className: "text-center" },
+                    { data: "mstuj_30", className: "text-center" },
+                    { data: "mstuj_31", className: "text-center" },
+                    { data: "mstuj_32", className: "text-center" },
+                    { data: "mstuj_33", className: "text-center" },
+                    { data: "mstuj_34", className: "text-center" },
+                    { data: "mstuj_35", className: "text-center" },
+                    { data: "mstuj_36", className: "text-center" },
+                    { data: "mstuj_37", className: "text-center" },
+                    { data: "mstuj_38", className: "text-center" },
+                    { data: "mstuj_39", className: "text-center" },
+                    { data: "mstuj_40", className: "text-center" },
+                    { data: "mstuj_41", className: "text-center" },
+                    { data: "mstuj_42", className: "text-center" },
+                    { data: "mstuj_43", className: "text-center" },
+                    { data: "mstuj_44", className: "text-center" },
+                    { data: "mstuj_45", className: "text-center" },
+                    { data: "mstuj_46", className: "text-center" },
+                    { data: "mstuj_47", className: "text-center" },
+                    { data: "mstuj_48", className: "text-center" },
+                    { data: "mstuj_49", className: "text-center" },
+                    { data: "mstuj_50", className: "text-center" },
+                    { data: "mstuj_51", className: "text-center" },
+                    { data: "mstuj_52", className: "text-center" },
+                    { data: "mstuj_53", className: "text-center" },
+                    { data: "mstuj_54", className: "text-center" },
+                    { data: "mstuj_55", className: "text-center" },
+                    { data: "mstuj_56", className: "text-center" },
+                    { data: "mstuj_57", className: "text-center" },
+                    { data: "mstuj_58", className: "text-center" },
+                    { data: "mstuj_59", className: "text-center" },
+                    { data: "mstuj_60", className: "text-center" },
+                    { data: "mstuj_61", className: "text-center" },
+                    { data: "mstuj_62", className: "text-center" },
+                    { data: "mstuj_63", className: "text-center" },
+                    { data: "mstuj_64", className: "text-center" },
+                    { data: "mstuj_65", className: "text-center" },
+                    { data: "mstuj_66", className: "text-center" },
+                    { data: "mstuj_67", className: "text-center" },
+                    { data: "mstuj_68", className: "text-center" },
+                    { data: "mstuj_69", className: "text-center" },
+                    { data: "mstuj_70", className: "text-center" },
+                    // { data: "mstuj_71", className: "text-center" },
+                    // { data: "mstuj_72", className: "text-center" },
+                    // { data: "mstuj_73", className: "text-center" },
+                    // { data: "mstuj_74", className: "text-center" },
+                    // { data: "mstuj_75", className: "text-center" },
+                    // { data: "mstuj_76", className: "text-center" },
+                    // { data: "mstuj_77", className: "text-center" },
+                    // { data: "mstuj_78", className: "text-center" },
+                    // { data: "mstuj_79", className: "text-center" },
+                    // { data: "mstuj_80", className: "text-center" },
+                    // { data: "mstuj_81", className: "text-center" },
+                    // { data: "mstuj_82", className: "text-center" },
+                    // { data: "mstuj_83", className: "text-center" },
+                    // { data: "mstuj_84", className: "text-center" },
+                    // { data: "mstuj_85", className: "text-center" },
+                    // { data: "mstuj_86", className: "text-center" },
+                ],
+                [0, 'asc'],
+            );
+        }
 
-            if (xkomtdkpot == 0) {
-                setSelectReadOnly('msoc_mkomdisc_persen',false);
-                setSelectReadOnly('msoc_mkom_persen',false);
-            }
-
-            if (xkomtdkpot > 0) {
-                setSelectReadOnly('msoc_mkom_persen',false);
-                setSelectReadOnly('msoc_mkomdisc_persen',true);
-                setSelect('msoc_mkomdisc_persen','0');
-            }
-
-            if (xkompot > 0) {
-                setSelectReadOnly('msoc_mkom_persen',true);
-                setSelectReadOnly('msoc_mkomdisc_persen',false);
-                setSelect('msoc_mkom_persen','0');
-                pesan('Apakah anda yakin komisi mengurangi kontribusi Tagih/Netto ?');
-            }
+        function showUwTable (idTable, kode) {
+            dtTable(
+                idTable,
+                false,
+                "{{ url('api/tehnik/soc/entry-soc/lihat-uw') }}" + "/" + kode,
+                [
+                    { data: "mrmp_urut", className: "text-center" },
+                    { data: "mrmp_tipe_peserta", className: "text-center" },
+                    { data: "mrmp_ket1", className: "text-center" },
+                    { data: "mrmp_ket2", className: "text-left" },
+                    { data: "mrmp_min_umur", className: "text-center" },
+                    { data: "mrmp_max_umur", className: "text-center" },
+                    { data: "mrmp_total_min", className: "text-center" },
+                    { data: "mrmp_total_max", className: "text-center" },
+                    { data: "mrmp_xn_max", className: "text-center" },
+                ],
+                [0, 'asc'],
+            );
         }
 
         // Form SOC
@@ -1327,5 +1544,15 @@
         hidePesan('mth_kolom');
         hidePesan('mth_baris');
         hidePesan('mth_file');
+
+        // Form Update Upload Tarif
+        hidePesan('mth_final');
+
+        // Form Upload Uw
+        hidePesan('mpuw_tipe_pertanggungan');
+        hidePesan('mpuw_nama');
+        hidePesan('mpuw_type_uw');
+        hidePesan('mpuw_baris');
+        hidePesan('mpuw_file');
     </script>
 @endsection

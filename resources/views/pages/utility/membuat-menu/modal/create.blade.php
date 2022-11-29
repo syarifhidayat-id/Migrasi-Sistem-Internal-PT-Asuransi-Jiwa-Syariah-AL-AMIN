@@ -3,12 +3,12 @@
         <div class="modal-content">
             <div class="modal-header" id="modalMenu_header">
                 <h2 class="fw-bolder" id="tModMenu"></h2>
-
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close">
-                    <span class="svg-icon svg-icon-1">
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeBtnModal()"><i class="fa-sharp fa-solid fa-xmark"></i></button>
+                {{-- <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-2x">
                         <i class="fa-sharp fa-solid fa-xmark"></i>
                     </span>
-                </div>
+                </div> --}}
             </div>
 
             <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
@@ -131,7 +131,7 @@
                     {{-- <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button> --}}
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="btn_close2"><i class="fa-solid fa-xmark"></i> Tutup</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="closeBtnModal()"><i class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>
         </div>

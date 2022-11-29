@@ -16,6 +16,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Shuchkin\SimpleXLSX;
+use Yajra\DataTables\Facades\DataTables;
 
 class UploadTarifController extends Controller
 {
@@ -45,7 +46,7 @@ class UploadTarifController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $sts)
+    public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
             'mth_tipe_pertanggungan' => 'required',
@@ -73,7 +74,9 @@ class UploadTarifController extends Controller
             $vtable = DB::table('emst.mst_tarif');
             $kodeImportTarif = KodeController::__getpx($vtable->max('mth_nomor'), 14);
             $data = $request->all();
-            $data = $request->except('_token');
+            $data = $request->except(
+                '_token',
+            );
             if ($request->hasFile('mth_file')) {
                 $mth_file = $request->file('mth_file');
                 $dir = 'public/tehnik/soc/import/import-tarif';
@@ -83,7 +86,6 @@ class UploadTarifController extends Controller
                 $data['mth_file'] = $namaFile;
             }
             $data['mth_nomor'] = $kodeImportTarif;
-            $data['mth_final'] = $sts;
             $data['mth_tanggal'] = date('Y-m-d');
 
             // $importTarif = new UploadTarifSocImport($kodeImportTarif, $kolom, $baris);
@@ -124,7 +126,8 @@ class UploadTarifController extends Controller
             if ($colxls == $tinggiCol && $rowxls == $tinggiRow) {
                 $vtable->insert($data);
                 return response()->json([
-                    'success' => 'Data berhasil disimpan dengan Kode '.$kodeImportTarif.'!'
+                    'success' => 'Data berhasil disimpan dengan Kode '.$kodeImportTarif.'!',
+                    'kode' => $kodeImportTarif
                 ]);
             } else {
                 return response()->json([
@@ -179,12 +182,40 @@ class UploadTarifController extends Controller
         //
     }
 
-    public function updateStatus(Request $request, $kode)
+    public function updateTarif(Request $request)
     {
-        $vtable = DB::table('emst.mst_tarif')->findOrFail($kode);
-        $request->merge([
-            'mth_final' => $request->mth_final
+        $validasi = Validator::make($request->all(), [
+            'mth_final' => 'required',
+        ],
+        [
+            'mth_final.required'=>'Konfirmasi harus terisi!',
         ]);
-        $vtable->update($request->all());
+
+        if ($validasi->fails()) {
+            return response()->json([
+                'error' => $validasi->errors()
+            ]);
+        } else {
+            $vtable = DB::table('emst.mst_tarif')->where('mth_nomor' ,$request->kode_import_tarif);
+            if ($request->mth_final == 1) {
+                $data = $request->all();
+                $data = $request->except(
+                    '_token',
+                    'kode_import_tarif',
+                );
+                $vtable->update($data);
+
+                return response()->json([
+                    'success' => 'Data berhasil diupdate dengan Kode '.$request->kode_import_tarif.'!'
+                ]);
+            } else if ($request->mth_final == 0) {
+                $vtable->delete();
+                DB::table('emst.mst_tarif_usia_jwaktu')->where('mstuj_mth_pk', $request->kode_import_tarif)->delete();
+
+                return response()->json([
+                    'success' => 'Data berhasil dihapus dengan Kode '.$request->kode_import_tarif.'!'
+                ]);
+            }
+        }
     }
 }

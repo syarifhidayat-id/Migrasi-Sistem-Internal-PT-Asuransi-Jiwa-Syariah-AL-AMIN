@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class DaftarUserController extends Controller
 {
@@ -60,9 +61,14 @@ class DaftarUserController extends Controller
             'password_n' => 'required',
             'menu_tipe' => 'required',
         ],[
-            'email.required'=>'Data username is required',
-            'no_hp.string'=>'Data No Hp must be a string',
-            'email.unique'=>'This data username is already taken',
+            'email.required'=>'Data email harus di isi!',
+            'email.unique'=>'Username sudah ada, ganti dengan yang lain!',
+            'password_n.required'=>'Data pasword harus di isi!',
+            'name.required'=>'Data nama lengkap harus di isi!',
+            'no_hp.required'=>'Data no hp harus di isi!',
+            'email_user.required'=>'Data email user harus di isi!',
+            'email_cc.required'=>'Data email cabang harus di isi!',
+            'menu_tipe.required'=>'Data menu tipe harus di isi!',
         ]);
 
         if ($validasi->fails()) {
@@ -213,22 +219,29 @@ class DaftarUserController extends Controller
     public function datauser(Request $request)
     {
         if ($request->ajax()) {
-            // $data = DaftarUser::all();
-            $data = DB::table('user_accounts')->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"));
+            $data = DB::table('user_accounts')->select('*')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->filter (function ($instance) use ($request) {
                     // if (!empty($request->get('wmn_tipe'))) {
-                    //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
+                    //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                    //         return Str::contains($row['wmn_tipe'], $request->get('wmn_tipe')) ? true : false;
+                    //     });
                     // }
                     // if (!empty($request->get('wmn_descp'))) {
-                    //     $instance->where('wmn_descp', $request->get('wmn_descp'));
+                    //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                    //         return Str::contains($row['wmn_descp'], $request->get('wmn_descp')) ? true : false;
+                    //     });
                     // }
                     if (!empty($request->get('search'))) {
-                        $instance->where(function($w) use($request){
-                           $search = $request->get('search');
-                           $w->orWhere('name', 'LIKE', "%$search%")
-                           ->orWhere('email', 'LIKE', "%$search%");
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            if (Str::contains(Str::lower($row['name']), Str::lower($request->get('search')))){
+                                return true;
+                            }else if (Str::contains(Str::lower($row['email']), Str::lower($request->get('search')))) {
+                                return true;
+                            }
+
+                            return false;
                         });
                     }
                 })

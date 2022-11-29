@@ -11,8 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class MenuController extends Controller
 {
@@ -171,11 +171,28 @@ class MenuController extends Controller
         return response()->json($keyMenu);
     }
 
-    public function getTipemenu($id)
+    public function getTipemenu(Request $request, $id)
     {
-        $menuTipe = Menu::where('wmn_tipe', $id)
-        ->get();
-        return response()->json($menuTipe);
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('web_menu')
+            ->select('*')
+            ->where([
+                ['wmn_tipe', $id],
+                ['wmn_descp','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('web_menu')
+            ->select('*')
+            ->where([
+                ['wmn_tipe', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
     }
 
     public function loadmenu()
@@ -207,28 +224,33 @@ class MenuController extends Controller
     public function datamenu(Request $request)
     {
         if ($request->ajax()) {
-            $data = DB::table('web_menu')->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"));
-
-            // $data = DB::table('web_menu');
+            $data = DB::table('web_menu')->select(DB::raw("wmn_kode, wmn_icon, wmn_descp, wmn_tipe, wmn_url_n, wmn_url_o_n"))->get();
             return Datatables::of($data)
-            // return Datatables::of($data)
-                ->addIndexColumn()
-                ->filter (function ($instance) use ($request) {
-                    if (!empty($request->get('wmn_tipe'))) {
-                        $instance->where('wmn_tipe', $request->get('wmn_tipe'));
-                    }
-                    if (!empty($request->get('wmn_descp'))) {
-                        $instance->where('wmn_descp', $request->get('wmn_descp'));
-                    }
-                    if (!empty($request->get('search'))) {
-                        $instance->where(function($w) use($request){
-                           $search = $request->get('search');
-                           $w->orWhere('wmn_tipe', 'LIKE', "%$search%")
-                           ->orWhere('wmn_descp', 'LIKE', "%$search%");
-                        });
-                    }
-                })
-                ->make(true);
+            ->addIndexColumn()
+            ->filter (function ($instance) use ($request) {
+                if (!empty($request->get('wmn_tipe'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['wmn_tipe'], $request->get('wmn_tipe')) ? true : false;
+                    });
+                }
+                if (!empty($request->get('wmn_descp'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['wmn_descp'], $request->get('wmn_descp')) ? true : false;
+                    });
+                }
+                if (!empty($request->get('search'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if (Str::contains(Str::lower($row['wmn_tipe']), Str::lower($request->get('search')))){
+                            return true;
+                        }else if (Str::contains(Str::lower($row['wmn_descp']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
+
+                        return false;
+                    });
+                }
+            })
+            ->make(true);
         }
     }
 }

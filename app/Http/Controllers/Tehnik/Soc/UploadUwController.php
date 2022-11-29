@@ -42,21 +42,19 @@ class UploadUwController extends Controller
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
-            'mth_tipe_pertanggungan' => 'required',
-            'mth_ket' => 'required',
-            'mth_tipe_rumus' => 'required',
-            'mth_kolom' => 'required',
-            'mth_baris' => 'required',
-            'mth_file' => 'required|mimes:xls,xlsx',
+            'mpuw_tipe_pertanggungan' => 'required',
+            'mpuw_nama' => 'required',
+            'mpuw_type_uw' => 'required',
+            'mpuw_baris' => 'required',
+            'mpuw_file' => 'required|mimes:xls,xlsx',
         ],
         [
-            'mth_tipe_pertanggungan.required'=>'Data dipertemukan harus terisi!',
-            'mth_ket.required'=>'Data keterangan harus terisi!',
-            'mth_tipe_rumus.required'=>'Data perhitungan tarif harus terisi!',
-            'mth_kolom.required'=>'Data kolom harus terisi!',
-            'mth_baris.required'=>'Data baris harus terisi!',
-            'mth_file.required'=>'File excel harus terisi!',
-            'mth_file.mimes'=>'File harus berbentuk *xlsx!',
+            'mpuw_tipe_pertanggungan.required'=>'Data dipertemukan harus terisi!',
+            'mpuw_nama.required'=>'Data keterangan harus terisi!',
+            'mpuw_type_uw.required'=>'Data tipe uw harus terisi!',
+            'mpuw_baris.required'=>'Data baris harus terisi!',
+            'mpuw_file.required'=>'File excel harus terisi!',
+            'mpuw_file.mimes'=>'File harus berbentuk *xlsx!',
         ]);
 
         if ($validasi->fails()) {
@@ -93,35 +91,39 @@ class UploadUwController extends Controller
             $tinggiRow = $highestRow;
             $tinggiCol = $highestColumnIndex-1;
             $rows = array();
-            $colxls = strval($request->mth_kolom+1);
-            $rowxls = strval($request->mth_baris+1);
+            $rowxls = strval($request->mpuw_baris+1);
 
             $row=0;
             for ($row=2; $row <= $rowxls; $row++) {
-                $vtable2 = DB::table('emst.mst_tarif_usia_jwaktu');
+                $vtable2 = DB::table('emst.mst_polis_uwtable_dtl');
                 $rows['mrmp_pk'] = KodeController::__getpx($vtable2->max('mrmp_pk'), 18);
                 $rows['mrmp_mpuw_nomor'] = $kodeImportUw;
-                for ($col1=0; $col1 <= $tinggiCol; $col1++) {
-                    $value = $objWorkSheet->getCellByColumnAndRow($col1+1, $row)->getValue();
-                    $scol="mstuj_".($col1-1);
-                    if ($col1==0) {
-                        $scol="mstuj_usia";
-                    }
-                    $rows[$scol] = $value;
-                }
-                if ($colxls == $tinggiCol && $rowxls == $tinggiRow) {
+                $rows['mrmp_tipe_masa'] = $objWorkSheet->getCellByColumnAndRow(1, $row)->getCalculatedValue();
+                $rows['mrmp_masa'] = $objWorkSheet->getCellByColumnAndRow(2, $row)->getCalculatedValue();
+                $rows['mrmp_tipe_peserta'] = $objWorkSheet->getCellByColumnAndRow(3, $row)->getCalculatedValue();
+                $rows['mrmp_ket1'] = $objWorkSheet->getCellByColumnAndRow(4, $row)->getCalculatedValue();
+                $rows['mrmp_ket2'] = $objWorkSheet->getCellByColumnAndRow(5, $row)->getCalculatedValue();
+                $rows['mrmp_urut'] = $objWorkSheet->getCellByColumnAndRow(6, $row)->getCalculatedValue();
+                $rows['mrmp_min_umur'] = $objWorkSheet->getCellByColumnAndRow(7, $row)->getCalculatedValue();
+                $rows['mrmp_max_umur'] = $objWorkSheet->getCellByColumnAndRow(8, $row)->getCalculatedValue();
+                $rows['mrmp_total_min'] = $objWorkSheet->getCellByColumnAndRow(9, $row)->getCalculatedValue();
+                $rows['mrmp_total_max'] = $objWorkSheet->getCellByColumnAndRow(10, $row)->getCalculatedValue();
+                $rows['mrmp_xn_max'] = $objWorkSheet->getCellByColumnAndRow(11, $row)->getCalculatedValue();
+
+                if ($rowxls == $tinggiRow) {
                     $vtable2->insert($rows);
                 }
             }
 
-            if ($colxls == $tinggiCol && $rowxls == $tinggiRow) {
+            if ($rowxls == $tinggiRow) {
                 $vtable->insert($data);
                 return response()->json([
-                    'success' => 'Data berhasil disimpan dengan Kode '.$kodeImportUw.'!'
+                    'success' => 'Data berhasil disimpan dengan Kode '.$kodeImportUw.'!',
+                    'kode' => $kodeImportUw
                 ]);
             } else {
                 return response()->json([
-                    'errors' => 'Data excel tidak sesuai dengan jumlah kolom & jumlah baris yang di inputkan!'
+                    'errors' => 'Data excel tidak sesuai dengan jumlah baris yang di inputkan!'
                 ]);
             }
         }
@@ -170,5 +172,42 @@ class UploadUwController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function updateUw(Request $request)
+    {
+        $validasi = Validator::make($request->all(), [
+            'mpuw_final' => 'required',
+        ],
+        [
+            'mpuw_final.required'=>'Konfirmasi harus terisi!',
+        ]);
+
+        if ($validasi->fails()) {
+            return response()->json([
+                'error' => $validasi->errors()
+            ]);
+        } else {
+            $vtable = DB::table('emst.mst_polis_uwtable')->where('mpuw_nomor' ,$request->kode_import_uw);
+            if ($request->mpuw_final == 1) {
+                $data = $request->all();
+                $data = $request->except(
+                    '_token',
+                    'kode_import_uw',
+                );
+                $vtable->update($data);
+
+                return response()->json([
+                    'success' => 'Data berhasil diupdate dengan Kode '.$request->kode_import_uw.'!'
+                ]);
+            } else if ($request->mpuw_final == 0) {
+                $vtable->delete();
+                DB::table('emst.mst_polis_uwtable_dtl')->where('mrmp_mpuw_nomor', $request->kode_import_uw)->delete();
+
+                return response()->json([
+                    'success' => 'Data berhasil dihapus dengan Kode '.$request->kode_import_uw.'!'
+                ]);
+            }
+        }
     }
 }

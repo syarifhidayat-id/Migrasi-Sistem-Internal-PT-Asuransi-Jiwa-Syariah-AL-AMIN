@@ -27,10 +27,10 @@
     <div class="card-header border-0 pt-6">
         <div class="card-title">
             <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
+                <div class="input-group input-group-solid">
+                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control w-250px" placeholder="Cari Menu" />
+                    <button type="submit" class="btn btn-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                </div>
             </div>
         </div>
 
@@ -52,7 +52,7 @@
                             <div class="col-md-6">
                                 <div class="mb-10">
                                     <label class="form-label fs-6 fw-bold">Tipe Menu:</label>
-                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu" onchange="tipe()">
+                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu">
                                         <option></option>
                                         {{-- <option value="ALAMIN" selected>ALAMIN</option> --}}
                                         @foreach ($type_menu as $type)
@@ -75,7 +75,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset">Reset</button>
+                            <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                            <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
                         </div>
                     </div>
                 </div>
@@ -107,21 +108,20 @@
                 <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-sharp fa-solid fa-plus"></i> Tambah Menu</button>
             </div>
 
-            @include('pages.utility.membuat-menu.modal.create')
         </div>
     </div>
 
     <div class="card-body py-10">
         <div class="table-responsive">
-            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
+            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="dataMenu">
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
-                        <th>No.</th>
-                        <th>Icon</th>
-                        <th>Nama Menu</th>
-                        <th>Tipe</th>
-                        <th>Route</th>
-                        <th>Url</th>
+                        <th class="min-w-50px">No.</th>
+                        <th class="min-w-50px">Icon</th>
+                        <th class="min-w-125px">Nama Menu</th>
+                        <th class="min-w-125px">Tipe</th>
+                        <th class="min-w-125px">Route</th>
+                        <th class="min-w-250px">Url</th>
                         <th class="min-w-125px">Aksi</th>
                     </tr>
                 </thead>
@@ -130,12 +130,7 @@
         </div>
     </div>
 
-    {{-- <div class="card-footer">
-        <div align="center">
-            <button type="button" class="btn btn-primary btn-sm"><i class="fa-sharp fa-solid fa-floppy-disk"></i> Simpan</button>&nbsp;
-            <button type="button" class="btn btn-danger btn-sm"><i class="fa-sharp fa-solid fa-trash"></i> Hapus</button>
-        </div>
-    </div> --}}
+    @include('pages.utility.membuat-menu.modal.create')
 </div>
 @endsection
 
@@ -150,65 +145,59 @@
         $('#wmn_mrkn_kode').select2();
         $('#wmn_mpol_kode').select2();
 
-        function tipe() {
-            var tipe = $('#tipe_menu').val(),
-                url = "{{ url('api/utility/menu/getTipe') }}" + "/" + tipe;
-            if (tipe !== "") {
-                $.get(url, function(res) {
-                    $('#key').empty();
-                    // $('#key').val(null).trigger('change');
-                    $('#key').append('<option></option>');
-                    $.each(res, function(key, val) {
-                        if (val.wmn_url_n !== "" && val.wmn_url_n !== null) {
-                            $('#key').append('<option value="'+ val.wmn_descp +'">'+ val.wmn_descp +' - ('+ val.wmn_url_n +')</option>');
-                        } else {
-                            $('#key').append('<option value="'+ val.wmn_descp +'">'+ val.wmn_descp +'</option>');
+        changeSelect(
+            'tipe_menu',
+            'key',
+            '{{ url("api/utility/menu/getTipe") }}',
+            function(data) {
+                return {
+                    results: $.map(data, function(d) {
+                        return {
+                            id: d.wmn_descp,
+                            text: d.wmn_descp
                         }
-                    });
-                });
-            } else {
-                $('#key').empty();
-                // $('#key').val(null).trigger('change');
-                $('#key').append('<option></option>');
-            }
-        }
+                    })
+                };
+            },
+            function(res) {
+                // setText('msoc_mssp_kode', res.params.data.id);
+                // setText('msoc_mssp_nama', res.params.data.text);
+            },
+        );
 
-        function menuMain() {
-            $('#wmn_tipe').change(function() {
-                // e.preventDefault();
-                var tipe = $(this).val(),
-                    url = "{{ url('api/utility/menu/getTipe') }}" + "/" + tipe;
-                if (tipe !== "") {
-                    $.get(url, function(res) {
-                        $('#wmn_key').empty();
-                        // $('#wmn_key').val(null).trigger('change');
-                        $('#wmn_key').append('<option></option>');
-                        $.each(res, function(key, val) {
-                            $('#wmn_key').append('<option value="'+ val.wmn_kode +'">'+ val.wmn_descp +'</option>');
-                        });
-                    });
-                } else {
-                    $('#wmn_key').empty();
-                    // $('#wmn_key').val(null).trigger('change');
-                    $('#wmn_key').append('<option></option>');
-                }
-            });
-        }
+        changeSelect(
+            'wmn_tipe',
+            'wmn_key',
+            '{{ url("api/utility/menu/getTipe") }}',
+            function(data) {
+                return {
+                    results: $.map(data, function(d) {
+                        return {
+                            id: d.wmn_kode,
+                            text: d.wmn_descp
+                        }
+                    })
+                };
+            },
+            function(res) {
+                // setText('msoc_mssp_kode', res.params.data.id);
+                // setText('msoc_mssp_nama', res.params.data.text);
+            },
+        );
 
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            filterOp('tipe_menu'); //isinya id select / input
-            filterOp('input[type="search"]'); //khusus type search inputan
-            filterOp('key'); //isinya id select / input
+            filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
 
             serverSide( //datatable serverside
+                "dataMenu",
                 "{{ url('api/utility/menu/lihat-menu') }}", //url api/route
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
-                    d.wmn_tipe = $('#tipe_menu').val(),
-                    d.wmn_descp = $('#key').val(),
+                    d.wmn_tipe = getText('tipe_menu'),
+                    d.wmn_descp = getText('key'),
                     d.search = $('input[type="search"]').val()
                 },
                 [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
@@ -245,7 +234,7 @@
                         }
                     },
                     {
-                        data: null,
+                        data: "wmn_kode",
                         orderable: false,
                         className: 'text-center',
                         render: function (data, type, row) {
@@ -272,54 +261,52 @@
             $('body').on('click', '#omodTam', function() {
                 openModal('modalMenu');
                 titleAction('tModMenu', 'Tambah Menu');
-                resetMod();
+                clearForm("frxx");
+                clearSelect();
                 bsimpan('btn_simpan', 'Simpan');
                 $('#btn_reset').show();
-                menuMain();
+                tipeMenus();
             });
 
             $('body').on('click', '#omodEdit', function() {
                 titleAction('tModMenu', 'Edit Menu');
                 bsimpan('btn_simpan', 'Update');
-                // resetMod();
-                // $('#wmn_key').empty();
-                $('#wmn_key').val(null).trigger('change');
+                // $('#wmn_key').val(null).trigger('change');
                 $('#btn_reset').hide();
 
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
-                    // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
-
-                $.get(url, function(res) {
-                    menuMain();
-                    var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
-                    // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
+                $.get(url, function(data) {
+                    var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + data.wmn_key;
                     openModal('modalMenu');
-                    $('#wmn_kode').val(res.wmn_kode);
-                    $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
-                    $.get(key, function(data) {
-                        $('#wmn_key').val(data.wmn_kode).trigger('change');
-                    });
-                    $('#wmn_descp').val(res.wmn_descp);
-                    $('#wmn_icon').val(res.wmn_icon);
-                    $('#wmn_url_n').val(res.wmn_url_n);
-                    $('#wmn_urlkode').val(res.wmn_urlkode);
-                    $('#wmn_info').val(res.wmn_info);
-                    $('#wmn_url_o_n').val(res.wmn_url_o_n);
-                    $('#wmn_urut').val(res.wmn_urut);
-                    $('#wmn_mrkn_kode').val(res.wmn_mrkn_kode);
-                    $('#wmn_mpol_kode').val(res.wmn_mpol_kode);
+                    $("#frxx").formToJson(data);
+                    if (data.wmn_key == "MAIN") {
+                        var newOption = new Option('MAIN', 'MAIN', true, true);
+                        $('#wmn_key').append(newOption).trigger('change');
+                    } else {
+                        $.getJSON(key, function(res) {
+                            if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']").length) {
+                                $('#wmn_key').val(res.wmn_kode).trigger('change');
+                            } else {
+                                var newOption = new Option(res.wmn_descp, res.wmn_kode, true, true);
+                                $('#wmn_key').append(newOption).trigger('change');
+                            }
+                            // $('#wmn_key').append('<option value="'+ res.wmn_kode +'">'+ res.wmn_descp +'</option>');
+                        });
+                    }
                 });
             });
 
-            submitForm(
+            submitForm2(
                 "frxx",
                 "btn_simpan",
+                "POST",
                 "{{ route('utility.menu.store') }}",
                 (res) => {
-                    resetMod();
+                    clearForm("frxx");
+                    clearSelect();
                     bsimpan('btn_simpan', 'Simpan');
-                    lodTable();
+                    lodTable("dataMenu");
                     closeModal('modalMenu');
                 }
             );
@@ -349,7 +336,7 @@
                                 url: url,
                                 type: "DELETE",
                                 success: function(res) {
-                                    lodTable();
+                                    lodTable("dataMenu");
                                 },
                                 error: function(err) {
                                     // console.log('Error', err);
@@ -361,27 +348,17 @@
             });
 
             $('#btn_reset').click(function() {
-                resetMod();
-            });
-
-            $('#btn_close').click(function() {
-                closeModal('modalMenu');
-            });
-
-            $('#btn_close2').click(function() {
-                closeModal('modalMenu');
+                clearForm("frxx");
+                clearSelect();
             });
         });
 
-        function resetMod() {
-            $('#frxx').trigger('reset');
-            $('#wmn_tipe').val(null).trigger('change');
-            $('#wmn_key').val(null).trigger('change');
-            // $('#wmn_key').empty();
-            // $('#wmn_key').append('<option></option>');
-            $('#wmn_mrkn_kode').val(null).trigger('change');
-            $('#wmn_mpol_kode').val(null).trigger('change');
-        }
+
+        function closeBtnModal () {
+            closeModal('modalMenu');
+            clearForm("frxx");
+            clearSelect();
+        };
 
         hidePesan('wmn_tipe');
         hidePesan('wmn_key');

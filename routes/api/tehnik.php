@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Tehnik\Soc\EntrySocController;
+use App\Http\Controllers\Tehnik\Soc\LihatSocController;
 use App\Http\Controllers\Tehnik\Soc\UploadTarifController;
 use App\Http\Controllers\tehnik\Soc\UploadUwController;
 use Illuminate\Support\Facades\Route;
@@ -10,10 +11,6 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
     Route::group(['prefix' => '/soc', 'as' => 'soc.'], function() {
 
         Route::group(['prefix' => '/entry-soc', 'as' => 'entry-soc.'], function() {
-            // Route::resource('upload-tarif', UploadTarifController::class);
-            Route::post('upload-tarif/{status}', [UploadTarifController::class, 'store']);
-            Route::resource('upload-uw', UploadUwController::class);
-
             Route::get('/select-pmgpolis', [EntrySocController::class, 'selectPmgPolis']);
             Route::get('/select-jnsnasabah', [EntrySocController::class, 'selectJnsNasabah']);
             Route::get('/select-segmen/{kode}', [EntrySocController::class, 'selectSegmen']);
@@ -43,6 +40,15 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
             Route::get('/select-tarifimport', [EntrySocController::class, 'selectTarifImport']);
             Route::get('/select-underwritingimport', [EntrySocController::class, 'selectUnderwritingImport']);
             Route::get('/lihat-tarif/{id}', [EntrySocController::class, 'lihatTarif']);
+            Route::get('/lihat-uw/{id}', [EntrySocController::class, 'lihatUw']);
+            Route::post('/upload-tarif', [UploadTarifController::class, 'store']);
+            Route::post('/update-upload-tarif', [UploadTarifController::class, 'updateTarif'])->name('updatetarif');
+            Route::post('/upload-uw', [UploadUwController::class, 'store']);
+            Route::post('/update-upload-uw', [UploadUwController::class, 'updateUw'])->name('updateuw');
+        });
+        Route::group(['prefix' => '/lihat-soc', 'as' => 'lihat-soc.'], function() {
+            Route::get('/list-soc', [LihatSocController::class, 'listSoc']);
+            Route::post('/update-status-approval/{kode}/{val}', [LihatSocController::class, 'udapteStsApprov']);
         });
 
         // Route::resource('/lihat-soc-data', [LihatSocController::class]);

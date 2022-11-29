@@ -3,12 +3,7 @@
         <div class="modal-content">
             <div class="modal-header" id="modalUser_header">
                 <h2 class="fw-bolder" id="tModUser"></h2>
-
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close">
-                    <span class="svg-icon svg-icon-1">
-                        <i class="fa-sharp fa-solid fa-xmark"></i>
-                    </span>
-                </div>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeBtnModal()"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
             <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
@@ -43,7 +38,7 @@
                                         <input type="text" class="form-control" name="email_user" id="email_user" placeholder="Email User" />
                                         <span class="input-group-text">@alamin.co.id</span>
                                     </div>
-                                    <span class="text-danger error-text email_err"></span>
+                                    <span class="text-danger error-text email_user_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -264,10 +259,9 @@
 
                 </div>
                 <div class="modal-footer justify-content-center">
-                    {{-- <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button> --}}
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="btn_close2"><i class="fa-solid fa-xmark"></i> Tutup</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="closeBtnModal()"><i class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>
         </div>

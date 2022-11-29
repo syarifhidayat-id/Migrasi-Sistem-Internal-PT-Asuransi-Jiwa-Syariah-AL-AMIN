@@ -67,7 +67,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // 'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -80,7 +81,8 @@ return [
     |
     */
 
-    'locale' => 'en',
+    // 'locale' => 'en',
+    'locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -93,7 +95,8 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    // 'fallback_locale' => 'en',
+    'fallback_locale' => 'id_ID',
 
     /*
     |--------------------------------------------------------------------------
@@ -163,6 +166,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Mews\Captcha\CaptchaServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -234,6 +238,7 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'FastExcel' => Rap2hpoutre\FastExcel\Facades\FastExcel::class,
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,
     ],
 
 ];
