@@ -69,60 +69,66 @@ class EntrySocController extends Controller
                 'error' => $validasi->errors()
             ]);
         } else {
-            $vtable = DB::table('eopr.mst_soc');
-            $kode = KodeController::__getpx($vtable->max('msoc_kode'), 14);
-            $data = $request->all();
-            $data = $request->except(
-                '_token',
-                'e_nasabah',
-                'mpid_mssp_kode',
-                'e_cabalamin',
-                'e_manfaat',
-                'e_manfaat_pol',
-                'e_marketing',
-                'e_pinca',
-                'e_pras',
-                'e_tarif',
-                'e_uw',
-                'edit_akses',
-                'mpid_nama',
-            );
+            if (empty($request->msoc_kode)) {
+                $vtable = DB::table('eopr.mst_soc');
+                $kdAwal = $request->msoc_mjns_kode . '.' . $request->msoc_mpid_kode;
+                $kdAkhir = $request->msoc_mft_kode . '.' . $request->msoc_mjm_kode . '.' . $request->msoc_mpras_kode . '.' . $request->msoc_jns_perusahaan;
+                $kode = KodeController::__getNo($kdAwal, $vtable->max('msoc_kode'), 4);
+                $data = $request->all();
+                $data = $request->except(
+                    '_token',
+                    'e_nasabah',
+                    'mpid_mssp_kode',
+                    'e_cabalamin',
+                    'e_manfaat',
+                    'e_manfaat_pol',
+                    'e_marketing',
+                    'e_pinca',
+                    'e_pras',
+                    'e_tarif',
+                    'e_uw',
+                    'edit_akses',
+                    'mpid_nama',
+                );
+                if ($request->msoc_mpid_kode != "" && $request->msoc_endos != "2") {
+                    $data['msoc_kode'] = $kode . '.' . $kdAkhir;
+                    $data['msoc_kode_ori'] = $kode . '.' . $kdAkhir;
+                    $data['msoc_nomor'] = $kode;
+                    $data['msoc_approve'] = '0';
+                    $data['msoc_endos'] = '0';
+                }
+                if ($request->hasFile('msoc_dok')) {
+                    $msoc_dok = $request->file('msoc_dok');
+                    $dir = 'public/tehnik/soc/doc';
+                    $fileOri = $msoc_dok->getClientOriginalName();
+                    $namaFile = $kode . '.' . $kdAkhir . '-DokumenSoc-' . $fileOri;
+                    $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
+                    $data['msoc_dok'] = $namaFile;
+                }
 
-            if ($request->hasFile('msoc_dok')) {
-                $msoc_dok = $request->file('msoc_dok');
-                $dir = 'public/tehnik/soc/doc';
-                $fileOri = $msoc_dok->getClientOriginalName();
-                $namaFile = $kode . '-ImportTarif-' . $fileOri;
-                $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
-                $data['msoc_dok'] = $namaFile;
+                $data['msoc_mkom_persen'] = '0';
+                $data['msoc_mkomdisc_persen'] = '0';
+                $data['msoc_referal'] = '0';
+                $data['msoc_maintenance'] = '0';
+                $data['msoc_pajakfee'] = '0';
+                $data['msoc_handlingfee'] = '0';
+                $data['msoc_handlingfee2'] = '0';
+                $data['msoc_ins_date'] = date('Y-m-d H:i:s');
+                $data['msoc_ins_user'] = Auth::user()->email;
+                $data['msoc_upd_date'] = date('Y-m-d H:i:s');
+                $data['msoc_upd_user'] = Auth::user()->email;
+                $data['msoc_disc_lain'] = '0';
+                $data['msoc_status'] = '0';
+                $data['msoc_indexfolder'] = '0';
+                $data['msoc_iscopy'] = '0';
+
+                // return $data;
+                $vtable->insert($data);
+
+                return response()->json([
+                    'success' => 'Data berhasil disimpan dengan Kode '.$kode . '.' . $kdAkhir.' !'
+                ]);
             }
-
-            $data['msoc_kode'] = $kode;
-            $data['msoc_kode_ori'] = '0';
-            $data['msoc_endos'] = '0';
-            $data['msoc_mkom_persen'] = '0';
-            $data['msoc_mkomdisc_persen'] = '0';
-            $data['msoc_referal'] = '0';
-            $data['msoc_maintenance'] = '0';
-            $data['msoc_pajakfee'] = '0';
-            $data['msoc_handlingfee'] = '0';
-            $data['msoc_handlingfee2'] = '0';
-            $data['msoc_approve'] = '0';
-            $data['msoc_ins_date'] = date('Y-m-d H:i:s');
-            $data['msoc_ins_user'] = Auth::user()->email;
-            $data['msoc_upd_date'] = date('Y-m-d H:i:s');
-            $data['msoc_upd_user'] = Auth::user()->email;
-            $data['msoc_disc_lain'] = '0';
-            $data['msoc_status'] = '0';
-            $data['msoc_indexfolder'] = '0';
-            $data['msoc_iscopy'] = '0';
-
-            // return $data;
-            $vtable->insert($data);
-
-            return response()->json([
-                'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
-            ]);
         }
     }
 
@@ -368,26 +374,53 @@ class EntrySocController extends Controller
         $data = [];
         if ($request->has('q')) {
             $search = $request->q;
-            $data = DB::connection('emst')
-                ->table('mst_manfaat_plafond')
-                ->select(DB::raw("mft_kode, mft_nama"))
-                ->leftJoin('emst.mst_protree_5', 'mptr_kode', '=', 'mft_kode')
-                ->where([
-                    ['mptr_induk_nasabah', $kode],
-                    ['mft_kode', '<>', ''],
-                    ['mft_nama', 'like', "%$search%"],
-                ])
-                ->get();
+            if ($kode == '01') {
+                $data = DB::connection('emst')
+                    ->table('mst_manfaat_plafond')
+                    ->select(DB::raw("mft_kode, mft_nama"))
+                    ->leftJoin('emst.mst_protree_5', 'mptr_kode', '=', 'mft_kode')
+                    ->where([
+                        ['mptr_induk_nasabah', $kode],
+                        ['mft_kode', '!=', '01'],
+                        ['mft_kode', '<>', ''],
+                        ['mft_nama', 'like', "%$search%"],
+                    ])
+                    ->get();
+            } else {
+                $data = DB::connection('emst')
+                    ->table('mst_manfaat_plafond')
+                    ->select(DB::raw("mft_kode, mft_nama"))
+                    ->leftJoin('emst.mst_protree_5', 'mptr_kode', '=', 'mft_kode')
+                    ->where([
+                        ['mptr_induk_nasabah', $kode],
+                        ['mft_kode', '<>', ''],
+                        ['mft_nama', 'like', "%$search%"],
+                    ])
+                    ->get();
+            }
         } else {
-            $data = DB::connection('emst')
-                ->table('mst_manfaat_plafond')
-                ->select(DB::raw("mft_kode, mft_nama"))
-                ->leftJoin('emst.mst_protree_5', 'mptr_kode', '=', 'mft_kode')
-                ->where([
-                    ['mptr_induk_nasabah', $kode],
-                    ['mft_kode', '<>', ''],
-                ])
-                ->get();
+            if ($kode == '01') {
+                $data = DB::connection('emst')
+                    ->table('mst_manfaat_plafond')
+                    ->select(DB::raw("mft_kode, mft_nama"))
+                    ->leftJoin('emst.mst_protree_5', 'mptr_kode', '=', 'mft_kode')
+                    ->where([
+                        ['mptr_induk_nasabah', $kode],
+                        ['mft_kode', '!=', '01'],
+                        ['mft_kode', '<>', ''],
+                    ])
+                    ->get();
+            } else {
+                $data = DB::connection('emst')
+                    ->table('mst_manfaat_plafond')
+                    ->select(DB::raw("mft_kode, mft_nama"))
+                    ->leftJoin('emst.mst_protree_5', 'mptr_kode', '=', 'mft_kode')
+                    ->where([
+                        ['mptr_induk_nasabah', $kode],
+                        ['mft_kode', '<>', ''],
+                    ])
+                    ->get();
+            }
         }
         return response()->json($data);
     }
@@ -454,9 +487,8 @@ class EntrySocController extends Controller
     // public function pilihProgramAsuransi(Request $request, $mpid, $mkm, $mkm2, $mft, $mrkn, $mssp, $mjm, $mjns, $byr, $perush)
     public function pilihProgramAsuransi(Request $request)
     {
-        if ($request->ajax()) {
-            $data = DB::connection('emst')
-                ->table('mst_program_asuransi')
+        // if ($request->ajax()) {
+            $data = DB::table('emst.mst_program_asuransi')
                 ->select(DB::raw("mpras_kode,
                 mpras_nama,
                 mpras_uptambah,
@@ -486,75 +518,11 @@ class EntrySocController extends Controller
                 ->groupBy('mpras_kode')
                 ->get();
 
-            return DataTables::of($data)->make(true);
-        }
-        // $data = [];
-        // if ($request->has('q')) {
-        //     $search = $request->q;
-        //     $data = DB::connection('emst')
-        //         ->table('mst_program_asuransi')
-        //         ->select(DB::raw("mpras_kode,
-        //         mpras_nama,
-        //         mpras_uptambah,
-        //         mpras_ujrah_referal,
-        //         mpras_disc_rate,
-        //         mpras_info,
-        //         mpras_mmft_kode_jiwa,
-        //         msoc_mekanisme,
-        //         ifnull(msoc_kode,'') msoc_kode,
-        //         msoc_mekanisme2"))
-        //         ->leftJoin('emst.mst_protree_4 as mptr', 'mptr.mptr_kode', '=', 'mpras_kode')
-        //         ->leftJoin('eopr.mst_soc', 'mpras_kode', '=', 'msoc_mpras_kode')
-        //         ->where([
-        //             ['msoc_mpid_kode', $mpid],
-        //             // ['msoc_mekanisme', $mkm],
-        //             // ['msoc_mekanisme2', $mkm2],
-        //             // ['msoc_mft_kode', $mft],
-        //             // ['msoc_mrkn_kode', $mrkn],
-        //             // ['msoc_mssp_nama', $mssp],
-        //             // ['msoc_mjm_kode', $mjm],
-        //             // ['msoc_mjns_kode', $mjns],
-        //             // ['msoc_jenis_bayar', $byr],
-        //             // ['msoc_jns_perusahaan', $perush],
-        //             ['mpras_kode', '<>', ''],
-        //             ['mpras_nama', 'like', "%$search%"],
-        //         ])
-        //         ->whereIn('msoc_endos', [0,1,2])
-        //         ->groupBy('mpras_kode')
-        //         ->get();
-        // } else {
-        //     $data = DB::connection('emst')
-        //         ->table('mst_program_asuransi')
-        //         ->select(DB::raw("mpras_kode,
-        //         mpras_nama,
-        //         mpras_uptambah,
-        //         mpras_ujrah_referal,
-        //         mpras_disc_rate,
-        //         mpras_info,
-        //         mpras_mmft_kode_jiwa,
-        //         msoc_mekanisme,
-        //         ifnull(msoc_kode,'') msoc_kode,
-        //         msoc_mekanisme2"))
-        //         ->leftJoin('emst.mst_protree_4 as mptr', 'mptr.mptr_kode', '=', 'mpras_kode')
-        //         ->leftJoin('eopr.mst_soc', 'mpras_kode', '=', 'msoc_mpras_kode')
-        //         ->where([
-        //             ['msoc_mpid_kode', $mpid],
-        //             // ['msoc_mekanisme', $mkm],
-        //             // ['msoc_mekanisme2', $mkm2],
-        //             // ['msoc_mft_kode', $mft],
-        //             // ['msoc_mrkn_kode', $mrkn],
-        //             // ['msoc_mssp_nama', $mssp],
-        //             // ['msoc_mjm_kode', $mjm],
-        //             // ['msoc_mjns_kode', $mjns],
-        //             // ['msoc_jenis_bayar', $byr],
-        //             // ['msoc_jns_perusahaan', $perush],
-        //             ['mpras_kode', '<>', ''],
-        //         ])
-        //         ->whereIn('msoc_endos', [0,1,2])
-        //         ->groupBy('mpras_kode')
-        //         ->get();
+            return response()->json([
+                'data' => $data
+            ]);
+            // return DataTables::of($data)->make(true);
         // }
-        // return response()->json($data);
     }
 
     public function selectSalDistri(Request $request)
@@ -970,6 +938,20 @@ class EntrySocController extends Controller
                 ->select('*')
                 ->where([
                     ['mstuj_mth_pk', $kode],
+                ])
+                ->get();
+
+            return DataTables::of($data)->make(true);
+        }
+    }
+
+    public function lihatUw(Request $request, $kode)
+    {
+        if ($request->ajax()) {
+            $data = DB::table('emst.mst_polis_uwtable_dtl')
+                ->select('*')
+                ->where([
+                    ['mrmp_mpuw_nomor', $kode],
                 ])
                 ->get();
 

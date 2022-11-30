@@ -31,6 +31,18 @@ class KodeController extends Controller
         return $kodePK;
     }
 
+    public static function __getNo($kode, $vtable, $long)
+    {
+        $kdAwal = $kode;
+        $getNum = $vtable;
+        $noUrut = substr($getNum, strlen($kode), $long);
+        $noUrut++;
+        $noUrutFormated = sprintf('%0'.$long.'s', $noUrut);
+
+        $kodePK = $kdAwal . '.' . $noUrutFormated;
+        return $kodePK;
+    }
+
     public static function __getKey($num)
     {
         // $char = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

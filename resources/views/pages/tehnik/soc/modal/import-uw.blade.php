@@ -3,17 +3,7 @@
         <div class="modal-content">
             <div class="modal-header" id="modalUw_header">
                 <h2 class="fw-bolder" id="titleUw"></h2>
-
-                {{-- <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal" aria-label="Close">
-                    <span class="svg-icon svg-icon-1">
-                        <i class="fa-sharp fa-solid fa-xmark"></i>
-                    </span>
-                </div> --}}
-                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                    <span class="svg-icon svg-icon-2x">
-                        <i class="fa-sharp fa-solid fa-xmark"></i>
-                    </span>
-                </div>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="close_mUw()"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
             <form id="frxx_uploadUw" name="frxx_uploadUw" method="post" enctype="multipart/form-data">
@@ -56,7 +46,7 @@
                                         <div class="mb-5">
                                             <div class="input-group input-group-solid flex-nowrap">
                                                 <div class="overflow-hidden flex-grow-1">
-                                                    <select class="form-select form-select-solid rounded-0 border-start border-end" data-control="select2" name="mpuw_baris" id="mpuw_baris" data-placeholder="Pilih jumlah" data-allow-clear="true" data-hide-search="true">
+                                                    <select class="form-select form-select-solid" name="mpuw_baris" id="mpuw_baris" data-dropdown-parent="#modalUw" data-placeholder="Pilih jumlah" data-allow-clear="true">
                                                         <option></option>
                                                         <option selected value="5">5</option>
                                                         <option value="15">15</option>
@@ -81,7 +71,7 @@
                         <div class="col-md-12">
                             <div class="mb-5">
                                 <label class="form-label">File</label>
-                                <input type="file" class="form-control form-control-solid" name="mpuw_file" id="mpuw_file" />
+                                <input type="file" class="form-control form-control-solid" name="mpuw_file" id="mpuw_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
                                 <span class="text-danger error-text mpuw_file_err"></span>
                             </div>
                         </div>

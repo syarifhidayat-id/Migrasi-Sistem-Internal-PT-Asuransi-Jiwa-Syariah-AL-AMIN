@@ -3,12 +3,7 @@
         <div class="modal-content">
             <div class="modal-header" id="modalProg_header">
                 <h2 class="fw-bolder" id="titleModal"></h2>
-
-                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                    <span class="svg-icon svg-icon-2x">
-                        <i class="fa-sharp fa-solid fa-xmark"></i>
-                    </span>
-                </div>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeModal('modalProg')"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
             <div class="modal-body">
@@ -57,7 +52,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" onclick="close_proAsur()"><i class="fa-solid fa-xmark"></i> Tutup</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="closeModal('modalProg')"><i class="fa-solid fa-xmark"></i> Tutup</button>
             </div>
         </div>
     </div>
