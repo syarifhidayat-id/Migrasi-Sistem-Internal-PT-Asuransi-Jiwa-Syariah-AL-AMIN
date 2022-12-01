@@ -4,6 +4,7 @@ use App\Http\Controllers\Sekper\ApprovalSuratKeluarController;
 use App\Http\Controllers\Sekper\BackdateSuratKeluarController;
 use App\Http\Controllers\Sekper\DokumenKantorCabangController;
 use App\Http\Controllers\Sekper\DokumenKantorPusatController;
+use App\Http\Controllers\Sekper\DokumenPerusahaanController;
 use App\Http\Controllers\Sekper\SuratMasukController;
 use App\Http\Controllers\Sekper\SlidePresentasiController;
 use App\Http\Controllers\Sekper\DokumenPerusahaanLihatController;
@@ -13,8 +14,6 @@ use App\Http\Controllers\Sekper\NotulensiRapatController;
 use App\Http\Controllers\Sekper\PksSekperController;
 use App\Http\Controllers\Sekper\RekananController;
 use App\Http\Controllers\Sekper\SuratKeluarController;
-use App\Http\Controllers\Sekper\TtdSuratKeluarController;
-use App\Http\Controllers\Sekper\UploadSuratKeluarController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/sekper', 'as' => 'sekper.'], function () {
@@ -37,6 +36,8 @@ Route::group(['prefix' => '/sekper', 'as' => 'sekper.'], function () {
 
   Route::resource('suratmasuk', SuratMasukController::class);
   Route::resource('suratkeluar', SuratKeluarController::class);
+  Route::resource('slide_presentasi', SlidePresentasiController::class);
+  Route::resource('dok_perusahaan', DokumenPerusahaanController::class);
 
   Route::group(['prefix' => '/suratkeluar', 'as' => 'suratkeluar.'], function () {
 

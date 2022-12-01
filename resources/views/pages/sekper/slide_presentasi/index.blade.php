@@ -103,8 +103,8 @@
                             class="fa-sharp fa-solid fa-plus"></i> Tambah Dokumen</button>
                 </div>
 
-                @include('pages.legal.ojk.modal.create')
-                @include('pages.legal.ojk.modal.view')
+                @include('pages.sekper.slide_presentasi.modal.create')
+                @include('pages.sekper.slide_presentasi.modal.view')
             </div>
         </div>
 
@@ -114,14 +114,12 @@
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                             <th>No.</th>
-                            <th>ID</th>
-                            <th class="min-w-250px">Jenis Dokumen</th>
-                            <th>Ket Dokumen</th>
-                            <th>Tahun</th>
+                            <th>Nomor</th>
+                            <th class="min-w-250px">Judul</th>
+                            <th>Jenis</th>
                             <th>User Input</th>
                             <th>Tanggal Input</th>
-                            <th>Jenis Dokumen</th>
-                            <th class="min-w-150px">Dokumen</th>
+                            <th>Dokumen</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -144,7 +142,7 @@
             filterOp('input[type="search"]'); //khusus type search inputan
 
             serverSide( //datatable serverside
-                "{{ url('api/legal/ojk') }}", //url api/route
+                "{{ url('api/sekper/slide_presentasi/slide_presentasi') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.wmn_tipe = $('#tipe_menu').val(),
                         d.wmn_descp = $('#key').val(),
@@ -156,25 +154,19 @@
                         className: "text-center"
                     },
                     {
-                        data: 'mojk_pk'
+                        data: 'mslp_pk'
                     },
                     {
-                        data: 'mojk_judul'
+                        data: 'mslp_judul'
                     },
                     {
-                        data: 'mojk_jenis'
+                        data: 'mslp_jenis'
                     },
                     {
-                        data: 'mojk_ket_jenis'
+                        data: 'mslp_ins_user'
                     },
                     {
-                        data: 'mojk_tahun'
-                    },
-                    {
-                        data: 'mojk_ins_user'
-                    },
-                    {
-                        data: 'mojk_ins_date'
+                        data: 'mslp_ins_date'
                     },
                     {
                         data: null,
@@ -182,11 +174,9 @@
                         className: 'text-center',
                         render: function(data, type, row) {
                             return `
-                            <select class="form-select" id="jenis_dokumen"
-                                        name="mojk_jenis" data-placeholder="Pilih jenis dokumen" data-allow-clear="true">
-                                        <option value="1">Dokumen</option>
-                                        <option value="2">Tanda Terima</option>
-                                    </select>`
+                        <button type="button" id="bmoViewPdf" data-resouce="` + row.mslp_dokumen + `" data-show-pdf="` + row
+                                .mslp_dokumen + `"
+                                        class="btn btn-light-success" target="blank"> Lihat </button>`
                         }
                     },
                     {
@@ -203,11 +193,11 @@
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
                                     <div class="menu-item px-3">
                                         <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row
-                                .mojk_pk + `">Edit</a>
+                                .mslp_pk + `">Edit</a>
                                     </div>
                                     <div class="menu-item px-3">
                                         <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
-                                .mojk_pk + `">Delete</a>
+                                .mslp_pk + `">Delete</a>
                                     </div>
                                 </div>
                             `;
@@ -257,15 +247,14 @@
                 $('#tMod').text('Edit Data');
                 bsimpan('btn_simpan', 'Update');
                 var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/ojk') }}" + "/" + kode + "/edit";
+                    url = "{{ url('sekper/slide_presentasi') }}" + "/" + kode + "/edit";
                 $.get(url, function(res) {
+                    console.log(kode);
                     // var key = "{{ url('api/legal/get_mojk_jenis') }}";
                     $('#modal').modal('show');
-                    $('#mojk_pk').val(kode);
-                    $('#mojk_judul').val(res.mojk_judul);
-                    $('#mojk_tahun').val(res.mojk_tahun);
-                    $('#mojk_jenis').val(res.mojk_jenis);
-                    $('#mojk_ket_jenis').val(res.mojk_ket_jenis);
+                    $('#mslp_pk').val(kode);
+                    $('#mslp_judul').val(res.mslp_judul);
+                    $('#mslp_jenis').val(res.mslp_jenis);
                 });
             });
 
@@ -277,7 +266,7 @@
                 bsimpan('btn_simpan', 'Please wait..');
 
                 $.ajax({
-                    url: "{{ route('legal.ojk.store') }}",
+                    url: "{{ route('sekper.slide_presentasi.store') }}",
                     type: "POST",
                     data: formData,
                     cache: false, //jika ada input file atau dokumen
@@ -294,11 +283,9 @@
                                 'success'
                             ).then((res) => {
                                 lodTable();
-                                // reset();
-                                // $('#frxx').trigger("reset");
+                                $('#frxx')[0].reset();
                                 $('#modal').modal('hide');
-                                bsimpan('btn_simpan', 'Simpan');
-                                // x();
+                              
                             });
                         } else {
                             bsimpan('btn_simpan', 'Simpan');
@@ -319,7 +306,7 @@
 
             $('body').on('click', '#omodDelete', function() {
                 var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/ojk') }}" + "/" + kode;
+                    url = "{{ url('sekper/slide_presentasi') }}" + "/" + kode;
 
                 console.log(kode);
                 Swal.fire({
