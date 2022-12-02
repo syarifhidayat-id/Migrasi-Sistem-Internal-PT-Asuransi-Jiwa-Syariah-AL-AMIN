@@ -52,13 +52,18 @@
                             <div class="col-md-6">
                                 <div class="mb-10">
                                     <label class="form-label fs-6 fw-bold">Tipe Menu:</label>
-                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu">
-                                        <option></option>
-                                        {{-- <option value="ALAMIN" selected>ALAMIN</option> --}}
-                                        @foreach ($type_menu as $type)
-                                            <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="d-flex flex-stack">
+                                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                            <input class="form-check-input" id="check_satu" type="checkbox" value="1" data-checkbox="checked" />
+                                        </label>
+                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu">
+                                            <option></option>
+                                            {{-- <option value="ALAMIN" selected>ALAMIN</option> --}}
+                                            @foreach ($type_menu as $type)
+                                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -165,27 +170,25 @@
             },
         );
 
-        function tipeMenus() {
-            changeSelect(
-                'wmn_tipe',
-                'wmn_key',
-                '{{ url("api/utility/menu/getTipe") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.wmn_kode,
-                                text: d.wmn_descp
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-                },
-            );
-        }
+        changeSelect(
+            'wmn_tipe',
+            'wmn_key',
+            '{{ url("api/utility/menu/getTipe") }}',
+            function(data) {
+                return {
+                    results: $.map(data, function(d) {
+                        return {
+                            id: d.wmn_kode,
+                            text: d.wmn_descp
+                        }
+                    })
+                };
+            },
+            function(res) {
+                // setText('msoc_mssp_kode', res.params.data.id);
+                // setText('msoc_mssp_nama', res.params.data.text);
+            },
+        );
 
         $(function () {
             $.ajaxSetup({
@@ -194,6 +197,7 @@
 
             filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
 
+            $('*[data-checkbox="checked"]').val('1');
             serverSide( //datatable serverside
                 "dataMenu",
                 "{{ url('api/utility/menu/lihat-menu') }}", //url api/route
@@ -279,18 +283,21 @@
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
                 $.get(url, function(data) {
-                    tipeMenus();
-                    // $('#wmn_key').val(null).trigger('change');
                     var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + data.wmn_key;
                     openModal('modalMenu');
                     $("#frxx").formToJson(data);
                     if (data.wmn_key == "MAIN") {
-                        tipeMenus();
-                        $('#wmn_key').append('<option value="MAIN">MAIN</option>');
+                        var newOption = new Option('MAIN', 'MAIN', true, true);
+                        $('#wmn_key').append(newOption).trigger('change');
                     } else {
                         $.getJSON(key, function(res) {
-                            tipeMenus();
-                            $('#wmn_key').append('<option value="'+ res.wmn_kode +'">'+ res.wmn_descp +'</option>');
+                            if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']").length) {
+                                $('#wmn_key').val(res.wmn_kode).trigger('change');
+                            } else {
+                                var newOption = new Option(res.wmn_descp, res.wmn_kode, true, true);
+                                $('#wmn_key').append(newOption).trigger('change');
+                            }
+                            // $('#wmn_key').append('<option value="'+ res.wmn_kode +'">'+ res.wmn_descp +'</option>');
                         });
                     }
                 });

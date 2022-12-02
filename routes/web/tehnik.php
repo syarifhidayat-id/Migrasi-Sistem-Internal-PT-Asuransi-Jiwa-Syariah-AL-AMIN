@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\tehnik\polis\ApprovalMasterPolisController;
 use App\Http\Controllers\Tehnik\Soc\EntrySocController;
 use App\Http\Controllers\Tehnik\Soc\LihatSocController;
 use App\Http\Controllers\Tehnik\Soc\UploadTarifController;
@@ -9,6 +10,7 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
 
   Route::group(['prefix' => '/polis', 'as' => 'polis.'], function() {
 
+    Route::resource('/approval-master-polis', ApprovalMasterPolisController::class);
   });
 
   Route::group(['prefix' => '/soc', 'as' => 'soc.'], function() {
