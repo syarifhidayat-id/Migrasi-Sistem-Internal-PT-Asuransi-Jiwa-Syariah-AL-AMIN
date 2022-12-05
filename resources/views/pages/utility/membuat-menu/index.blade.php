@@ -54,7 +54,7 @@
                                     <label class="form-label fs-6 fw-bold">Tipe Menu:</label>
                                     <div class="d-flex flex-stack">
                                         <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                            <input class="form-check-input" id="check_satu" type="checkbox" value="1" data-checkbox="checked" />
+                                            <input class="form-check-input" id="check_1" type="checkbox" data-checkbox="check_1" />
                                         </label>
                                         <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu">
                                             <option></option>
@@ -69,12 +69,17 @@
                             <div class="col-md-6">
                                 <div class="mb-10">
                                     <label class="form-label fs-6 fw-bold">Nama Menu:</label>
-                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
-                                        <option></option>
-                                        {{-- @foreach ($nama_menu as $key=>$data)
-                                            <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                        @endforeach --}}
-                                    </select>
+                                    <div class="d-flex flex-stack">
+                                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                            <input class="form-check-input" id="check_2" type="checkbox" data-checkbox="check_2" />
+                                        </label>
+                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
+                                            <option></option>
+                                            {{-- @foreach ($nama_menu as $key=>$data)
+                                                <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
+                                            @endforeach --}}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -197,14 +202,23 @@
 
             filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
 
-            $('*[data-checkbox="checked"]').val('1');
+            $('#check_1').on('change', function(){
+                this.value = this.checked ? 1 : 0;
+                // console.log(this.value);
+            }).change();
+
+            $('#check_2').on('change', function(){
+                this.value = this.checked ? 1 : 0;
+                // console.log(this.value);
+            }).change();
+
             serverSide( //datatable serverside
                 "dataMenu",
                 "{{ url('api/utility/menu/lihat-menu') }}", //url api/route
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
-                    d.wmn_tipe = getText('tipe_menu'),
-                    d.wmn_descp = getText('key'),
-                    d.search = $('input[type="search"]').val()
+                    d.wmn_tipe = getText('tipe_menu');
+                    d.wmn_descp = getText('key');
+                    d.search = $('input[type="search"]').val();
                 },
                 [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
                     { data: "DT_RowIndex", className: "text-center" },

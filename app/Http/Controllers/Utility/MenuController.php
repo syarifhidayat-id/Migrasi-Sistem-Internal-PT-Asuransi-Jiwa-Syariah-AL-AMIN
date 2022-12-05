@@ -228,15 +228,19 @@ class MenuController extends Controller
             return Datatables::of($data)
             ->addIndexColumn()
             ->filter (function ($instance) use ($request) {
-                if (!empty($request->get('wmn_tipe'))) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['wmn_tipe'], $request->get('wmn_tipe')) ? true : false;
-                    });
+                if ($request->has('check_1') !== "0" || $request->has('check_1') !== "") {
+                    if (!empty($request->get('wmn_tipe'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['wmn_tipe'], $request->get('wmn_tipe')) ? true : false;
+                        });
+                    }
                 }
-                if (!empty($request->get('wmn_descp'))) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['wmn_descp'], $request->get('wmn_descp')) ? true : false;
-                    });
+                if ($request->has('check_2') !== "0" || $request->has('check_2') !== "") {
+                    if (!empty($request->get('wmn_descp'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['wmn_descp'], $request->get('wmn_descp')) ? true : false;
+                        });
+                    }
                 }
                 if (!empty($request->get('search'))) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
