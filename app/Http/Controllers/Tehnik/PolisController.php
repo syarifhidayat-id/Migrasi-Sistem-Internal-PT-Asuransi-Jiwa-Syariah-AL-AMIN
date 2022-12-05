@@ -128,62 +128,7 @@ class PolisController extends Controller
      */
     public function store(Request $request)
     {
-        $validasi = Validator::make(
-            $request->all(),
-            [
-                'mpol_mrkn_nama' => 'required',
 
-            ],
-           [
-            'mpol_mrkn_nama.required' => 'Pemegang Polis tidak boleh kosong!',
-
-            ]
-        );
-
-        if ($validasi->fails()) {
-            return response()->json([
-                'error' => $validasi->errors()
-            ]);
-        }else{
-            if ($request->mpol_kode == "") {
-                $kode = KodeController::__getKey(14);
-                $data = $request->all();
-                $data = request()->except(['_token']);
-
-                // if ($request->hasFile('mpks_dokumen')) {
-                //     $mpks_dokumen = $request->file('mpks_dokumen');
-                //     $dir = 'public/legal/pks';
-                //     $fileOri = $mpks_dokumen->getClientOriginalName();
-                //     $nameBukti = $kode . '_pks_' . $fileOri;
-                //     $path = Storage::putFileAs($dir, $mpks_dokumen, $nameBukti);
-                //     $data['mpks_dokumen'] = $nameBukti;
-                // }
-
-                $data['mpol_kode'] = $kode;
-                $data['mpol_ins_user'] = $request->user()->email;
-                $data['mpol_ins_date'] = date('Y-m-d H:i:s');
-                // $data['mpks_nomor_ori'] = 0;
-                // $data['mpks_endos'] = 0;
-                // $data['mpks_endos_idx'] = 0;
-                // $data['mpks_indexfolder'] = 0;
-                // $data['mpks_hapus'] = 0;
-
-                // Pks::create($data);
-
-                $insert = DB::table('eopr.mst_polis')->insert($data);
-
-                if ($insert) {
-                    return response()->json([
-                        'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
-                    ]);
-                } else {
-                    return response()->json([
-                        'error' => 'Data gagal disimpan !'
-                    ]);
-                }
-            }
-
-        }
     }
 
     /**
