@@ -29,27 +29,34 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required', 'string'],
-            'password' => ['required', 'string'],
+            'email' => 'required',
+            'password_n' => 'required',
+            'captcha' => 'required|captcha',
         ];
     }
 
-    /**
-     * Attempt to authenticate the request's credentials.
-     *
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
+    public function messages()
+    {
+        return [
+          'email.required' => 'Username harus terisi!',
+          'password_n.required' => 'Password harus terisi!',
+          'captcha.required' => 'Captcha harus terisi!',
+          'captcha.captcha' => 'Captcha harus terisi!',
+        ];
+    }
+
     public function authenticate()
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! Auth::attempt($this->only('email', 'password_n', 'captcha'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                // 'email' => __('auth.failed'),
+                'email' => __('Username anda salah, silahkan cek kembali!'),
+                'password_n' => __('Password anda salah, silahkan cek kembali!'),
+                'captcha' => __('Captcha anda salah, silahkan cek kembali!'),
             ]);
         }
 

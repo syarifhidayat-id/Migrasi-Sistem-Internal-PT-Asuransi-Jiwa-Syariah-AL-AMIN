@@ -146,6 +146,7 @@
             });
 
             serverSide( //datatable serverside
+                "serverSide",
                 "{{ url('api/legal/api_pks') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.wmn_tipe = $('#tipe_menu').val(),
@@ -264,32 +265,6 @@
                     };
                 },
             );
-            
-
-           
-
-            $('body').on('click', '#omodTam', function() {
-                $('#modalPks').modal('show');
-                bsimpan('btn_simpan', 'Simpan');
-                $('#tModPks').text('Tambah PKS');
-                bsimpan('btn_simpan', 'Simpan');
-            });
-
-
-            //     selectServerSide( //select server side with api/route
-            //     'mpks_mrkn_kode_test', //kode select
-            //     '{{ url('api/legal/pks/polis') }}', //url
-            //     function(data) {
-            //         return {
-            //             results: $.map(data, function(d) {
-            //                 return {
-            //                     text: d.mrkn_nama, // text nama
-            //                     id: d.mrkn_kode // kode value
-            //                 }
-            //             })
-            //         };
-            //     },
-            // );
 
             selectServerSide( //select server side with api/route
                 'mpks_mrkn_kode_test', //kode select
@@ -310,6 +285,30 @@
                     console.log(res.params.data.id);
                 },
             );
+
+            $('body').on('click', '#omodTam', function() {
+                $('#modalPks').modal('show');
+                bsimpan('btn_simpan', 'Simpan');
+                $('#tModPks').text('Tambah PKS');
+                bsimpan('btn_simpan', 'Simpan');
+            });
+
+            //     selectServerSide( //select server side with api/route
+            //     'mpks_mrkn_kode_test', //kode select
+            //     '{{ url('api/legal/pks/polis') }}', //url
+            //     function(data) {
+            //         return {
+            //             results: $.map(data, function(d) {
+            //                 return {
+            //                     text: d.mrkn_nama, // text nama
+            //                     id: d.mrkn_kode // kode value
+            //                 }
+            //             })
+            //         };
+            //     },
+            // );
+
+            
 
             $('body').on('click', '#omodAdd', function() {
                 $('#modalAddendum').modal('show');
@@ -344,18 +343,7 @@
                     console.log(res);
                     $('#modalView').modal('show');
                     // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
-                    $('#view_mpks_instansi').val(res.mpks_instansi);
-                    $('#view_mpks_mrkn_kode').val(res.mrkn_nama_induk);
-                    $('#view_mpks_nomor').val(res.mpks_nomor);
-                    $('#view_mpks_tentang').val(res.mpks_tentang);
-                    $('#view_mpks_tgl_mulai').val(res.awal_date);
-                    $('#view_mpks_tgl_akhir').val(res.akhir_date);
-                    $('#view_mpks_pic').val(res.mpks_pic);
-                    $('#view_mpks_pic_hp').val(res.mpks_pic_hp);
-                    $('#view_mpks_pic_email').val(res.mpks_pic_email);
-                    $('#view_mpks_atasan_hp').val(res.mpks_atasan_hp);
-                    $('#view_mpks_atasan_email').val(res.mpks_atasan_email);
-                    $('#view_mpks_ket').val(res.pks_ket);
+                    $('#frxx1').formToJson(res);
                 });
             });
 
@@ -379,22 +367,16 @@
                 bsimpan('btn_simpan', 'Update');
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ url('legal/pks/lihat') }}" + "/" + kode + "/edit";
-                // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
                 $.get(url, function(res) {
+                    var key = "{{ url('api/legal/pks/get_edit_polis') }}" + "/" + res.mpks_mrkn_kode;
                     $('#modalPks').modal('show');
-                    $('#mpks_pk').val(kode);
-                    $('#mpks_instansi').val(res.mpks_instansi);
-                    $('#mpks_mrkn_kode').val(res.mpks_mrkn_kode);
-                    $('#mpks_nomor').val(res.mpks_nomor);
-                    $('#mpks_tentang').val(res.mpks_tentang);
-                    $('#mpks_tgl_mulai').val(res.awal_date);
-                    $('#mpks_tgl_akhir').val(res.akhir_date);
-                    $('#mpks_pic').val(res.mpks_pic);
-                    $('#mpks_pic_hp').val(res.mpks_pic_hp);
-                    $('#mpks_pic_email').val(res.mpks_pic_email);
-                    $('#mpks_atasan_hp').val(res.mpks_atasan_hp);
-                    $('#mpks_atasan_email').val(res.mpks_atasan_email);
-                    $('#mpks_ket').val(res.mpks_ket);
+                    // $('#mpks_pk').val(kode);
+                    $('#frxx').formToJson(res);
+                    $.get(key, function(data) {
+                        var op = new Option(data.mrkn_nama, data.mrkn_kode, true, true);
+                        $('#mpks_mrkn_kode').append(op).trigger('change');
+                        console.log(data);
+                    });
                 });
             });
 

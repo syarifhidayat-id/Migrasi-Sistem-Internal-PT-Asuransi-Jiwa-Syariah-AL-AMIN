@@ -310,4 +310,15 @@ class PksController extends Controller
         }
         return response()->json($data);
     }
+
+    public function get_edit_polis($id)
+    {
+            $data = DB::table('emst.mst_rekanan')
+                ->select('mrkn_kode', 'mrkn_nama')
+                ->where('mrkn_kode', $id)
+                // ->where('mrkn_nama', 'like', "%$search%")
+                ->first();
+       
+        return response()->json($data);
+    }
 }

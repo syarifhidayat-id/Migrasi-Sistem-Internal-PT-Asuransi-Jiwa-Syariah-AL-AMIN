@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Tehnik\EntrySocController;
-use App\Http\Controllers\Tehnik\LihatSocController;
+use App\Http\Controllers\Tehnik\Soc\EntrySocController;
+use App\Http\Controllers\Tehnik\Soc\LihatSocController;
+use App\Http\Controllers\Tehnik\Soc\UploadTarifController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {

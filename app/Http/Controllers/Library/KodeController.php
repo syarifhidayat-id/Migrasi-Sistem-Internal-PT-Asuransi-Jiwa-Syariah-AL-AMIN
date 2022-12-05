@@ -20,6 +20,30 @@ class KodeController extends Controller
         return $kodePK;
     }
 
+    public static function __getpx($vtable, $long)
+    {
+        $tahunNow = date('y');
+        $getNum = $vtable;
+        $noUrut = substr($getNum, 2, $long);
+        $noUrut++;
+        $noUrutFormated = sprintf('%0'.$long.'s', $noUrut);
+
+        $kodePK = $tahunNow . $noUrutFormated;
+        return $kodePK;
+    }
+
+    public static function __getNo($kode, $vtable, $long)
+    {
+        $kdAwal = $kode;
+        $getNum = $vtable;
+        $noUrut = substr($getNum, strlen($kode), $long);
+        $noUrut++;
+        $noUrutFormated = sprintf('%0'.$long.'s', $noUrut);
+
+        $kodePK = $kdAwal . '.' . $noUrutFormated;
+        return $kodePK;
+    }
+
     public static function __getKey($num)
     {
         // $char = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

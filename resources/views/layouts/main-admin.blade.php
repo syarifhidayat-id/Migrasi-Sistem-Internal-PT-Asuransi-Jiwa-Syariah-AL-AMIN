@@ -19,6 +19,7 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/media/logos/logo-new.png') }}"/>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <link href="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -59,7 +60,7 @@
 
                         <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500 main_menu" id="#kt_aside_menu" data-kt-menu="true" data-kt-menu-expand="false">
 
-                        @if (Route::has('login'))
+                        @if (Route::has('signin.store'))
 
                             <div class="menu-item">
                                 <a class="menu-link {{ (Request::is('dashboard') or Request::is('dashboard')) ? 'active' : '' }}" href="{{ route('dashboard') }}">
@@ -180,8 +181,8 @@
 
                                         <div class="menu-item px-5">
                                             <div class="menu-content px-5">
-                                                <a href="{{ route('logout') }}" class="btn btn-danger d-block" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Sign Out') }}</a>
-                                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                <a href="{{ route('signout') }}" class="btn btn-danger d-block" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Sign Out') }}</a>
+                                                <form id="logout-form" action="{{ route('signout') }}" method="POST" class="d-none">
                                                     @csrf
                                                 </form>
                                             </div>
@@ -344,10 +345,14 @@
     <script src="{{ asset('dist/js/jquery-3.6.1.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/datatables-serverside.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/global/formjs/formToJson.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/global/formjs/jquery-loadJson.js') }}"></script> --}}
+    <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/pdf-view/pdf.min.js') }}"></script>
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
     <script src="{{ asset('dist/js/jquery-plugin.min.js') }}"></script>
     <script src="{{ asset('dist/js/jquery.capitalize.js') }}"></script>

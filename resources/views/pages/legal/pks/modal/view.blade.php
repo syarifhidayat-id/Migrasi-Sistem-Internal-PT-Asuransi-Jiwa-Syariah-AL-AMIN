@@ -11,7 +11,7 @@
                 </div>
             </div>
 
-            <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
+            <form id="frxx1" name="frxx1" method="post" enctype="multipart/form-data">
                 @csrf
 
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-5">

@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\View;
 
 Route::get('/', function () {
     return view('pages.auth.login');
-});
+})->name('signin');
 
 require __DIR__ . './auth.php';
 

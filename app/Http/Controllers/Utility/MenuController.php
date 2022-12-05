@@ -11,8 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
-use DataTables;
 
 class MenuController extends Controller
 {
@@ -74,16 +74,41 @@ class MenuController extends Controller
             return response()->json([
                 'error' => $validasi->errors()
             ]);
-        }
+        } else {
 
-        if ($request->wmn_kode == "") {
-            $kode = KodeController::__getKey(14);
+            if (empty($request->wmn_kode)) {
+                $kode = KodeController::__getKey(14);
 
-            if ($request->wmn_url == "") {
+                if (empty($request->wmn_url)) {
+                    $request->merge([
+                        'wmn_url_n' => 'maintenance',
+                    ]);
+                }
+
                 $request->merge([
-                    'wmn_url_n' => 'maintenance',
+                    'wmn_kode' => $kode,
+                    'wmn_slide' => 0,
+                    'wmn_timer' => 0,
+                    'wmn_open_w' => 0,
+                    'wmn_url_o_aktif_n' => 0,
+                    'wmn_bot' => 0,
+                ]);
+
+                Menu::create($request->all());
+
+                return response()->json([
+                    'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
+                ]);
+
+            } else {
+                $menu = Menu::findOrFail($request->wmn_kode);
+                $menu->update($request->all());
+
+                return response()->json([
+                    'success' => 'Data berhasil diupdate dengan Kode '.$request->wmn_kode.'!'
                 ]);
             }
+<<<<<<< HEAD
 
             $request->merge([
                 'wmn_kode' => $kode,
@@ -106,6 +131,8 @@ class MenuController extends Controller
             return response()->json([
                 'success' => 'Data berhasil diupdate dengan Kode ' . $request->wmn_kode . '!'
             ]);
+=======
+>>>>>>> 59d59a4082b11d7da076f2e9b6735a92c897f69a
         }
     }
 
@@ -169,11 +196,34 @@ class MenuController extends Controller
         return response()->json($keyMenu);
     }
 
-    public function getTipemenu($id)
+    public function getTipemenu(Request $request, $id)
     {
+<<<<<<< HEAD
         $menuTipe = Menu::where('wmn_tipe', $id)
             ->get();
         return response()->json($menuTipe);
+=======
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('web_menu')
+            ->select('*')
+            ->where([
+                ['wmn_tipe', $id],
+                ['wmn_descp','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('web_menu')
+            ->select('*')
+            ->where([
+                ['wmn_tipe', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
+>>>>>>> 59d59a4082b11d7da076f2e9b6735a92c897f69a
     }
 
     public function loadmenu()
@@ -217,12 +267,9 @@ class MenuController extends Controller
     public function datamenu(Request $request)
     {
         if ($request->ajax()) {
-            // $data = Menu::all();
-            $data = DB::table('web_menu')->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"));
-            // $data = DB::select('select * from web_menu');
-
-            // $data = DB::table('web_menu');
+            $data = DB::table('web_menu')->select(DB::raw("wmn_kode, wmn_icon, wmn_descp, wmn_tipe, wmn_url_n, wmn_url_o_n"))->get();
             return Datatables::of($data)
+<<<<<<< HEAD
                 // return Datatables::of($data)
                 ->addIndexColumn()
                 ->filter(function ($instance) use ($request) {
@@ -244,6 +291,33 @@ class MenuController extends Controller
                     }
                 })
                 ->make(true);
+=======
+            ->addIndexColumn()
+            ->filter (function ($instance) use ($request) {
+                if (!empty($request->get('wmn_tipe'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['wmn_tipe'], $request->get('wmn_tipe')) ? true : false;
+                    });
+                }
+                if (!empty($request->get('wmn_descp'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['wmn_descp'], $request->get('wmn_descp')) ? true : false;
+                    });
+                }
+                if (!empty($request->get('search'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if (Str::contains(Str::lower($row['wmn_tipe']), Str::lower($request->get('search')))){
+                            return true;
+                        }else if (Str::contains(Str::lower($row['wmn_descp']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
+
+                        return false;
+                    });
+                }
+            })
+            ->make(true);
+>>>>>>> 59d59a4082b11d7da076f2e9b6735a92c897f69a
         }
     }
 }
