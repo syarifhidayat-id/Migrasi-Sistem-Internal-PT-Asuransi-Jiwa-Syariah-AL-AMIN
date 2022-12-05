@@ -380,8 +380,6 @@
                 x();
             });
             $('#btn_close4').click(function() {
-                // var kode = $(this).attr('data-resouce'),
-                // var loc2 = $(location).attr('origin') + '/storage/legal/pojk/' + kode;
                 $('#modalView').modal('hide');
                 
             });

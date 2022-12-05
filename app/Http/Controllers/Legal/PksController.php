@@ -11,8 +11,7 @@ use App\Models\Legal\Pks;
 use App\Http\Controllers\Library\KodeController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-
-
+use Yajra\DataTables\Facades\DataTables;
 
 class PksController extends Controller
 {
@@ -23,17 +22,19 @@ class PksController extends Controller
      */
     public function index()
     {
-        $data = DB::table('eopr.mst_pks AS pks')
-            ->join('emst.mst_rekanan AS rekanan', 'rekanan.mrkn_kode', '=', 'pks.mpks_mrkn_kode')
-            ->select(
-                'rekanan.*',
-                'pks.*',
-                DB::raw('DATE_FORMAT(mpks_tgl_mulai, "%d-%m-%Y") as awal_date'),
-                DB::raw('DATE_FORMAT(mpks_tgl_akhir, "%d-%m-%Y") as akhir_date')
-            )
-            ->orderBy('pks.mpks_ins_date', 'desc')
-            ->get();
-        return View('pages.legal.pks.index', compact('data'));
+        // $data = DB::table('eopr.mst_pks AS pks')
+        //     ->join('emst.mst_rekanan AS rekanan', 'rekanan.mrkn_kode', '=', 'pks.mpks_mrkn_kode')
+        //     ->select(
+        //         'rekanan.*',
+        //         'pks.*',
+        //         DB::raw('DATE_FORMAT(mpks_tgl_mulai, "%d-%m-%Y") as awal_date'),
+        //         DB::raw('DATE_FORMAT(mpks_tgl_akhir, "%d-%m-%Y") as akhir_date')
+        //     )
+        //     ->orderBy('pks.mpks_ins_date', 'desc')
+        //     ->get();
+        // return View('pages.legal.pks.index', compact('data'));
+
+        return view('pages.legal.pks.index');
     }
 
     /**
@@ -249,5 +250,64 @@ class PksController extends Controller
         return response()->json([
             'success' => 'Data berhasil dihapus dengan Kode ' . $pks->mpks_pk . '!'
         ]);
+    }
+
+    public function api_pks(Request $request)
+    {
+        // $data = DB::table('esur.trs_surat')->select(
+        //     '*',
+        //     DB::raw("@no:=@no+1 AS DT_RowIndex"),
+        //     DB::raw('DATE_FORMAT(tsm_ins_date, "%d-%m-%Y") as ins_date')
+        // )
+
+        $data = DB::table('eopr.mst_pks as pks')
+        ->join('emst.mst_rekanan as rekanan', 'rekanan.mrkn_kode', '=', 'pks.mpks_mrkn_kode')
+        ->select(
+            'pks.*', 'rekanan.mrkn_kode', 'rekanan.mrkn_nama',
+            DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            DB::raw('(CASE WHEN pks.mpks_mrkn_kode = rekanan.mrkn_kode THEN rekanan.mrkn_nama END) as kode_rekanan')
+        )
+            ->orderBy('mpks_pk', 'desc')->limit(10);
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->filter(function ($instance) use ($request) {
+                // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
+                //     return $instance->where('wmn_tipe', $request->wmn_tipe);
+                // }
+                // if (!empty($request->get('wmn_tipe'))) {
+                //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
+                // }
+                // if (!empty($request->get('wmn_descp'))) {
+                //     $instance->where('wmn_descp', $request->get('wmn_descp'));
+                // }
+                if (!empty($request->get('search'))) {
+                    $instance->where(function ($w) use ($request) {
+                        $search = $request->get('search');
+                        $w->orWhere('mpks_tentang', 'LIKE', "%$search%")
+                            ->orWhere('mpks_pk', 'LIKE', "%$search%");
+                    });
+                }
+            })
+            ->make(true);
+        // }
+    }
+
+    public function select_pk_pks(Request $request)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('eopr.mst_pks')
+                ->select('*')
+                ->where('mpks_nomor', 'like', "%$search%")
+                ->get();
+        } else {
+            $data = DB::table('eopr.mst_pks')
+                ->select('mpks_pk', 'mpks_nomor')
+                ->orderBy('mpks_pk')
+                ->get();
+        }
+        return response()->json($data);
     }
 }

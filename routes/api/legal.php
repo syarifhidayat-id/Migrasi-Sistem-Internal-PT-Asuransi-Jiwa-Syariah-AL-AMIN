@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
 
+    Route::get('api_pks', [PksController::class, 'api_pks']);
+
     // Route::resource('/menu', MenuController::class);
+    Route::get('get_select_pks', [PksController::class, 'select_pk_pks'])->name('get_select_pks');
     Route::get('get_mojk_jenis', [ApiController::class, 'get_mojk_jenis'])->name('get_mojk_jenis');
     Route::get('jns-doc/{kode}', [ApiController::class, 'getJnsDoc']);
     Route::get('uu_asuransi', [ApiController::class, 'uu_asuransi'])->name('uu_asuransi');
@@ -23,6 +26,7 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
     Route::get('unit_laporan_berkala', [ApiController::class, 'unit_laporan_berkala']);
     Route::get('ojk', [ApiController::class, 'ojk']);
     Route::get('viewPdf/{file}', [ApiController::class, 'viewPdf']);
+
     Route::group(['prefix' => '/pks', 'as' => 'pks.'], function () {
         Route::get('polis', [ApiController::class, 'polis'])->name('polis');
         Route::get('mssp_kode', [ApiController::class, 'mssp_kode'])->name('mssp_kode');
