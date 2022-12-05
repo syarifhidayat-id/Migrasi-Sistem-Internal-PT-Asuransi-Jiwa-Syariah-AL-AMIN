@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\tehnik\polis\ApprovalMasterPolisController;
 use App\Http\Controllers\Tehnik\Soc\EntrySocController;
 use App\Http\Controllers\Tehnik\Soc\LihatSocController;
 use App\Http\Controllers\Tehnik\Soc\UploadTarifController;
@@ -46,12 +47,19 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
             Route::post('/upload-uw', [UploadUwController::class, 'store']);
             Route::post('/update-upload-uw', [UploadUwController::class, 'updateUw'])->name('updateuw');
         });
+
         Route::group(['prefix' => '/lihat-soc', 'as' => 'lihat-soc.'], function() {
             Route::get('/list-soc', [LihatSocController::class, 'listSoc']);
             Route::post('/update-status-approval/{kode}/{val}', [LihatSocController::class, 'udapteStsApprov']);
         });
 
         // Route::resource('/lihat-soc-data', [LihatSocController::class]);
+    });
+
+    Route::group(['prefix' => '/polis', 'as' => 'polis.'], function() {
+        Route::group(['prefix' => '/approval-master-polis', 'as' => 'approval-master-polis.'], function() {
+            Route::get('/list', [ApprovalMasterPolisController::class, 'getApprovalMasterPolis']);
+        });
     });
 
 });

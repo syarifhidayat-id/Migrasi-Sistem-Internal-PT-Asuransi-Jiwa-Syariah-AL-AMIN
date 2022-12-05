@@ -18,6 +18,10 @@
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/logo-new.png') }}" />
     <link rel="icon" type="image/png" href="{{ asset('assets/media/logos/logo-new.png') }}"/>
 
+
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/easyui.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/icon.css') }}"> --}}
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <link href="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -27,7 +31,6 @@
     <link href="{{ asset('vendor/fontawesome-6.2.0/css/all.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dist/css/custom.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dist/css/preload.min.css') }}" rel="stylesheet" type="text/css" />
-
 
     @yield('style')
     @livewireStyles
@@ -345,7 +348,9 @@
     <script src="{{ asset('dist/js/jquery-3.6.1.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
-    {{-- <script src="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/plugins/custom/jquery/jquery.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/plugins/custom/jquery/jquery.easyui.min.js') }}"></script> --}}
+    <script src="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/datatables-serverside.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatables.min.js') }}"></script>
@@ -356,6 +361,7 @@
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
     <script src="{{ asset('dist/js/jquery-plugin.min.js') }}"></script>
     <script src="{{ asset('dist/js/jquery.capitalize.js') }}"></script>
+
     <script>
         $('.menu-title').capitalize();
     </script>

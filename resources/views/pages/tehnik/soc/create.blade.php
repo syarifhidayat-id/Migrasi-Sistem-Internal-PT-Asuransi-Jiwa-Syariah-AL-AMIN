@@ -591,6 +591,59 @@
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
+
+            // function formatResult(result) {
+            //     if (!result.id) return result.text;
+
+            //         var myElement = $(result.element);
+
+            //     var markup = '<div class="clearfix">' +
+            //                     '<h4>' + result.text + '</h4>' +
+            //                     '<p>' + $(myElement).data('description') + '</p>' +
+            //                 '</div>';
+
+            //     return markup;
+            // }
+
+            // $('#msoc_mrkn_kode').select2({
+            //     ajax: {
+            //         url: '{{ url("api/tehnik/soc/entry-soc/select-pmgpolis") }}',
+            //         dataType: 'json',
+            //         delay: 250,
+            //         data: function (params) {
+            //             return {
+            //                 q: params.term, // search term
+            //                 page: params.page
+            //             };
+            //         },
+            //         processResults: function(data, params) {
+            //             // return {
+            //             //     results: $.map(data, function(d) {
+            //             //         return {
+            //             //             id: d.kode, // kode value
+            //             //             text: d.nama // text nama
+            //             //         }
+            //             //     })
+            //             //     // results: data;
+            //             // };
+            //             params.page = params.page || 1;
+
+            //             return {
+            //                 results: data.results,
+            //                 pagination: {
+            //                     more: (params.page * 30) < data.total_count
+            //                 }
+            //             };
+            //         },
+            //         cache: true,
+            //     },
+            //     templateResult: formatResult,
+            //     // templateSelection: formatRepoSelection
+            // }).on('select2:select', function(res) {
+            //     setText('msoc_mrkn_nama', res.params.data.text);
+            //     console.log(res.params.data.text);
+            // });
+
             selectServerSideReq( //select server side with api/route
                 'msoc_mrkn_kode', //kode select
                 '{{ url("api/tehnik/soc/entry-soc/select-pmgpolis") }}', //url
@@ -602,10 +655,12 @@
                                 text: d.nama // text nama
                             }
                         })
+                        // results: data;
                     };
                 },
                 function(res) {
                     setText('msoc_mrkn_nama', res.params.data.text);
+                    console.log(res.params.data.text);
                 },
             );
             selectServerSideReq(
@@ -898,6 +953,7 @@
                     };
                 },
             );
+            $('#msoc_mkomdisc_persen').select2('data', {persen: 0, tipe: '0'});
             selectServerSide(
                 'msoc_referal',
                 '{{ url("api/tehnik/soc/entry-soc/select-referal") }}',
@@ -988,6 +1044,41 @@
                     setText('msoc_mpuw_nomor', res.params.data.id);
                 },
             );
+            // selectServerSide(
+            //     'e_pras',
+            //     '{{ url("api/tehnik/soc/entry-soc/pilih-program-asuransi") }}',
+            //     function(data) {
+            //         return {
+            //             results: $.map(data, function(d) {
+            //                 return {
+            //                     id: d.mspaj_nomor,
+            //                     text: d.mspaj_nomor
+            //                 }
+            //             })
+            //         };
+            //     },
+            //     function(res) {
+            //         setText('msoc_mspaj_nama', res.params.data.id);
+            //     },
+            // );
+
+            // $('#e_pras').combogrid({
+            //     url: "{{ url('api/tehnik/soc/entry-soc/pilih-program-asuransi') }}",
+			// 	idField:'mjns_kode',
+			// 	textField:'mjns_keterangan',
+			// 	mode:'remote',
+			// 	method: 'POST',
+			// 	fitColumns:true,
+			// 	columns:[[
+			// 		{field:'mjns_keterangan',title:'Jenis Nasabah',align:'left',width:280},
+			// 		{field:'mjns_kode',title:'Kode Jns Nasabah',width:50,hidden:true},
+			// 		{field:'mjns_jl',title:'Joint Life',width:80,hidden:true},
+			// 		{field:'mjns_jl_pst',title:'Joint Life Peserta',width:80,hidden:true},
+			// 		{field:'mjns_jl_pas',title:'Joint Life Pasangan',width:80,hidden:true},
+			// 		{field:'mjns_wp_pens',title:'WP Pensiun',width:80,hidden:true},
+			// 		{field:'mjns_phk_pens',title:'PHK Pensiun',width:80,hidden:true},
+			// 	]],
+            // });
 
             // selectTable(
             //     "e_pras",
@@ -1077,20 +1168,10 @@
                             setText('e_pras', name);
                             setText('msoc_mpras_kode', id);
                             setTextReadOnly('e_pras', true);
-                            // Swal.fire(
-                            //     'Berhasil!',
-                            //     'Data ditampilkan.',
-                            //     'success'
-                            // ).then((res) => {
-                            //     setText('e_pras', name);
-                            //     setText('msoc_mpras_kode', id);
-                            // });
                         } else if (result.isDenied) {
                             setText('e_pras', name);
                             setText('msoc_mpras_kode', id);
                             setTextReadOnly('e_pras', false);
-                        } else {
-                            console.log('Batal');
                         }
                     },
                 );
@@ -1389,6 +1470,191 @@
             if (discrate=="1") {
                 setComboReadOnly("msoc_mdr_kode",true);
             }
+        }
+
+        function clear_f () {
+            clearForm('frxx_uploadTarif');
+            clearForm('frxx_uploadUw');
+            clearSelect();
+            bsimpan('btn_simpan', 'Simpan');
+
+            if (tipe=='0') {
+                titleAction('title_action', 'Buat SOC Baru');
+                setTextReadOnly("msoc_mrkn_nama",false);
+                setTextReadOnly("e_manfaat_pol",false);
+                setTextReadOnly("e_nasabah",false);
+                setTextReadOnly("msoc_mspaj_nama",true);
+                setTextReadOnly("msoc_mssp_nama",false);
+                setTextReadOnly("msoc_jns_perusahaan",false);
+            }
+
+            if (tipe=='1') {
+                titleAction('title_action', 'SOC Edit');
+                setTextReadOnly("e_manfaat_pol",false);
+                setTextReadOnly("msoc_mrkn_nama",false);
+                setTextReadOnly("e_nasabah",false);
+                setTextReadOnly("msoc_mspaj_nama",false);
+                setTextReadOnly("msoc_mssp_nama",false);
+                setTextReadOnly("msoc_jns_perusahaan",false);
+
+            }
+
+            if (tipe=='2') {
+                titleAction('title_action', 'SOC Diendos');
+                setTextReadOnly("msoc_mrkn_nama",false);
+                setTextReadOnly("e_nasabah",false);
+                setTextReadOnly("e_manfaat_pol",false);
+                setTextReadOnly("msoc_mspaj_nama",false);
+                setTextReadOnly("msoc_mssp_nama",false);
+                setTextReadOnly("msoc_jns_perusahaan",false);
+            }
+
+            if (tipe=='3') {
+                titleAction('title_action', 'SOC Dibatalkan');
+                setTextReadOnly("msoc_mrkn_nama",false);
+                setTextReadOnly("e_nasabah",false);
+                setTextReadOnly("msoc_mspaj_nama",false);
+                setTextReadOnly("e_manfaat_pol",false);
+                setTextReadOnly("msoc_mssp_nama",false);
+                setTextReadOnly("msoc_jns_perusahaan",false);
+            }
+            setText("msoc_endos",tipe);
+        }
+
+        function close_mTarif () {
+            closeModal('modalTarif');
+            clearForm('frxx_uploadTarif');
+            clearSelect();
+        }
+
+        function close_mUw () {
+            closeModal('modalUw');
+            clearForm('frxx_uploadUw');
+            clearSelect();
+        }
+
+        function close_lihatDoc () {
+            closeModal('modalLihatDoc');
+            $('#lihatFileDoc').attr("data","");
+        }
+
+        function showTarifTable (idTable, kode) {
+            dtTable(
+                idTable,
+                false,
+                "{{ url('api/tehnik/soc/entry-soc/lihat-tarif') }}" + "/" + kode,
+                [
+                    { data: "mstuj_usia", className: "text-center" },
+                    { data: "mstuj_0", className: "text-center" },
+                    { data: "mstuj_1", className: "text-center" },
+                    { data: "mstuj_2", className: "text-center" },
+                    { data: "mstuj_3", className: "text-center" },
+                    { data: "mstuj_4", className: "text-center" },
+                    { data: "mstuj_5", className: "text-center" },
+                    { data: "mstuj_6", className: "text-center" },
+                    { data: "mstuj_7", className: "text-center" },
+                    { data: "mstuj_8", className: "text-center" },
+                    { data: "mstuj_9", className: "text-center" },
+                    { data: "mstuj_10", className: "text-center" },
+                    { data: "mstuj_11", className: "text-center" },
+                    { data: "mstuj_12", className: "text-center" },
+                    { data: "mstuj_13", className: "text-center" },
+                    { data: "mstuj_14", className: "text-center" },
+                    { data: "mstuj_15", className: "text-center" },
+                    { data: "mstuj_16", className: "text-center" },
+                    { data: "mstuj_17", className: "text-center" },
+                    { data: "mstuj_18", className: "text-center" },
+                    { data: "mstuj_19", className: "text-center" },
+                    { data: "mstuj_20", className: "text-center" },
+                    { data: "mstuj_21", className: "text-center" },
+                    { data: "mstuj_22", className: "text-center" },
+                    { data: "mstuj_23", className: "text-center" },
+                    { data: "mstuj_24", className: "text-center" },
+                    { data: "mstuj_25", className: "text-center" },
+                    { data: "mstuj_26", className: "text-center" },
+                    { data: "mstuj_27", className: "text-center" },
+                    { data: "mstuj_28", className: "text-center" },
+                    { data: "mstuj_29", className: "text-center" },
+                    { data: "mstuj_30", className: "text-center" },
+                    { data: "mstuj_31", className: "text-center" },
+                    { data: "mstuj_32", className: "text-center" },
+                    { data: "mstuj_33", className: "text-center" },
+                    { data: "mstuj_34", className: "text-center" },
+                    { data: "mstuj_35", className: "text-center" },
+                    { data: "mstuj_36", className: "text-center" },
+                    { data: "mstuj_37", className: "text-center" },
+                    { data: "mstuj_38", className: "text-center" },
+                    { data: "mstuj_39", className: "text-center" },
+                    { data: "mstuj_40", className: "text-center" },
+                    { data: "mstuj_41", className: "text-center" },
+                    { data: "mstuj_42", className: "text-center" },
+                    { data: "mstuj_43", className: "text-center" },
+                    { data: "mstuj_44", className: "text-center" },
+                    { data: "mstuj_45", className: "text-center" },
+                    { data: "mstuj_46", className: "text-center" },
+                    { data: "mstuj_47", className: "text-center" },
+                    { data: "mstuj_48", className: "text-center" },
+                    { data: "mstuj_49", className: "text-center" },
+                    { data: "mstuj_50", className: "text-center" },
+                    { data: "mstuj_51", className: "text-center" },
+                    { data: "mstuj_52", className: "text-center" },
+                    { data: "mstuj_53", className: "text-center" },
+                    { data: "mstuj_54", className: "text-center" },
+                    { data: "mstuj_55", className: "text-center" },
+                    { data: "mstuj_56", className: "text-center" },
+                    { data: "mstuj_57", className: "text-center" },
+                    { data: "mstuj_58", className: "text-center" },
+                    { data: "mstuj_59", className: "text-center" },
+                    { data: "mstuj_60", className: "text-center" },
+                    { data: "mstuj_61", className: "text-center" },
+                    { data: "mstuj_62", className: "text-center" },
+                    { data: "mstuj_63", className: "text-center" },
+                    { data: "mstuj_64", className: "text-center" },
+                    { data: "mstuj_65", className: "text-center" },
+                    { data: "mstuj_66", className: "text-center" },
+                    { data: "mstuj_67", className: "text-center" },
+                    { data: "mstuj_68", className: "text-center" },
+                    { data: "mstuj_69", className: "text-center" },
+                    { data: "mstuj_70", className: "text-center" },
+                    // { data: "mstuj_71", className: "text-center" },
+                    // { data: "mstuj_72", className: "text-center" },
+                    // { data: "mstuj_73", className: "text-center" },
+                    // { data: "mstuj_74", className: "text-center" },
+                    // { data: "mstuj_75", className: "text-center" },
+                    // { data: "mstuj_76", className: "text-center" },
+                    // { data: "mstuj_77", className: "text-center" },
+                    // { data: "mstuj_78", className: "text-center" },
+                    // { data: "mstuj_79", className: "text-center" },
+                    // { data: "mstuj_80", className: "text-center" },
+                    // { data: "mstuj_81", className: "text-center" },
+                    // { data: "mstuj_82", className: "text-center" },
+                    // { data: "mstuj_83", className: "text-center" },
+                    // { data: "mstuj_84", className: "text-center" },
+                    // { data: "mstuj_85", className: "text-center" },
+                    // { data: "mstuj_86", className: "text-center" },
+                ],
+                [0, 'asc'],
+            );
+        }
+
+        function showUwTable (idTable, kode) {
+            dtTable(
+                idTable,
+                false,
+                "{{ url('api/tehnik/soc/entry-soc/lihat-uw') }}" + "/" + kode,
+                [
+                    { data: "mrmp_urut", className: "text-center" },
+                    { data: "mrmp_tipe_peserta", className: "text-center" },
+                    { data: "mrmp_ket1", className: "text-center" },
+                    { data: "mrmp_ket2", className: "text-left" },
+                    { data: "mrmp_min_umur", className: "text-center" },
+                    { data: "mrmp_max_umur", className: "text-center" },
+                    { data: "mrmp_total_min", className: "text-center" },
+                    { data: "mrmp_total_max", className: "text-center" },
+                    { data: "mrmp_xn_max", className: "text-center" },
+                ],
+                [0, 'asc'],
+            );
         }
 
         function clear_f () {
