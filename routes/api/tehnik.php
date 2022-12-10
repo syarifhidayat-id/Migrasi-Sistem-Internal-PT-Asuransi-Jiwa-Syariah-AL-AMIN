@@ -14,13 +14,14 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
         Route::group(['prefix' => '/entry-soc', 'as' => 'entry-soc.'], function() {
             Route::get('/select-pmgpolis', [EntrySocController::class, 'selectPmgPolis']);
             Route::get('/select-jnsnasabah', [EntrySocController::class, 'selectJnsNasabah']);
-            Route::get('/select-segmen/{kode}', [EntrySocController::class, 'selectSegmen']);
+            Route::get('/select-segmen', [EntrySocController::class, 'selectSegmen']);
             Route::get('/select-nospaj', [EntrySocController::class, 'selectNoSpaj']);
             Route::get('/select-meka1', [EntrySocController::class, 'selectMeka1']);
             Route::get('/select-meka2', [EntrySocController::class, 'selectMeka2']);
-            Route::get('/select-manasu/{kode}', [EntrySocController::class, 'selectManfaatAsu']);
-            Route::get('/select-jnskerja', [EntrySocController::class, 'selectJnsKerja']);
-            Route::get('/select-jamiasu/{kode1}/{kode2}', [EntrySocController::class, 'selectJamiAsu']);
+            Route::get('/select-manasu', [EntrySocController::class, 'selectManfaatAsu']);
+            // Route::get('/select-jnskerja', [EntrySocController::class, 'selectJnsKerja']);
+            Route::get('/select-get-soc', [EntrySocController::class, 'selectGetSoc']);
+            Route::get('/select-jamiasu', [EntrySocController::class, 'selectJamiAsu']);
             // Route::get('/pilih-program-asuransi/{mpid}/{mkm}/{mkm2}/{mft}/{mrkn}/{mssp}/{mjm}/{mjns}/{byr}/{perush}', [EntrySocController::class, 'pilihProgramAsuransi']);
             // Route::get('/pilih-program-asuransi/{mpid}', [EntrySocController::class, 'pilihProgramAsuransi']);
             Route::get('/pilih-program-asuransi', [EntrySocController::class, 'pilihProgramAsuransi']);

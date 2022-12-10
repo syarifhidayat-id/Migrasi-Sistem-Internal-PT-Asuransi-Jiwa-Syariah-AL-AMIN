@@ -13,12 +13,33 @@
     <meta property="og:type" content="article" />
     <meta property="og:title" content="PT. Asuransi Jiwa Syariah AL AMIN" />
     <meta property="og:url" content="https://keenthemes.com/metronic" />
-    <meta property="og:site_name" content="Keenthemes | Metronic" />
+    <meta property="og:site_name" content="Asuransi Syariah" />
     <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/logo-new.png') }}" />
     <link rel="icon" type="image/png" href="{{ asset('assets/media/logos/logo-new.png') }}"/>
 
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/accordion.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/combobox.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/combo.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/datagrid.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/datalist.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/dialog.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/drawer.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/pagination.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/panel.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/progressbar.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/propertygrid.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/searchbox.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/spinner.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/textbox.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/timepicker.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/tooltip.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/tree.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/validatebox.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/window.css') }}">
 
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/default/easyui.css') }}"> --}}
     {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/easyui.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/icon.css') }}"> --}}
 
@@ -349,13 +370,12 @@
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     {{-- <script src="{{ asset('assets/plugins/custom/jquery/jquery.min.js') }}"></script> --}}
-    {{-- <script src="{{ asset('assets/plugins/custom/jquery/jquery.easyui.min.js') }}"></script> --}}
-    <script src="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/jquery/jquery.easyui.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/datatables-serverside.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatables.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/global/formjs/formToJson.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/plugins/global/formjs/jquery-loadJson.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/pdf-view/pdf.min.js') }}"></script>
     <script src="{{ asset('dist/js/preloader.js') }}"></script>

@@ -23,17 +23,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $type_menu = DB::table('web_menu_tipe')
-        ->select('wmt_kode','wmt_nama')
-        ->get();
-        $nama_menu = DB::table('web_menu')
-        ->select('wmn_descp')
-        ->get();
-
-        return view('pages.utility.membuat-menu.index', [
-            'type_menu' => $type_menu,
-            'nama_menu' => $nama_menu,
-        ]);
+        return view('pages.utility.membuat-menu.index');
     }
 
     /**
@@ -165,6 +155,26 @@ class MenuController extends Controller
         ]);
     }
 
+    public function selectTipeMenu(Request $request)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('web_menu_tipe')
+            ->select('wmt_kode','wmt_nama')
+            ->where([
+                ['wmt_nama','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('web_menu_tipe')
+            ->select('wmt_kode','wmt_nama')
+            ->get();
+        }
+
+        return response()->json($data);
+    }
+
     public function keyMenu($id)
     {
         $keyMenu = Menu::where('wmn_kode', $id)->first();
@@ -228,14 +238,14 @@ class MenuController extends Controller
             return Datatables::of($data)
             ->addIndexColumn()
             ->filter (function ($instance) use ($request) {
-                if ($request->has('check_1') !== "0" || $request->has('check_1') !== "") {
+                if ($request->get('check_1') == "1") {
                     if (!empty($request->get('wmn_tipe'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                             return Str::contains($row['wmn_tipe'], $request->get('wmn_tipe')) ? true : false;
                         });
                     }
                 }
-                if ($request->has('check_2') !== "0" || $request->has('check_2') !== "") {
+                if ($request->get('check_2') == "1") {
                     if (!empty($request->get('wmn_descp'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                             return Str::contains($row['wmn_descp'], $request->get('wmn_descp')) ? true : false;

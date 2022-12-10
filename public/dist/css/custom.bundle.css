@@ -2,7 +2,11 @@
     text-transform: capitalize;
 } */
 
-#frxx div .required_sel {
+form .required_sel {
+    background-color: rgba(255, 204, 138, 0.514);
+}
+
+.textbox-required .textbox-text{
     background-color: rgba(255, 204, 138, 0.514);
 }
 

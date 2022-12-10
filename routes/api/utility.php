@@ -9,6 +9,7 @@ Route::group(['prefix' => '/utility', 'as' => 'utility.'], function () {
 
     // Route::resource('/menu', MenuController::class);
     Route::group(['prefix' => '/menu', 'as' => 'menu.'], function() {
+        Route::get('/select-tipemenu', [MenuController::class, 'selectTipeMenu']);
         Route::get('/lihat-menu', [MenuController::class, 'datamenu']);
         Route::get('/getTipe/{id}', [MenuController::class, 'getTipemenu']);
         Route::get('/edit/{id}', [MenuController::class, 'edit']);
