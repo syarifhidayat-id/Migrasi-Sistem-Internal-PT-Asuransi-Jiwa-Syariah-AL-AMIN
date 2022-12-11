@@ -54,9 +54,9 @@
                         {{-- <select class="form-select form-select-solid" name="msoc_mrkn_nama" id="msoc_mrkn_nama" data-placeholder="Pilih pemegang polis" data-allow-clear="true">
                             <option></option>
                         </select> --}}
-                        <input type="text" class="easyui-textbox" name="msoc_mrkn_nama" id="msoc_mrkn_nama" data-options="prompt:'Pilih pemegang polis'" style="width: 100%;" />
+                        <input type="text" class="easyui-textbox" name="msoc_mrkn_nama" id="msoc_mrkn_nama" data-options="prompt:'Pilih pemegang polis'" style="width: 100%; height: 38px;" />
                         <input type="text" class="form-control form-control-solid" name="msoc_mrkn_kode" id="msoc_mrkn_kode" placeholder="msoc_mrkn_nama" />
-                        <span class="text-danger error-text msoc_mrkn_kode_err"></span>
+                        <span class="text-danger error-text msoc_mrkn_nama_err"></span>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -65,7 +65,8 @@
                         {{-- <select class="form-select form-select-solid" name="e_nasabah" id="e_nasabah" data-placeholder="Pilih nasabah bank" data-allow-clear="true">
                             <option></option>
                         </select> --}}
-                        <input type="text" class="easyui-textbox" name="e_nasabah" id="e_nasabah" data-options="prompt:'Pilih nasabah bank'" style="width: 100%;" />
+                        <input type="text" class="easyui-textbox" name="e_nasabah" id="e_nasabah" data-options="prompt:'Pilih nasabah bank'" style="width: 100%; height: 38px;" />
+                        <input type="text" class="form-control form-control-solid" name="e_bersih" id="e_bersih" placeholder="e_bersih" />
                         <input type="text" class="form-control form-control-solid" name="msoc_mjns_kode" id="msoc_mjns_kode" placeholder="msoc_mjns_kode" />
                         <input type="text" class="form-control form-control-solid" name="msoc_mjns_mpid_kode" id="msoc_mjns_mpid_kode" placeholder="msoc_mjns_mpid_kode" />
                         <span class="text-danger error-text e_nasabah_err"></span>
@@ -74,7 +75,7 @@
                 <div class="col-md-4">
                     <div class="mb-5">
                         <label class="required form-label">Segmen Pasar</label>
-                        {{-- <select class="form-select form-select-solid required_sel" data-control="select2" name="mpid_mssp_kode" id="mpid_mssp_kode" data-placeholder="Pilih segmen pasar" data-allow-clear="true">
+                        {{-- <select class="form-select form-select-solid" data-control="select2" name="mpid_mssp_kode" id="mpid_mssp_kode" data-placeholder="Pilih segmen pasar" data-allow-clear="true">
                             <option></option>
                         </select> --}}
                         <input type="text" class="easyui-combobox" name="msoc_mssp_nama" id="msoc_mssp_nama" data-options="prompt:'Pilih segmen pasar',
@@ -85,11 +86,11 @@
                         groupField:'group',
                         onSelect: function(rec){
                           setsegmen(rec);
-                        }" style="width: 100%;" />
-                        {{-- <input type="text" class="easyui-textbox" name="msoc_mssp_nama" id="msoc_mssp_nama" data-options="prompt:'Pilih segmen pasar'" style="width: 100%;" /> --}}
-                        <input type="text" class="form-control form-control-solid" name="msoc_mssp_kode" id="msoc_mssp_kode" placeholder="msoc_mssp_kode" hidden />
-                        <input type="text" class="form-control form-control-solid" name="mpid_mssp_kode" id="mpid_mssp_kode" placeholder="msoc_mssp_nama" hidden />
-                        <span class="text-danger error-text mpid_mssp_kode_err"></span>
+                        }" style="width: 100%; height: 38px;" />
+                        {{-- <input type="text" class="easyui-textbox" name="msoc_mssp_nama" id="msoc_mssp_nama" data-options="prompt:'Pilih segmen pasar'" style="width: 100%; height: 38px;" /> --}}
+                        <input type="text" class="form-control form-control-solid" name="msoc_mssp_kode" id="msoc_mssp_kode" placeholder="msoc_mssp_kode" />
+                        <input type="text" class="form-control form-control-solid" name="mpid_mssp_kode" id="mpid_mssp_kode" placeholder="mpid_mssp_kode" />
+                        <span class="text-danger error-text msoc_mssp_nama_err"></span>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -118,7 +119,7 @@
                         {{-- <select class="form-select form-select-solid" name="msoc_mekanisme" id="msoc_mekanisme" data-placeholder="Pilih mkanisme 1" data-allow-clear="true">
                             <option></option>
                         </select> --}}
-                        <select class="easyui-combobox" name="msoc_mekanisme" id="msoc_mekanisme" data-options="prompt:'Pilih mkanisme 1'" style="width: 100%;">
+                        <select class="easyui-combobox" name="msoc_mekanisme" id="msoc_mekanisme" data-options="prompt:'Pilih mkanisme 1'" style="width: 100%; height: 38px;">
                             <option selected disabled>Pilih mkanisme 1</option>
                             @foreach ($meka1 as $key => $data)
                                 <option value="{{ $data->kode }}">{{ $data->nama }}</option>
@@ -133,7 +134,7 @@
                         {{-- <select class="form-select form-select-solid" name="msoc_mekanisme2" id="msoc_mekanisme2" data-placeholder="Pilih mekanisme 2" data-allow-clear="true">
                             <option></option>
                         </select> --}}
-                        <select class="easyui-combobox" name="msoc_mekanisme2" id="msoc_mekanisme2" data-options="prompt:'Pilih mkanisme 2'" style="width: 100%;">
+                        <select class="easyui-combobox" name="msoc_mekanisme2" id="msoc_mekanisme2" data-options="prompt:'Pilih mkanisme 2'" style="width: 100%; height: 38px;">
                             <option selected disabled>Pilih mkanisme 2</option>
                             @foreach ($meka2 as $key => $data)
                                 <option value="{{ $data->kode }}">{{ $data->nama }}</option>
@@ -145,13 +146,13 @@
                 <div class="col-md-4">
                     <div class="mb-5">
                         <label class="required form-label">Manfaat Asuransi</label>
-                        {{-- <select class="form-select form-select-solid required_sel" data-control="select2" name="e_manfaat_pol" id="e_manfaat_pol" data-placeholder="Pilih manfaat asuransi" data-allow-clear="true">
+                        {{-- <select class="form-select form-select-solid" data-control="select2" name="e_manfaat_pol" id="e_manfaat_pol" data-placeholder="Pilih manfaat asuransi" data-allow-clear="true">
                             <option></option>
                         </select> --}}
-                        <input type="text" class="easyui-textbox" name="e_manfaat_pol" id="e_manfaat_pol" data-options="prompt:'Pilih manfaat asuransi'" style="width: 100%;" />
-                        <input type="text" class="form-control form-control-solid" name="msoc_approve" id="msoc_approve" placeholder="msoc_approve" hidden />
-                        <input type="text" class="form-control form-control-solid" name="edit_akses" id="edit_akses" placeholder="edit_akses" hidden />
-                        <input type="text" class="form-control form-control-solid" name="msoc_mft_kode" id="msoc_mft_kode" placeholder="msoc_mft_kode" hidden />
+                        <input type="text" class="easyui-textbox" name="e_manfaat_pol" id="e_manfaat_pol" data-options="prompt:'Pilih manfaat asuransi'" style="width: 100%; height: 38px;" />
+                        <input type="text" class="form-control form-control-solid" name="msoc_approve" id="msoc_approve" placeholder="msoc_approve" />
+                        <input type="text" class="form-control form-control-solid" name="edit_akses" id="edit_akses" placeholder="edit_akses" />
+                        <input type="text" class="form-control form-control-solid" name="msoc_mft_kode" id="msoc_mft_kode" placeholder="msoc_mft_kode" />
                         <span class="text-danger error-text e_manfaat_pol_err"></span>
                     </div>
                 </div>
@@ -173,7 +174,7 @@
                         {{-- <select class="form-select form-select-solid" name="msoc_jns_perusahaan" id="msoc_jns_perusahaan" data-placeholder="Pilih jenis pekarjaan" data-allow-clear="true">
                             <option></option>
                         </select> --}}
-                        <select class="easyui-combobox" name="msoc_jns_perusahaan" id="msoc_jns_perusahaan" data-options="prompt:'Pilih jenis pekarjaan', onSelect: function(rec){ cekpolis(); }" style="width: 100%;">
+                        <select class="easyui-combobox" name="msoc_jns_perusahaan" id="msoc_jns_perusahaan" data-options="prompt:'Pilih jenis pekarjaan', onSelect: function(rec){ cekpolis(); }" style="width: 100%; height: 38px;">
                             <option selected disabled>Pilih jenis pekarjaan</option>
                             @foreach ($jnsKer as $key => $data)
                                 <option value="{{ $data->kode }}">{{ $data->ket }}</option>
@@ -185,11 +186,11 @@
                 <div class="col-md-4">
                     <div class="mb-5">
                         <label class="required form-label">Jaminan Asuransi</label>
-                        {{-- <select class="form-select form-select-solid required_sel" data-control="select2" name="e_manfaat" id="e_manfaat" data-placeholder="Pilih jaminan asuransi" data-allow-clear="true">
+                        {{-- <select class="form-select form-select-solid" data-control="select2" name="e_manfaat" id="e_manfaat" data-placeholder="Pilih jaminan asuransi" data-allow-clear="true">
                             <option></option>
                         </select> --}}
-                        <input type="text" class="easyui-textbox" name="e_manfaat" id="e_manfaat" data-options="prompt:'Pilih jaminan asuransi'" style="width: 100%;" />
-                        <input type="text" class="form-control form-control-solid" name="msoc_mjm_kode" id="msoc_mjm_kode" placeholder="msoc_mjm_kode" hidden />
+                        <input type="text" class="easyui-textbox" name="e_manfaat" id="e_manfaat" data-options="prompt:'Pilih jaminan asuransi'" style="width: 100%; height: 38px;" />
+                        <input type="text" class="form-control form-control-solid" name="msoc_mjm_kode" id="msoc_mjm_kode" placeholder="msoc_mjm_kode" />
                         <span class="text-danger error-text e_manfaat_err"></span>
                     </div>
                 </div>
@@ -197,7 +198,7 @@
                     <div class="mb-5">
                         <label class="required form-label">Jenis Produk</label>
                         <input type="text" class="form-control form-control-solid" name="mpid_nama" id="mpid_nama" placeholder="jenis produk" />
-                        <input type="text" class="form-control form-control-solid" name="msoc_mpid_kode" id="msoc_mpid_kode" placeholder="msoc_mpid_kode" hidden />
+                        <input type="text" class="form-control form-control-solid" name="msoc_mpid_kode" id="msoc_mpid_kode" placeholder="msoc_mpid_kode" />
                         <span class="text-danger error-text mpid_nama_err"></span>
                     </div>
                 </div>
@@ -205,7 +206,7 @@
                     <div class="mb-5">
                         <label class="required form-label">Program Asuransi</label>
 
-                        <input type="text" class="easyui-textbox" name="e_pras" id="e_pras" data-options="prompt:'Pilih program asuransi'" style="width: 100%" />
+                        <input type="text" class="easyui-textbox" name="e_pras" id="e_pras" data-options="prompt:'Pilih program asuransi'" style="width: 100%; height: 38px;" />
                         {{-- <div class="input-group input-group-solid flex-nowrap">
                             <input type="text" class="form-control form-control-solid" name="e_pras" id="e_pras" placeholder="Pilih program asuransi" />
                             <button type="button" id="programAsur" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-search"></i> Pilih</button>
@@ -223,18 +224,24 @@
                 <div class="col-md-4">
                     <div class="mb-5">
                         <label class="required form-label">Saluran Distribusi</label>
-                        <select class="form-select form-select-solid required_sel" data-control="select2" name="msoc_mslr_kode" id="msoc_mslr_kode" data-placeholder="Pilih saluran distribusi" data-allow-clear="true">
+                        <select class="form-select form-select-solid" data-control="select2" name="msoc_mslr_kode" id="msoc_mslr_kode" data-placeholder="Pilih saluran distribusi" data-allow-clear="true">
                             <option></option>
+                            @foreach ($saldis as $key => $data)
+                                <option value="{{ $data->kode }}">{{ $data->ket }}</option>
+                            @endforeach
                         </select>
-                        <input type="text" class="form-control form-control-solid" name="msoc_endos" id="msoc_endos" placeholder="msoc_endos" hidden />
+                        <input type="text" class="form-control form-control-solid" name="msoc_endos" id="msoc_endos" placeholder="msoc_endos" />
                         <span class="text-danger error-text msoc_mslr_kode_err"></span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mb-5">
                         <label class="required form-label">Nama Produk Ojk</label>
-                        <select class="form-select form-select-solid" name="msoc_mpojk_kode" id="msoc_mpojk_kode" data-placeholder="Pilih produk ojk" data-allow-clear="true">
+                        <select class="form-select form-select-solid" data-control="select2" name="msoc_mpojk_kode" id="msoc_mpojk_kode" data-placeholder="Pilih produk ojk" data-allow-clear="true">
                             <option></option>
+                            @foreach ($mpojk as $key => $data)
+                                <option value="{{ $data->kode }}">{{ $data->ket }}</option>
+                            @endforeach
                         </select>
                         <span class="text-danger error-text msoc_mpojk_kode_err"></span>
                     </div>
@@ -242,20 +249,22 @@
                 <div class="col-md-4">
                     <div class="mb-5">
                         <label class="required form-label">Cabang Alamin</label>
-                        <select class="form-select form-select-solid" name="e_cabalamin" id="e_cabalamin" data-placeholder="Pilih cabang alamin" data-allow-clear="true">
+                        {{-- <select class="form-select form-select-solid" name="e_cabalamin" id="e_cabalamin" data-placeholder="Pilih cabang alamin" data-allow-clear="true">
                             <option></option>
-                        </select>
-                        <input type="text" class="form-control form-control-solid" name="msoc_mlok_kode" id="msoc_mlok_kode" placeholder="msoc_mlok_kode" hidden />
+                        </select> --}}
+                        <input type="text" class="easyui-textbox" name="e_cabalamin" id="e_cabalamin" data-options="prompt:'Pilih cabang alamin'" style="width: 100%; height: 38px;" />
+                        <input type="text" class="form-control form-control-solid" name="msoc_mlok_kode" id="msoc_mlok_kode" placeholder="msoc_mlok_kode" />
                         <span class="text-danger error-text e_cabalamin_err"></span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mb-5">
                         <label class="required form-label">Marketing</label>
-                        <select class="form-select form-select-solid required_sel" data-control="select2" name="e_marketing" id="e_marketing" data-placeholder="Pilih marketing" data-allow-clear="true">
+                        {{-- <select class="form-select form-select-solid" data-control="select2" name="e_marketing" id="e_marketing" data-placeholder="Pilih marketing" data-allow-clear="true">
                             <option></option>
-                        </select>
-                        <input type="text" class="form-control form-control-solid" name="msoc_mkar_kode_mkr" id="msoc_mkar_kode_mkr" placeholder="msoc_mkar_kode_mkr" hidden />
+                        </select> --}}
+                        <input type="text" class="easyui-textbox" name="e_marketing" id="e_marketing" data-options="prompt:'Pilih marketing'" style="width: 100%; height: 38px;" />
+                        <input type="text" class="form-control form-control-solid" name="msoc_mkar_kode_mkr" id="msoc_mkar_kode_mkr" placeholder="msoc_mkar_kode_mkr" />
                         <span class="text-danger error-text e_marketing_err"></span>
                     </div>
                 </div>
@@ -263,7 +272,7 @@
                     <div class="mb-5">
                         <label class="required form-label">Pimpinan Cabang</label>
                         <input type="text" class="form-control form-control-solid" name="e_pinca" id="e_pinca" placeholder="Pimpinan cabang" />
-                        <input type="text" class="form-control form-control-solid" name="msoc_mkar_kode_pim" id="msoc_mkar_kode_pim" placeholder="msoc_mkar_kode_pim" hidden />
+                        <input type="text" class="form-control form-control-solid" name="msoc_mkar_kode_pim" id="msoc_mkar_kode_pim" placeholder="msoc_mkar_kode_pim" />
                         <span class="text-danger error-text e_pinca_err"></span>
                     </div>
                 </div>
@@ -275,7 +284,7 @@
                 <div class="col-md-4">
                     <div class="mb-5">
                         <label class="required form-label">Penanggung Pajak Fee</label>
-                        <select class="form-select form-select-solid" name="msoc_pajakfee" id="msoc_pajakfee" data-placeholder="Pilih pajak fee" data-allow-clear="true">
+                        <select class="form-select form-select-solid" data-control="select2" name="msoc_pajakfee" id="msoc_pajakfee" data-placeholder="Pilih pajak fee" data-allow-clear="true">
                             <option></option>
                             <option value="0">-</option>
                             <option value="1">PPN & PPH Tidak Potongan/Nambah Kontribusi</option>
@@ -290,7 +299,7 @@
                         <label class="required form-label">Fee PPN</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid required_sel" data-control="select2" name="msoc_handlingfee" id="msoc_handlingfee" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid" name="msoc_handlingfee" id="msoc_handlingfee" data-placeholder="Pilih">
                                     <option></option>
                                 </select>
                             </div>
@@ -304,7 +313,7 @@
                         <label class="required form-label">Fee PPH 23</label>
                         <div class="input-group input-group-solid flex-nowrap">
                             <div class="overflow-hidden flex-grow-1">
-                                <select class="form-select form-select-solid required_sel" data-control="select2" name="msoc_handlingfee2" id="msoc_handlingfee2" data-placeholder="Pilih">
+                                <select class="form-select form-select-solid" name="msoc_handlingfee2" id="msoc_handlingfee2" data-placeholder="Pilih">
                                     <option></option>
                                 </select>
                             </div>
@@ -505,10 +514,10 @@
                                 <div class="mb-5">
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid required_sel" data-control="select2" name="e_tarif" id="e_tarif" data-placeholder="Pilih">
+                                            <select class="form-select form-select-solid" data-control="select2" name="e_tarif" id="e_tarif" data-placeholder="Pilih">
                                                 <option></option>
                                             </select>
-                                            <input type="text" class="form-control form-control-solid" name="msoc_mth_nomor" id="msoc_mth_nomor" placeholder="msoc_mth_nomor" hidden />
+                                            <input type="text" class="form-control form-control-solid" name="msoc_mth_nomor" id="msoc_mth_nomor" placeholder="msoc_mth_nomor" />
                                             <span class="text-danger error-text e_tarif_err"></span>
                                         </div>
                                         <button type="button" id="importTarif" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
@@ -537,10 +546,10 @@
                                 <div class="mb-5">
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid required_sel" data-control="select2" name="e_uw" id="e_uw" data-placeholder="Pilih">
+                                            <select class="form-select form-select-solid" data-control="select2" name="e_uw" id="e_uw" data-placeholder="Pilih">
                                                 <option></option>
                                             </select>
-                                            <input type="text" class="form-control form-control-solid" name="msoc_mpuw_nomor" id="msoc_mpuw_nomor" placeholder="msoc_mpuw_nomor" hidden />
+                                            <input type="text" class="form-control form-control-solid" name="msoc_mpuw_nomor" id="msoc_mpuw_nomor" placeholder="msoc_mpuw_nomor" />
                                             <span class="text-danger error-text e_uw_err"></span>
                                         </div>
                                         <button type="button" id="importUw" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
@@ -586,46 +595,96 @@
 
 @section('script')
     <script>
-        // implement select2 : ambil nama id saja
-        // selectOp() select2 jika not required
-        // selectOpReq() select2 jika required
-        // setTextReq() inputan jika required
-        // setTextReadOnly() inputan jika required + readonly
-        // setSelectReadOnly() select2 jika required + readonly
-        // selectServerSide() select2 jika not required ambil data dari api/route
-        // selectServerSideReq() select2 jika required ambil data dari api/route
-        selectOpReq('msoc_jenis_bayar');
-        // setTextReadOnly('e_manfaat_pol', true);
-        // setTextReadOnly('e_pras', true);
-        setTextReadOnly('mpid_nama', true);
-        selectOpReq('msoc_mpojk_kode');
-        setTextReadOnly('e_pinca', true);
+        $(document).ready(function() {
+            setTextReadOnly('mpid_nama', true);
+            setTextReadOnly('e_pinca', true);
+            setTextReadOnly('msoc_nomor', true);
+            setTextReadOnly('msoc_kode', true);
+            selectOpTag('mth_kolom');
+            selectOpTag('mth_baris');
+            selectOpTag('mpuw_baris');
 
-        selectOpReq('msoc_pajakfee');
+            // setRequired
+            setRequired('msoc_mrkn_nama', true);
+            setRequired('e_nasabah', true);
+            setRequired('msoc_mssp_nama', true);
+            setRequired('msoc_mekanisme', true);
+            setRequired('e_manfaat_pol', true);
+            setRequired('msoc_jenis_bayar', true);
+            setRequired('msoc_jns_perusahaan', true);
+            setRequired('e_manfaat', true);
+            setRequired('e_pras', true);
 
-        setText('msoc_no_endors', '-');
-        setTextReadOnly('msoc_nomor', true);
-        setTextReadOnly('msoc_kode', true);
-        selectOpTag('mth_kolom');
-        selectOpTag('mth_baris');
-        selectOpTag('mpuw_baris');
+            setRequired('msoc_mslr_kode', true);
+            setRequired('msoc_mpojk_kode', true);
+            setRequired('e_cabalamin', true);
+            setRequired('msoc_pajakfee', true);
+            setRequired('msoc_handlingfee', true);
+            setRequired('msoc_handlingfee2', true);
+            setRequired('e_tarif', true);
+            setRequired('e_uw', true);
 
-        // setRequired
-        setRequired('msoc_mrkn_nama');
-        setRequired('e_nasabah');
-        setRequired('msoc_mssp_nama');
-        setRequired('msoc_mekanisme');
-        setRequired('e_manfaat_pol');
-        setRequired('msoc_jenis_bayar');
-        setRequired('msoc_jns_perusahaan');
-        setRequired('e_manfaat');
-        setRequired('e_pras');
+            // setHide
+            setHide('msoc_mpras_kode', true);
+            setHide('msoc_mrkn_kode', true);
+            setHide('msoc_mjns_kode', true);
+            setHide('msoc_mjns_mpid_kode', true);
+            setHide('e_bersih', true);
+            setHide('msoc_mssp_kode', true);
+            setHide('mpid_mssp_kode', true);
+            setHide('msoc_approve', true);
+            setHide('edit_akses', true);
+            setHide('msoc_mft_kode', true);
+            setHide('msoc_mjm_kode', true);
+            setHide('msoc_mpid_kode', true);
+            setHide('msoc_mlok_kode', true);
+            setHide('msoc_endos', true);
+            setHide('msoc_mkar_kode_mkr', true);
+            setHide('msoc_mkar_kode_pim', true);
+            setHide('msoc_mth_nomor', true);
+            setHide('msoc_mpuw_nomor', true);
 
-        // setHide
-        setHide('msoc_mpras_kode', true);
-        setHide('msoc_mrkn_kode', true);
-        setHide('msoc_mjns_kode', true);
-        setHide('msoc_mjns_mpid_kode', true);
+            cekTombol(0);
+            cekField();
+
+            // Form SOC
+            hidePesan('msoc_mrkn_nama');
+            // hidePesan('e_nasabah');
+            // hidePesan('msoc_mssp_nama');
+            // hidePesan('msoc_mekanisme');
+            // hidePesan('e_manfaat_pol');
+            // hidePesan('msoc_jenis_bayar');
+            // hidePesan('msoc_jns_perusahaan');
+            // hidePesan('e_manfaat');
+            // hidePesan('e_pras');
+            // hidePesan('msoc_mslr_kode');
+            // hidePesan('msoc_mpojk_kode');
+            // hidePesan('e_cabalamin');
+            // hidePesan('msoc_pajakfee');
+            // hidePesan('msoc_handlingfee');
+            // hidePesan('msoc_handlingfee2');
+            // hidePesan('e_tarif');
+            // hidePesan('e_uw');
+            hidePesan('msoc_dok');
+
+            // Form Upload Tarif
+            hidePesan('mth_tipe_pertanggungan');
+            hidePesan('mth_ket');
+            hidePesan('mth_tipe_rumus');
+            hidePesan('mth_kolom');
+            hidePesan('mth_baris');
+            hidePesan('mth_file');
+
+            // Form Update Upload Tarif
+            hidePesan('mth_final');
+
+            // Form Upload Uw
+            hidePesan('mpuw_tipe_pertanggungan');
+            hidePesan('mpuw_nama');
+            hidePesan('mpuw_type_uw');
+            hidePesan('mpuw_baris');
+            hidePesan('mpuw_file');
+        });
 
         $(function () {
             $.ajaxSetup({
@@ -643,7 +702,12 @@
 					{field:'nama',title:'Nama',align:'left',width:280},
 				],
                 function(i, row) {
-                    setText('msoc_mrkn_kode', row.kode);
+                    var kode = row.kode;  // the product's description
+                    if (getText('msoc_nomor')=='') {
+                        setText('msoc_mrkn_kode', kode);
+                        bersih(2);
+                        bersih(1);
+                    }
                 }
             );
             selectGrid(
@@ -686,29 +750,29 @@
 				    setText("msoc_mft_kode",row.kode);
                 }
             );
-            // selectServerSide(
-            //     'msoc_mspaj_nama',
-            //     '{{ url("api/tehnik/soc/entry-soc/select-nospaj") }}',
-            //     function(data) {
-            //         return {
-            //             results: $.map(data, function(d) {
-            //                 return {
-            //                     id: d.mspaj_nomor,
-            //                     text: d.mspaj_nomor
-            //                 }
-            //             })
-            //         };
-            //     },
-            //     function(res) {
-            //         setText('msoc_mspaj_nomor', res.params.data.id);
-            //     },
-            // );
+            selectServerSide(
+                'msoc_mspaj_nama',
+                '{{ url("api/tehnik/soc/entry-soc/select-nospaj") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.mspaj_nomor,
+                                text: d.mspaj_nomor
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    setText('msoc_mspaj_nomor', res.params.data.id);
+                },
+            );
             selectGrid(
                 'e_manfaat',
                 'GET',
                 '{{ url("api/tehnik/soc/entry-soc/select-jamiasu") }}',
-                'kode',
-                'nama',
+                'mjm_kode',
+                'mjm_nama',
                 [
 					{field:'mjm_nama',title:'Manfaat',align:'left',width:80},
 					{field:'mpid_nama',title:'Produk Induk',align:'left',width:280},
@@ -728,6 +792,12 @@
                     setText('msoc_mjm_kode', row.mjm_kode);
                     setText('msoc_mpid_kode', row.mpid_kode);
                     setText('mpid_nama', row.mpid_nama);
+
+                    var rms = '&mjns='+getText("msoc_mjns_kode")+'&mft='+getText("msoc_mft_kode")+'&mrkn='+getText("msoc_mrkn_kode")+'&mssp='+getText("msoc_mssp_kode")+'&mkm='+getText("msoc_mekanisme")+'&mkm2='+getText("msoc_mekanisme2")+'&perush='+getText("msoc_jns_perusahaan")+'&byr='+getText("msoc_jenis_bayar")+'&mjm='+getText("msoc_mjm_kode")+'&mpid='+getText("msoc_mpid_kode");
+
+                    reSelGrid('e_pras', '{{ url("api/tehnik/soc/entry-soc/pilih-program-asuransi") }}' + '?' + rms);
+
+				    muncul(row.mjm_bundling,row.mjm_jiwa,row.mjm_gu,row.mjm_phk,row.mjm_tlo,row.mjm_fire,row.mjm_wp,row.mjm_umut,row.mjm_wp_pensiun,row.mjm_phk_pensiun);
                 }
             );
             // changeSelect2(
@@ -754,73 +824,109 @@
             //         setText('mpid_nama', res.params.data.mpid_nama);
             //     },
             // );
-            selectServerSide(
-                'msoc_mslr_kode',
-                '{{ url("api/tehnik/soc/entry-soc/select-salurandistribusi") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.mslr_kode,
-                                text: d.mslr_ket
-                            }
-                        })
-                    };
-                },
-            );
-            selectServerSide(
-                'msoc_mpojk_kode',
-                '{{ url("api/tehnik/soc/entry-soc/select-prodojk") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.mpojk_kode,
-                                text: d.mpojk_nama
-                            }
-                        })
-                    };
-                },
-            );
-            selectServerSide(
+            // selectServerSide(
+            //     'msoc_mslr_kode',
+            //     '{{ url("api/tehnik/soc/entry-soc/select-salurandistribusi") }}',
+            //     function(data) {
+            //         return {
+            //             results: $.map(data, function(d) {
+            //                 return {
+            //                     id: d.mslr_kode,
+            //                     text: d.mslr_ket
+            //                 }
+            //             })
+            //         };
+            //     },
+            // );
+            // selectServerSide(
+            //     'msoc_mpojk_kode',
+            //     '{{ url("api/tehnik/soc/entry-soc/select-prodojk") }}',
+            //     function(data) {
+            //         return {
+            //             results: $.map(data, function(d) {
+            //                 return {
+            //                     id: d.mpojk_kode,
+            //                     text: d.mpojk_nama
+            //                 }
+            //             })
+            //         };
+            //     },
+            // );
+            selectGrid(
                 'e_cabalamin',
+                'GET',
                 '{{ url("api/tehnik/soc/entry-soc/select-cabalamin") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.kode,
-                                text: d.nama,
-                                kd_pinca: d.kd_pinca,
-                                nm_pinca: d.nm_pinca,
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    setText('msoc_mlok_kode', res.params.data.id);
-                    setText('msoc_mkar_kode_pim', res.params.data.kd_pinca);
-                    setText('e_pinca', res.params.data.nm_pinca);
-                },
+                'kode',
+                'nama',
+                [
+					{field:'kode',title:'Kode Cabang',width:60},
+					{field:'nama',title:'Nama Cabang',align:'left',width:150},
+				],
+                function(i, row) {
+                    var kode = row.kode;
+                    setText("msoc_mlok_kode",kode);
+                    setText("msoc_mkar_kode_pim",row.kd_pinca);
+                    setText("e_pinca",row.nm_pinca);
+                    reSelGrid("e_marketing",'{{ url("api/tehnik/soc/entry-soc/select-marketing") }}' + '?mlok=' + kode);
+                }
             );
-            changeSelect(
-                'e_cabalamin',
+            selectGrid(
                 'e_marketing',
+                'GET',
                 '{{ url("api/tehnik/soc/entry-soc/select-marketing") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.kode,
-                                text: d.nama
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    setText('msoc_mkar_kode_mkr', res.params.data.id);
-                },
+                'kode',
+                'nama',
+                [
+					{field:'kode',title:'NIP',width:60},
+					{field:'nama',title:'Nama Marketing',align:'left',width:280},
+					{field:'skar_komisi',title:'Tipe Komisi',width:50,hidden:true},
+					{field:'skar_overreding',title:'Tipe Overreding',width:50,hidden:true},
+				],
+                function(i, row) {
+                    var kode = row.kode;
+                    setText("msoc_mkar_kode_mkr",kode);
+                    muncul4(row.skar_komisi,row.skar_overreding);
+                }
             );
+            // selectServerSide(
+            //     'e_cabalamin',
+            //     '{{ url("api/tehnik/soc/entry-soc/select-cabalamin") }}',
+            //     function(data) {
+            //         return {
+            //             results: $.map(data, function(d) {
+            //                 return {
+            //                     id: d.kode,
+            //                     text: d.nama,
+            //                     kd_pinca: d.kd_pinca,
+            //                     nm_pinca: d.nm_pinca,
+            //                 }
+            //             })
+            //         };
+            //     },
+            //     function(res) {
+            //         setText('msoc_mlok_kode', res.params.data.id);
+            //         setText('msoc_mkar_kode_pim', res.params.data.kd_pinca);
+            //         setText('e_pinca', res.params.data.nm_pinca);
+            //     },
+            // );
+            // changeSelect(
+            //     'e_cabalamin',
+            //     'e_marketing',
+            //     '{{ url("api/tehnik/soc/entry-soc/select-marketing") }}',
+            //     function(data) {
+            //         return {
+            //             results: $.map(data, function(d) {
+            //                 return {
+            //                     id: d.kode,
+            //                     text: d.nama
+            //                 }
+            //             })
+            //         };
+            //     },
+            //     function(res) {
+            //         setText('msoc_mkar_kode_mkr', res.params.data.id);
+            //     },
+            // );
             selectServerSide(
                 'msoc_handlingfee',
                 '{{ url("api/tehnik/soc/entry-soc/select-feeppn") }}',
@@ -952,6 +1058,9 @@
                         })
                     };
                 },
+                function(res) {
+                    cekdiscrate();
+                },
             );
             selectServerSide(
                 'msoc_mdr_kode',
@@ -965,6 +1074,9 @@
                             }
                         })
                     };
+                },
+                function(res) {
+                    cekfeebase();
                 },
             );
             selectServerSide(
@@ -1010,14 +1122,18 @@
                 [
 					{field:'mpras_nama',title:'Program Asuransi',align:'left',width:280},
 					{field:'msoc_kode',title:'Nomor SOC',align:'left',width:280},
-					{field:'mpras_kode',title:'Kode Program Asuransi',width:50},
-					{field:'mpras_uptambah',title:'UP Tambahan',width:80},
-					{field:'mpras_ujrah_referal',title:'Ujrah Referal',width:80},
-					{field:'mpras_disc_rate',title:'Discount Rate',width:50},
-					{field:'mpras_mmft_kode_jiwa',title:'Tambahan Jiwa',width:50},
+					{field:'mpras_kode',title:'Kode Program Asuransi',width:50,hidden:false},
+					{field:'mpras_uptambah',title:'UP Tambahan',width:80,hidden:false},
+					{field:'mpras_ujrah_referal',title:'Ujrah Referal',width:80,hidden:false},
+					{field:'mpras_disc_rate',title:'Discount Rate',width:50,hidden:false},
+					{field:'mpras_mmft_kode_jiwa',title:'Tambahan Jiwa',width:50,hidden:false},
 				],
                 function(i, row) {
                     setText('msoc_mpras_kode', row.mpras_kode);
+                    setText("mpras_ket", row.mpras_info);
+                    setText("msoc_kode", row.msoc_kode);
+                    muncul1(row.mpras_uptambah,row.mpras_ujrah_referal,row.mpras_discrate,row.mpras_mmft_kode_jiwa);
+                    e_leave('msoc_kode');
                 }
             );
 
@@ -1249,9 +1365,8 @@
             );
         });
 
-        cekTombol(0);
-        cekField();
-        function cekTombol (tipe) {
+
+        function cekTombol(tipe) {
             clear_f();
             cekField();
 
@@ -1298,41 +1413,302 @@
             setText("msoc_endos",tipe);
         }
 
-        function cekField () {
+        function cekField() {
             setText('msoc_endos','0');
-			setText('msoc_mfee_persen','0');
-			setText('msoc_mkom_persen','0');
-			setText('msoc_overreding','0');
-			setText('msoc_mmfe_persen','0');
-			setText('msoc_mujh_persen','0');
-			setText('msoc_mujhrf_kode','0');
-			setText('msoc_mdr_kode','0');
-			setText('msoc_mut_kode','0');
-			setText('msoc_referal','0');
-			setText('msoc_maintenance','0');
-			setText('msoc_no_endors','-');
-			// setCombo("msoc_tipe_uw","0");
-			// setCombo("typerpt","web");
+            setText('msoc_mfee_persen','0');
+            setText('msoc_mkom_persen','0');
+            setText('msoc_overreding','0');
+            setText('msoc_mmfe_persen','0');
+            setText('msoc_mujh_persen','0');
+            setText('msoc_mujhrf_kode','0');
+            setText('msoc_mdr_kode','0');
+            setText('msoc_mut_kode','0');
+            setText('msoc_referal','0');
+            setText('msoc_maintenance','0');
+            setText('msoc_no_endors','-');
+            // setCombo("msoc_tipe_uw","0");
+            // setCombo("typerpt","web");
         }
 
         function setsegmen(rec) {
             setText('msoc_mssp_kode', rec.value);
-            console.log(rec.value);
             reSelGrid('e_manfaat','{{ url("api/tehnik/soc/entry-soc/select-jamiasu") }}' + '?' + '&mssp=' + rec.value + '&mjns=' + getText("msoc_mjns_kode"));
+        }
+
+        function cekdiscrate() {
+            setTextReadOnly('msoc_mdr_kode', true);
+            if (getText('msoc_mfee_persen')==0) {
+                pesan('Silakan Isi Discount Rate Jika anda yakin kontribusi dibayarkan Nett');
+                setTextReadOnly('msoc_mfee_persen', true);
+                setTextReadOnly('msoc_mdr_kode', false);
+            } else {
+                pesan('Apakah Anda Yakin kontribusi dibayarkan Gross?? ');
+            }
+
+        }
+
+        function cekfeebase() {
+            setTextReadOnly('msoc_mfee_persen', true);
+            if (getText('msoc_mdr_kode')==0) {
+                pesan('Silakan Isi Fee Base Jika anda yakin kontribusi dibayarkan Gross');
+                setTextReadOnly('msoc_mdr_kode', true);
+                setTextReadOnly('msoc_mfee_persen', false);
+            } else {
+                pesan('Apakah Anda Yakin kontribusi dibayarkan Nett?? ');
+            }
         }
 
         function cekpolis() {
             vv={ res : ''};
             rms = '&pmgpolis='+getText('msoc_mrkn_kode')+'&perus='+getText('msoc_jns_perusahaan')+'&mekanisme2='+getText('msoc_mekanisme2')+'&mekanisme='+getText('msoc_mekanisme')+'&jns_bayar='+getText('msoc_jenis_bayar')+'&nasabah='+getText('msoc_mjns_kode')+'&mrkn_nama='+getText('msoc_mrkn_nama')+'&mft='+getText('msoc_mft_kode');
 
-            url = '{{ url("api/tehnik/soc/entry-soc/select-get-soc") }}' + '?' + rms;
+            url = '{{ url("api/tehnik/soc/entry-soc/get-nosoc") }}' + '?' + rms;
             $.getJSON(url,vv, function(data){
                 if (data) {
-                    $('#ff').form('load',data);
+                    $('#frxx_soc').form('load',data);
+                    $('#frxx_soc').formToJson(data);
                     //setloadpolis();
-                    $('#ffile').form('load',data);
+                    // $('#ffile').form('load',data);
                 }
             });
+        }
+
+        function muncul(bandling,jiwa,gu,phk,tlo,fire,wp,umut,ujrf,discrate,wp_pens,phk_pens) {
+
+            setTextReadOnly("msoc_mmft_kode_gu",true);
+            if (gu=="1") {
+                setTextReadOnly("msoc_mmft_kode_gu",false);
+            }
+
+            setTextReadOnly("msoc_mmft_kode_wp_pensiun",false);
+            if (wp_pens=="1") {
+                setTextReadOnly("msoc_mmft_kode_wp_pensiun",true);
+            }
+
+            setTextReadOnly("msoc_mmft_kode_wp_swasta",true);
+            if (wp=="1") {
+                setTextReadOnly("msoc_mmft_kode_wp_swasta",false);
+            }
+
+            setTextReadOnly("msoc_mmft_kode_wp_pns",true);
+            if (wp=="1") {
+                setTextReadOnly("msoc_mmft_kode_wp_pns",false);
+            }
+
+            setTextReadOnly("msoc_mmft_kode_phk_pensiun",false);
+            if (phk_pens=="1") {
+                setTextReadOnly("msoc_mmft_kode_phk_pensiun",true);
+            }
+
+            setTextReadOnly("msoc_mmft_kode_phk_swasta",true);
+            if (phk=="1") {
+                setTextReadOnly("msoc_mmft_kode_phk_swasta",false);
+            }
+
+            setTextReadOnly("msoc_mmft_kode_phk_pns",true);
+            if (phk=="1") {
+                setTextReadOnly("msoc_mmft_kode_phk_pns",false);
+            }
+
+            setTextReadOnly("msoc_mmft_kode_tlo",true);
+            if (tlo=="1") {
+                setTextReadOnly("msoc_mmft_kode_tlo",false);
+            }
+
+            setTextReadOnly("msoc_mmft_kode_fire",true);
+            if (fire=="1") {
+                setTextReadOnly("msoc_mmft_kode_fire",false);
+            }
+        }
+
+        function muncul1(uptambah,ujrah_referal,discrate,mmft_kode_jiwa) {
+            setTextReadOnly("msoc_mmft_kode_jiwa",true);
+            if (mmft_kode_jiwa=="1") {
+                setTextReadOnly("msoc_mmft_kode_jiwa",false);
+            }
+
+            setTextReadOnly("msoc_mut_kode",true);
+            if (uptambah=="1") {
+                setTextReadOnly("msoc_mut_kode",false);
+            }
+
+            setTextReadOnly("msoc_mujhrf_kode",true);
+            if (ujrah_referal=="1") {
+                setTextReadOnly("msoc_mujhrf_kode",false);
+            }
+
+            setTextReadOnly("msoc_mdr_kode",false);
+            if (discrate=="1") {
+                setTextReadOnly("msoc_mdr_kode",true);
+            }
+        }
+
+        function muncul4(skar_komisi,skar_overreding)
+        {
+            setTextReadOnly('msoc_mkom_persen', false);
+            if (skar_komisi=='1') {
+                setTextReadOnly('msoc_mkom_persen', true);
+            }
+            setTextReadOnly('msoc_overreding', false);
+            if (skar_overreding=='1') {
+                setTextReadOnly('msoc_overreding', true);
+            }
+        }
+
+        function e_leave(id) {
+            var vv={ res : ''};
+            var rms="";
+            var url="";
+
+            if (id=="msoc_kode") {
+                var aksess = getText("edit_akses");
+                var tipe = getText("msoc_endos");
+                vv = { res : ''};
+                rms = 'pmgpolis='+getText('msoc_mrkn_kode')+'&nopolis='+getText('msoc_nomor')+'&nasabah='+getText('msoc_mjns_kode')+'&mft='+getText('msoc_mft_kode')+'&mjm='+getText('msoc_mjm_kode')+'&mekanisme='+getText('msoc_mekanisme')+'&jns_bayar='+getText('msoc_jenis_bayar')+'&jns_perusahaan='+getText('msoc_jns_perusahaan')+'&mrkn_nama='+getText('msoc_mrkn_nama')+'&mekanisme2='+getText('msoc_mekanisme2')+'&kode='+getText('msoc_kode')+'&pras='+getText('msoc_mpras_kode')+'endos='+getText('msoc_endos');
+
+                url = '{{ url("api/tehnik/soc/entry-soc/get-kodesoc") }}' + '?id=' + id + '&' + rms;
+                $.getJSON(url,vv, function(data) {
+                    if (data) {
+                        if(tipe=="1" && data.msoc_mlsr_kode=="4") {
+                            setTextReadOnly("msoc_mkom_persen",true);
+                            setTextReadOnly("msoc_overreding",true);
+                            setTextReadOnly("msoc_mmfe_persen",false);
+                        }
+
+                        if(tipe=="1" && data.msoc_mkar_kode_mkr=="1010003") {
+                            setTextReadOnly("msoc_mkom_persen",true);
+                            setTextReadOnly("msoc_overreding",true);
+                            setTextReadOnly("msoc_mmfe_persen",true);
+                        } else {
+                            setTextReadOnly("msoc_mkom_persen",false);
+                            setTextReadOnly("msoc_overreding",false);
+                            setTextReadOnly("msoc_mmfe_persen",false);
+                        }
+
+                        if (tipe=="1" && aksess=="0") {
+                            pesan(" Maaf Anda Tidak Punya Hak Akses ");
+                            clear_f();
+                        } else {
+                            if (data.msoc_kode!="" && tipe=="0") {
+                                pesan(" Data sudah pernah di input dengan nomor: "+data.msoc_kode);
+                                clear_f();
+                            } else {
+                                tanya();
+                            }
+
+                            if (tipe!="0") {
+                                setText("e_bersih","1");
+                                $('#frxx_soc').form('load',data);
+                                $('#frxx_soc').formToJson(data);
+                                //coba form file
+                                // $('#ffile').form('load',data);
+                                setText("e_bersih","");
+
+                                setReadEdit(true);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function tanya() {
+            if (getText('e_pras')=='1') {
+                setTextReadOnly('msoc_mpras_kode',true);
+                setTextReadOnly('msoc_mrkn_nama',true);
+                setTextReadOnly('msoc_mrkn_kode',true);
+                setTextReadOnly('e_nasabah',true);
+                setTextReadOnly('msoc_mspaj_nama',true);
+                setTextReadOnly('msoc_mft_kode',true);
+                setTextReadOnly('e_manfaat',true);
+                setTextReadOnly('e_manfaat_pol',true);
+                setTextReadOnly('msoc_mssp_nama',true);
+                setTextReadOnly('msoc_jenis_bayar',true);
+                setTextReadOnly('msoc_mekanisme',true);
+                messageValid('APAKAH ANDA YAKIN PROGRAM ASURANSI INI ADALAH PROGRAM YANG TIDAK MEMBERIKAN KOMISI KEPADA PEMEGANG POLIS ?', (result) => {
+                    if (result.isConfirmed) {
+                        // setText('e_pras', name);
+                        // setText('msoc_mpras_kode', id);
+                        setTextReadOnly('e_pras', true);
+                    } else if (result.isDenied) {
+                        // setText('e_pras', name);
+                        // setText('msoc_mpras_kode', id);
+                        setTextReadOnly('e_pras', false);
+                    }
+                });
+            }
+
+            if (getText('e_pras')=='2') {
+                setTextReadOnly('e_pras',true);
+                setTextReadOnly('msoc_mpras_kode',true);
+                setTextReadOnly('msoc_mrkn_nama',true);
+                setTextReadOnly('msoc_mrkn_kode',true);
+                setTextReadOnly('e_nasabah',true);
+                setTextReadOnly('e_manfaat_pol',true);
+                setTextReadOnly('msoc_mspaj_nama',true);
+                setTextReadOnly('msoc_mft_kode',true);
+                setTextReadOnly('e_manfaat',true);
+                setTextReadOnly('msoc_mssp_nama',true);
+                messageValid('APAKAH ANDA YAKIN PROGRAM ASURANSI INI MEMBERIKAN KOMISI KEPADA PEMEGANG POLIS ?', (result) => {
+                    if (result.isConfirmed) {
+                        // setText('e_pras', name);
+                        // setText('msoc_mpras_kode', id);
+                        setTextReadOnly('e_pras',true);
+                    } else if (result.isDenied) {
+                        // setText('e_pras', name);
+                        // setText('msoc_mpras_kode', id);
+                        setTextReadOnly('e_pras',false);
+                    }
+                });
+            }
+
+            if (getText('e_pras')=='3') {
+                setTextReadOnly('e_pras',true);
+                setTextReadOnly('msoc_mpras_kode',true);
+                setTextReadOnly('msoc_mrkn_nama',true);
+                setTextReadOnly('msoc_mrkn_kode',true);
+                setTextReadOnly('e_nasabah',true);
+                setTextReadOnly('e_manfaat_pol',true);
+                setTextReadOnly('msoc_mspaj_nama',true);
+                setTextReadOnly('msoc_mft_kode',true);
+                setTextReadOnly('e_manfaat',true);
+                setTextReadOnly('msoc_mssp_nama',true);
+                messageValid('APAKAH ANDA YAKIN PROGRAM ASURANSI INI MEMBERIKAN MANFAAT TAMBAHAN UANG PERTANGGUNGAN DAN KOMISI KEPADA PEMEGANG POLIS ?', (result) => {
+                    if (result.isConfirmed) {
+                        // setText('e_pras', name);
+                        // setText('msoc_mpras_kode', id);
+                        setTextReadOnly('e_pras', true);
+                    } else if (result.isDenied) {
+                        // setText('e_pras', name);
+                        // setText('msoc_mpras_kode', id);
+                        setTextReadOnly('e_pras', false);
+                    }
+                });
+            }
+
+            if (getText('e_pras')=='4') {
+                setTextReadOnly('e_pras',true);
+                setTextReadOnly('msoc_mpras_kode',true);
+                setTextReadOnly('msoc_mrkn_nama',true);
+                setTextReadOnly('msoc_mrkn_kode',true);
+                setTextReadOnly('e_nasabah',true);
+                setTextReadOnly('e_manfaat_pol',true);
+                setTextReadOnly('msoc_mspaj_nama',true);
+                setTextReadOnly('msoc_mft_kode',true);
+                setTextReadOnly('e_manfaat',true);
+                setTextReadOnly('msoc_mssp_nama',true);
+                messageValid('APAKAH ANDA YAKIN PROGRAM ASURANSI INI HANYA MEMBERIKAN MANFAAT TAMBAHAN UANG PERTANGGUNGAN KEPADA PEMEGANG POLIS ?', (result) => {
+                    if (result.isConfirmed) {
+                        // setText('e_pras', name);
+                        // setText('msoc_mpras_kode', id);
+                        setTextReadOnly('e_pras', true);
+                    } else if (result.isDenied) {
+                        // setText('e_pras', name);
+                        // setText('msoc_mpras_kode', id);
+                        setTextReadOnly('e_pras', false);
+                    }
+                });
+            }
         }
 
         function cekkomisi() {
@@ -1362,201 +1738,83 @@
             }
         }
 
-        function cekdiscrate () {
-            setTextReadOnly("msoc_mdr_kode",true);
-            if (getText("msoc_mfee_persen")==0) {
-                pesan("Silakan Isi Discount Rate Jika anda yakin kontribusi dibayarkan Nett");
-                setTextReadOnly("msoc_mfee_persen",true);
-                setTextReadOnly("msoc_mdr_kode",false);
+        function setReadEdit(sts) {
+            setTextReadOnly('e_manfaat', sts);
+            setTextReadOnly('e_pras', sts);
+            setTextReadOnly('msoc_mft_kode', sts);
+            setTextReadOnly('msoc_mjns_kode', sts);
+        }
+
+        function cekmanajemenfee() {
+            if (getCombo("msoc_mslr_kode")!=="4") {
+                setTextReadOnly("msoc_mmfe_persen",true);
             } else {
-                pesan("Apakah Anda Yakin kontribusi dibayarkan Gross?? ");
+                setTextReadOnly("msoc_mmfe_persen",false);
             }
         }
 
-        function muncul1(uptambah,ujrah_referal,discrate,mmft_kode_jiwa) {
-            setComboReadOnly("msoc_mmft_kode_jiwa",true);
-            if (mmft_kode_jiwa=="1") {
-                setComboReadOnly("msoc_mmft_kode_jiwa",false);
-            }
-
-            setComboReadOnly("msoc_mut_kode",true);
-            if (uptambah=="1") {
-                setComboReadOnly("msoc_mut_kode",false);
-            }
-
-            setComboReadOnly("msoc_mujhrf_kode",true);
-            if (ujrah_referal=="1") {
-                setComboReadOnly("msoc_mujhrf_kode",false);
-            }
-
-            setComboReadOnly("msoc_mdr_kode",false);
-            if (discrate=="1") {
-                setComboReadOnly("msoc_mdr_kode",true);
-            }
-        }
-
-        function close_mTarif () {
-            closeModal('modalTarif');
-            clearForm('frxx_uploadTarif');
-            clearSelect();
-        }
-
-        function close_mUw () {
-            closeModal('modalUw');
-            clearForm('frxx_uploadUw');
-            clearSelect();
-        }
-
-        function close_lihatDoc () {
-            closeModal('modalLihatDoc');
-            $('#lihatFileDoc').attr("data","");
-        }
-
-        function showTarifTable (idTable, kode) {
-            dtTable(
-                idTable,
-                false,
-                "{{ url('api/tehnik/soc/entry-soc/lihat-tarif') }}" + "/" + kode,
-                [
-                    { data: "mstuj_usia", className: "text-center" },
-                    { data: "mstuj_0", className: "text-center" },
-                    { data: "mstuj_1", className: "text-center" },
-                    { data: "mstuj_2", className: "text-center" },
-                    { data: "mstuj_3", className: "text-center" },
-                    { data: "mstuj_4", className: "text-center" },
-                    { data: "mstuj_5", className: "text-center" },
-                    { data: "mstuj_6", className: "text-center" },
-                    { data: "mstuj_7", className: "text-center" },
-                    { data: "mstuj_8", className: "text-center" },
-                    { data: "mstuj_9", className: "text-center" },
-                    { data: "mstuj_10", className: "text-center" },
-                    { data: "mstuj_11", className: "text-center" },
-                    { data: "mstuj_12", className: "text-center" },
-                    { data: "mstuj_13", className: "text-center" },
-                    { data: "mstuj_14", className: "text-center" },
-                    { data: "mstuj_15", className: "text-center" },
-                    { data: "mstuj_16", className: "text-center" },
-                    { data: "mstuj_17", className: "text-center" },
-                    { data: "mstuj_18", className: "text-center" },
-                    { data: "mstuj_19", className: "text-center" },
-                    { data: "mstuj_20", className: "text-center" },
-                    { data: "mstuj_21", className: "text-center" },
-                    { data: "mstuj_22", className: "text-center" },
-                    { data: "mstuj_23", className: "text-center" },
-                    { data: "mstuj_24", className: "text-center" },
-                    { data: "mstuj_25", className: "text-center" },
-                    { data: "mstuj_26", className: "text-center" },
-                    { data: "mstuj_27", className: "text-center" },
-                    { data: "mstuj_28", className: "text-center" },
-                    { data: "mstuj_29", className: "text-center" },
-                    { data: "mstuj_30", className: "text-center" },
-                    { data: "mstuj_31", className: "text-center" },
-                    { data: "mstuj_32", className: "text-center" },
-                    { data: "mstuj_33", className: "text-center" },
-                    { data: "mstuj_34", className: "text-center" },
-                    { data: "mstuj_35", className: "text-center" },
-                    { data: "mstuj_36", className: "text-center" },
-                    { data: "mstuj_37", className: "text-center" },
-                    { data: "mstuj_38", className: "text-center" },
-                    { data: "mstuj_39", className: "text-center" },
-                    { data: "mstuj_40", className: "text-center" },
-                    { data: "mstuj_41", className: "text-center" },
-                    { data: "mstuj_42", className: "text-center" },
-                    { data: "mstuj_43", className: "text-center" },
-                    { data: "mstuj_44", className: "text-center" },
-                    { data: "mstuj_45", className: "text-center" },
-                    { data: "mstuj_46", className: "text-center" },
-                    { data: "mstuj_47", className: "text-center" },
-                    { data: "mstuj_48", className: "text-center" },
-                    { data: "mstuj_49", className: "text-center" },
-                    { data: "mstuj_50", className: "text-center" },
-                    { data: "mstuj_51", className: "text-center" },
-                    { data: "mstuj_52", className: "text-center" },
-                    { data: "mstuj_53", className: "text-center" },
-                    { data: "mstuj_54", className: "text-center" },
-                    { data: "mstuj_55", className: "text-center" },
-                    { data: "mstuj_56", className: "text-center" },
-                    { data: "mstuj_57", className: "text-center" },
-                    { data: "mstuj_58", className: "text-center" },
-                    { data: "mstuj_59", className: "text-center" },
-                    { data: "mstuj_60", className: "text-center" },
-                    { data: "mstuj_61", className: "text-center" },
-                    { data: "mstuj_62", className: "text-center" },
-                    { data: "mstuj_63", className: "text-center" },
-                    { data: "mstuj_64", className: "text-center" },
-                    { data: "mstuj_65", className: "text-center" },
-                    { data: "mstuj_66", className: "text-center" },
-                    { data: "mstuj_67", className: "text-center" },
-                    { data: "mstuj_68", className: "text-center" },
-                    { data: "mstuj_69", className: "text-center" },
-                    { data: "mstuj_70", className: "text-center" },
-                    // { data: "mstuj_71", className: "text-center" },
-                    // { data: "mstuj_72", className: "text-center" },
-                    // { data: "mstuj_73", className: "text-center" },
-                    // { data: "mstuj_74", className: "text-center" },
-                    // { data: "mstuj_75", className: "text-center" },
-                    // { data: "mstuj_76", className: "text-center" },
-                    // { data: "mstuj_77", className: "text-center" },
-                    // { data: "mstuj_78", className: "text-center" },
-                    // { data: "mstuj_79", className: "text-center" },
-                    // { data: "mstuj_80", className: "text-center" },
-                    // { data: "mstuj_81", className: "text-center" },
-                    // { data: "mstuj_82", className: "text-center" },
-                    // { data: "mstuj_83", className: "text-center" },
-                    // { data: "mstuj_84", className: "text-center" },
-                    // { data: "mstuj_85", className: "text-center" },
-                    // { data: "mstuj_86", className: "text-center" },
-                ],
-                [0, 'asc'],
-            );
-        }
-
-        function showUwTable (idTable, kode) {
-            dtTable(
-                idTable,
-                false,
-                "{{ url('api/tehnik/soc/entry-soc/lihat-uw') }}" + "/" + kode,
-                [
-                    { data: "mrmp_urut", className: "text-center" },
-                    { data: "mrmp_tipe_peserta", className: "text-center" },
-                    { data: "mrmp_ket1", className: "text-center" },
-                    { data: "mrmp_ket2", className: "text-left" },
-                    { data: "mrmp_min_umur", className: "text-center" },
-                    { data: "mrmp_max_umur", className: "text-center" },
-                    { data: "mrmp_total_min", className: "text-center" },
-                    { data: "mrmp_total_max", className: "text-center" },
-                    { data: "mrmp_xn_max", className: "text-center" },
-                ],
-                [0, 'asc'],
-            );
-        }
-
-        function clear_f () {
+        function clear_f() {
             clearForm('frxx_soc');
             clearForm('frxx_uploadTarif');
             clearForm('frxx_uploadUw');
             clearSelect();
             bsimpan('btn_simpan', 'Simpan');
+
+            setText('msoc_endos', '0');
+            setText('msoc_mfee_persen', '0');
+            setText('msoc_mkom_persen', '0');
+            setText('msoc_overreding', '0');
+            setText('msoc_mmfe_persen', '0');
+            setText('msoc_mujh_persen', '0');
+            setText('msoc_mujhrf_kode', '0');
+            setText('msoc_mdr_kode', '0');
+            setText('msoc_mut_kode', '0');
+            setText('msoc_referal', '0');
+            setText('msoc_maintenance', '0');
+            //setText('msoc_pajakfee','0');
+            //setText('msoc_ket_endors','-');
+            setText('msoc_no_endors', '-');
+            setText('msoc_tipe_uw', '0');
+            // setCombo('typerpt', 'web');
+            //$("#xtanya").hide();
+            setReadEdit(false);
         }
 
-        function close_mTarif () {
+        function bersih(tipe) {
+            if (getText('e_bersih')=='1') {
+                return;
+            }
+            if (tipe==1) {
+                setText('e_manfaat', '');
+                setText('e_pras', '');
+                setText('msoc_nomor', '');
+                setText('msoc_mpras_kode', '');
+                setText('msoc_mjm_kode', '');
+                //reComboGrid('#e_pras','/live/ww.load/lod_programasu.php?cab='+getText('tpprd_mlok_kode')+'&pmgpolis='+getText('msoc_mrkn_kode')+'&mjm=	&mft='+getCombo('tpprd_mft_kode')+'&mjns='+getCombo('tpprd_mjns_kode'));
+            }
+            if (tipe==2) {
+                setText('msoc_mrkn_nama', '');
+            }
+        }
+
+        function close_mTarif() {
             closeModal('modalTarif');
             clearForm('frxx_uploadTarif');
             clearSelect();
         }
 
-        function close_mUw () {
+        function close_mUw() {
             closeModal('modalUw');
             clearForm('frxx_uploadUw');
             clearSelect();
         }
 
-        function close_lihatDoc () {
+        function close_lihatDoc() {
             closeModal('modalLihatDoc');
             $('#lihatFileDoc').attr("data","");
         }
 
-        function showTarifTable (idTable, kode) {
+        function showTarifTable(idTable, kode) {
             dtTable(
                 idTable,
                 false,
@@ -1655,7 +1913,7 @@
             );
         }
 
-        function showUwTable (idTable, kode) {
+        function showUwTable(idTable, kode) {
             dtTable(
                 idTable,
                 false,
@@ -1675,26 +1933,140 @@
             );
         }
 
-        // Form SOC
-        hidePesan('msoc_mrkn_kode');
-        hidePesan('msoc_dok');
+        function close_mTarif() {
+            closeModal('modalTarif');
+            clearForm('frxx_uploadTarif');
+            clearSelect();
+        }
 
-        // Form Upload Tarif
-        hidePesan('mth_tipe_pertanggungan');
-        hidePesan('mth_ket');
-        hidePesan('mth_tipe_rumus');
-        hidePesan('mth_kolom');
-        hidePesan('mth_baris');
-        hidePesan('mth_file');
+        function close_mUw() {
+            closeModal('modalUw');
+            clearForm('frxx_uploadUw');
+            clearSelect();
+        }
 
-        // Form Update Upload Tarif
-        hidePesan('mth_final');
+        function close_lihatDoc() {
+            closeModal('modalLihatDoc');
+            $('#lihatFileDoc').attr("data","");
+        }
 
-        // Form Upload Uw
-        hidePesan('mpuw_tipe_pertanggungan');
-        hidePesan('mpuw_nama');
-        hidePesan('mpuw_type_uw');
-        hidePesan('mpuw_baris');
-        hidePesan('mpuw_file');
+        function showTarifTable(idTable, kode) {
+            dtTable(
+                idTable,
+                false,
+                "{{ url('api/tehnik/soc/entry-soc/lihat-tarif') }}" + "/" + kode,
+                [
+                    { data: "mstuj_usia", className: "text-center" },
+                    { data: "mstuj_0", className: "text-center" },
+                    { data: "mstuj_1", className: "text-center" },
+                    { data: "mstuj_2", className: "text-center" },
+                    { data: "mstuj_3", className: "text-center" },
+                    { data: "mstuj_4", className: "text-center" },
+                    { data: "mstuj_5", className: "text-center" },
+                    { data: "mstuj_6", className: "text-center" },
+                    { data: "mstuj_7", className: "text-center" },
+                    { data: "mstuj_8", className: "text-center" },
+                    { data: "mstuj_9", className: "text-center" },
+                    { data: "mstuj_10", className: "text-center" },
+                    { data: "mstuj_11", className: "text-center" },
+                    { data: "mstuj_12", className: "text-center" },
+                    { data: "mstuj_13", className: "text-center" },
+                    { data: "mstuj_14", className: "text-center" },
+                    { data: "mstuj_15", className: "text-center" },
+                    { data: "mstuj_16", className: "text-center" },
+                    { data: "mstuj_17", className: "text-center" },
+                    { data: "mstuj_18", className: "text-center" },
+                    { data: "mstuj_19", className: "text-center" },
+                    { data: "mstuj_20", className: "text-center" },
+                    { data: "mstuj_21", className: "text-center" },
+                    { data: "mstuj_22", className: "text-center" },
+                    { data: "mstuj_23", className: "text-center" },
+                    { data: "mstuj_24", className: "text-center" },
+                    { data: "mstuj_25", className: "text-center" },
+                    { data: "mstuj_26", className: "text-center" },
+                    { data: "mstuj_27", className: "text-center" },
+                    { data: "mstuj_28", className: "text-center" },
+                    { data: "mstuj_29", className: "text-center" },
+                    { data: "mstuj_30", className: "text-center" },
+                    { data: "mstuj_31", className: "text-center" },
+                    { data: "mstuj_32", className: "text-center" },
+                    { data: "mstuj_33", className: "text-center" },
+                    { data: "mstuj_34", className: "text-center" },
+                    { data: "mstuj_35", className: "text-center" },
+                    { data: "mstuj_36", className: "text-center" },
+                    { data: "mstuj_37", className: "text-center" },
+                    { data: "mstuj_38", className: "text-center" },
+                    { data: "mstuj_39", className: "text-center" },
+                    { data: "mstuj_40", className: "text-center" },
+                    { data: "mstuj_41", className: "text-center" },
+                    { data: "mstuj_42", className: "text-center" },
+                    { data: "mstuj_43", className: "text-center" },
+                    { data: "mstuj_44", className: "text-center" },
+                    { data: "mstuj_45", className: "text-center" },
+                    { data: "mstuj_46", className: "text-center" },
+                    { data: "mstuj_47", className: "text-center" },
+                    { data: "mstuj_48", className: "text-center" },
+                    { data: "mstuj_49", className: "text-center" },
+                    { data: "mstuj_50", className: "text-center" },
+                    { data: "mstuj_51", className: "text-center" },
+                    { data: "mstuj_52", className: "text-center" },
+                    { data: "mstuj_53", className: "text-center" },
+                    { data: "mstuj_54", className: "text-center" },
+                    { data: "mstuj_55", className: "text-center" },
+                    { data: "mstuj_56", className: "text-center" },
+                    { data: "mstuj_57", className: "text-center" },
+                    { data: "mstuj_58", className: "text-center" },
+                    { data: "mstuj_59", className: "text-center" },
+                    { data: "mstuj_60", className: "text-center" },
+                    { data: "mstuj_61", className: "text-center" },
+                    { data: "mstuj_62", className: "text-center" },
+                    { data: "mstuj_63", className: "text-center" },
+                    { data: "mstuj_64", className: "text-center" },
+                    { data: "mstuj_65", className: "text-center" },
+                    { data: "mstuj_66", className: "text-center" },
+                    { data: "mstuj_67", className: "text-center" },
+                    { data: "mstuj_68", className: "text-center" },
+                    { data: "mstuj_69", className: "text-center" },
+                    { data: "mstuj_70", className: "text-center" },
+                    // { data: "mstuj_71", className: "text-center" },
+                    // { data: "mstuj_72", className: "text-center" },
+                    // { data: "mstuj_73", className: "text-center" },
+                    // { data: "mstuj_74", className: "text-center" },
+                    // { data: "mstuj_75", className: "text-center" },
+                    // { data: "mstuj_76", className: "text-center" },
+                    // { data: "mstuj_77", className: "text-center" },
+                    // { data: "mstuj_78", className: "text-center" },
+                    // { data: "mstuj_79", className: "text-center" },
+                    // { data: "mstuj_80", className: "text-center" },
+                    // { data: "mstuj_81", className: "text-center" },
+                    // { data: "mstuj_82", className: "text-center" },
+                    // { data: "mstuj_83", className: "text-center" },
+                    // { data: "mstuj_84", className: "text-center" },
+                    // { data: "mstuj_85", className: "text-center" },
+                    // { data: "mstuj_86", className: "text-center" },
+                ],
+                [0, 'asc'],
+            );
+        }
+
+        function showUwTable(idTable, kode) {
+            dtTable(
+                idTable,
+                false,
+                "{{ url('api/tehnik/soc/entry-soc/lihat-uw') }}" + "/" + kode,
+                [
+                    { data: "mrmp_urut", className: "text-center" },
+                    { data: "mrmp_tipe_peserta", className: "text-center" },
+                    { data: "mrmp_ket1", className: "text-center" },
+                    { data: "mrmp_ket2", className: "text-left" },
+                    { data: "mrmp_min_umur", className: "text-center" },
+                    { data: "mrmp_max_umur", className: "text-center" },
+                    { data: "mrmp_total_min", className: "text-center" },
+                    { data: "mrmp_total_max", className: "text-center" },
+                    { data: "mrmp_xn_max", className: "text-center" },
+                ],
+                [0, 'asc'],
+            );
+        }
     </script>
 @endsection
