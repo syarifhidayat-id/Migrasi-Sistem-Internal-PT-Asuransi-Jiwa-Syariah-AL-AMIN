@@ -1475,71 +1475,71 @@
 
         function muncul(bandling,jiwa,gu,phk,tlo,fire,wp,umut,ujrf,discrate,wp_pens,phk_pens) {
 
-            setTextReadOnly("msoc_mmft_kode_gu",true);
-            if (gu=="1") {
-                setTextReadOnly("msoc_mmft_kode_gu",false);
+            setTextReadOnly('msoc_mmft_kode_gu',true);
+            if (gu=='1') {
+                setTextReadOnly('msoc_mmft_kode_gu',false);
             }
 
-            setTextReadOnly("msoc_mmft_kode_wp_pensiun",false);
-            if (wp_pens=="1") {
-                setTextReadOnly("msoc_mmft_kode_wp_pensiun",true);
+            setTextReadOnly('msoc_mmft_kode_wp_pensiun',false);
+            if (wp_pens=='1') {
+                setTextReadOnly('msoc_mmft_kode_wp_pensiun',true);
             }
 
-            setTextReadOnly("msoc_mmft_kode_wp_swasta",true);
-            if (wp=="1") {
-                setTextReadOnly("msoc_mmft_kode_wp_swasta",false);
+            setTextReadOnly('msoc_mmft_kode_wp_swasta',true);
+            if (wp=='1') {
+                setTextReadOnly('msoc_mmft_kode_wp_swasta',false);
             }
 
-            setTextReadOnly("msoc_mmft_kode_wp_pns",true);
-            if (wp=="1") {
-                setTextReadOnly("msoc_mmft_kode_wp_pns",false);
+            setTextReadOnly('msoc_mmft_kode_wp_pns',true);
+            if (wp=='1') {
+                setTextReadOnly('msoc_mmft_kode_wp_pns',false);
             }
 
-            setTextReadOnly("msoc_mmft_kode_phk_pensiun",false);
-            if (phk_pens=="1") {
-                setTextReadOnly("msoc_mmft_kode_phk_pensiun",true);
+            setTextReadOnly('msoc_mmft_kode_phk_pensiun',false);
+            if (phk_pens=='1') {
+                setTextReadOnly('msoc_mmft_kode_phk_pensiun',true);
             }
 
-            setTextReadOnly("msoc_mmft_kode_phk_swasta",true);
-            if (phk=="1") {
-                setTextReadOnly("msoc_mmft_kode_phk_swasta",false);
+            setTextReadOnly('msoc_mmft_kode_phk_swasta',true);
+            if (phk=='1') {
+                setTextReadOnly('msoc_mmft_kode_phk_swasta',false);
             }
 
-            setTextReadOnly("msoc_mmft_kode_phk_pns",true);
-            if (phk=="1") {
-                setTextReadOnly("msoc_mmft_kode_phk_pns",false);
+            setTextReadOnly('msoc_mmft_kode_phk_pns',true);
+            if (phk=='1') {
+                setTextReadOnly('msoc_mmft_kode_phk_pns',false);
             }
 
-            setTextReadOnly("msoc_mmft_kode_tlo",true);
-            if (tlo=="1") {
-                setTextReadOnly("msoc_mmft_kode_tlo",false);
+            setTextReadOnly('msoc_mmft_kode_tlo',true);
+            if (tlo=='1') {
+                setTextReadOnly('msoc_mmft_kode_tlo',false);
             }
 
-            setTextReadOnly("msoc_mmft_kode_fire",true);
-            if (fire=="1") {
-                setTextReadOnly("msoc_mmft_kode_fire",false);
+            setTextReadOnly('msoc_mmft_kode_fire',true);
+            if (fire=='1') {
+                setTextReadOnly('msoc_mmft_kode_fire',false);
             }
         }
 
         function muncul1(uptambah,ujrah_referal,discrate,mmft_kode_jiwa) {
-            setTextReadOnly("msoc_mmft_kode_jiwa",true);
-            if (mmft_kode_jiwa=="1") {
-                setTextReadOnly("msoc_mmft_kode_jiwa",false);
+            setTextReadOnly('msoc_mmft_kode_jiwa',true);
+            if (mmft_kode_jiwa=='1') {
+                setTextReadOnly('msoc_mmft_kode_jiwa',false);
             }
 
-            setTextReadOnly("msoc_mut_kode",true);
-            if (uptambah=="1") {
-                setTextReadOnly("msoc_mut_kode",false);
+            setTextReadOnly('msoc_mut_kode',true);
+            if (uptambah=='1') {
+                setTextReadOnly('msoc_mut_kode',false);
             }
 
-            setTextReadOnly("msoc_mujhrf_kode",true);
-            if (ujrah_referal=="1") {
-                setTextReadOnly("msoc_mujhrf_kode",false);
+            setTextReadOnly('msoc_mujhrf_kode',true);
+            if (ujrah_referal=='1') {
+                setTextReadOnly('msoc_mujhrf_kode',false);
             }
 
-            setTextReadOnly("msoc_mdr_kode",false);
-            if (discrate=="1") {
-                setTextReadOnly("msoc_mdr_kode",true);
+            setTextReadOnly('msoc_mdr_kode',false);
+            if (discrate=='1') {
+                setTextReadOnly('msoc_mdr_kode',true);
             }
         }
 
