@@ -9,7 +9,7 @@ use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Library\KodeController;
 use Illuminate\Support\Facades\Validator;
-
+use Yajra\DataTables\Facades\DataTables;
 
 class UndangUndangController extends Controller
 {
@@ -188,4 +188,38 @@ class UndangUndangController extends Controller
             ]);
         }
     }
+
+    public function uu_asuransi(Request $request)
+    {
+        $data = DB::table('emst.mst_uu_asuransi')->select(
+            '*',
+            DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            DB::raw('DATE_FORMAT(mua_ins_date, "%d-%m-%Y") as ins_date')
+        )
+            ->orderBy('mua_ins_date', 'DESC');
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->filter(function ($instance) use ($request) {
+                // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
+                //     return $instance->where('wmn_tipe', $request->wmn_tipe);
+                // }
+                // if (!empty($request->get('wmn_tipe'))) {
+                //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
+                // }
+                // if (!empty($request->get('wmn_descp'))) {
+                //     $instance->where('wmn_descp', $request->get('wmn_descp'));
+                // }
+                if (!empty($request->get('search'))) {
+                    $instance->where(function ($w) use ($request) {
+                        $search = $request->get('search');
+                        $w->orWhere('mua_tentang', 'LIKE', "%$search%")
+                            ->orWhere('mua_nomor', 'LIKE', "%$search%");
+                    });
+                }
+            })
+            ->make(true);
+        // }
+    }
+
 }

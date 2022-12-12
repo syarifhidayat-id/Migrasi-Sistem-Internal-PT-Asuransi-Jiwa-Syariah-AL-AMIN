@@ -108,31 +108,6 @@ class MenuController extends Controller
                     'success' => 'Data berhasil diupdate dengan Kode '.$request->wmn_kode.'!'
                 ]);
             }
-<<<<<<< HEAD
-
-            $request->merge([
-                'wmn_kode' => $kode,
-                'wmn_slide' => 0,
-                'wmn_timer' => 0,
-                'wmn_open_w' => 0,
-                'wmn_url_o_aktif_n' => 0,
-                'wmn_bot' => 0,
-            ]);
-
-            Menu::create($request->all());
-
-            return response()->json([
-                'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
-            ]);
-        } else {
-            $menu = Menu::findOrFail($request->wmn_kode);
-            $menu->update($request->all());
-
-            return response()->json([
-                'success' => 'Data berhasil diupdate dengan Kode ' . $request->wmn_kode . '!'
-            ]);
-=======
->>>>>>> 59d59a4082b11d7da076f2e9b6735a92c897f69a
         }
     }
 
@@ -198,11 +173,6 @@ class MenuController extends Controller
 
     public function getTipemenu(Request $request, $id)
     {
-<<<<<<< HEAD
-        $menuTipe = Menu::where('wmn_tipe', $id)
-            ->get();
-        return response()->json($menuTipe);
-=======
         $data = [];
         if ($request->has('q')) {
             $search = $request->q;
@@ -223,7 +193,6 @@ class MenuController extends Controller
         }
 
         return response()->json($data);
->>>>>>> 59d59a4082b11d7da076f2e9b6735a92c897f69a
     }
 
     public function loadmenu()
@@ -269,29 +238,6 @@ class MenuController extends Controller
         if ($request->ajax()) {
             $data = DB::table('web_menu')->select(DB::raw("wmn_kode, wmn_icon, wmn_descp, wmn_tipe, wmn_url_n, wmn_url_o_n"))->get();
             return Datatables::of($data)
-<<<<<<< HEAD
-                // return Datatables::of($data)
-                ->addIndexColumn()
-                ->filter(function ($instance) use ($request) {
-                    // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
-                    //     return $instance->where('wmn_tipe', $request->wmn_tipe);
-                    // }
-                    if (!empty($request->get('wmn_tipe'))) {
-                        $instance->where('wmn_tipe', $request->get('wmn_tipe'));
-                    }
-                    if (!empty($request->get('wmn_descp'))) {
-                        $instance->where('wmn_descp', $request->get('wmn_descp'));
-                    }
-                    if (!empty($request->get('search'))) {
-                        $instance->where(function ($w) use ($request) {
-                            $search = $request->get('search');
-                            $w->orWhere('wmn_tipe', 'LIKE', "%$search%")
-                                ->orWhere('wmn_descp', 'LIKE', "%$search%");
-                        });
-                    }
-                })
-                ->make(true);
-=======
             ->addIndexColumn()
             ->filter (function ($instance) use ($request) {
                 if ($request->has('check_1') !== "0" || $request->has('check_1') !== "") {
@@ -321,7 +267,6 @@ class MenuController extends Controller
                 }
             })
             ->make(true);
->>>>>>> 59d59a4082b11d7da076f2e9b6735a92c897f69a
         }
     }
 }

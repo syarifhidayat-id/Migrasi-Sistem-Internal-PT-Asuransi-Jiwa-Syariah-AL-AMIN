@@ -20,7 +20,7 @@
                         <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
                     </span>
                     <input type="search" data-kt-datatable-table-filter="search" id="search"
-                        class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
+                        class="form-control form-control-solid w-250px ps-14" placeholder="Cari pojk & seojk" />
                 </div>
             </div>
 
@@ -99,8 +99,9 @@
                         </div>
                     </div>
 
-                    <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i
-                            class="fa-sharp fa-solid fa-plus"></i> Tambah Dokumen</button>
+                    <button type="button" class="btn btn-light-primary btn-sm me-3" data-bs-toggle="tooltip"
+                        data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru"
+                        id="omodTam">Tambah</button>
                 </div>
 
                 @include('pages.legal.pojk-seojk.modal.create')
@@ -110,7 +111,7 @@
 
         <div class="card-body py-10">
             <div class="table-responsive">
-                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
+                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide_pojk">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                             <th>No.</th>
@@ -120,7 +121,7 @@
                             <th>User Input</th>
                             <th>Jenis</th>
                             <th>Tanggal Input</th>
-                            <th>Aksi</th>
+                            {{-- <th>Aksi</th> --}}
                         </tr>
                     </thead>
                     {{-- <tbody></tbody> --}}
@@ -139,9 +140,10 @@
                 }
             });
 
-            filterOp('input[type="search"]'); //khusus type search inputan
+            filterAll('input[type="search"]', 'serverSide_pojk');
 
             serverSide( //datatable serverside
+            'serverSide_pojk',
                 "{{ url('api/legal/pojk_seojk') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.wmn_tipe = $('#tipe_menu').val(),
@@ -166,7 +168,14 @@
 
                     },
                     {
-                        data: 'mpojk_nomor'
+                        // data: 'mpojk_nomor',
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `
+                        <button type="button" id="omodEdit" data-resouce="` + row.mpojk_pk + `" class="btn btn-light-success"> `+ row.mpojk_nomor +` </button>`
+                        }
                     },
                     {
                         data: 'mpojk_tentang'
@@ -180,60 +189,8 @@
                     {
                         data: 'mpojk_ins_date'
                     },
-                    // {
-                    //     // data: 'mua_dokumen'
-
-                    //     data: null,
-                    //     orderable: false,
-                    //     className: 'text-center',
-                    //     render: function(data, type, row) {
-                    //         return `
-                    //     <a href="#" id="bmoViewPdf" data-resouce="` + row.mpojk_pk + `" data-show-pdf="` + row
-                    //             .mpojk_dokumen + `"
-                    //                     class="btn btn-light-success"> ` + row.mpojk_dokumen + `</a>`
-                    //     }
-
-                    // },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            return `
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.mpojk_pk + `">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
-                                .mpojk_pk + `">Delete</a>
-                                    </div>
-                                </div>
-                            `;
-                        },
-                    },
                 ],
             );
-
-            // selectServerSide( //select server side with api/route
-            //     'mpks_mrkn_kode', //kode select
-            //     '{{ url('api/legal/pks/polis') }}', //url
-            //     function(data) {
-            //         return {
-            //             results: $.map(data, function(d) {
-            //                 return {
-            //                     text: d.mrkn_nama, // text nama
-            //                     id: d.mrkn_kode // kode value
-            //                 }
-            //             })
-            //         };
-            //     },
-            // );
 
             $('body').on('click', '#omodTam', function() {
                 $('#modal').modal('show');
@@ -264,10 +221,11 @@
                     url = "{{ url('legal/pojk-seojk') }}" + "/" + kode + "/edit";
                 $.get(url, function(res) {
                     $('#modal').modal('show');
-                    $('#mpojk_pk').val(kode);
-                    $('#mpojk_nomor').val(res.mpojk_nomor);
-                    $('#mpojk_tentang').val(res.mpojk_tentang);
-                    $('#mpojk_jenis').val(res.mpojk_jenis);
+                    // $('#mpojk_pk').val(kode);
+                    // $('#mpojk_nomor').val(res.mpojk_nomor);
+                    // $('#mpojk_tentang').val(res.mpojk_tentang);
+                    // $('#mpojk_jenis').val(res.mpojk_jenis);
+                    $('#frxx').formToJson(res);
 
                 });
             });
@@ -296,11 +254,11 @@
                                 res.success,
                                 'success'
                             ).then((res) => {
-                                lodTable();
                                 // reset();
                                 // $('#frxx').trigger("reset");
                                 $('#modal').modal('hide');
                                 bsimpan('btn_simpan', 'Simpan');
+                                lodTable();
                                 // x();
                             });
                         } else {

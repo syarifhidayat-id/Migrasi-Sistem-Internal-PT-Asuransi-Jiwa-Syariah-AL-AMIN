@@ -99,8 +99,9 @@
                         </div>
                     </div>
 
-                    <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i
-                            class="fa-sharp fa-solid fa-plus"></i> Tambah Dokumen</button>
+                    <button type="button" class="btn btn-light-primary btn-sm me-3" data-bs-toggle="tooltip"
+                        data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru"
+                        onclick="tombolAct(0)">Tambah</button>
                 </div>
 
                 @include('pages.legal.undang-undang.modal.create')
@@ -110,7 +111,7 @@
 
         <div class="card-body py-10">
             <div class="table-responsive">
-                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
+                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide_uu">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                             <th>No.</th>
@@ -119,7 +120,6 @@
                             <th>User Input</th>
                             <th>Tanggal Input</th>
                             <th>Dokumen</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     {{-- <tbody></tbody> --}}
@@ -138,10 +138,10 @@
                 }
             });
 
-            filterOp('input[type="search"]'); //khusus type search inputan
-
+            filterAll('input[type="search"]', 'serverSide_uu');
             serverSide( //datatable serverside
-                "{{ url('api/legal/uu_asuransi') }}", //url api/route
+            "serverSide_uu",
+                "{{ url('api/legal/uu_asuransi/uu_asuransi') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.wmn_tipe = $('#tipe_menu').val(),
                         d.wmn_descp = $('#key').val(),
@@ -153,18 +153,25 @@
                         className: "text-center"
                     },
                     {
-                        data: 'mua_nomor'
-                        // data: null,
-                        // orderable: false,
-                        // className: 'text-center',
-                        // render: function(data, type, row) {
-                        //     return `
-                    // <a href="#" id="bmoDetail" data-resouce="`+ row.mua_pk +`"
-                    //                 class="btn btn-light-success"> `+  row.mua_nomor +`</a>`}
+                        // data: 'mua_nomor'
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `
+                    <a href="#" id="omodEdit" data-resouce="`+ row.mua_pk +`"
+                                    class="btn btn-light-success" onclick="tombolAct(1)"> `+  row.mua_nomor +`</a>`}
 
                     },
                     {
-                        data: 'mua_tentang'
+                        // data: 'mua_tentang'
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `
+                    <a href="#" id="omodDetail" data-resouce="`+ row.mua_pk +`"
+                                    class="btn btn-light-primary" onclick="tombolAct(4)"> `+  row.mua_tentang +`</a>`}
                     },
                     {
                         data: 'mua_ins_user'
@@ -182,33 +189,33 @@
                             return `
                         <a href="#" id="bmoViewPdf" data-resouce="` + row.mua_pk + `" data-show-pdf="` + row
                                 .mua_dokumen + `"
-                                        class="btn btn-light-success"> ` + row.mua_dokumen + `</a>`
+                                        class="btn btn-light-success"> Lihat </a>`
                         }
 
                     },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            return `
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.mua_pk + `">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
-                                .mua_pk + `">Delete</a>
-                                    </div>
-                                </div>
-                            `;
-                        },
-                    },
+                    // {
+                    //     data: null,
+                    //     orderable: false,
+                    //     className: 'text-center',
+                    //     render: function(data, type, row) {
+                    //         return `
+                    //             <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
+                    //                 <span class="svg-icon svg-icon-5 m-0">
+                    //                     <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                    //                 </span>
+                    //             </a>
+                    //             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
+                    //                 <div class="menu-item px-3">
+                    //                     <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.mua_pk + `">Edit</a>
+                    //                 </div>
+                    //                 <div class="menu-item px-3">
+                    //                     <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
+                    //             .mua_pk + `">Delete</a>
+                    //                 </div>
+                    //             </div>
+                    //         `;
+                    //     },
+                    // },
                 ],
             );
 
@@ -227,154 +234,69 @@
                 },
             );
 
-            $('body').on('click', '#omodTam', function() {
-                $('#modalPks').modal('show');
-                bsimpan('btn_simpan', 'Simpan');
-                $('#tModPks').text('Tambah Dokumen Undang-undang Asuransi');
-                bsimpan('btn_simpan', 'Simpan');
-            });
-
             $('body').on('click', '#bmoViewPdf', function() {
                 // $('#tModView').text('Rincian PKS');
                 var kode = $(this).attr('data-show-pdf');
                 $('#tModView').text('File : ' + kode);
-
                 var loc = $(location).attr('origin') + '/storage/legal/uu_asuransi/' + kode;
-                $('#modalView').modal('show');
+                openModal('modalView');
                 $('#pdf').attr('data', loc);
             });
 
-            $('body').on('click', '#omodEdit', function() {
-                $('#tModPks').text('Edit Data Undang-undang Asuransi');
-                bsimpan('btn_simpan', 'Update');
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/uu_asuransi') }}" + "/" + kode + "/edit";
-                // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
-                $.get(url, function(res) {
-                    $('#modalPks').modal('show');
-                    $('#mua_pk').val(kode);
-                    $('#mua_nomor').val(res.mua_nomor);
-                    $('#mua_tentang').val(res.mua_tentang);
-                });
-            });
+            submitForm(
+                "frxx_uu",
+                "btn_simpan",
+                "POST",
+                "{{ route('legal.uu_asuransi.store') }}",
+                (resSuccess) => {
+                    clearForm("frxx_uu");
+                    clearSelect();
+                    lodTable('serverSide_uu');
+                    bsimpan("btn_simpan", 'Simpan');
+                    closeModal('modal_uu');
+                },
+                (resError) => {
+                    console.log(resError);
+                },
+            );
+        });
 
-            $('#frxx').submit(function(e) {
-                // $('#btn_simpan').click(function(e) {
-                e.preventDefault();
-                // var dataFrx = $('#frxx').serialize();
-                var formData = new FormData(this); //jika ada input file atau dokumen
-                bsimpan('btn_simpan', 'Please wait..');
+        function tombolAct(tipe) {
+            clearForm('frxx_uu');
+            clearSelect();
+            // setHide('mpks_pk', true);
 
-                $.ajax({
-                    url: "{{ route('legal.uu_asuransi.store') }}",
-                    type: "POST",
-                    data: formData,
-                    cache: false, //jika ada input file atau dokumen
-                    contentType: false, //jika ada input file atau dokumen
-                    processData: false, //jika ada input file atau dokumen
-                    // dataType: 'json',
-                    success: function(res) {
-                        // window.location.reload();
-                        if ($.isEmptyObject(res.error)) {
-                            console.log(res);
-                            Swal.fire(
-                                'Berhasil!',
-                                res.success,
-                                'success'
-                            ).then((res) => {
-                                lodTable();
-                                $("#frxx")[0].reset();
-                                $('#modalPks').modal('hide');
-                                bsimpan('btn_simpan', 'Simpan');
-                            });
-                        } else {
-                            bsimpan('btn_simpan', 'Simpan');
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Field harus ter isi!',
-                            });
-                            messages(res.error);
-                        }
-                    },
-                    error: function(err) {
-                        console.log('Error:', err);
-                        bsimpan('btn_simpan', 'Simpan');
-                    }
-                });
-            });
-
-            $('body').on('click', '#omodDelete', function() {
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/uu_asuransi/') }}" + "/" + kode;
-
-                console.log(kode);
-                Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: "Akan menghapus data menu dengan kode " + kode + " !",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                            'Terhapus!',
-                            'Anda berhasil menghapus data menu dengan kode ' + kode + ".",
-                            'success'
-                        ).then((result) => {
-                            console.log(kode);
-                            $.ajax({
-                                url: url,
-                                type: "DELETE",
-                                success: function(res) {
-                                    // reset();
-                                    lodTable();
-
-                                    console.log('Success', res);
-                                },
-                                error: function(err) {
-                                    // reset();
-                                    lodTable();
-
-                                    console.log('Error', err);
-                                }
-                            });
-                        })
-                    }
-                })
-            });
-
-            function x() {
-                $(document).ready(function() {
-                    $("button").click(function() {
-                        $("#frxx")[0].reset();
-                    });
-                });
+            if (tipe == "0") {
+                // setHide('hidePk', true);
+                // setHide('hideField', true);
+                openModal('modal_uu');
+                titleAction('tMod', 'Tambah');
             }
 
-            $('#btn_reset').click(function() {
-                x();
-                // clearError();
-            });
-            $('#btn_close3').click(function() {
-                $('#modalView').modal('hide');
-                x();
-            });
-            $('#btn_close4').click(function() {
-                $('#modalView').modal('hide');
-                x();
-            });
-            $('#btn_closeCreate').click(function() {
-                $('#modalPks').modal('hide');
-                x();
-            });
-            $('#btn_tutup').click(function() {
-                $('#modalPks').modal('hide');
-                x();
-            });
-
-        });
+            if (tipe == "1") {
+                // setHide('hidePk', true);
+                // setHide('hideField', true);
+                var kode = $('#omodEdit').attr('data-resouce'),
+                    url = "{{ url('legal/uu_asuransi') }}" + "/" + kode + "/edit";
+                $.get(url, function(res) {
+                    openModal('modal_uu');
+                    // clearForm('frxx_uu');
+                    titleAction('tMod', 'Edit Undang-undang Asuransi');
+                    console.log(res.mdp_mssp_kode);
+                    $('#frxx_uu').formToJson(res);
+                });
+            }
+            if (tipe == "4") {
+                // setHide('hidePk', true);
+                setHide('hideField', true);
+                var kode = $('#omodDetail').attr('data-resouce'),
+                    url = "{{url('legal/uu_asuransi') }}" + "/" + kode + "/edit";
+                $.get(url, function(res) {
+                    openModal('modal_uu');
+                    titleAction('tMod', 'Detail Undang-undang Asuransi');
+                    $('#frxx_uu').formToJson(res);
+                });
+            }
+        }
     </script>
 @endsection

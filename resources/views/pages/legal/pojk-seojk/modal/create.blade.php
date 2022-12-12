@@ -34,7 +34,7 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Jenis</label>
-                                    <select class="form-control" name="mpojk_jenis" id="mpojk_jenis" type="text"
+                                    <select class="form-select" name="mpojk_jenis" id="mpojk_jenis" type="text"
                                         data-allow-clear="true" placeholder="Masukan nomor pks" >
                                         <option value="" selected disabled> - pilih -</option>
                                         <option value="1"> SEOJK </option>

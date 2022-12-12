@@ -247,4 +247,15 @@ class LaporanBerkalaContoller extends Controller
             'success' => 'Data berhasil dihapus dengan Kode ' . $id . '!'
         ]);
     }
+
+    public function get_edit_lap_ber($id)
+    {
+        $data = DB::table('emst.mst_laporan_berkala')
+            ->select('mlapbkl_pk', 'mlapbkl_jenis')
+            ->where('mlapbkl_pk', $id)
+            // ->where('mrkn_nama', 'like', "%$search%")
+            ->first();
+
+        return response()->json($data);
+    }
 }

@@ -99,8 +99,8 @@
                         </div>
                     </div>
 
-                    <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i
-                            class="fa-sharp fa-solid fa-plus"></i> Tambah Dokumen</button>
+                    <button type="button" class="btn btn-light-primary btn-sm me-3" data-bs-toggle="tooltip"
+                        data-bs-trigger="hover" id="omodTam" data-bs-placement="top" title="Tambah Baru">Tambah</button>
                 </div>
 
                 @include('pages.legal.laporan-berkala.modal.create')
@@ -110,7 +110,7 @@
 
         <div class="card-body py-10">
             <div class="table-responsive">
-                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
+                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide_lap_berkala">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                             <th>No.</th>
@@ -121,7 +121,7 @@
                             <th>User Input</th>
                             <th>Tanggal Input</th>
                             <th>Dokumen</th>
-                            <th>Aksi</th>
+                            {{-- <th>Aksi</th> --}}
                         </tr>
                     </thead>
                     {{-- <tbody></tbody> --}}
@@ -140,9 +140,10 @@
                 }
             });
 
-            filterOp('input[type="search"]'); //khusus type search inputan
+            filterAll('input[type="search"]', 'serverSide_lap_berkala'); //khusus type search inputan
 
             serverSide( //datatable serverside
+            "serverSide_lap_berkala",
                 "{{ url('api/legal/laporan_berkala') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.wmn_tipe = $('#tipe_menu').val(),
@@ -155,10 +156,17 @@
                         className: "text-center"
                     },
                     {
-                        data: 'mojk_pk'
+                        // data: 'mojk_pk'
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `
+                        <button type="button" id="omodEdit" data-resouce="` + row.mojk_pk + `" class="btn btn-light-success" target="blank"> `+ row.mojk_pk +` </button>`
+                        }
                     },
                     {
-                        data: 'mojk_jenis'
+                        data: 'jenis'
                     },
                     {
                         data: 'mojk_ket_jenis'
@@ -170,7 +178,7 @@
                         data: 'mojk_ins_user'
                     },
                     {
-                        data: 'mojk_ins_date'
+                        data: 'ins_date'
                     },
                    {
                         data: null,
@@ -184,29 +192,29 @@
                         }
 
                     },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            return `
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.mojk_pk + `">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
-                                .mojk_pk + `">Delete</a>
-                                    </div>
-                                </div>
-                            `;
-                        },
-                    },
+                    // {
+                    //     data: null,
+                    //     orderable: false,
+                    //     className: 'text-center',
+                    //     render: function(data, type, row) {
+                    //         return `
+                    //             <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
+                    //                 <span class="svg-icon svg-icon-5 m-0">
+                    //                     <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                    //                 </span>
+                    //             </a>
+                    //             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
+                    //                 <div class="menu-item px-3">
+                    //                     <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.mojk_pk + `">Edit</a>
+                    //                 </div>
+                    //                 <div class="menu-item px-3">
+                    //                     <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
+                    //             .mojk_pk + `">Delete</a>
+                    //                 </div>
+                    //             </div>
+                    //         `;
+                    //     },
+                    // },
                 ],
             );
 
@@ -222,6 +230,11 @@
                             }
                         })
                     };
+                },
+                function(res) {
+                    // $('#tsin_noreferensi').val(res.params.data.nomor);
+                    // setText('tsin_noreferensi', res.params.data.nomor); //membuat isi pada id input yang di inginkan
+                    // getText('mpks_mrkn_kode_test'); //ambil data yang berada dalam input berdasarkan id input
                 },
             );
 
@@ -255,10 +268,19 @@
                 $.get(url, function(res) {
                     // var key = "{{ url('api/legal/get_mojk_jenis') }}";
                     $('#modal').modal('show');
-                    $('#mojk_pk').val(kode);
-                    $('#mojk_jenis').val(res.mojk_jenis);
-                    $('#mojk_ket_jenis').val(res.mojk_ket_jenis);
-                    $('#mojk_tahun').val(res.mojk_tahun);
+                    // $('#mojk_pk').val(kode);
+                    // $('#mojk_jenis').val(res.mojk_jenis);
+                    // $('#mojk_ket_jenis').val(res.mojk_ket_jenis);
+                    // $('#mojk_tahun').val(res.mojk_tahun);
+                    var key = "{{ url('api/legal/get_edit_select_lap') }}" + "/" + res
+                        .mojk_jenis;
+                    $('#frxx').formToJson(res);
+                    $.get(key, function(data) {
+                        selectEdit('mojk_jenis', data.mlapbkl_pk, data.mlapbkl_jenis);
+                        // var op = new Option(data.mrkn_nama, data.mrkn_kode, true, true);
+                        // $('#mpks_mrkn_kode').append(op).trigger('change');
+                        // console.log(data);
+                    });
                 });
             });
 
@@ -286,7 +308,9 @@
                                 res.success,
                                 'success'
                             ).then((res) => {
-                                lodTable();
+                                clearForm('frxx');
+                                clearSelect();
+                                lodTable('serverSide_lap_berkala');
                                 // reset();
                                 // $('#frxx').trigger("reset");
                                 $('#modal').modal('hide');
@@ -308,48 +332,6 @@
                         bsimpan('btn_simpan', 'Simpan');
                     }
                 });
-            });
-
-            $('body').on('click', '#omodDelete', function() {
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/laporan-berkala') }}" + "/" + kode;
-
-                console.log(kode);
-                Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: "Akan menghapus data menu dengan kode " + kode + " !",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                            'Terhapus!',
-                            'Anda berhasil menghapus data menu dengan kode ' + kode + ".",
-                            'success'
-                        ).then((result) => {
-                            console.log(kode);
-                            $.ajax({
-                                url: url,
-                                type: "DELETE",
-                                success: function(res) {
-                                    // reset();
-                                    lodTable();
-
-                                    console.log('Success', res);
-                                },
-                                error: function(err) {
-                                    // reset();
-                                    lodTable();
-
-                                    console.log('Error', err);
-                                }
-                            });
-                        })
-                    }
-                })
             });
 
             function x() {

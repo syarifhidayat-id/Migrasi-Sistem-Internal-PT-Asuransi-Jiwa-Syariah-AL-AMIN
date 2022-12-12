@@ -145,9 +145,32 @@ class ApiController extends Controller
         $data = DB::table('emst.mst_atur_perusahaan')->select(
             '*',
             // DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            DB::raw("@no:=@no+1 AS DT_RowIndex")
-            // DB::raw('DATE_FORMAT(map_ins_date, "%d-%m-%Y") as ins_date'),
-            // DB::raw('CASE WHEN mpojk_jenis = "2" THEN "POJK" WHEN mpojk_jenis = "1" THEN "SEOJK" END as jenis')
+            DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            DB::raw('DATE_FORMAT(map_ins_date, "%d-%m-%Y") as ins_date'),
+            DB::raw(
+                'CASE 
+                WHEN map_jenis = "0" THEN "Peraturan Perusahaan" 
+                WHEN map_jenis = "1" THEN "SOP"
+                WHEN map_jenis = "2" THEN "SK"
+                WHEN map_jenis = "3" THEN "Pedoman"
+                WHEN map_jenis = "4" THEN "Job Desc"
+                END as jenis_map'),
+            DB::raw(
+                'CASE 
+                WHEN map_bulan = "1" THEN "Januari"
+                WHEN map_bulan = "2" THEN "Februari"
+                WHEN map_bulan = "3" THEN "Maret"
+                WHEN map_bulan = "4" THEN "April"
+                WHEN map_bulan = "5" THEN "Mei"
+                WHEN map_bulan = "6" THEN "Juni"
+                WHEN map_bulan = "7" THEN "Juli"
+                WHEN map_bulan = "8" THEN "Agustus"
+                WHEN map_bulan = "9" THEN "September"
+                WHEN map_bulan = "10" THEN "Oktober"
+                WHEN map_bulan = "11" THEN "November"
+                WHEN map_bulan = "12" THEN "Desember"
+                END as bulan_map')
+
         )->orderBy('map_ins_date', 'DESC');
 
         return Datatables::of($data)
@@ -177,12 +200,14 @@ class ApiController extends Controller
     public function m_laporan_berkala(Request $request)
     {
 
-        $data = DB::table('emst.mst_laporan_berkala')->select(
-            '*',
+        $data = DB::table('emst.mst_laporan_berkala')->leftJoin('emst.mst_unit_lap_berkala', 'id', 'mlapbkl_unit')
+        ->select('*',
             // DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            DB::raw("@no:=@no+1 AS DT_RowIndex")
+            DB::raw("@no:=@no+1 AS DT_RowIndex"),
             // DB::raw('DATE_FORMAT(map_ins_date, "%d-%m-%Y") as ins_date'),
-            // DB::raw('CASE WHEN mpojk_jenis = "2" THEN "POJK" WHEN mpojk_jenis = "1" THEN "SEOJK" END as jenis')
+            DB::raw('CASE WHEN mlapbkl_unit = id THEN nama END as unit'),
+            DB::raw('CASE WHEN mlapbkl_aktif = "1" THEN "Aktif"
+            WHEN mlapbkl_aktif = "0" THEN "Non-Aktif"  END as aktif')
         )->orderBy('mlapbkl_update', 'DESC');
 
         return Datatables::of($data)
@@ -212,12 +237,12 @@ class ApiController extends Controller
     public function laporan_berkala(Request $request)
     {
 
-        $data = DB::table('emst.mst_laporan_berkala_files')->select(
-            '*',
+        $data = DB::table('emst.mst_laporan_berkala_files')->leftJoin('emst.mst_laporan_berkala', 'mlapbkl_pk', 'mojk_jenis')
+        ->select('*',
             // DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            DB::raw("@no:=@no+1 AS DT_RowIndex")
-            // DB::raw('DATE_FORMAT(map_ins_date, "%d-%m-%Y") as ins_date'),
-            // DB::raw('CASE WHEN mpojk_jenis = "2" THEN "POJK" WHEN mpojk_jenis = "1" THEN "SEOJK" END as jenis')
+            DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            DB::raw('DATE_FORMAT(mojk_ins_date, "%d-%m-%Y") as ins_date'),
+            DB::raw('CASE WHEN mojk_jenis = mlapbkl_pk THEN mlapbkl_jenis END as jenis')
         )->orderBy('mojk_pk', 'desc');
 
         return Datatables::of($data)
@@ -249,9 +274,11 @@ class ApiController extends Controller
         $data = DB::table('emst.mst_ojk')->select(
             '*',
             // DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            DB::raw("@no:=@no+1 AS DT_RowIndex")
+            DB::raw("@no:=@no+1 AS DT_RowIndex"),
             // DB::raw('DATE_FORMAT(map_ins_date, "%d-%m-%Y") as ins_date'),
-            // DB::raw('CASE WHEN mpojk_jenis = "2" THEN "POJK" WHEN mpojk_jenis = "1" THEN "SEOJK" END as jenis')
+            DB::raw('CASE WHEN mojk_jenis = "0" THEN "Audit" 
+            WHEN mojk_jenis = "1" THEN "Laporan"
+            WHEN mojk_jenis = "2" THEN "Tanda Terima" END as jenis_mojk')
         )->orderBy('mojk_pk', 'desc');
 
         return Datatables::of($data)

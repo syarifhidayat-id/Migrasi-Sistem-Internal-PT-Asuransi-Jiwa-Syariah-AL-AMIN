@@ -1,17 +1,13 @@
-<div class="modal fade" id="modalPks" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal_uu" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-950px">
         <div class="modal-content">
             <div class="modal-header" id="modalMenu_header">
-                <h2 class="fw-bolder" id="tModPks"></h2>
+                <h2 class="fw-bolder" id="tMod"></h2>
 
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_closeCreate">
-                    <span class="svg-icon svg-icon-1">
-                        <i class="fa-sharp fa-solid fa-xmark"></i>
-                    </span>
-                </div>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeModal('modal_uu')"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
-            <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
+            <form id="frxx_uu" name="frxx_uu" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-5">
                     <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalMenu_scroll" data-kt-scroll="true"
@@ -39,7 +35,7 @@
                                     <span class="text-danger error-text mua_tentang_err"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" id="hideField">
                                 <div class="mb-5">
                                     <label class="required form-label">Upload Dokumen</label>
                                     <input type="file" class="form-control" name="mua_dokumen"
@@ -55,8 +51,7 @@
                             class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
                             class="fa-solid fa-trash"></i> Hapus</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="btn_tutup"><i
-                            class="fa-solid fa-xmark"></i> Tutup</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="closeModal('modal_uu')"> Tutup</button>
                 </div>
             </form>
         </div>

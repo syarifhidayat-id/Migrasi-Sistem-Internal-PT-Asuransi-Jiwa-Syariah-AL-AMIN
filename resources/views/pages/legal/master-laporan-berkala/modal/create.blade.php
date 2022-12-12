@@ -100,7 +100,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Reminder</label>
-                                    <select class="form-control" name="mlapbkl_aktif" id="mlapbkl_aktif"
+                                    <select class="form-select" name="mlapbkl_aktif" id="mlapbkl_aktif"
                                         type="text" data-allow-clear="true" placeholder="Pilih reminder">
                                         <option value="0" selected>Tidak Aktif</option>
                                         <option value="1">Aktif</option>
@@ -112,7 +112,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Periode</label>
-                                    <select class="form-control" name="mlapbkl_periode" id="mlapbkl_periode"
+                                    <select class="form-select" name="mlapbkl_periode" id="mlapbkl_periode"
                                         type="text" data-allow-clear="true" placeholder="Masukan periode">
                                         <option value="1" selected>Bulanan</option>
                                         <option value="2">Triwulan</option>
@@ -126,7 +126,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Bulan</label>
-                                    <select class="form-control" name="mlapbkl_bulan" id="mlapbkl_bulan"
+                                    <select class="form-select" name="mlapbkl_bulan" id="mlapbkl_bulan"
                                         type="text" data-allow-clear="true" placeholder="Masukan bulan">
                                         <option value="1" selected>Januari</option>
                                         <option value="2">Februari</option>
@@ -148,7 +148,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Tanggal</label>
-                                    <select class="form-control" name="mlapbkl_tgl" id="mlapbkl_tgl" type="text"
+                                    <select class="form-select" name="mlapbkl_tgl" id="mlapbkl_tgl" type="text"
                                         data-allow-clear="true" placeholder="Masukan tanggal">
                                         <option value="1" selected>1</option>
                                         <option value="2">2</option>

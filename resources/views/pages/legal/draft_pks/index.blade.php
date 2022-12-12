@@ -99,19 +99,18 @@
                         </div>
                     </div>
 
-                    <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i
-                            class="fa-sharp fa-solid fa-plus"></i> Tambah PKS</button>
+                    <button type="button" class="btn btn-light-primary btn-sm me-3" data-bs-toggle="tooltip"
+                        data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru"
+                        onclick="tombolAct(0)">Tambah</button>
                 </div>
-
                 @include('pages.legal.draft_pks.modal.create')
-                @include('pages.legal.draft_pks.modal.view')
             </div>
         </div>
 
         <div class="card-body py-10">
             <div class="table-responsive">
                 {{-- <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="kt_table_datatable"> --}}
-                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
+                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide_draft">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                             <th>No.</th>
@@ -119,8 +118,6 @@
                             <th class="min-w-250px">Tentang</th>
                             <th>User Input</th>
                             <th>Tanggal Input</th>
-                            <th>Dokumen</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     {{-- <tbody></tbody> --}}
@@ -138,10 +135,10 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
-            filterOp('input[type="search"]'); //khusus type search inputan
-
+            
+            filterAll('input[type="search"]', 'serverSide_draft');
             serverSide( //datatable serverside
+                "serverSide_draft",
                 "{{ url('api/legal/pks/draft_pks') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.wmn_tipe = $('#tipe_menu').val(),
@@ -154,7 +151,16 @@
                         className: "text-center"
                     },
                     {
-                        data: 'mdp_pk'
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `
+                        <button type="button" id="omodEdit" data-resouce="` + row.mdp_pk +
+                                `"class="btn btn-light-success" onclick="tombolAct(1)"> ` +
+                                row.mdp_pk + ` </button>`
+                        }
+
                     },
                     {
                         data: 'mdp_tentang'
@@ -165,38 +171,12 @@
                     {
                         data: 'ins_date'
                     },
-                    {
-                        data: 'mdp_dokumen'
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            return `
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.mdp_pk + `">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
-                                .mdp_pk + `">Delete</a>
-                                    </div>
-                                </div>
-                            `;
-                        },
-                    },
                 ],
             );
 
             selectServerSide( //select server side with api/route
                 'mdp_mssp_kode', //kode select
-                '{{ url('api/legal/pks/mssp_kode') }}', //url
+                '{{ url('api/legal/pks/mssp') }}', //url
                 function(data) {
                     return {
                         results: $.map(data, function(d) {
@@ -207,6 +187,11 @@
                         })
                     };
                 },
+                function(res) {
+                    // $('#tsin_noreferensi').val(res.params.data.nomor);
+                    // setText('tsin_noreferensi', res.params.data.nomor); //membuat isi pada id input yang di inginkan
+                    // getText('mpks_mrkn_kode_test'); //ambil data yang berada dalam input berdasarkan id input
+                },
             );
 
             $('body').on('click', '#omodTam', function() {
@@ -216,158 +201,56 @@
                 bsimpan('btn_simpan', 'Simpan');
             });
 
-            $('body').on('click', '#bmoDetail', function() {
-                $('#tModView').text('Rincian PKS');
-                var kode = $(this).attr('data-resouce')
-                url = "{{ url('legal/pks/lihat/pks') }}" + "/" + kode;
-                $.get(url, function(res) {
-                    console.log(res);
-                    $('#modalView').modal('show');
-                    // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
-                    $('#mpks_instansi').val(res.mpks_instansi);
-                    $('#mpks_mrkn_kode').val(res.mrkn_nama_induk);
-                    $('#mpks_nomor').val(res.mpks_nomor);
-                    $('#mpks_tentang').val(res.mpks_tentang);
-                    $('#mpks_tgl_mulai').val(res.awal_date);
-                    $('#mpks_tgl_akhir').val(res.akhir_date);
-                    $('#mpks_pic').val(res.mpks_pic);
-                    $('#mpks_pic_hp').val(res.mpks_pic_hp);
-                    $('#mpks_pic_email').val(res.mpks_pic_email);
-                    $('#mpks_atasan_hp').val(res.mpks_atasan_hp);
-                    $('#mpks_atasan_email').val(res.mpks_atasan_email);
-                    $('#mpks_ket').val(res.pks_ket);
-                });
-            });
-
-            $('body').on('click', '#omodEdit', function() {
-                $('#judul').text('Form Edit Draft PKS');
-                bsimpan('btn_simpan', 'Update');
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/pks/draft') }}" + "/" + kode + "/edit";
-                // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
-                $.get(url, function(res) {
-
-                    console.log(res);
-                    $('#modalDraftPks').modal('show');
-                    $('#mdp_pk').val(kode);
-                    $('#mdp_mssp_kode').val(res.mdp_mssp_kode);
-                    $('#mdp_tentang').val(res.mdp_tentang);
-
-                });
-            });
-
-            $('#frxx').submit(function(e) {
-                e.preventDefault();
-                var formData = new FormData(this); //jika ada input file atau dokumen
-                bsimpan('btn_simpan', 'Please wait..');
-
-                $.ajax({
-                    url: "{{ route('legal.pks.draft.store') }}",
-                    type: "POST",
-                    data: formData,
-                    cache: false, //jika ada input file atau dokumen
-                    contentType: false, //jika ada input file atau dokumen
-                    processData: false, //jika ada input file atau dokumen
-                    success: function(res) {
-                        // window.location.reload();
-                        if ($.isEmptyObject(res.error)) {
-                            console.log(res);
-                            Swal.fire(
-                                'Berhasil!',
-                                res.success,
-                                'success'
-                            ).then((res) => {
-                                lodTable();
-                                $('#frxx').trigger("reset");
-                                $('#modalDraftPks').modal('hide');
-                                bsimpan('btn_simpan', 'Simpan');
-                            });
-                        } else {
-                            bsimpan('btn_simpan', 'Simpan');
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Field harus ter isi!',
-                            });
-                            messages(res.error);
-                        }
-
+                submitForm(
+                    "frxx_draft",
+                    "btn_simpan",
+                    "POST",
+                    "{{ route('legal.pks.draft.store') }}",
+                    (resSuccess) => {
+                        clearForm("frxx_draft");
+                        clearSelect();
+                        lodTable('serverSide_draft');
+                        bsimpan("btn_simpan", 'Simpan');
+                        closeModal('modalDraftPks');
                     },
-                    error: function(err) {
-                        console.log('Error:', err);
-                        bsimpan('btn_simpan', 'Simpan');
-                    }
-                });
-            });
+                    (resError) => {
+                        console.log(resError);
+                    },
+                );
+        });
 
-            $('body').on('click', '#omodDelete', function() {
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/pks/draft') }}" + "/" + kode;
+        function tombolAct(tipe) {
+            clearForm('frxx_draft');
+            clearSelect();
+            // setHide('mpks_pk', true);
 
-                console.log(kode);
-                Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: "Akan menghapus data menu dengan kode " + kode + " !",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                            'Terhapus!',
-                            'Anda berhasil menghapus data menu dengan kode ' + kode + ".",
-                            'success'
-                        ).then((result) => {
-                            console.log(kode);
-                            $.ajax({
-                                url: url,
-                                type: "DELETE",
-                                success: function(res) {
-                                    reset();
-                                    console.log('Success', res);
-                                },
-                                error: function(err) {
-                                    reset();
-                                    console.log('Error', err);
-                                }
-                            });
-                        })
-                    }
-                })
-            });
+            if (tipe == "0") {
+                // setHide('hidePk', true);
+                // setHide('hideField', true);
+                openModal('modalDraftPks');
+                titleAction('tmod', 'Tambah');
+            }
 
-
-
-            function x() {
-                $(document).ready(function() {
-                    $("button").click(function() {
-                        $("#frxx")[0].reset()
+            if (tipe == "1") {
+                // setHide('hidePk', true);
+                // setHide('hideField', true);
+                var kode = $('#omodEdit').attr('data-resouce'),
+                    url = "{{ url('legal/pks/draft') }}" + "/" + kode + "/edit";
+                $.get(url, function(res) {
+                    openModal('modalDraftPks');
+                    titleAction('tmod', 'Edit Draft PKS');
+                    console.log(res.mdp_mssp_kode);
+                    var key = "{{ url('api/legal/pks/mssp_kode') }}" + "/" + res
+                        .mdp_mssp_kode;
+                    $('#frxx_draft').formToJson(res);
+                    $.get(key, function(data) {
+                        selectEdit('mdp_mssp_kode', data.mssp_kode, data.mssp_nama);
+                        //     // var op = new Option(data.mrkn_nama, data.mrkn_kode, true, true);
+                        //     // $('#mpks_mrkn_kode').append(op).trigger('change');
+                        //     // console.log(data);
                     });
                 });
             }
-
-            $('#btn_reset').click(function() {
-                x();
-            });
-            $('#btn_close3').click(function() {
-                $('#modalView').modal('hide');
-                x();
-            });
-            $('#btn_close4').click(function() {
-                $('#modalView').modal('hide');
-                x();
-            });
-            $('#btn_closeCreate').click(function() {
-                $('#modalDraftPks').modal('hide');
-                x();
-            });
-            $('#btn_tutup').click(function() {
-                $('#modalDraftPks').modal('hide');
-                x();
-            });
-
-        });
+        }
     </script>
 @endsection

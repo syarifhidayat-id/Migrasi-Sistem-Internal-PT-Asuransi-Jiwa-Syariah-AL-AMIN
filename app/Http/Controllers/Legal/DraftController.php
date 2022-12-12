@@ -11,8 +11,7 @@ use App\Models\Legal\Pks;
 use App\Http\Controllers\Library\KodeController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-
-
+use Yajra\DataTables\Facades\DataTables;
 
 class DraftController extends Controller
 {
@@ -80,7 +79,7 @@ class DraftController extends Controller
                 ->first();
 
             $data = request()->except(['_token']);
-            
+
             $oldFile = 'public/legal/pks/draftpks/' . $draft->mdp_dokumen;
 
             if ($request->hasFile('mdp_dokumen')) {
@@ -196,5 +195,78 @@ class DraftController extends Controller
                 'error' => 'Gagal menghapus data dengan kode' . $draft->mdp_pk . '!'
             ]);
         }
+    }
+
+    public function api_draft(Request $request)
+    {
+        // $data = DB::table('esur.trs_surat')->select(
+        //     '*',
+        //     DB::raw("@no:=@no+1 AS DT_RowIndex"),
+        //     DB::raw('DATE_FORMAT(tsm_ins_date, "%d-%m-%Y") as ins_date')
+        // )
+
+        $data = DB::table('emst.mst_draft_pks')
+            // ->join('emst.mst_rekanan as rekanan', 'rekanan.mrkn_kode', '=', 'pks.mpks_mrkn_kode')
+            ->select(
+                '*',
+                // 'rekanan.mrkn_kode',
+                // 'rekanan.mrkn_nama',
+                DB::raw("@no:=@no+1 AS DT_RowIndex"),
+                DB::raw('DATE_FORMAT(mdp_ins_date, "%d-%m-%Y") as ins_date')
+                // DB::raw('(CASE WHEN pks.mpks_mrkn_kode = rekanan.mrkn_kode THEN rekanan.mrkn_nama END) as kode_rekanan')
+            )
+            ->orderBy('mdp_pk', 'desc')->limit(10);
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->filter(function ($instance) use ($request) {
+                // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
+                //     return $instance->where('wmn_tipe', $request->wmn_tipe);
+                // }
+                // if (!empty($request->get('wmn_tipe'))) {
+                //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
+                // }
+                // if (!empty($request->get('wmn_descp'))) {
+                //     $instance->where('wmn_descp', $request->get('wmn_descp'));
+                // }
+                if (!empty($request->get('search'))) {
+                    $instance->where(function ($w) use ($request) {
+                        $search = $request->get('search');
+                        $w->orWhere('mdp_tentang', 'LIKE', "%$search%")
+                            ->orWhere('mdp_pk', 'LIKE', "%$search%");
+                    });
+                }
+            })
+            ->make(true);
+        // }
+    }
+
+    function mssp_kode($id)
+    {
+        $data = DB::table('emst.mst_produk_segment')
+            ->select('mssp_kode', 'mssp_nama')
+            ->where('mssp_kode', $id)
+            // ->where('mssp_nama', 'like', "%$search%")
+            ->first();
+        return response()->json($data);
+    }
+
+    public function select_mssp(Request $request)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('emst.mst_produk_segment')
+                ->select('mssp_kode', 'mssp_nama')
+                ->where('mssp_nama', 'like', "%$search%")
+                ->orderBy('mssp_kode')
+                ->get();
+        } else {
+            $data = DB::table('emst.mst_produk_segment')
+                ->select('mssp_kode', 'mssp_nama')
+                ->orderBy('mssp_kode')
+                ->get();
+        }
+        return response()->json($data);
     }
 }

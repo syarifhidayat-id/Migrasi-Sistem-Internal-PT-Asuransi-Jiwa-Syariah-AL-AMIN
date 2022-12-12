@@ -99,8 +99,8 @@
                         </div>
                     </div>
 
-                    <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i
-                            class="fa-sharp fa-solid fa-plus"></i> Tambah Data</button>
+                    <button type="button" class="btn btn-light-primary btn-sm me-3" data-bs-toggle="tooltip"
+                        data-bs-trigger="hover" id="omodTam" data-bs-placement="top" title="Tambah Baru">Tambah</button>
                 </div>
 
                 @include('pages.legal.master-laporan-berkala.modal.create')
@@ -110,7 +110,7 @@
 
         <div class="card-body py-10">
             <div class="table-responsive">
-                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
+                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide_mst_lap_ber">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                             <th>No.</th>
@@ -124,7 +124,7 @@
                             <th>WA PIC</th>
                             <th>Reminder</th>
                             <th>Last Update</th>
-                            <th>Aksi</th>
+                            {{-- <th>Aksi</th> --}}
                         </tr>
                     </thead>
                     {{-- <tbody></tbody> --}}
@@ -143,9 +143,10 @@
                 }
             });
 
-            filterOp('input[type="search"]'); //khusus type search inputan
+            filterAll('input[type="search"]', 'serverSide_mst_lap_ber'); //khusus type search inputan
 
             serverSide( //datatable serverside
+            'serverSide_mst_lap_ber',
                 "{{ url('api/legal/m_laporan_berkala') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.wmn_tipe = $('#tipe_menu').val(),
@@ -170,7 +171,14 @@
 
                     // },
                     {
-                        data: 'mlapbkl_pk'
+                        // data: 'mlapbkl_pk'
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `
+                        <button type="button" id="omodEdit" data-resouce="` + row.mlapbkl_pk + `" class="btn btn-light-success" target="blank"> `+ row.mlapbkl_pk +` </button>`
+                        }
                     },
                     {
                         data: 'mlapbkl_jenis'
@@ -182,7 +190,7 @@
                         data: 'mlapbkl_batas'
                     },
                     {
-                        data: 'mlapbkl_unit'
+                        data: 'unit'
                     },
                     {
                         data: 'mlapbkl_persetujuan'
@@ -194,34 +202,34 @@
                         data: 'mlapbkl_pic_hp'
                     },
                     {
-                        data: 'mlapbkl_aktif'
+                        data: 'aktif'
                     },
                     {
                         data: 'mlapbkl_update'
                     },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            return `
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.mlapbkl_pk + `">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
-                                .mlapbkl_pk + `">Delete</a>
-                                    </div>
-                                </div>
-                            `;
-                        },
-                    },
+                    // {
+                    //     data: null,
+                    //     orderable: false,
+                    //     className: 'text-center',
+                    //     render: function(data, type, row) {
+                    //         return `
+                    //             <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
+                    //                 <span class="svg-icon svg-icon-5 m-0">
+                    //                     <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                    //                 </span>
+                    //             </a>
+                    //             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
+                    //                 <div class="menu-item px-3">
+                    //                     <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row.mlapbkl_pk + `">Edit</a>
+                    //                 </div>
+                    //                 <div class="menu-item px-3">
+                    //                     <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
+                    //             .mlapbkl_pk + `">Delete</a>
+                    //                 </div>
+                    //             </div>
+                    //         `;
+                    //     },
+                    // },
                 ],
             );
 
@@ -269,68 +277,88 @@
                     url = "{{ url('legal/master-laporan') }}" + "/" + kode + "/edit";
                 $.get(url, function(res) {
                     $('#modal').modal('show');
-                    $('#mlapbkl_pk').val(kode);
-                    $('#mlapbkl_jenis').val(res.mlapbkl_jenis);
-                    $('#mlapbkl_kepada').val(res.mlapbkl_kepada);
-                    $('#mlapbkl_batas').val(res.mlapbkl_batas);
-                    $('#mlapbkl_unit').val(res.mlapbkl_unit);
-                    $('#mlapbkl_persetujuan').val(res.mlapbkl_persetujuan);
-                    $('#mlapbkl_aktif').val(res.mlapbkl_aktif);
-                    $('#mlapbkl_periode').val(res.mlapbkl_periode);
-                    $('#mlapbkl_bulan').val(res.mlapbkl_bulan);
-                    $('#mlapbkl_tgl').val(res.mlapbkl_tgl);
-                    $('#mlapbkl_pic_email').val(res.mlapbkl_pic_email);
-                    $('#mlapbkl_pic_hp').val(res.mlapbkl_pic_hp);
+                    // $('#mlapbkl_pk').val(kode);
+                    // $('#mlapbkl_jenis').val(res.mlapbkl_jenis);
+                    // $('#mlapbkl_kepada').val(res.mlapbkl_kepada);
+                    // $('#mlapbkl_batas').val(res.mlapbkl_batas);
+                    // $('#mlapbkl_unit').val(res.mlapbkl_unit);
+                    // $('#mlapbkl_persetujuan').val(res.mlapbkl_persetujuan);
+                    // $('#mlapbkl_aktif').val(res.mlapbkl_aktif);
+                    // $('#mlapbkl_periode').val(res.mlapbkl_periode);
+                    // $('#mlapbkl_bulan').val(res.mlapbkl_bulan);
+                    // $('#mlapbkl_tgl').val(res.mlapbkl_tgl);
+                    // $('#mlapbkl_pic_email').val(res.mlapbkl_pic_email);
+                    // $('#mlapbkl_pic_hp').val(res.mlapbkl_pic_hp);
+                    $('#frxx').formToJson(res);
+
                 });
             });
+            
 
-            $('#frxx').submit(function(e) {
-                // $('#btn_simpan').click(function(e) {
-                e.preventDefault();
-                // var dataFrx = $('#frxx').serialize();
-                var formData = new FormData(this); //jika ada input file atau dokumen
-                bsimpan('btn_simpan', 'Please wait..');
-
-                $.ajax({
-                    url: "{{ route('legal.master-laporan.store') }}",
-                    type: "POST",
-                    data: formData,
-                    cache: false, //jika ada input file atau dokumen
-                    contentType: false, //jika ada input file atau dokumen
-                    processData: false, //jika ada input file atau dokumen
-                    // dataType: 'json',
-                    success: function(res) {
-                        // window.location.reload();
-                        if ($.isEmptyObject(res.error)) {
-                            console.log(res);
-                            Swal.fire(
-                                'Berhasil!',
-                                res.success,
-                                'success'
-                            ).then((res) => {
-                                lodTable();
-                                // reset();
-                                // $('#frxx').trigger("reset");
-                                $('#modal').modal('hide');
-                                bsimpan('btn_simpan', 'Simpan');
-                                // x();
-                            });
-                        } else {
-                            bsimpan('btn_simpan', 'Simpan');
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Field harus ter isi!',
-                            });
-                            messages(res.error);
-                        }
+            submitForm(
+                    "frxx",
+                    "btn_simpan",
+                    "POST",
+                    "{{ route('legal.master-laporan.store') }}",
+                    (resSuccess) => {
+                        clearForm("frxx");
+                        clearSelect();
+                        lodTable('serverSide_mst_lap_ber');
+                        bsimpan("btn_simpan", 'Simpan');
+                        closeModal('modal');
                     },
-                    error: function(err) {
-                        console.log('Error:', err);
-                        bsimpan('btn_simpan', 'Simpan');
-                    }
-                });
-            });
+                    (resError) => {
+                        console.log(resError);
+                    },
+                );
+
+
+            // $('#frxx').submit(function(e) {
+            //     // $('#btn_simpan').click(function(e) {
+            //     e.preventDefault();
+            //     // var dataFrx = $('#frxx').serialize();
+            //     var formData = new FormData(this); //jika ada input file atau dokumen
+            //     bsimpan('btn_simpan', 'Please wait..');
+
+            //     $.ajax({
+            //         url: "{{ route('legal.master-laporan.store') }}",
+            //         type: "POST",
+            //         data: formData,
+            //         cache: false, //jika ada input file atau dokumen
+            //         contentType: false, //jika ada input file atau dokumen
+            //         processData: false, //jika ada input file atau dokumen
+            //         // dataType: 'json',
+            //         success: function(res) {
+            //             // window.location.reload();
+            //             if ($.isEmptyObject(res.error)) {
+            //                 console.log(res);
+            //                 Swal.fire(
+            //                     'Berhasil!',
+            //                     res.success,
+            //                     'success'
+            //                 ).then((res) => {
+            //                     clearForm("frxx");
+            //                     // clearSelect();
+            //                     lodTable('serverSide_mst_lap_ber');
+            //                     $('#modal').modal('hide');
+            //                     bsimpan('btn_simpan', 'Simpan');
+            //                 });
+            //             } else {
+            //                 bsimpan('btn_simpan', 'Simpan');
+            //                 Swal.fire({
+            //                     icon: 'error',
+            //                     title: 'Oops...',
+            //                     text: 'Field harus ter isi!',
+            //                 });
+            //                 messages(res.error);
+            //             }
+            //         },
+            //         error: function(err) {
+            //             console.log('Error:', err);
+            //             bsimpan('btn_simpan', 'Simpan');
+            //         }
+            //     });
+            // });
 
             $('body').on('click', '#omodDelete', function() {
                 var kode = $(this).attr('data-resouce'),

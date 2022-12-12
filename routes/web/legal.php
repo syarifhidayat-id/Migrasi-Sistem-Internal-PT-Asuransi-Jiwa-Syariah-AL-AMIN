@@ -16,6 +16,7 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
     Route::resource('uu_asuransi', UndangUndangController::class);
     Route::get('view-pdf/{pk}', [UndangUndangController::class, 'viewPdf']);
     Route::resource('pojk-seojk', PojkSeojkController::class);
+    
     Route::resource('peraturan-perusahaan', PeraturanController::class);
     Route::resource('laporan-berkala', LaporanBerkalaContoller::class);
     Route::get('master-laporan', [LaporanBerkalaContoller::class, 'index_master'])->name('master-laporan.index');

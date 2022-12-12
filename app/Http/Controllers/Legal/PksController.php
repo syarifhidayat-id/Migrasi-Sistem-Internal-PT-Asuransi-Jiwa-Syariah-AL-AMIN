@@ -58,37 +58,37 @@ class PksController extends Controller
         $validasi = Validator::make(
             $request->all(),
             [
-                'mpks_mrkn_kode' => 'required',
-                'mpks_instansi' => 'required',
-                'mpks_nomor' => 'required',
-                'mpks_tentang' => 'required',
-                'mpks_tgl_mulai' => 'required',
-                'mpks_tgl_akhir' => 'required',
-                'mpks_pic' => 'required',
-                'mpks_pic_hp' => 'required',
-                'mpks_pic_email' => 'required||email',
-                'mpks_atasan_hp' => 'required',
-                'mpks_atasan_email' => 'required||email',
-                'mpks_ket' => 'required',
-                'mpks_dokumen' => 'required||mimes:pdf',
+                // 'mpks_mrkn_kode' => 'required',
+                // 'mpks_instansi' => 'required',
+                // 'mpks_nomor' => 'required',
+                // 'mpks_tentang' => 'required',
+                // 'mpks_tgl_mulai' => 'required',
+                // 'mpks_tgl_akhir' => 'required',
+                // 'mpks_pic' => 'required',
+                // 'mpks_pic_hp' => 'required',
+                // 'mpks_pic_email' => 'required||email',
+                // 'mpks_atasan_hp' => 'required',
+                // 'mpks_atasan_email' => 'required||email',
+                // 'mpks_ket' => 'required',
+                // // 'mpks_dokumen' => 'required||mimes:pdf',
             ],
-           [
-            'mpks_mrkn_kode.required' => 'Pemegang Polis tidak boleh kosong!',
-                'mpks_instansi.required' => 'Instansi tidak boleh kosong!',
-                'mpks_nomor.required' => 'Nomor pks tidak boleh kosong!',
-                'mpks_tentang.required' => 'Perihal tidak boleh kosong!',
-                'mpks_tgl_mulai.required' => 'Tanggal mulai tidak boleh kosong!',
-                'mpks_tgl_akhir.required' => 'Tanggal akhir tidak boleh kosong!',
-                'mpks_pic.required' => 'PIC tidak boleh kosong!',
-                'mpks_pic_hp.required' => 'No. HP PIC tidak boleh kosong!',
-                'mpks_pic_email.required' => 'email PIC tidak boleh kosong!',
-                'mpks_pic_email.email' => 'Format email salah!',
-                'mpks_atasan_hp.required' => 'No. HP atasan tidak boleh kosong!',
-                'mpks_atasan_email.required' => 'Email atasan tidak boleh kosong!',
-                'mpks_atasan_email.email' => 'Format email salah!',
-                'mpks_ket.required' => 'Keterangan tidak boleh kosong!',
-                'mpks_dokumen.required' => 'dokumen harus diisi, dan tidak boleh kosong!',
-                'mpks_dokumen.mimes' => 'dokumen harus diisi dengan format .pdf!',
+            [
+                // 'mpks_mrkn_kode.required' => 'Pemegang Polis tidak boleh kosong!',
+                //     'mpks_instansi.required' => 'Instansi tidak boleh kosong!',
+                //     'mpks_nomor.required' => 'Nomor pks tidak boleh kosong!',
+                //     'mpks_tentang.required' => 'Perihal tidak boleh kosong!',
+                //     'mpks_tgl_mulai.required' => 'Tanggal mulai tidak boleh kosong!',
+                //     'mpks_tgl_akhir.required' => 'Tanggal akhir tidak boleh kosong!',
+                //     'mpks_pic.required' => 'PIC tidak boleh kosong!',
+                //     'mpks_pic_hp.required' => 'No. HP PIC tidak boleh kosong!',
+                //     'mpks_pic_email.required' => 'email PIC tidak boleh kosong!',
+                //     'mpks_pic_email.email' => 'Format email salah!',
+                //     'mpks_atasan_hp.required' => 'No. HP atasan tidak boleh kosong!',
+                //     'mpks_atasan_email.required' => 'Email atasan tidak boleh kosong!',
+                //     'mpks_atasan_email.email' => 'Format email salah!',
+                //     'mpks_ket.required' => 'Keterangan tidak boleh kosong!',
+                //   // 'mpks_dokumen.required' => 'dokumen harus diisi, dan tidak boleh kosong!',
+                //   // 'mpks_dokumen.mimes' => 'dokumen harus diisi dengan format .pdf!',
             ]
         );
 
@@ -96,11 +96,12 @@ class PksController extends Controller
             return response()->json([
                 'error' => $validasi->errors()
             ]);
-        }else{
-            if ($request->mpks_pk == "") {
+        } else {
+            if (empty($request->mpks_pk)) {
                 $kode = KodeController::__getKey(14);
                 $data = $request->all();
-                $data = request()->except(['_token']);
+                $data = $request->except('_token', 'cari_pk', 'eds');
+                // $data = request()->except(['_token']);
 
                 if ($request->hasFile('mpks_dokumen')) {
                     $mpks_dokumen = $request->file('mpks_dokumen');
@@ -115,7 +116,7 @@ class PksController extends Controller
                 $data['mpks_ins_user'] = $request->user()->email;
                 $data['mpks_ins_date'] = date('Y-m-d H:i:s');
                 $data['mpks_nomor_ori'] = 0;
-                $data['mpks_endos'] = 0;
+                // $data['mpks_endos'] = 0;
                 $data['mpks_endos_idx'] = 0;
                 $data['mpks_indexfolder'] = 0;
                 $data['mpks_hapus'] = 0;
@@ -134,45 +135,79 @@ class PksController extends Controller
                     ]);
                 }
             } else {
-                $data = $request->all();
-                $pks = DB::table('eopr.mst_pks')
-                    ->where('mpks_pk', '=', $request->mpks_pk)
-                    ->first();
-                $data = request()->except(['_token']);
+                if ($request->eds == "1") {
+                    $data = $request->all();
+                    $pks = DB::table('eopr.mst_pks')
+                        ->where('mpks_pk', '=', $request->mpks_pk)
+                        ->first();
+                    $data = $request->except('_token', 'cari_pk', 'eds');
 
-                $oldFile = 'public/legal/pks/' . $pks->mpks_dokumen;
+                    $oldFile = 'public/legal/pks/' . $pks->mpks_dokumen;
 
-                if ($request->hasFile('mpks_dokumen')) {
-                    $mpks_dokumen = $request->file('mpks_dokumen');
-                    $dir = 'public/legal/pks';
-                    $fileOri = $mpks_dokumen->getClientOriginalName();
-                    $nameBukti = $request->mpks_pk . '_pks_' . $fileOri;
-                    Storage::delete($oldFile);
-                    $path = Storage::putFileAs($dir, $mpks_dokumen, $nameBukti);
-                    $data['mpks_dokumen'] = $nameBukti;
+                    if ($request->hasFile('mpks_dokumen')) {
+                        $mpks_dokumen = $request->file('mpks_dokumen');
+                        $dir = 'public/legal/pks';
+                        $fileOri = $mpks_dokumen->getClientOriginalName();
+                        $nameBukti = $request->mpks_pk . '_pks_' . $fileOri;
+                        Storage::delete($oldFile);
+                        $path = Storage::putFileAs($dir, $mpks_dokumen, $nameBukti);
+                        $data['mpks_dokumen'] = $nameBukti;
+                    }
+
+                    $data['mpks_nomor_ori'] = 0;
+                    $data['mpks_endos'] = $request->eds;
+                    $data['mpks_endos_idx'] = 0;
+                    $data['mpks_indexfolder'] = 0;
+                    $data['mpks_hapus'] = 0;
+                    $data['mpks_upd_user'] = $request->user()->email;
+                    $data['mpks_upd_date'] = date('Y-m-d H:i:s');
+
+                    $update = DB::table('eopr.mst_pks')
+                        ->where('mpks_pk', '=', $request->mpks_pk)
+                        ->update($data);
+
+                    if ($update) {
+                        return response()->json([
+                            'success' => 'Data berhasil diupdate dengan Kode ' . $request->mpks_pk . '!'
+                        ]);
+                    } else {
+                        return response()->json([
+                            'error' => 'Data dengan kode ' . $request->mpks_pk . ' gagal diupdate !'
+                        ]);
+                    }
                 }
 
-                $data['mpks_nomor_ori'] = 0;
-                $data['mpks_endos'] = 0;
-                $data['mpks_endos_idx'] = 0;
-                $data['mpks_indexfolder'] = 0;
-                $data['mpks_hapus'] = 0;
-                $data['mpks_upd_user'] = $request->user()->email;
-                $data['mpks_upd_date'] = date('Y-m-d H:i:s');
+                if ($request->eds == "2") {
+                    $kode_add = KodeController::__getKey(14);
+                    $data = $request->all();
+                    $data = $request->except('cari_pk', 'mpks_pk', 'eds', '_token');
+                    $data['mpks_pk'] = $kode_add;
+                    $data['mpks_endos'] = $request->eds;
 
-                $update = DB::table('eopr.mst_pks')
-                    ->where('mpks_pk', '=', $request->mpks_pk)
-                    ->update($data);
+                    DB::table('eopr.mst_pks')->insert($data);
 
-                if ($update) {
                     return response()->json([
-                        'success' => 'Data berhasil diupdate dengan Kode ' . $request->mpks_pk . '!'
-                    ]);
-                } else {
-                    return response()->json([
-                        'error' => 'Data dengan kode ' . $request->mpks_pk . ' gagal diupdate !'
+                        'success' => 'Data addendum berhasil disimpan dengan Kode ' . $kode_add . '!'
                     ]);
                 }
+                if ($request->eds == "3") {
+                    // $kode_add = KodeController::__getKey(14);
+                    $vtable = DB::table('eopr.mst_pks')->where('mpks_pk', $request->mpks_pk);
+                    $data = $request->all();
+                    $data = $request->except('cari_pk', 'eds', '_token');
+                    // $data['mpks_pk'] = $kode_add;
+                    $data['mpks_endos'] = $request->eds;
+
+                    $vtable->update($data);
+
+                    return response()->json([
+                        'success' => 'Data addendum berhasil disimpan dengan Kode ' . $request->mpks_pk . '!'
+                    ]);
+                }
+
+                // if ($request->mpks_endos == "3") {
+
+                // }
             }
         }
     }
@@ -261,12 +296,14 @@ class PksController extends Controller
         // )
 
         $data = DB::table('eopr.mst_pks as pks')
-        ->join('emst.mst_rekanan as rekanan', 'rekanan.mrkn_kode', '=', 'pks.mpks_mrkn_kode')
-        ->select(
-            'pks.*', 'rekanan.mrkn_kode', 'rekanan.mrkn_nama',
-            DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            DB::raw('(CASE WHEN pks.mpks_mrkn_kode = rekanan.mrkn_kode THEN rekanan.mrkn_nama END) as kode_rekanan')
-        )
+            ->join('emst.mst_rekanan as rekanan', 'rekanan.mrkn_kode', '=', 'pks.mpks_mrkn_kode')
+            ->select(
+                'pks.*',
+                'rekanan.mrkn_kode',
+                'rekanan.mrkn_nama',
+                DB::raw("@no:=@no+1 AS DT_RowIndex"),
+                DB::raw('(CASE WHEN pks.mpks_mrkn_kode = rekanan.mrkn_kode THEN rekanan.mrkn_nama END) as kode_rekanan')
+            )
             ->orderBy('mpks_pk', 'desc')->limit(10);
 
         return DataTables::of($data)
@@ -300,11 +337,17 @@ class PksController extends Controller
             $search = $request->q;
             $data = DB::table('eopr.mst_pks')
                 ->select('*')
-                ->where('mpks_nomor', 'like', "%$search%")
+                ->where([
+                    // ['mpks_endos', $mpks_endos],
+                    ['mpks_nomor', 'like', "%$search%"],
+                ])
                 ->get();
         } else {
             $data = DB::table('eopr.mst_pks')
                 ->select('mpks_pk', 'mpks_nomor')
+                // ->where([
+                //     ['mpks_endos', $mpks_endos],
+                // ])
                 ->orderBy('mpks_pk')
                 ->get();
         }
@@ -313,12 +356,25 @@ class PksController extends Controller
 
     public function get_edit_polis($id)
     {
-            $data = DB::table('emst.mst_rekanan')
-                ->select('mrkn_kode', 'mrkn_nama')
-                ->where('mrkn_kode', $id)
-                // ->where('mrkn_nama', 'like', "%$search%")
-                ->first();
-       
+        $data = DB::table('emst.mst_rekanan')
+            ->select('mrkn_kode', 'mrkn_nama')
+            ->where('mrkn_kode', $id)
+            // ->where('mrkn_nama', 'like', "%$search%")
+            ->first();
+
+        return response()->json($data);
+    }
+    public function get_all_pks($id)
+    {
+        $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            // ->leftJoin('emst.mst_rekanan', 'mrkn_kode', 'mpks_mrkn_kode')
+            ->where([
+                ['mpks_pk', $id],
+            ])
+            // ->where('mrkn_nama', 'like', "%$search%")
+            ->first();
+
         return response()->json($data);
     }
 }

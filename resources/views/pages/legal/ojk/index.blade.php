@@ -110,19 +110,19 @@
 
         <div class="card-body py-10">
             <div class="table-responsive">
-                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide">
+                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="serverSide_ojk">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                             <th>No.</th>
                             <th>ID</th>
+                            <th>Judul</th>
                             <th class="min-w-250px">Jenis Dokumen</th>
                             <th>Ket Dokumen</th>
                             <th>Tahun</th>
                             <th>User Input</th>
                             <th>Tanggal Input</th>
-                            <th>Jenis Dokumen</th>
+                            <th class="min-w-150px">Jenis Dokumen</th>
                             <th class="min-w-150px">Dokumen</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     {{-- <tbody></tbody> --}}
@@ -141,9 +141,10 @@
                 }
             });
 
-            filterOp('input[type="search"]'); //khusus type search inputan
+            filterAll('input[type="search"]', 'serverSide_ojk'); //khusus type search inputan
 
             serverSide( //datatable serverside
+            "serverSide_ojk",
                 "{{ url('api/legal/ojk') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.wmn_tipe = $('#tipe_menu').val(),
@@ -162,7 +163,7 @@
                         data: 'mojk_judul'
                     },
                     {
-                        data: 'mojk_jenis'
+                        data: 'jenis_mojk'
                     },
                     {
                         data: 'mojk_ket_jenis'
@@ -177,10 +178,10 @@
                         data: 'mojk_ins_date'
                     },
                     {
-                        data: null,
+                        data: 'select',
                         orderable: false,
                         className: 'text-center',
-                        render: function(data, type, row) {
+                        render: function (data, type, row) {
                             return `
                             <select class="form-select" id="jenis_dokumen"
                                         name="mojk_jenis" data-placeholder="Pilih jenis dokumen" data-allow-clear="true">
@@ -189,31 +190,26 @@
                                     </select>`
                         }
                     },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            return `
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="` + row
-                                .mojk_pk + `">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="` + row
-                                .mojk_pk + `">Delete</a>
-                                    </div>
-                                </div>
-                            `;
-                        },
-                    },
+                    
+                    // {
+                    //     data: null,
+                    //     orderable: false,
+                    //     className: 'text-center',
+                    //     render: function(data, type, row) {
+                    //         return `
+                    //     <button type="button" id="bmoViewPdf" data-resouce="` + row.mojk_pk + `" data-show-pdf="` + row
+                    //             .mojk_file1 + `"
+                    //                     class="btn btn-light-success" target="blank"> Lihat </button>`
+                    //     }
+
+                    // },
                 ],
+
+                {
+                        rowCallback: function(row, data, index) {
+                        console.log(data[10]);
+                    },
+                },
             );
 
             // selectServerSide( //select server side with api/route
