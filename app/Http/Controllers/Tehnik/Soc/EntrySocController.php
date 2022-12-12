@@ -77,7 +77,8 @@ class EntrySocController extends Controller
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
-            'msoc_mrkn_kode' => 'required',
+            'msoc_mrkn_nama' => 'required',
+            // 'msoc_mslr_kode' => 'required',
             // 'mth_ket' => 'required',
             // 'mth_tipe_rumus' => 'required',
             // 'mth_kolom' => 'required',
@@ -85,7 +86,7 @@ class EntrySocController extends Controller
             'msoc_dok' => 'required|mimes:pdf',
         ],
         [
-            'msoc_mrkn_kode.required'=>'Data pemegang polis harus terisi!',
+            'msoc_mrkn_nama.required'=>'Data pemegang polis harus terisi!',
             'msoc_mekanisme.required'=>'Data mekanisme 1 harus terisi!',
             'msoc_mekanisme2.required'=>'Data mekanisme 2 harus terisi!',
             'msoc_mpojk_kode.required'=>'Data produk harus terisi!',
@@ -124,6 +125,7 @@ class EntrySocController extends Controller
                     'e_uw',
                     'edit_akses',
                     'mpid_nama',
+                    'e_bersih',
                 );
                 if ($request->msoc_mpid_kode != "" && $request->msoc_endos != "2") {
                     $data['msoc_kode'] = $kode . '.' . $kdAkhir;
@@ -425,8 +427,25 @@ class EntrySocController extends Controller
         msli_mrkn_kode,
         msli_mrkn_nama,
         msli_mpras_kode"))
-        ->leftJoin('eopr.mst_soc as msoc', 'msoc.msoc_nomor', '=', 'msli_nomor')
-        ->leftJoin('emst.mst_rekanan as rkn', 'rkn.mrkn_kode', '=', 'msli_mrkn_kode');
+        ->leftJoin('eopr.mst_soc as msoc', function($join) use ($request) {
+            $join->on('msoc.msoc_nomor', '=', 'msli_nomor');
+            if (!empty($request->mft)) {
+                $join->where('msoc_mft_kode', $request->mft);
+            }
+            if (!empty($request->mekanisme)) {
+                $join->where('msoc_mekanisme', $request->mekanisme);
+            }
+            if (!empty($request->mekanisme2)) {
+                $join->where('msoc_mekanisme2', $request->mekanisme2);
+            }
+            if (!empty($request->perus)) {
+                $join->where('msoc_jns_perusahaan', $request->perus);
+            }
+            if (!empty($request->jns_bayar)) {
+                $join->where('msoc_jenis_bayar', $request->jns_bayar);
+            }
+        })
+        ->leftJoin('emst.mst_rekanan as rkn', 'mrkn_kode', '=', 'msli_mrkn_kode');
 
         if (!empty($request->pmgpolis)) {
             $vtable->where('msli_mrkn_kode', $request->pmgpolis);
@@ -437,26 +456,11 @@ class EntrySocController extends Controller
         if (!empty($request->nasabah)) {
             $vtable->where('msli_mjns_kode', $request->nasabah);
         }
-        if (!empty($request->mft)) {
-            $vtable->where('msoc_mft_kode', $request->mft);
-        }
-        if (!empty($request->mekanisme)) {
-            $vtable->where('msoc_mekanisme', $request->mekanisme);
-        }
-        if (!empty($request->mekanisme2)) {
-            $vtable->where('msoc_mekanisme2', $request->mekanisme2);
-        }
-        if (!empty($request->perus)) {
-            $vtable->where('msli_mrkn_kode', $request->perus);
-        }
-        if (!empty($request->jns_bayar)) {
-            $vtable->where('msoc_jenis_bayar', $request->jns_bayar);
-        }
         if (!empty($request->mrkn_nama)) {
             $vtable->where('msli_mrkn_nama', $request->mrkn_nama);
         }
 
-        $data = $vtable->whereIn('msli_status_endos', [0,1,2])->get();
+        $data = $vtable->whereIn('msli_status_endos', [0,1,2])->first();
         return response()->json($data);
     }
 
@@ -495,7 +499,6 @@ class EntrySocController extends Controller
         msoc_mujhrf_kode,
         msoc_mdr_kode,
         msoc_mpras_kode,
-        IF('".$request->endos."'='2','0',msoc_approve) msoc_approve,
         msoc_no_endors,
         IF(IFNULL(msoc_mrkn_nama,'')='',mrkn_nama,msoc_mrkn_nama) msoc_mrkn_nama,
         mlok_nama e_cabalamin,
@@ -518,24 +521,9 @@ class EntrySocController extends Controller
         if (!empty($request->pmgpolis)) {
             $vtable->where('msoc_mrkn_kode', $request->pmgpolis);
         }
-        if (!empty($request->nopolis)) {
-            $vtable->where('msoc_nomor', $request->nopolis);
-        }
-        if (!empty($request->nopolis)) {
-            $vtable->where('msli_nomor', $request->nopolis);
-        }
-        if (!empty($request->jns_bayar)) {
-            $vtable->where('msoc_jenis_bayar', $request->jns_bayar);
-        }
-        if (!empty($request->mekanisme)) {
-            $vtable->where('msoc_mekanisme', $request->mekanisme);
-        }
-        if (!empty($request->mekanisme2)) {
-            $vtable->where('msoc_mekanisme2', $request->mekanisme2);
-        }
-        if (!empty($request->jns_perusahaan)) {
-            $vtable->where('msoc_jns_perusahaan', $request->jns_perusahaan);
-        }
+        // if (!empty($request->nopolis)) {
+        //     $vtable->where('msoc_nomor', $request->nopolis);
+        // }
         if (!empty($request->nasabah)) {
             $vtable->where('msoc_mjns_kode', $request->nasabah);
         }
@@ -545,19 +533,35 @@ class EntrySocController extends Controller
         if (!empty($request->mjm)) {
             $vtable->where('msoc_mjm_kode', $request->mjm);
         }
+        if (!empty($request->mekanisme)) {
+            $vtable->where('msoc_mekanisme', $request->mekanisme);
+        }
+        if (!empty($request->jns_bayar)) {
+            $vtable->where('msoc_jenis_bayar', $request->jns_bayar);
+        }
+        if (!empty($request->jns_perusahaan)) {
+            $vtable->where('msoc_jns_perusahaan', $request->jns_perusahaan);
+        }
         if (!empty($request->mrkn_nama)) {
-            if (!empty($request->mrkn_nama) && empty($request->pmgpolis)) {
-                $vtable->where('msoc_mrkn_nama', $request->mrkn_nama);
-            }
+            $vtable->where('msoc_mrkn_nama', $request->mrkn_nama);
+        }
+        if (!empty($request->mekanisme2)) {
+            $vtable->where('msoc_mekanisme2', $request->mekanisme2);
         }
         if (!empty($request->pras)) {
             $vtable->where('msoc_mpras_kode', $request->pras);
         }
+        if (!empty($request->endos)) {
+            $vtable->where('msoc_endos', $request->endos);
+        }
+        // if (!empty($request->id) && !empty($request->kode)) {
+        //     $vtable->where($request->id, $request->kode);
+        // }
 
         $data = $vtable
+        ->where('msoc_kode', $request->id)
         ->whereIn('msoc_endos', [0,1,2])
-        ->where('msoc_kode', $request->kode)
-        ->get();
+        ->first();
 
         return response()->json($data);
     }
@@ -609,56 +613,6 @@ class EntrySocController extends Controller
         ->leftJoin('emst.mst_protree_4 as mptr', 'mptr.mptr_kode', '=', 'mpras_kode')
         ->leftJoin('eopr.mst_soc', function ($join) use ($request) {
             $join->on('mpras_kode', '=', 'msoc_mpras_kode');
-            // if (!empty($request->mjns)) {
-            //     $join->where('msoc_mjns_kode', $request->mjns);
-            // } else {
-            //     $join->where('msoc_mjns_kode', '');
-            // }
-            // if (!empty($request->mft)) {
-            //     $join->where('msoc_mft_kode', $request->mft);
-            // } else {
-            //     $join->where('msoc_mft_kode', '');
-            // }
-            // if (!empty($request->mrkn)) {
-            //     $join->where('msoc_mrkn_kode', $request->mrkn);
-            // } else {
-            //     $join->where('msoc_mrkn_kode', '');
-            // }
-            // if (!empty($request->mssp)) {
-            //     $join->where('msoc_mssp_nama', $request->mssp);
-            // } else {
-            //     $join->where('msoc_mssp_nama', '');
-            // }
-            // if (!empty($request->mkm)) {
-            //     $join->where('msoc_mekanisme', $request->mkm);
-            // } else {
-            //     $join->where('msoc_mekanisme', '');
-            // }
-            // if (!empty($request->mkm2)) {
-            //     $join->where('msoc_mekanisme2', $request->mkm2);
-            // } else {
-            //     $join->where('msoc_mekanisme2', '');
-            // }
-            // if (!empty($request->perush)) {
-            //     $join->where('msoc_jns_perusahaan', $request->perush);
-            // } else {
-            //     $join->where('msoc_jns_perusahaan', '');
-            // }
-            // if (!empty($request->byr)) {
-            //     $join->where('msoc_jenis_bayar', $request->byr);
-            // } else {
-            //     $join->where('msoc_jenis_bayar', '');
-            // }
-            // if (!empty($request->mjm)) {
-            //     $join->where('msoc_mjm_kode', $request->mjm);
-            // } else {
-            //     $join->where('msoc_mjm_kode', '');
-            // }
-            // if (!empty($request->mpid)) {
-            //     $join->where('msoc_mpid_kode', $request->mpid);
-            // } else {
-            //     $join->where('msoc_mpid_kode', '');
-            // }
             $join->where([
                 ['msoc_mpid_kode', $request->mpid],
                 ['msoc_mekanisme', $request->mkm],
@@ -690,22 +644,11 @@ class EntrySocController extends Controller
 
     public function selectSalDistri(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_saluran_distribusi')
-                ->select(DB::raw("mslr_kode, mslr_ket"))
-                ->where([
-                    ['mslr_ket', 'like', "%$search%"],
-                ])
-                ->orderBy('mslr_kode', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_saluran_distribusi')
-                ->select(DB::raw("mslr_kode, mslr_ket"))
-                ->orderBy('mslr_kode', 'ASC')
-                ->get();
-        }
+        $data = DB::table('emst.mst_saluran_distribusi')
+            ->select(DB::raw("mslr_kode, mslr_ket"))
+            ->orderBy('mslr_kode', 'ASC')
+            ->get();
+
         return response()->json($data);
     }
 
