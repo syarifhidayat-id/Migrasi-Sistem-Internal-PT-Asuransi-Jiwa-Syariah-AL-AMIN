@@ -21,41 +21,7 @@ class EntrySocController extends Controller
      */
     public function index()
     {
-        $meka1 = DB::table('emst.mst_mekanisme')
-        ->select(DB::raw("mkm_kode kode, mkm_nama nama"))
-        ->where([
-            ['mkm_aktif', '!=', 1],
-        ])
-        ->orderBy('mkm_kode', 'ASC')
-        ->get();
-
-        $meka2 = DB::table('emst.mst_mekanisme2')
-        ->select(DB::raw("mkm_kode2 kode, mkm_ket2 nama"))
-        ->orderBy('mkm_kode2', 'ASC')
-        ->get();
-
-        $jnsKer = DB::table('emst.mst_pekerjaan')
-        ->select(DB::raw("mker_kode kode, mker_nama ket"))
-        ->orderBy('mker_kode', 'ASC')
-        ->get();
-
-        $mpojk = DB::table('emst.mst_produk_ojk')
-        ->select(DB::raw("mpojk_kode kode, mpojk_nama ket"))
-        ->orderBy('mpojk_kode', 'ASC')
-        ->get();
-
-        $saldis = DB::table('emst.mst_saluran_distribusi')
-        ->select(DB::raw("mslr_kode kode, mslr_ket ket"))
-        ->orderBy('mslr_kode', 'ASC')
-        ->get();
-
-        return view('pages.tehnik.soc.create', [
-            'meka1' => $meka1,
-            'meka2' => $meka2,
-            'jnsKer' => $jnsKer,
-            'mpojk' => $mpojk,
-            'saldis' => $saldis,
-        ]);
+        return view('pages.tehnik.soc.create');
     }
 
     /**
@@ -78,24 +44,42 @@ class EntrySocController extends Controller
     {
         $validasi = Validator::make($request->all(), [
             'msoc_mrkn_nama' => 'required',
-            // 'msoc_mslr_kode' => 'required',
-            // 'mth_ket' => 'required',
-            // 'mth_tipe_rumus' => 'required',
-            // 'mth_kolom' => 'required',
-            // 'mth_baris' => 'required',
+            'e_nasabah' => 'required',
+            'msoc_mssp_nama' => 'required',
+            'msoc_mekanisme' => 'required',
+            'e_manfaat_pol' => 'required',
+            'msoc_jenis_bayar' => 'required',
+            'msoc_jns_perusahaan' => 'required',
+            'e_manfaat' => 'required',
+            'e_pras' => 'required',
+            'msoc_mslr_kode' => 'required',
+            'msoc_mpojk_kode' => 'required',
+            'e_cabalamin' => 'required',
+            'msoc_pajakfee' => 'required',
+            'msoc_handlingfee' => 'required',
+            'msoc_handlingfee2' => 'required',
+            'e_tarif' => 'required',
+            'e_uw' => 'required',
             'msoc_dok' => 'required|mimes:pdf',
         ],
         [
-            'msoc_mrkn_nama.required'=>'Data pemegang polis harus terisi!',
-            'msoc_mekanisme.required'=>'Data mekanisme 1 harus terisi!',
-            'msoc_mekanisme2.required'=>'Data mekanisme 2 harus terisi!',
-            'msoc_mpojk_kode.required'=>'Data produk harus terisi!',
-            'msoc_jenis_bayar.required'=>'Data produk harus terisi!',
-            'msoc_jenis_tarif.required'=>'Data jenis tarif harus terisi!',
-            // 'mth_ket.required'=>'Data keterangan harus terisi!',
-            // 'mth_tipe_rumus.required'=>'Data perhitungan tarif harus terisi!',
-            // 'mth_kolom.required'=>'Data kolom harus terisi!',
-            // 'mth_baris.required'=>'Data baris harus terisi!',
+            'msoc_mrkn_nama.required'=>'Pemegang polis tidak boleh kosong!',
+            'e_nasabah.required'=>'Nasabah bank/peserta tidak boleh kosong!',
+            'msoc_mssp_nama.required'=>'Segmen pasar tidak boleh kosong!',
+            'msoc_mekanisme.required'=>'Mekanisme 1 tidak boleh kosong!',
+            'e_manfaat_pol.required'=>'Manfaat asuransi tidak boleh kosong!',
+            'msoc_jenis_bayar.required'=>'Pembayaran kontribusi tidak boleh kosong!',
+            'msoc_jns_perusahaan.required'=>'Jenis pekerjaan tidak boleh kosong!',
+            'e_manfaat.required'=>'Jaminan asuransi tidak boleh kosong!',
+            'e_pras.required'=>'Program asuransi tidak boleh kosong!',
+            'msoc_mslr_kode.required'=>'Saluran distribusi tidak boleh kosong!',
+            'msoc_mpojk_kode.required'=>'Produk ojk tidak boleh kosong!',
+            'e_cabalamin.required'=>'Cabang alamin tidak boleh kosong!',
+            'msoc_pajakfee.required'=>'Penanggung pajak fee tidak boleh kosong!',
+            'msoc_handlingfee.required'=>'Fee ppn tidak boleh kosong!',
+            'msoc_handlingfee2.required'=>'Fee ppn 23 tidak boleh kosong!',
+            'e_tarif.required'=>'Jenis tarif tidak boleh kosong!',
+            'e_uw.required'=>'Jenis underwriting tidak boleh kosong!',
             'msoc_dok.required'=>'File excel harus terisi!',
             'msoc_dok.mimes'=>'File harus berbentuk *pdf!',
         ]);
@@ -316,55 +300,50 @@ class EntrySocController extends Controller
         return response()->json($data);
     }
 
-    // public function selectMeka1(Request $request)
-    // {
-    //     $data = [];
-    //     if ($request->has('q')) {
-    //         $search = $request->q;
-    //         $data = DB::connection('emst')
-    //             ->table('mst_mekanisme')
-    //             ->select(DB::raw("mkm_kode, mkm_nama"))
-    //             ->where([
-    //                 ['mkm_aktif', '!=', 1],
-    //                 ['mkm_nama', 'like', "%$search%"],
-    //             ])
-    //             ->orderBy('mkm_kode', 'ASC')
-    //             ->get();
-    //     } else {
-    //         $data = DB::connection('emst')
-    //             ->table('mst_mekanisme')
-    //             ->select(DB::raw("mkm_kode, mkm_nama"))
-    //             ->where([
-    //                 ['mkm_aktif', '!=', 1],
-    //             ])
-    //             ->orderBy('mkm_kode', 'ASC')
-    //             ->get();
-    //     }
-    //     return response()->json($data);
-    // }
+    public function selectMeka1(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_mekanisme')
+        ->select(DB::raw("mkm_kode, mkm_nama"))
+        ->where([
+            ['mkm_aktif', '!=', 1],
+        ]);
 
-    // public function selectMeka2(Request $request)
-    // {
-    //     $data = [];
-    //     if ($request->has('q')) {
-    //         $search = $request->q;
-    //         $data = DB::connection('emst')
-    //             ->table('mst_mekanisme2')
-    //             ->select(DB::raw("mkm_kode2, mkm_ket2"))
-    //             ->where([
-    //                 ['mkm_ket2', 'like', "%$search%"],
-    //             ])
-    //             ->orderBy('mkm_kode2', 'ASC')
-    //             ->get();
-    //     } else {
-    //         $data = DB::connection('emst')
-    //             ->table('mst_mekanisme2')
-    //             ->select(DB::raw("mkm_kode2, mkm_ket2"))
-    //             ->orderBy('mkm_kode2', 'ASC')
-    //             ->get();
-    //     }
-    //     return response()->json($data);
-    // }
+        if (!empty($request->q)) {
+            $vtable->where('mkm_kode', 'LIKE', "%$request->q%")->orWhere('mkm_nama', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->orderBy('mkm_kode', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function selectMeka2(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_mekanisme2')
+        ->select(DB::raw("mkm_kode2, mkm_ket2"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mkm_kode2', 'LIKE', "%$request->q%")->orWhere('mkm_ket2', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->orderBy('mkm_kode2', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
 
     public function selectManfaatAsu(Request $request)
     {
@@ -396,28 +375,26 @@ class EntrySocController extends Controller
         return response()->json($data);
     }
 
-    // public function selectJnsKerja(Request $request)
-    // {
-    //     $data = [];
-    //     if ($request->has('q')) {
-    //         $search = $request->q;
-    //         $data = DB::connection('emst')
-    //             ->table('mst_pekerjaan')
-    //             ->select(DB::raw("mker_kode, mker_nama"))
-    //             ->where([
-    //                 ['mker_nama', 'like', "%$search%"],
-    //             ])
-    //             ->orderBy('mker_kode', 'ASC')
-    //             ->get();
-    //     } else {
-    //         $data = DB::connection('emst')
-    //             ->table('mst_pekerjaan')
-    //             ->select(DB::raw("mker_kode, mker_nama"))
-    //             ->orderBy('mker_kode', 'ASC')
-    //             ->get();
-    //     }
-    //     return response()->json($data);
-    // }
+    public function selectJnsKerja(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_pekerjaan')
+        ->select(DB::raw("mker_kode, mker_nama"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mker_kode', 'LIKE', "%$request->q%")->orWhere('mker_nama', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->orderBy('mker_kode', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
 
     public function getNoSoc(Request $request)
     {
@@ -644,32 +621,43 @@ class EntrySocController extends Controller
 
     public function selectSalDistri(Request $request)
     {
-        $data = DB::table('emst.mst_saluran_distribusi')
-            ->select(DB::raw("mslr_kode, mslr_ket"))
-            ->orderBy('mslr_kode', 'ASC')
-            ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_saluran_distribusi')
+        ->select(DB::raw("mslr_kode, mslr_ket"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mslr_kode', 'LIKE', "%$request->q%")->orWhere('mslr_ket', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->orderBy('mslr_kode', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
 
         return response()->json($data);
     }
 
     public function selectProdOjk(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_produk_ojk')
-                ->select(DB::raw("mpojk_kode, mpojk_nama"))
-                ->where([
-                    ['mpojk_nama', 'like', "%$search%"],
-                ])
-                ->orderBy('mpojk_kode', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_produk_ojk')
-                ->select(DB::raw("mpojk_kode, mpojk_nama"))
-                ->orderBy('mpojk_kode', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_produk_ojk')
+        ->select(DB::raw("mpojk_kode, mpojk_nama"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mpojk_kode', 'LIKE', "%$request->q%")->orWhere('mpojk_nama', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mpojk_kode', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 
@@ -752,215 +740,214 @@ class EntrySocController extends Controller
 
     public function selectFeePPn(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_manajemen_fee')
-                ->select(DB::raw("mmfee_persen persen, mmfee_tampil tampil"))
-                ->where([
-                    ['mmfee_tampil', 'like', "%$search%"],
-                ])
-                ->orderBy('mmfee_persen', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_manajemen_fee')
-                ->select(DB::raw("mmfee_persen persen, mmfee_tampil tampil"))
-                ->orderBy('mmfee_persen', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_manajemen_fee')
+        ->select(DB::raw("mmfee_persen persen, mmfee_tampil tampil"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mmfee_persen', 'LIKE', "%$request->q%")->orWhere('mmfee_tampil', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mmfee_persen', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 
     public function selectFeePPh23(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_manajemen_fee')
-                ->select(DB::raw("mmfee_persen persen, mmfee_tampil tampil"))
-                ->where([
-                    ['mmfee_tampil', 'like', "%$search%"],
-                ])
-                ->orderBy('mmfee_persen', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_manajemen_fee')
-                ->select(DB::raw("mmfee_persen persen, mmfee_tampil tampil"))
-                ->orderBy('mmfee_persen', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_manajemen_fee')
+        ->select(DB::raw("mmfee_persen persen, mmfee_tampil tampil"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mmfee_persen', 'LIKE', "%$request->q%")->orWhere('mmfee_tampil', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mmfee_persen', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 
     public function selectUjroh(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_ujroh')
-                ->select(DB::raw("mujh_tampil persen, mujh_persen tampil"))
-                ->where([
-                    ['mujh_tipe', 'Ujroh'],
-                    ['mujh_persen', 'like', "%$search%"],
-                ])
-                ->orderBy('mujh_tampil', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_ujroh')
-                ->select(DB::raw("mujh_tampil persen, mujh_persen tampil"))
-                ->where([
-                    ['mujh_tipe', 'Ujroh'],
-                ])
-                ->orderBy('mujh_tampil', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_ujroh')
+        ->select(DB::raw("mujh_tampil persen, mujh_persen tampil"))
+        ->where([
+            ['mujh_tipe', 'Ujroh'],
+        ]);
+
+        if (!empty($request->q)) {
+            $vtable->where('mujh_tampil', 'LIKE', "%$request->q%")->orWhere('mujh_persen', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mujh_tampil', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 
     public function selectMnFee(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_manajemen_fee')
-                ->select(DB::raw("mmfee_persen persen, mmfee_tampil tampil"))
-                ->where([
-                    ['mmfee_tampil', 'like', "%$search%"],
-                ])
-                ->orderBy('mmfee_persen', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_manajemen_fee')
-                ->select(DB::raw("mmfee_persen persen, mmfee_tampil tampil"))
-                ->orderBy('mmfee_persen', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_manajemen_fee')
+        ->select(DB::raw("mmfee_persen persen, mmfee_tampil tampil"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mmfee_persen', 'LIKE', "%$request->q%")->orWhere('mmfee_tampil', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mmfee_persen', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 
     public function selectKomtidakpot(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_komisi')
-                ->select(DB::raw("mkom_persen persen, mkom_tipe tipe"))
-                ->where([
-                    ['mkom_tipe', 'like', "%$search%"],
-                ])
-                ->orderBy('mkom_persen', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_komisi')
-                ->select(DB::raw("mkom_persen persen, mkom_tipe tipe"))
-                ->orderBy('mkom_persen', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_komisi')
+        ->select(DB::raw("mkom_persen persen, mkom_tipe tipe"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mkom_persen', 'LIKE', "%$request->q%")->orWhere('mkom_tipe', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mkom_persen', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 
     public function selectKompot(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_komisi')
-                ->select(DB::raw("mkom_persen persen, mkom_tipe tipe"))
-                ->where([
-                    ['mkom_tipe', 'like', "%$search%"],
-                ])
-                ->orderBy('mkom_persen', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_komisi')
-                ->select(DB::raw("mkom_persen persen, mkom_tipe tipe"))
-                ->orderBy('mkom_persen', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_komisi')
+        ->select(DB::raw("mkom_persen persen, mkom_tipe tipe"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mkom_persen', 'LIKE', "%$request->q%")->orWhere('mkom_tipe', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mkom_persen', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 
     public function selectReferal(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_discount_rate')
-                ->select(DB::raw("mdr_persen persen, mdr_tipe tipe"))
-                ->where([
-                    ['mdr_tipe', 'like', "%$search%"],
-                ])
-                ->orderBy('mdr_persen', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_discount_rate')
-                ->select(DB::raw("mdr_persen persen, mdr_tipe tipe"))
-                ->orderBy('mdr_persen', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_discount_rate')
+        ->select(DB::raw("mdr_persen persen, mdr_tipe tipe"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mdr_persen', 'LIKE', "%$request->q%")->orWhere('mdr_tipe', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mdr_persen', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 
     public function selectMaintenence(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_discount_rate')
-                ->select(DB::raw("mdr_persen persen, mdr_tipe tipe"))
-                ->where([
-                    ['mdr_tipe', 'like', "%$search%"],
-                ])
-                ->orderBy('mdr_persen', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_discount_rate')
-                ->select(DB::raw("mdr_persen persen, mdr_tipe tipe"))
-                ->orderBy('mdr_persen', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_discount_rate')
+        ->select(DB::raw("mdr_persen persen, mdr_tipe tipe"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mdr_persen', 'LIKE', "%$request->q%")->orWhere('mdr_tipe', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mdr_persen', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 
     public function selectFeebtidakpotong(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_fee')
-                ->select(DB::raw("mfee_persen persen, mfee_tipe tipe"))
-                ->where([
-                    ['mfee_tipe', 'like', "%$search%"],
-                ])
-                ->orderBy('mfee_persen', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_fee')
-                ->select(DB::raw("mfee_persen persen, mfee_tipe tipe"))
-                ->orderBy('mfee_persen', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_fee')
+        ->select(DB::raw("mfee_persen persen, mfee_tipe tipe"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mfee_persen', 'LIKE', "%$request->q%")->orWhere('mfee_persen', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mfee_persen', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 
     public function selectFeebpotong(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_discount_rate')
-                ->select(DB::raw("mdr_persen persen, mdr_tipe tipe"))
-                ->where([
-                    ['mdr_tipe', 'like', "%$search%"],
-                ])
-                ->orderBy('mdr_persen', 'ASC')
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_discount_rate')
-                ->select(DB::raw("mdr_persen persen, mdr_tipe tipe"))
-                ->orderBy('mdr_persen', 'ASC')
-                ->get();
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_discount_rate')
+        ->select(DB::raw("mdr_persen persen, mdr_tipe tipe"));
+
+        if (!empty($request->q)) {
+            $vtable->where('mdr_persen', 'LIKE', "%$request->q%")->orWhere('mdr_tipe', 'LIKE', "%$request->q%");
         }
+
+        $data = $vtable
+        ->orderBy('mdr_persen', 'ASC')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
         return response()->json($data);
     }
 

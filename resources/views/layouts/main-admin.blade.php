@@ -51,6 +51,7 @@
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('vendor/fontawesome-6.2.0/css/all.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dist/css/custom.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/plugins/global/sweetalert/sweetalert2-custom.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dist/css/preload.min.css') }}" rel="stylesheet" type="text/css" />
 
     @yield('style')

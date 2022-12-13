@@ -153,7 +153,7 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            selectServerSide(
+            selectSide(
                 'tipe_menu',
                 '{{ url("api/utility/menu/select-tipemenu") }}',
                 function(data) {
@@ -172,7 +172,7 @@
                 },
             )
 
-            selectServerSide(
+            selectSide(
                 'wmn_tipe',
                 '{{ url("api/utility/menu/select-tipemenu") }}',
                 function(data) {

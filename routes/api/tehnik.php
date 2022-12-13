@@ -19,17 +19,16 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
             Route::get('/select-meka1', [EntrySocController::class, 'selectMeka1']);
             Route::get('/select-meka2', [EntrySocController::class, 'selectMeka2']);
             Route::get('/select-manasu', [EntrySocController::class, 'selectManfaatAsu']);
-            // Route::get('/select-jnskerja', [EntrySocController::class, 'selectJnsKerja']);
+            Route::get('/select-jnskerja', [EntrySocController::class, 'selectJnsKerja']);
             Route::get('/get-nosoc', [EntrySocController::class, 'getNoSoc']);
             Route::get('/get-kodesoc', [EntrySocController::class, 'getKodeSoc']);
             Route::get('/select-jamiasu', [EntrySocController::class, 'selectJamiAsu']);
-            // Route::get('/pilih-program-asuransi/{mpid}/{mkm}/{mkm2}/{mft}/{mrkn}/{mssp}/{mjm}/{mjns}/{byr}/{perush}', [EntrySocController::class, 'pilihProgramAsuransi']);
-            // Route::get('/pilih-program-asuransi/{mpid}', [EntrySocController::class, 'pilihProgramAsuransi']);
             Route::get('/pilih-program-asuransi', [EntrySocController::class, 'pilihProgramAsuransi']);
             Route::get('/select-salurandistribusi', [EntrySocController::class, 'selectSalDistri']);
             Route::get('/select-prodojk', [EntrySocController::class, 'selectProdOjk']);
             Route::get('/select-cabalamin', [EntrySocController::class, 'selectCabAlamin']);
             Route::get('/select-marketing', [EntrySocController::class, 'selectMarketing']);
+
             Route::get('/select-feeppn', [EntrySocController::class, 'selectFeePPn']);
             Route::get('/select-feepph23', [EntrySocController::class, 'selectFeePPh23']);
             Route::get('/select-ujroh', [EntrySocController::class, 'selectUjroh']);
@@ -42,6 +41,7 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
             Route::get('/select-feebpotong', [EntrySocController::class, 'selectFeebpotong']);
             Route::get('/select-tarifimport', [EntrySocController::class, 'selectTarifImport']);
             Route::get('/select-underwritingimport', [EntrySocController::class, 'selectUnderwritingImport']);
+
             Route::get('/lihat-tarif/{id}', [EntrySocController::class, 'lihatTarif']);
             Route::get('/lihat-uw/{id}', [EntrySocController::class, 'lihatUw']);
             Route::post('/upload-tarif', [UploadTarifController::class, 'store']);
