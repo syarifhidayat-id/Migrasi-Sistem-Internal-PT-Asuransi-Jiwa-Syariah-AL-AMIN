@@ -167,6 +167,7 @@
                         textField: 'mker_nama',
                         onSelect: function(rec){
                             hidePesan('msoc_jns_perusahaan');
+                            cekpolis();
                         }" style="width: 100%; height: 38px;" />
                         <span class="text-danger error-text msoc_jns_perusahaan_err"></span>
                     </div>
@@ -213,7 +214,7 @@
                             hidePesan('msoc_mslr_kode');
                             cekmanajemenfee();
                         }" style="width: 100%; height: 38px;" />
-                        <input type="text" class="form-control form-control-solid" name="msoc_endos" id="msoc_endos" placeholder="msoc_endos" />
+                        <input type="text" class="form-control form-control-solid" name="endors" id="endors" placeholder="endors" />
                         <span class="text-danger error-text msoc_mslr_kode_err"></span>
                     </div>
                 </div>
@@ -370,7 +371,10 @@
                                 url: '{{ url("api/tehnik/soc/entry-soc/select-komtidakpot") }}',
                                 method: 'get',
                                 valueField: 'persen',
-                                textField: 'tipe'," style="width: 100%; height: 38px;" />
+                                textField: 'tipe',
+                                onSelect: function(rec){
+                                    cekkomisi();
+                                }" style="width: 100%; height: 38px;" />
                             </div>
                             <span class="input-group-text" style="height: 38px;">%</span>
                         </div>
@@ -386,7 +390,10 @@
                                 url: '{{ url("api/tehnik/soc/entry-soc/select-kompot") }}',
                                 method: 'get',
                                 valueField: 'persen',
-                                textField: 'tipe'," style="width: 100%; height: 38px;" />
+                                textField: 'tipe',
+                                onSelect: function(rec){
+                                    cekkomisi();
+                                }" style="width: 100%; height: 38px;" />
                             </div>
                             <span class="input-group-text" style="height: 38px;">%</span>
                         </div>
@@ -434,7 +441,10 @@
                                 url: '{{ url("api/tehnik/soc/entry-soc/select-feebtidakpotong") }}',
                                 method: 'get',
                                 valueField: 'persen',
-                                textField: 'tipe'," style="width: 100%; height: 38px;" />
+                                textField: 'tipe',
+                                onSelect: function(rec){
+                                    {{-- cekdiscrate(); --}}
+                                }" style="width: 100%; height: 38px;" />
                             </div>
                             <span class="input-group-text" style="height: 38px;">%</span>
                         </div>
@@ -450,7 +460,10 @@
                                 url: '{{ url("api/tehnik/soc/entry-soc/select-feebpotong") }}',
                                 method: 'get',
                                 valueField: 'persen',
-                                textField: 'tipe'," style="width: 100%; height: 38px;" />
+                                textField: 'tipe',
+                                onSelect: function(rec){
+                                    {{-- cekfeebase(); --}}
+                                }" style="width: 100%; height: 38px;" />
                             </div>
                             <span class="input-group-text" style="height: 38px;">%</span>
                         </div>
@@ -650,7 +663,7 @@
             setHide('msoc_mjm_kode', true);
             setHide('msoc_mpid_kode', true);
             setHide('msoc_mlok_kode', true);
-            setHide('msoc_endos', true);
+            setHide('endors', true);
             setHide('msoc_mkar_kode_mkr', true);
             setHide('msoc_mkar_kode_pim', true);
             setHide('msoc_mth_nomor', true);
@@ -806,7 +819,8 @@
                     setText("mpras_ket", row.mpras_info);
                     setText("msoc_kode", row.msoc_kode);
                     muncul1(row.mpras_uptambah,row.mpras_ujrah_referal,row.mpras_discrate,row.mpras_mmft_kode_jiwa);
-                    e_leave('msoc_kode', kode_soc);
+                    e_leave('msoc_kode');
+                    // e_leave(kode_soc);
                 }
             );
             selectGrid(
@@ -953,7 +967,6 @@
                 "{{ route('tehnik.soc.entry-soc.store') }}",
                 (resSuccess) => {
                     clearForm("frxx_soc");
-                    clearSelect();
                     bsimpan("btn_simpan", 'Simpan');
                 },
                 (resError) => {
@@ -969,13 +982,13 @@
                 "kode_import_tarif",
                 (res) => {
                     clearForm("frxx_uploadTarif");
-                    clearSelect();
                     bsimpan('btnImportTarif_simpan', 'Simpan');
                     closeModal("modalTarif");
                     openModal("modalShowKonfirmTarif");
                     titleAction("titleShowKonfirmTarif", "Konfirmasi Tabel Tarif");
                     var kode = getText("kode_import_tarif");
                     showTarifTable("showTarif", kode);
+                    reSelGrid('e_tarif', '{{ url("api/tehnik/soc/entry-soc/select-tarifimport") }}');
                 },
             );
 
@@ -986,7 +999,6 @@
                 "{{ url('api/tehnik/soc/entry-soc/update-upload-tarif') }}",
                 (resSukses) => {
                     clearForm("frxx_tarifKonfim");
-                    clearSelect();
                     bsimpan('btnTarifKonfim_simpan', 'Simpan');
                     closeModal("modalShowKonfirmTarif");
                 },
@@ -1003,13 +1015,13 @@
                 "kode_import_uw",
                 (res) => {
                     clearForm("frxx_uploadUw");
-                    clearSelect();
                     bsimpan('btnImportUw_simpan', 'Simpan');
                     closeModal("modalUw");
                     openModal("modalShowKonfirmUw");
                     titleAction("titleShowKonfirmUw", "Konfirmasi Tabel UW");
                     var kode = getText("kode_import_uw");
                     showUwTable("showUw", kode);
+                    reSelGrid('e_uw', '{{ url("api/tehnik/soc/entry-soc/select-underwritingimport") }}');
                 },
             );
 
@@ -1093,7 +1105,7 @@
                 setTextReadOnly('msoc_mssp_nama',false);
                 setTextReadOnly('msoc_jns_perusahaan',false);
             }
-            setText('msoc_endos',tipe);
+            setText('endors',tipe);
 	        // reSelGrid('msoc_mrkn_nama','{{ url("api/tehnik/soc/entry-soc/select-pmgpolis") }}' + '?tipe=' + tipe);
         }
 
@@ -1131,8 +1143,7 @@
             url = '{{ url("api/tehnik/soc/entry-soc/get-nosoc") }}' + '?' + rms;
             $.get(url, function(data){
                 if (data) {
-                    $('#frxx_soc').form('load',data);
-                    $('#frxx_soc').formToJson(data);
+                    jsonForm('frxx_soc', data);
                     //setloadpolis();
                     // $('#ffile').form('load',data);
                 }
@@ -1221,18 +1232,18 @@
             }
         }
 
-        function e_leave(id, v) {
+        function e_leave(id) {
             var rms='';
             var url='';
 
             if (id=='msoc_kode') {
                 var aksess = getText('edit_akses');
-                var tipe = getText('msoc_endos');
-                rms = 'pmgpolis='+getText('msoc_mrkn_kode')+'&nasabah='+getText('msoc_mjns_kode')+'&mft='+getText('msoc_mft_kode')+'&mjm='+getText('msoc_mjm_kode')+'&mekanisme='+getText('msoc_mekanisme')+'&jns_bayar='+getText('msoc_jenis_bayar')+'&jns_perusahaan='+getText('msoc_jns_perusahaan')+'&mrkn_nama='+getText('msoc_mrkn_nama')+'&mekanisme2='+getText('msoc_mekanisme2')+'&pras='+getText('msoc_mpras_kode')+'endos='+getText('msoc_endos');
+                var tipe = getText('endors');
+                rms = '&pmgpolis='+getText('msoc_mrkn_kode')+'&nopolis='+getText('msoc_nomor')+'&nasabah='+getText('msoc_mjns_kode')+'&mft='+getText('msoc_mft_kode')+'&mjm='+getText('msoc_mjm_kode')+'&mekanisme='+getText('msoc_mekanisme')+'&jns_bayar='+getText('msoc_jenis_bayar')+'&jns_perusahaan='+getText('msoc_jns_perusahaan')+'&mrkn_nama='+getText('msoc_mrkn_nama')+'&mekanisme2='+getText('msoc_mekanisme2')+'&kode='+getText('msoc_kode')+'&pras='+getText('msoc_mpras_kode')+'&endos='+getText('endors');
 
-                url = '{{ url("api/tehnik/soc/entry-soc/get-kodesoc") }}' + '?id=' + v;
+                url = '{{ url("api/tehnik/soc/entry-soc/get-kodesoc") }}' + '?id=' + id + rms;
                 $.get(url, function(data) {
-                    // console.log(data);
+                    console.log(data);
                     if (data) {
                         if(tipe=='1' && data.msoc_mlsr_kode=='4') {
                             setTextReadOnly('msoc_mkom_persen',true);
@@ -1254,8 +1265,8 @@
                             pesan('Maaf Anda Tidak Punya Hak Akses');
                             clear_f();
                         } else {
-                            if (data.msoc_kode!="" && tipe=="0") {
-                                pesan('Data sudah pernah di input dengan nomor: '+data.msoc_kode);
+                            if (getText('msoc_kode')!="" && tipe=="0") {
+                                pesan('Data sudah pernah di input dengan nomor: '+getText('msoc_kode'));
                                 clear_f();
                             } else {
                                 tanya();
@@ -1263,8 +1274,7 @@
 
                             if (tipe!='0') {
                                 setText('e_bersih','1');
-                                $('#frxx_soc').form('load',data);
-                                $('#frxx_soc').formToJson(data);
+                                jsonForm('frxx_soc', data);
                                 //coba form file
                                 // $('#ffile').form('load',data);
                                 setText('e_bersih','');
@@ -1407,7 +1417,7 @@
             bsimpan('btn_simpan', 'Simpan');
 
             setText('sjab_editsoc','1');
-            setText('msoc_endos', '0');
+            setText('endors', '0');
             setText('msoc_mfee_persen', '0');
             setText('msoc_mkom_persen', '0');
             setText('msoc_overreding', '0');
@@ -1466,7 +1476,7 @@
                 false,
                 "{{ url('api/tehnik/soc/entry-soc/lihat-tarif') }}" + "/" + kode,
                 [
-                    { data: "DT_RowIndex", className: "text-center" },
+                    // { data: "DT_RowIndex", className: "text-center" },
                     { data: "mstuj_usia", className: "text-center" },
                     { data: "mstuj_0", className: "text-center" },
                     { data: "mstuj_1", className: "text-center" },
