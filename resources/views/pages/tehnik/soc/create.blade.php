@@ -76,7 +76,8 @@
                         textField: 'text',
                         groupField:'group',
                         onSelect: function(rec){
-                          setsegmen(rec);
+                            hidePesan('msoc_mssp_nama');
+                            setsegmen(rec);
                         }" style="width: 100%; height: 38px;" />
                         <input type="text" class="form-control form-control-solid" name="msoc_mssp_kode" id="msoc_mssp_kode" placeholder="msoc_mssp_kode" />
                         <input type="text" class="form-control form-control-solid" name="mpid_mssp_kode" id="mpid_mssp_kode" placeholder="mpid_mssp_kode" />
@@ -96,7 +97,7 @@
                                     textField: 'mspaj_nomor',
                                     groupField:'group',
                                     onSelect: function(rec){
-                                       setText('msoc_mspaj_nomor', rec.mspaj_nomor);
+                                        setText('msoc_mspaj_nomor', rec.mspaj_nomor);
                                     }" style="width: 100%; height: 38px;" />
                                     <span class="text-danger error-text msoc_mspaj_nama_err"></span>
                                 </div>
@@ -116,7 +117,10 @@
                         url: '{{ url("api/tehnik/soc/entry-soc/select-meka1") }}',
                         method: 'get',
                         valueField: 'mkm_kode',
-                        textField: 'mkm_nama'," style="width: 100%; height: 38px;" />
+                        textField: 'mkm_nama',
+                        onSelect: function(rec){
+                            hidePesan('msoc_mekanisme');
+                        }" style="width: 100%; height: 38px;" />
                         <span class="text-danger error-text msoc_mekanisme_err"></span>
                     </div>
                 </div>
@@ -160,7 +164,10 @@
                         url: '{{ url("api/tehnik/soc/entry-soc/select-jnskerja") }}',
                         method: 'get',
                         valueField: 'mker_kode',
-                        textField: 'mker_nama'," style="width: 100%; height: 38px;" />
+                        textField: 'mker_nama',
+                        onSelect: function(rec){
+                            hidePesan('msoc_jns_perusahaan');
+                        }" style="width: 100%; height: 38px;" />
                         <span class="text-danger error-text msoc_jns_perusahaan_err"></span>
                     </div>
                 </div>
@@ -203,6 +210,7 @@
                         valueField: 'mslr_kode',
                         textField: 'mslr_ket',
                         onSelect: function(rec){
+                            hidePesan('msoc_mslr_kode');
                             cekmanajemenfee();
                         }" style="width: 100%; height: 38px;" />
                         <input type="text" class="form-control form-control-solid" name="msoc_endos" id="msoc_endos" placeholder="msoc_endos" />
@@ -216,7 +224,10 @@
                         url: '{{ url("api/tehnik/soc/entry-soc/select-prodojk") }}',
                         method: 'get',
                         valueField: 'mpojk_kode',
-                        textField: 'mpojk_nama'," style="width: 100%; height: 38px;" />
+                        textField: 'mpojk_nama',
+                        onSelect: function(rec){
+                            hidePesan('msoc_mpojk_kode');
+                        }" style="width: 100%; height: 38px;" />
                         <span class="text-danger error-text msoc_mpojk_kode_err"></span>
                     </div>
                 </div>
@@ -273,7 +284,10 @@
                                 url: '{{ url("api/tehnik/soc/entry-soc/select-feeppn") }}',
                                 method: 'get',
                                 valueField: 'persen',
-                                textField: 'tampil'," style="width: 100%; height: 38px;" />
+                                textField: 'tampil',
+                                onSelect: function(rec){
+                                    hidePesan('msoc_handlingfee');
+                                }" style="width: 100%; height: 38px;" />
                             </div>
                             <span class="input-group-text" style="width: auto; height: 38px;">%</span>
                         </div>
@@ -289,7 +303,10 @@
                                 url: '{{ url("api/tehnik/soc/entry-soc/select-feepph23") }}',
                                 method: 'get',
                                 valueField: 'persen',
-                                textField: 'tampil'," style="width: 100%; height: 38px;" />
+                                textField: 'tampil',
+                                onSelect: function(rec){
+                                    hidePesan('msoc_handlingfee2');
+                                }" style="width: 100%; height: 38px;" />
                             </div>
                             <span class="input-group-text" style="height: 38px;">%</span>
                         </div>
@@ -610,15 +627,12 @@
             setTextReq('msoc_jns_perusahaan', true);
             setTextReq('e_manfaat', true);
             setTextReq('e_pras', true);
-
             setTextReq('msoc_mslr_kode', true);
             setTextReq('msoc_mpojk_kode', true);
             setTextReq('e_cabalamin', true);
-
             setTextReq('msoc_pajakfee', true);
             setTextReq('msoc_handlingfee', true);
             setTextReq('msoc_handlingfee2', true);
-
             setTextReq('e_tarif', true);
             setTextReq('e_uw', true);
 
@@ -643,25 +657,9 @@
             setHide('msoc_mpuw_nomor', true);
 
             cekTombol(0);
-
-            // Form SOC
-            // hidePesan('msoc_mrkn_nama');
-            // hidePesan('e_nasabah');
-            // hidePesan('msoc_mssp_nama');
-            // hidePesan('msoc_mekanisme');
-            // hidePesan('e_manfaat_pol');
-            // hidePesan('msoc_jenis_bayar');
-            // hidePesan('msoc_jns_perusahaan');
-            // hidePesan('e_manfaat');
-            // hidePesan('e_pras');
+            // change message Form SOC
+            hidePesan('msoc_jenis_bayar');
             hidePesan('msoc_mslr_kode');
-            // hidePesan('msoc_mpojk_kode');
-            // hidePesan('e_cabalamin');
-            // hidePesan('msoc_pajakfee');
-            // hidePesan('msoc_handlingfee');
-            // hidePesan('msoc_handlingfee2');
-            // hidePesan('e_tarif');
-            // hidePesan('e_uw');
             hidePesan('msoc_dok');
 
             // Form Upload Tarif
@@ -802,8 +800,8 @@
 					{field:'mpras_mmft_kode_jiwa',title:'Tambahan Jiwa',width:50,hidden:false},
 				],
                 function(i, row) {
-                    var kode_soc = row.msoc_kode;
                     hidePesan('e_pras');
+                    var kode_soc = row.msoc_kode;
                     setText('msoc_mpras_kode', row.mpras_kode);
                     setText("mpras_ket", row.mpras_info);
                     setText("msoc_kode", row.msoc_kode);
@@ -875,7 +873,7 @@
 					{field:'nama',title:'Keterangan',align:'left',width:280},
 				],
                 function(i, row) {
-                    hidePesan('e_tarif');
+                    hidePesan('e_uw');
                     setText('msoc_mpuw_nomor', row.kode);
                 }
             );
@@ -1468,6 +1466,7 @@
                 false,
                 "{{ url('api/tehnik/soc/entry-soc/lihat-tarif') }}" + "/" + kode,
                 [
+                    { data: "DT_RowIndex", className: "text-center" },
                     { data: "mstuj_usia", className: "text-center" },
                     { data: "mstuj_0", className: "text-center" },
                     { data: "mstuj_1", className: "text-center" },

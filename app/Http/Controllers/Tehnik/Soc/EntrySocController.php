@@ -1010,7 +1010,7 @@ class EntrySocController extends Controller
                 ])
                 ->get();
 
-            return DataTables::of($data)->make(true);
+            return DataTables::of($data)->addIndexColumn()->make(true);
         }
     }
 
