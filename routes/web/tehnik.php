@@ -6,6 +6,10 @@ use App\Http\Controllers\Tehnik\PolisController;
 use App\Http\Controllers\Tehnik\EntryPolisController;
 use App\Http\Controllers\Utility\PermissionController;
 use App\Http\Controllers\Utility\WewenangJabatanController;
+use App\Http\Controllers\tehnik\polis\ApprovalMasterPolisController;
+use App\Http\Controllers\Tehnik\Soc\EntrySocController;
+use App\Http\Controllers\Tehnik\Soc\LihatSocController;
+use App\Http\Controllers\Tehnik\Soc\UploadTarifController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
@@ -23,6 +27,15 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
 //   });
 
 
+  Route::group(['prefix' => '/polis', 'as' => 'polis.'], function() {
+
+    Route::resource('/approval-master-polis', ApprovalMasterPolisController::class);
+  });
+
+  Route::group(['prefix' => '/soc', 'as' => 'soc.'], function() {
+    Route::resource('/entry-soc', EntrySocController::class);
+    Route::resource('/lihat-soc', LihatSocController::class);
+  });
 
 });
 

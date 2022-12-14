@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Auth::routes();
-
-// Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
-// Route::post('/login', [LoginController::class, 'store'])->middleware('guest');
-// Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth')->name('logout');
+// Auth::routes();
+Route::post('/signin', [LoginController::class, 'store'])->middleware('guest')->name('signin.store');
+Route::post('/signout', [LoginController::class, 'logout'])->middleware('auth')->name('signout');
+Route::get('/reload-captcha', [LoginController::class, 'reloadCaptha'])->name('reload.captcha');

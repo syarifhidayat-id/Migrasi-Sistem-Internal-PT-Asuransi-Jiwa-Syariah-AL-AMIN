@@ -27,10 +27,10 @@
     <div class="card-header border-0 pt-6">
         <div class="card-title">
             <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" data-kt-datatable-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
+                <div class="input-group input-group-solid">
+                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control" placeholder="Cari Menu" />
+                    <button type="submit" class="btn btn-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                </div>
             </div>
         </div>
 
@@ -41,35 +41,45 @@
                     <i class="fa-sharp fa-solid fa-filter"></i> Filter
                 </button>
 
-                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
+                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
                     <div class="px-7 py-5">
                         <div class="fs-5 text-dark fw-bolder">Filter Options</div>
                     </div>
                     <div class="separator border-gray-200"></div>
 
                     <div class="px-7 py-5" data-kt-datatable-table-filter="form">
-                        <div class="mb-10">
-                            <label class="form-label fs-6 fw-bold">Nama Menu:</label>
-                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false">
-                                <option></option>
-                                @foreach ($list_menu as $key=>$data)
-                                    <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-10">
-                            <label class="form-label fs-6 fw-bold">Nama Route:</label>
-                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false">
-                                <option></option>
-                                @foreach ($list_menu as $key=>$data)
-                                    <option value="{{ $data->wmn_url }}">{{ $data->wmn_url }}</option>
-                                @endforeach
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-10">
+                                    <label class="form-label fs-6 fw-bold">Tipe Menu:</label>
+                                    <div class="d-flex flex-stack">
+                                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                            <input class="form-check-input" id="check_1" name="check_1" type="checkbox" data-checkbox="check_1" />
+                                        </label>
+                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-10">
+                                    <label class="form-label fs-6 fw-bold">Nama Menu:</label>
+                                    <div class="d-flex flex-stack">
+                                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                            <input class="form-check-input" id="check_2" type="checkbox" data-checkbox="check_2" />
+                                        </label>
+                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="reset" class="btn btn-light btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset">Reset</button>
-                            <button type="submit" class="btn btn-primary fw-bold px-6" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter">Apply</button>
+                            <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                            <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
                         </div>
                     </div>
                 </div>
@@ -101,46 +111,177 @@
                 <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-sharp fa-solid fa-plus"></i> Tambah Menu</button>
             </div>
 
-            @include('pages.utility.membuat-menu.modal.create')
         </div>
     </div>
 
     <div class="card-body py-10">
         <div class="table-responsive">
-            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="kt_table_datatable">
+            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="dataMenu">
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
-                        <th>No.</th>
-                        <th>Icon</th>
-                        <th>Nama Menu</th>
-                        <th>Tipe</th>
-                        <th>Route</th>
-                        <th>Url</th>
+                        <th class="min-w-50px">No.</th>
+                        <th class="min-w-50px">Icon</th>
+                        <th class="min-w-125px">Nama Menu</th>
+                        <th class="min-w-125px">Tipe</th>
+                        <th class="min-w-125px">Route</th>
+                        <th class="min-w-250px">Url</th>
                         <th class="min-w-125px">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($list_menu as $key=>$data)
-                        <tr>
-                            <td class="text-center">{{ ++$key }}.</td>
-                            <td class="text-center">
-                                @if ($data->wmn_icon !== "" && $data->wmn_icon !== null)
-                                <i class="{{ $data->wmn_icon }}"></i>
-                                @else
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                @endif
-                            </td>
-                            <td>{{ $data->wmn_descp }}</td>
-                            <td>{{ $data->wmn_tipe }}</td>
-                            <td>
-                                <div class="badge badge-light-success fw-bolder">@if ($data->wmn_url !== "") {{ $data->wmn_url }} @else - @endif</div>
-                            </td>
-                            <td>
-                                <div class="badge badge-light fw-bolder">@if ($data->wmn_url_o !== "" && $data->wmn_url_o !== null) {{ $data->wmn_url_o }} @else - @endif</div>
-                            </td>
-                            <td class="text-end">
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    @include('pages.utility.membuat-menu.modal.create')
+</div>
+@endsection
+
+@section('script')
+    <script>
+        // $('#tipe_menu').select2();
+        $('#key').select2();
+        // $('#wmn_tipe').select2();
+        $('#wmn_key').select2({
+            tags: true,
+        });
+        $('#wmn_mrkn_kode').select2();
+        $('#wmn_mpol_kode').select2();
+
+        $(function () {
+            $.ajaxSetup({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            });
+
+            selectSide(
+                'tipe_menu',
+                '{{ url("api/utility/menu/select-tipemenu") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmt_kode,
+                                text: d.wmt_nama
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+            )
+
+            selectSide(
+                'wmn_tipe',
+                '{{ url("api/utility/menu/select-tipemenu") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmt_kode,
+                                text: d.wmt_nama
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+            )
+
+            changeSelect(
+                'tipe_menu',
+                'key',
+                '{{ url("api/utility/menu/getTipe") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmn_descp,
+                                text: d.wmn_descp
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+            );
+
+            changeSelect(
+                'wmn_tipe',
+                'wmn_key',
+                '{{ url("api/utility/menu/getTipe") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmn_kode,
+                                text: d.wmn_descp
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+            );
+
+            filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
+
+            serverSide( //datatable serverside
+                "dataMenu",
+                "{{ url('api/utility/menu/lihat-menu') }}", //url api/route
+                function(d) {    // di isi sesuai dengan data yang akan di filter ->
+                    d.check_1 = getText('check_1');
+                    d.check_2 = getText('check_2');
+                    d.wmn_tipe = getText('tipe_menu');
+                    d.wmn_descp = getText('key');
+                    d.search = $('input[type="search"]').val();
+                },
+                [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
+                    { data: "DT_RowIndex", className: "text-center" },
+                    {
+                        data: "wmn_icon",
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<i class="`+row.wmn_icon+`"></i>`;
+                        }
+                    },
+                    { data: "wmn_descp" },
+                    { data: "wmn_tipe" },
+                    {
+                        data: "wmn_url_n",
+                        render: function(data, type, row, meta) {
+                            var route = row.wmn_url_n;
+                            if (route !== "" && route !== null) {
+                                return `<div class="badge badge-light-success fw-bolder">`+row.wmn_url_n+`</div>`;
+                            } else {
+                                return `<div class="badge badge-light-success fw-bolder">-</div>`;
+                            }
+                        }
+                    },
+                    {
+                        data: "wmn_url_o_n",
+                        render: function(data, type, row, meta) {
+                            var url = row.wmn_url_o_n;
+                            if (url !== "" && url !== null) {
+                                return `<div class="badge badge-light fw-bolder">`+row.wmn_url_o_n+`</div>`;
+                            } else {
+                                return `<div class="badge badge-light fw-bolder">-</div>`;
+                            }
+                        }
+                    },
+                    {
+                        data: "wmn_kode",
+                        orderable: false,
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return `
                                 <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
                                     <span class="svg-icon svg-icon-5 m-0">
                                         <i class="fa-sharp fa-solid fa-chevron-down"></i>
@@ -148,160 +289,74 @@
                                 </a>
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
                                     <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="{{ $data->wmn_kode }}">Edit</a>
+                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Edit</a>
                                     </div>
                                     <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="{{ $data->wmn_kode }}">Delete</a>
+                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Delete</a>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    {{-- <div class="card-footer">
-        <div align="center">
-            <button type="button" class="btn btn-primary btn-sm"><i class="fa-sharp fa-solid fa-floppy-disk"></i> Simpan</button>&nbsp;
-            <button type="button" class="btn btn-danger btn-sm"><i class="fa-sharp fa-solid fa-trash"></i> Hapus</button>
-        </div>
-    </div> --}}
-</div>
-@endsection
-
-@section('script')
-    <script>
-        $('#wmn_tipe').select2();
-        $('#wmn_key').select2({
-            tags: true,
-        });
-        $('#wmn_mrkn_kode').select2();
-        $('#wmn_mpol_kode').select2();
-
-        function menuMain() {
-            $('#wmn_tipe').change(function() {
-                // e.preventDefault();
-                var tipe = $(this).val(),
-                    url = "{{ url('api/utility/menu/getTipe') }}" + "/" + tipe;
-                if (tipe !== "") {
-                    $.get(url, function(res) {
-                        $('#wmn_key').empty();
-                        // $('#wmn_key').val(null).trigger('change');
-                        $('#wmn_key').append('<option></option>');
-                        $.each(res, function(key, val) {
-                            $('#wmn_key').append('<option value="'+ val.wmn_kode +'">'+ val.wmn_descp +'</option>');
-                        });
-                    });
-                } else {
-                    $('#wmn_key').empty();
-                    // $('#wmn_key').val(null).trigger('change');
-                    $('#wmn_key').append('<option></option>');
-                }
-            });
-        }
-
-        $(function () {
-            $.ajaxSetup({
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-            });
+                            `;
+                        },
+                    },
+                ],
+            );
 
             $('body').on('click', '#omodTam', function() {
-                $('#modalMenu').modal('show');
-                $('#tModMenu').text('Tambah Menu');
-                resetMod();
+                openModal('modalMenu');
+                titleAction('tModMenu', 'Tambah Menu');
+                clearForm("frxx");
+                clearSelect();
                 bsimpan('btn_simpan', 'Simpan');
                 $('#btn_reset').show();
-                menuMain();
+                // tipeMenus();
             });
 
             $('body').on('click', '#omodEdit', function() {
-                $('#tModMenu').text('Edit Menu');
+                titleAction('tModMenu', 'Edit Menu');
                 bsimpan('btn_simpan', 'Update');
-                // resetMod();
-                // $('#wmn_key').empty();
-                $('#wmn_key').val(null).trigger('change');
+                // $('#wmn_key').val(null).trigger('change');
                 $('#btn_reset').hide();
 
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
-                    // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
-
-                $.get(url, function(res) {
-                    menuMain();
-                    var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
-                    // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
-                    $('#modalMenu').modal('show');
-                    $('#wmn_kode').val(res.wmn_kode);
-                    $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
-                    $.get(key, function(data) {
-                        $('#wmn_key').val(data.wmn_kode).trigger('change');
-                    });
-                    $('#wmn_descp').val(res.wmn_descp);
-                    $('#wmn_icon').val(res.wmn_icon);
-                    $('#wmn_url').val(res.wmn_url);
-                    $('#wmn_urlkode').val(res.wmn_urlkode);
-                    $('#wmn_info').val(res.wmn_info);
-                    $('#wmn_url_o').val(res.wmn_url_o);
-                    $('#wmn_urut').val(res.wmn_urut);
-                    $('#wmn_mrkn_kode').val(res.wmn_mrkn_kode);
-                    $('#wmn_mpol_kode').val(res.wmn_mpol_kode);
-                });
-            });
-
-            // $('#frxx').submit(function(e) {
-            $('#btn_simpan').click(function(e) {
-                e.preventDefault();
-                var dataFrx = $('#frxx').serialize();
-                // var formData = new FormData(this);
-                bsimpan('btn_simpan', 'Please wait..');
-
-                $.ajax({
-                    url: "{{ route('utility.menu.store') }}",
-                    type: "POST",
-                    data: dataFrx,
-                    // cache: false,
-                    // contentType: false,
-                    // processData: false,
-                    dataType: 'json',
-                    success: function (res) {
-                        // window.location.reload();
-                        if ($.isEmptyObject(res.error)){
-                            console.log(res);
-                            Swal.fire(
-                                'Berhasil!',
-                                res.success,
-                                'success'
-                            ).then((res) => {
-                                reset();
-                                $('#frxx').trigger("reset");
-                                $('#modalMenu').modal('hide');
-                                bsimpan('btn_simpan', 'Simpan');
-                            });
-                        } else {
-                            bsimpan('btn_simpan', 'Simpan');
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Field harus ter isi!',
-                            });
-                            messages(res.error);
-                        }
-
-                    },
-                    error: function (err) {
-                        console.log('Error:', err);
-                        bsimpan('btn_simpan', 'Simpan');
+                $.get(url, function(data) {
+                    var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + data.wmn_key;
+                    openModal('modalMenu');
+                    $("#frxx").formToJson(data);
+                    if (data.wmn_key == "MAIN") {
+                        selectEdit('wmn_key', 'MAIN', 'MAIN');
+                    } else {
+                        $.getJSON(key, function(res) {
+                            if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']").length) {
+                                $('#wmn_key').val(res.wmn_kode).trigger('change');
+                            } else {
+                                selectEdit('wmn_key', res.wmn_kode, res.wmn_descp);
+                            }
+                            // $('#wmn_key').append('<option value="'+ res.wmn_kode +'">'+ res.wmn_descp +'</option>');
+                        });
                     }
                 });
             });
+
+            submitForm2(
+                "frxx",
+                "btn_simpan",
+                "POST",
+                "{{ route('utility.menu.store') }}",
+                (res) => {
+                    clearForm("frxx");
+                    clearSelect();
+                    bsimpan('btn_simpan', 'Simpan');
+                    lodTable("dataMenu");
+                    closeModal('modalMenu');
+                }
+            );
 
             $('body').on('click', '#omodDelete', function() {
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.store') }}" + "/" + kode;
 
-                console.log(kode);
+                // console.log(kode);
                 Swal.fire({
                     title: 'Apakah anda yakin?',
                     text: "Akan menghapus data menu dengan kode " + kode + " !",
@@ -322,12 +377,10 @@
                                 url: url,
                                 type: "DELETE",
                                 success: function(res) {
-                                    reset();
-                                    console.log('Success', res);
+                                    lodTable("dataMenu");
                                 },
                                 error: function(err) {
-                                    reset();
-                                    console.log('Error', err);
+                                    // console.log('Error', err);
                                 }
                             });
                         })
@@ -336,26 +389,22 @@
             });
 
             $('#btn_reset').click(function() {
-                resetMod();
-            });
-
-            $('#btn_close').click(function() {
-                reset();
-            });
-
-            $('#btn_close2').click(function() {
-                reset();
+                clearForm("frxx");
+                clearSelect();
             });
         });
 
-        function resetMod() {
-            $('#frxx').trigger('reset');
-            $('#wmn_tipe').val(null).trigger('change');
-            $('#wmn_key').val(null).trigger('change');
-            // $('#wmn_key').empty();
-            // $('#wmn_key').append('<option></option>');
-            $('#wmn_mrkn_kode').val(null).trigger('change');
-            $('#wmn_mpol_kode').val(null).trigger('change');
-        }
+
+        function closeBtnModal () {
+            closeModal('modalMenu');
+            clearForm("frxx");
+            clearSelect();
+        };
+
+        hidePesan('wmn_tipe');
+        hidePesan('wmn_key');
+        hidePesan('wmn_descp');
+        hidePesan('wmn_url_o_n');
+        hidePesan('wmn_urut');
     </script>
 @endsection

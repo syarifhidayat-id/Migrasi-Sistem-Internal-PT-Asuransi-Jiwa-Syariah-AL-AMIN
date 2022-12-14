@@ -25,66 +25,14 @@
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dist/css/preload.min.css') }}" rel="stylesheet" type="text/css" />
+
+    @yield('style')
+    @livewireStyles
 </head>
 
 <body class="bg-body">
 
     @include('layouts.preload')
-
-    {{-- <div id="app"> --}}
-        {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarScroll">
-                    <ul class="navbar-nav mr-auto my-2 my-lg-0 navbar-nav-scroll" style="max-height: 100px;">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        @guest
-                            @if (Route::has('login'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">{{ __('Login') }}</a>
-                            </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                                {{ Auth::user()->name }}
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                        @endguest
-                    </ul>
-                    <form class="d-flex">
-                        <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
-        </nav> --}}
 
         <div class="d-flex flex-column flex-root">
 
@@ -102,14 +50,9 @@
 
                             <h1 class="fw-bolder fs-2qx pb-5 pb-md-10" style="color: #fff;">Welcome to Al-Amin</h1>
 
-                            {{-- <p class="fw-bold fs-2" style="color: #986923;">Discover Amazing Metronic
-                            <br />with great build tools</p> --}}
-
                             <p style="color: #fff;">Selamat datang di Official Website Online kami. Website ini berfungsi untuk melayani Semua Rekanan, Pemegang polis dan Kantor Cabang Pemasaran <br>PT. Asuransi Jiwa Syariah AL AMIN, adapun kemudahan yang di berikan dengan Website ini antara lain :  Kemudahan Pengajuan Peserta Asuransi, Pendaftaran Agen Asuransi, Pengajuan Klaim, Download Polis Asuransi,Tanya/Jawab tentang Produk Asuransi, Laporan Kepesertaan Asuransi dan Lain-lain. Jika ingin mendapatkan informasi lebih tentang kami, silahkan Email kami ke  alamat tanya@alamin.co.id atau Whatsapp di nomor 081-222-999-109.</p>
 
                         </div>
-
-                        {{-- <div class="d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url({{ asset('assets/media/illustrations/sketchy-1/13.png') }})"></div> --}}
 
                     </div>
 
@@ -134,14 +77,12 @@
         </div>
 
     {{-- </div> --}}
-
-    {{-- <script src="{{ asset('dist/js/jquery-3.6.1.min.js') }}"></script> --}}
-    {{-- <script src="{{ asset('vendor/bootstrap-4.6.2/js/bootstrap.bundle.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/custom/authentication/sign-in/general.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/authentication/password-reset/password-reset.js') }}"></script> --}}
+
+    @yield('script')
+    @livewireScripts
 </body>
 
 </html>

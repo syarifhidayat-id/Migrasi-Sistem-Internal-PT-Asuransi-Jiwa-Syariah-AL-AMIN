@@ -3,12 +3,12 @@
         <div class="modal-content">
             <div class="modal-header" id="modalMenu_header">
                 <h2 class="fw-bolder" id="tModMenu"></h2>
-
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close">
-                    <span class="svg-icon svg-icon-1">
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeBtnModal()"><i class="fa-sharp fa-solid fa-xmark"></i></button>
+                {{-- <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-2x">
                         <i class="fa-sharp fa-solid fa-xmark"></i>
                     </span>
-                </div>
+                </div> --}}
             </div>
 
             <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
@@ -19,11 +19,8 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Menu Tipe</label>
-                                    <select class="form-select form-select-solid readonly" name="wmn_tipe" id="wmn_tipe" data-dropdown-parent="#modalMenu" data-placeholder="Pilih tipe menu" data-allow-clear="true">
+                                    <select class="form-select form-select-solid required_sel" name="wmn_tipe" id="wmn_tipe" data-dropdown-parent="#modalMenu" data-placeholder="Pilih tipe menu" data-allow-clear="true">
                                         <option></option>
-                                        @foreach ($type_menu as $type)
-                                            <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
-                                        @endforeach
                                     </select>
                                     <span class="text-danger error-text wmn_tipe_err"></span>
                                 </div>
@@ -45,10 +42,9 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Menu Main</label>
-                                    <select class="form-select form-select-solid readonly" name="wmn_key" id="wmn_key" data-dropdown-parent="#modalMenu" data-placeholder="ex. MAIN" data-allow-clear="true">
+                                    <select class="form-select form-select-solid required_sel" name="wmn_key" id="wmn_key" data-dropdown-parent="#modalMenu" data-placeholder="ex. MAIN" data-allow-clear="true">
                                         {{-- <option></option> --}}
                                     </select>
-                                    {{-- <input type="text" class="form-control form-control-solid" name="wmn_key" id="wmn_key" placeholder="ex. MAIN" /> --}}
                                     <span class="text-danger error-text wmn_key_err"></span><br>
                                     <label class="required form-label">Isi MAIN jika menu utama</label>
                                 </div>
@@ -68,15 +64,15 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Nama Menu</label>
-                                    <input type="text" class="form-control form-control-solid readonly" name="wmn_descp" id="wmn_descp" placeholder="ex. Sekper"/>
+                                    <input type="text" class="form-control form-control-solid required_sel" name="wmn_descp" id="wmn_descp" placeholder="ex. Sekper"/>
                                     <span class="text-danger error-text wmn_descp_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Route Menu</label>
-                                    <input type="text" class="form-control form-control-solid" name="wmn_url" id="wmn_url" placeholder="ex. utility.menu.create"/>
-                                    <span class="text-danger error-text wmn_url_err"></span>
+                                    <input type="text" class="form-control form-control-solid" name="wmn_url_n" id="wmn_url_n" placeholder="ex. utility.menu.create"/>
+                                    <span class="text-danger error-text wmn_url_n_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -94,15 +90,15 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">URL Menu</label>
-                                    <input type="text" class="form-control form-control-solid readonly" name="wmn_url_o" id="wmn_url_o" placeholder="ex. utility/menu"/>
-                                    <span class="text-danger error-text wmn_url_o_err"></span><br>
+                                    <input type="text" class="form-control form-control-solid required_sel" name="wmn_url_o_n" id="wmn_url_o_n" placeholder="ex. utility/menu"/>
+                                    <span class="text-danger error-text wmn_url_o_n_err"></span><br>
                                     <label class="required form-label">jika main, ex. utility/*</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Menu Urut</label>
-                                    <input type="number" class="form-control form-control-solid readonly" name="wmn_urut" id="wmn_urut" placeholder="Urutan Menu"/>
+                                    <input type="number" class="form-control form-control-solid required_sel" name="wmn_urut" id="wmn_urut" placeholder="Urutan Menu"/>
                                     <span class="text-danger error-text wmn_urut_err"></span>
                                 </div>
                             </div>
@@ -132,7 +128,7 @@
                     {{-- <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button> --}}
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="btn_close2"><i class="fa-solid fa-xmark"></i> Tutup</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="closeBtnModal()"><i class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>
         </div>

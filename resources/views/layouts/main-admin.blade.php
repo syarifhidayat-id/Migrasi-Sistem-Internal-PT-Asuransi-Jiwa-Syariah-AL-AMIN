@@ -13,18 +13,45 @@
     <meta property="og:type" content="article" />
     <meta property="og:title" content="PT. Asuransi Jiwa Syariah AL AMIN" />
     <meta property="og:url" content="https://keenthemes.com/metronic" />
-    <meta property="og:site_name" content="Keenthemes | Metronic" />
+    <meta property="og:site_name" content="Asuransi Syariah" />
     <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/logo-new.png') }}" />
     <link rel="icon" type="image/png" href="{{ asset('assets/media/logos/logo-new.png') }}"/>
 
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/accordion.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/combobox.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/combo.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/datagrid.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/datalist.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/dialog.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/drawer.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/pagination.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/panel.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/progressbar.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/propertygrid.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/searchbox.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/spinner.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/textbox.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/timepicker.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/tooltip.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/tree.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/validatebox.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/window.css') }}">
+
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/default/easyui.css') }}"> --}}
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/easyui.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/icon.css') }}"> --}}
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <link href="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('vendor/fontawesome-6.2.0/css/all.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dist/css/custom.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/plugins/global/sweetalert/sweetalert2-custom.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dist/css/preload.min.css') }}" rel="stylesheet" type="text/css" />
 
     @yield('style')
@@ -58,7 +85,7 @@
 
                         <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500 main_menu" id="#kt_aside_menu" data-kt-menu="true" data-kt-menu-expand="false">
 
-                        @if (Route::has('login'))
+                        @if (Route::has('signin.store'))
 
                             <div class="menu-item">
                                 <a class="menu-link {{ (Request::is('dashboard') or Request::is('dashboard')) ? 'active' : '' }}" href="{{ route('dashboard') }}">
@@ -135,7 +162,11 @@
                                 <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
 
                                     <div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                                        <img src="{{ asset('storage/utility/daftar-user/'.Auth::user()->img_foto) }}" alt="user" />
+                                        @if(file_exists( public_path().'/storage/utility/daftar-user/foto/'.Auth::user()->img_foto ))
+                                            <img src="{{ asset('storage/utility/daftar-user/foto/'.Auth::user()->img_foto) }}" alt="user" />
+                                        @else
+                                            <img src="{{ asset('assets/media/avatars/blank.png') }}" alt="user" />
+                                        @endif
                                     </div>
 
                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-350px" data-kt-menu="true">
@@ -143,12 +174,18 @@
                                         <div class="menu-item px-3">
                                             <div class="menu-content d-flex align-items-center px-3">
                                                 <div class="symbol symbol-50px me-5">
-                                                    <img alt="Logo" src="{{ asset('storage/utility/daftar-user/'.Auth::user()->img_foto) }}" />
+                                                    @if(file_exists( public_path().'/storage/utility/daftar-user/foto/'.Auth::user()->img_foto ))
+                                                        <img src="{{ asset('storage/utility/daftar-user/foto/'.Auth::user()->img_foto) }}" alt="user" />
+                                                    @else
+                                                        <img src="{{ asset('assets/media/avatars/blank.png') }}" alt="user" />
+                                                    @endif
                                                 </div>
 
                                                 <div class="d-flex flex-column">
-                                                    <div class="fw-bolder d-flex align-items-center fs-5">{{ Auth::user()->name }}
-                                                    <span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2"></span></div>
+                                                    <div class="fw-bolder d-flex align-items-center fs-5">
+                                                        {{ Auth::user()->name }}
+                                                        <span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2"></span>
+                                                    </div>
                                                     <a href="#" class="fw-bold text-muted text-hover-primary fs-7">{{ Auth::user()->email_user }}</a>
                                                 </div>
 
@@ -169,8 +206,8 @@
 
                                         <div class="menu-item px-5">
                                             <div class="menu-content px-5">
-                                                <a href="{{ route('logout') }}" class="btn btn-danger d-block" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Sign Out') }}</a>
-                                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                <a href="{{ route('signout') }}" class="btn btn-danger d-block" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Sign Out') }}</a>
+                                                <form id="logout-form" action="{{ route('signout') }}" method="POST" class="d-none">
                                                     @csrf
                                                 </form>
                                             </div>
@@ -330,15 +367,22 @@
 
 
     <script>var hostUrl = "assets/";</script>
-    <script src="{{ asset('dist/js/jquery-3.6.1.min.js') }}"></script>
+    {{-- <script src="{{ asset('dist/js/jquery-3.6.1.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/custom/jquery/jquery.min.js') }}"></script> --}}
+    <script src="{{ asset('assets/plugins/custom/jquery/jquery.easyui.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/datatables-serverside.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/global/formjs/formToJson.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/pdf-view/pdf.min.js') }}"></script>
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
     <script src="{{ asset('dist/js/jquery-plugin.min.js') }}"></script>
     <script src="{{ asset('dist/js/jquery.capitalize.js') }}"></script>
+
     <script>
         $('.menu-title').capitalize();
     </script>

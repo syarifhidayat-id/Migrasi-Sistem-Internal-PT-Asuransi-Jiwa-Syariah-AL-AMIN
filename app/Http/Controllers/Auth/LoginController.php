@@ -4,10 +4,17 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -22,60 +29,144 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    // use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    // public function __construct()
+    // {
+    //     $this->redirectTo = route('login');
+    //     $this->middleware('guest')->except('logout');
+    // }
+
+    public function index()
     {
-        $this->redirectTo = route('login');
-        $this->middleware('guest')->except('logout');
+        return view('pages.auth.login');
     }
 
-    // public function index()
-    // {
-    //     return view('pages.auth.login');
-    // }
+    /**
+     * Handle an incoming authentication request.
+     *
+     * @param  \App\Http\Requests\Auth\LoginRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
-    // /**
-    //  * Handle an incoming authentication request.
-    //  *
-    //  * @param  \App\Http\Requests\Auth\LoginRequest  $request
-    //  * @return \Illuminate\Http\RedirectResponse
-    //  */
-    // public function store(LoginRequest $request)
-    // {
-    //     $request->authenticate();
+    public function store(Request $request)
+    {
+        $validasi = Validator::make($request->all(), [
+            'email' => 'required',
+            'password_n' => 'required',
+            // 'captcha_login' => 'required|captcha',
+        ],
+        [
+            'email.required'=>'Username harus terisi!',
+            'password_n.required'=>'Password harus terisi!',
+            // 'captcha_login.required'=>'Captcha harus terisi!',
+            // 'captcha_login.captcha'=>'Jawaban kamu salah!',
+        ]);
 
-    //     $request->session()->regenerate();
+        if ($validasi->fails()) {
+            return redirect()->back()->withErrors($validasi)->withInput($request->all());
+        } else {
+            $validasi = $request->except(
+                '_token',
+                // 'captcha_login'
+            );
+            if (Auth::attempt($validasi)) {
+                // return redirect()->intended(RouteServiceProvider::HOME);
+                return redirect()->intended('dashboard');
+            } else {
+                return back()->withErrors([
+                    'email' => 'Username anda salah, silahkan cek kembali!',
+                    'password_n' => 'Password anda salah, silahkan cek kembali!',
+                    // 'captcha_login' => 'Jawaban kamu salah!',
+                ])->onlyInput(
+                    'email',
+                    'password_n',
+                    // 'captcha_login',
+                );
+            }
+        }
 
-    //     return redirect()->intended(RouteServiceProvider::HOME);
-    // }
+        // if (Auth::attempt($validasi)) {
+        //     $request->session()->regenerate();
+        //     // $data = $request->all();
+        //     // $data = $request->except('_token', 'password_n', 'captcha_login');
+        //     // $data['token'] = $request->_token;
+        //     // $data['email'] = $request->email;
+        //     // $data['name'] = Auth::user()->name;
+        //     // $data['groups'] = Auth::user()->groupuser;
+        //     // $data['password'] = Hash::make($request->password_n);
+        //     // $data['log_start'] = date('Y-m-d H:i:s');
+        //     // $data['log_end'] = '0000-00-00 00:00:00';
+        //     // $data['active'] = 1;
+        //     // $data['max_trxday'] = '1000';
+        //     // $data['isaprovrkn'] = '0';
 
-    // /**
-    //  * Destroy an authenticated session.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @return \Illuminate\Http\RedirectResponse
-    //  */
-    // public function destroy(Request $request)
-    // {
-    //     Auth::guard('web')->logout();
+        //     // DB::table('web_conf.user_token')->insert($data);
 
-    //     $request->session()->invalidate();
+        //     return redirect()->intended('dashboard');
+        // } else {
+        //     return back()->withErrors([
+        //         'email' => 'Username anda salah, silahkan cek kembali!',
+        //         'password_n' => 'Password anda salah, silahkan cek kembali!',
+        //         // 'captcha_login' => 'Jawaban kamu salah!',
+        //     ])->onlyInput(
+        //         'email',
+        //         'password_n',
+        //         // 'captcha_login',
+        //     );
+        // }
+    }
 
-    //     $request->session()->regenerateToken();
+    public function reloadCaptha()
+    {
+        return response()->json([
+            'captcha' => captcha_img()
+        ]);
+    }
 
-    //     return redirect()->route('login');
-    // }
+    public function dashboard()
+    {
+        if (Auth::check())
+        {
+            return view('pages.dashboard');
+        }
+
+        return redirect()->route('signin');
+    }
+
+    /**
+     * Destroy an authenticated session.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        // $data = $request->all();
+        // $data = $request->except('_token',);
+        // $data['log_end'] = date('Y-m-d H:i:s');
+        // $data['active'] = 0;
+
+        // DB::table('web_conf.user_token')->update($data);
+
+        return redirect('/');
+    }
 }

@@ -3,12 +3,7 @@
         <div class="modal-content">
             <div class="modal-header" id="modalUser_header">
                 <h2 class="fw-bolder" id="tModUser"></h2>
-
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close">
-                    <span class="svg-icon svg-icon-1">
-                        <i class="fa-sharp fa-solid fa-xmark"></i>
-                    </span>
-                </div>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeBtnModal()"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
             <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
@@ -17,23 +12,16 @@
                     <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalUser_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modalUser_header" data-kt-scroll-wrappers="#modalUser_scroll" data-kt-scroll-offset="300px">
                         <div class="row mb-5">
                             <div class="col-md-6">
-                                <label class="form-label">User Login</label>
-                                <div class="input-group input-group-solid">
-                                    <input type="text" class="form-control form-control-solid" name="email" id="email" placeholder="User Login" />
-                                    <div class="input-group-append">
-                                        {{-- <button class="btn btn-primary" type="button"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></button> --}}
-                                        {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
-                                            <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
-                                        </button> --}}
-                                    </div>
-                                </div>
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control form-control-solid" name="email" id="email" placeholder="Username" />
+                                <span class="text-danger error-text email_err"></span>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Password</label>
-                                    <input type="text" class="form-control form-control-solid" name="password" id="password" placeholder="Password" value="221001" />
-                                    {{-- <span class="text-danger error-text password_err"></span><br> --}}
+                                    <input type="text" class="form-control form-control-solid" name="password_n" id="password_n" placeholder="Password" value="221001" />
                                     <label class="required form-label">Standar Password 9</label>
+                                    <span class="text-danger error-text password_n_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -46,8 +34,11 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Email User</label>
-                                    <input type="text" class="form-control form-control-solid" name="email" id="email" placeholder="Email User" />
-                                    <span class="text-danger error-text email_err"></span>
+                                    <div class="input-group input-group-solid">
+                                        <input type="text" class="form-control" name="email_user" id="email_user" placeholder="Email User" />
+                                        <span class="input-group-text">@alamin.co.id</span>
+                                    </div>
+                                    <span class="text-danger error-text email_user_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -60,7 +51,11 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Nomor HP</label>
-                                    <input type="text" class="form-control form-control-solid" name="no_hp" id="no_hp" placeholder="Nomor HP" />
+                                    <div class="input-group input-group-solid">
+                                        <span class="input-group-text">+62</span>
+                                        {{-- <input type="text" class="form-control" name="phone" id="phone" placeholder="Nomor HP" /> --}}
+                                        <input type="text" class="form-control" name="no_hp" id="no_hp" placeholder="Nomor HP" />
+                                    </div>
                                     <span class="text-danger error-text no_hp_err"></span>
                                 </div>
                             </div>
@@ -136,9 +131,9 @@
                                     <label class="form-label">Menu Tipe</label>
                                     <select class="form-select form-select-solid" name="menu_tipe" id="menu_tipe" data-dropdown-parent="#modalUser" data-placeholder="Pilih Menu Tipe" data-allow-clear="true">
                                         <option></option>
-                                        {{-- @foreach ($type_menu as $type)
-                                            <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
-                                        @endforeach --}}
+                                        @foreach ($tipe_menu as $key=>$data)
+                                            <option value="{{ $data->wmt_kode }}">{{ $data->wmt_nama }}</option>
+                                        @endforeach
                                     </select>
                                     <span class="text-danger error-text menu_tipe_err"></span>
                                 </div>
@@ -247,7 +242,7 @@
                                         <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Ganti Foto">
                                             <i class="bi bi-pencil-fill fs-7"></i>
                                             <input type="file" name="img_foto" id="img_foto" accept=".png, .jpg, .jpeg" />
-                                            <input type="hidden" name="avatar_remove" />
+                                            {{-- <input type="hidden" name="avatar_remove" /> --}}
                                         </label>
                                         <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Batal">
                                             <i class="bi bi-x fs-2"></i>
@@ -264,10 +259,9 @@
 
                 </div>
                 <div class="modal-footer justify-content-center">
-                    {{-- <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button> --}}
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="btn_close2"><i class="fa-solid fa-xmark"></i> Tutup</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="closeBtnModal()"><i class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>
         </div>

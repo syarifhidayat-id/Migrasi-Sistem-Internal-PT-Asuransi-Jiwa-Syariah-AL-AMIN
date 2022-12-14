@@ -17,7 +17,7 @@ class WewenangJabatanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $jns_menu = DB::table('web_menu_tipe')
         ->select('wmt_kode','wmt_nama')
@@ -25,7 +25,7 @@ class WewenangJabatanController extends Controller
 
         $form_menu = DB::table('web_menu')
         ->select('wmn_kode', 'wmn_descp')
-        ->where('wmn_url_o_aktif', 0)
+        ->where('wmn_url_o_aktif_n', 0)
         ->orderBy('wmn_urut', 'ASC')
         ->get();
 
@@ -100,7 +100,7 @@ class WewenangJabatanController extends Controller
             if ($request->wmj_wmn_kode) {
                 Menu::findOrFail($request->wmj_wmn_kode)
                 ->update([
-                    'wmn_url_o_aktif' => $request->wmj_aktif
+                    'wmn_url_o_aktif_n' => $request->wmj_aktif
                 ]);
             }
 
