@@ -65,7 +65,7 @@ class OjkController extends Controller
                 $kode = KodeController::__getKey(14);
                 $data = $request->all();
                 $data = request()->except(['_token']);
-    
+
                 if ($request->hasFile('mojk_file1')) {
                     $dokumen = $request->file('mojk_file1');
                     $dir = 'public/legal/ojk/file1';
@@ -82,11 +82,11 @@ class OjkController extends Controller
                     $path = Storage::putFileAs($dir, $dokumen, $nameBukti);
                     $data['mojk_file2'] = $nameBukti;
                 }
-    
+
                 $data['mojk_pk'] = $kode;
                 $data['mojk_ins_date'] = date('Y-m-d H:i:s');
                 $data['mojk_ins_user'] = $request->user()->email;
-    
+
                 $insert = DB::table('emst.mst_ojk')->insert($data);
                 return response()->json([
                     'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
@@ -99,12 +99,12 @@ class OjkController extends Controller
                 $data = request()->except(['_token']);
                 $oldFile1 = 'public/legal/ojk/file1/' . $pk->mojk_file1;
                 $oldFile2 = 'public/legal/ojk/file2/' . $pk->mojk_file2;
-    
+
                 if ($request->hasFile('mojk_file1')) {
                     $dokumen = $request->file('mojk_file1');
                     $dir = 'public/legal/ojk/file1';
                     $fileOri = $dokumen->getClientOriginalName();
-                    $nameBukti = $request->mojk_pk . '_dok_' . $fileOri;
+                    $nameBukti = $request->mojk_pk . '_tanda-terima_' . $fileOri;
                     Storage::delete($oldFile1);
                     $path = Storage::putFileAs($dir, $dokumen, $nameBukti);
                     $data['mojk_file1'] = $nameBukti;
@@ -113,15 +113,15 @@ class OjkController extends Controller
                     $dokumen = $request->file('mojk_file2');
                     $dir = 'public/legal/ojk/file2';
                     $fileOri = $dokumen->getClientOriginalName();
-                    $nameBukti = $request->mojk_pk . '_dok_' . $fileOri;
+                    $nameBukti = $request->mojk_pk . '_dokumen_' . $fileOri;
                     Storage::delete($oldFile2);
                     $path = Storage::putFileAs($dir, $dokumen, $nameBukti);
                     $data['mojk_file2'] = $nameBukti;
                 }
-    
+
                 $data['mojk_upd_user'] = $request->user()->email;
                 $data['mojk_upd_date'] = date('Y-m-d H:i:s');
-    
+
                 DB::table('emst.mst_ojk')
                     ->where('mojk_pk', '=', $request->mojk_pk)
                     ->update($data);
@@ -196,5 +196,18 @@ class OjkController extends Controller
     return response()->json([
         'success' => 'Data berhasil dihapus dengan Kode ' . $id . '!'
     ]);
+    }
+
+    public function showDoc(Request $request)
+    {
+        $vtable = DB::table('emst.mst_ojk')
+        ->select(DB::raw("mojk_pk, mojk_jenis, mojk_file1, mojk_file2"));
+
+        if (!empty($request->kode)) {
+            $vtable->where('mojk_pk', $request->kode);
+        }
+         $data = $vtable->first();
+
+        return response()->json($data);
     }
 }

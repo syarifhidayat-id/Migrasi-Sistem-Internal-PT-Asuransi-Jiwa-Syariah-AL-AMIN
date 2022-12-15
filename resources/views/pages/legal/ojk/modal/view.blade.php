@@ -4,18 +4,18 @@
             <div class="modal-header" id="modalView_header">
                 <h4 class="fw-bolder" id="tModView"></h4>
 
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close3">
+                {{-- <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close3">
                     <span class="svg-icon svg-icon-1">
                         <i class="fa-sharp fa-solid fa-xmark"></i>
                     </span>
-                </div>
+                </div> --}}
             </div>
             <div class="modal-body" id="modal-body">
-                <Object id="pdf" type="application/pdf" width="100%" height="500"></Object>
+                <Object id="view_pdf" data="" type="application/pdf" width="100%" height="500"></Object>
             </div>
-           
+
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-light btn-sm" id="btn_close4">Close</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="closePdf()">Close</button>
                     {{-- <button type="button" class="btn btn-danger btn-sm" onclick="close_pojk()"><i
                             class="fa-solid fa-xmark" ></i> Tutup</button> --}}
                 </div>

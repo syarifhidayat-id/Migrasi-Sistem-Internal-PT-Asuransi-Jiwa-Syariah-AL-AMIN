@@ -99,8 +99,8 @@
                         </div>
                     </div>
 
-                    <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i
-                            class="fa-sharp fa-solid fa-plus"></i> Tambah Dokumen</button>
+                    <button type="button" class="btn btn-light-primary btn-sm me-3" data-bs-toggle="tooltip"
+                        data-bs-trigger="hover" id="omodTam" data-bs-placement="top" title="Tambah Baru">Tambah</button>
                 </div>
 
                 @include('pages.legal.ojk.modal.create')
@@ -157,7 +157,14 @@
                         className: "text-center"
                     },
                     {
-                        data: 'mojk_pk'
+                        // data: 'mojk_pk'
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `
+                        <button type="button" id="omodEdit" data-resouce="` + row.mojk_pk + `" class="btn btn-light-success" target="blank"> `+ row.mojk_pk +` </button>`
+                        }
                     },
                     {
                         data: 'mojk_judul'
@@ -183,34 +190,39 @@
                         className: 'text-center',
                         render: function (data, type, row) {
                             return `
-                            <select class="form-select" id="jenis_dokumen"
-                                        name="mojk_jenis" data-placeholder="Pilih jenis dokumen" data-allow-clear="true">
-                                        <option value="1">Dokumen</option>
-                                        <option value="2">Tanda Terima</option>
-                                    </select>`
+                            <select class="form-select" id="jenis_dokumen" data-pk="`+row.mojk_pk+`" data-file1="`+row.mojk_file1+`" data-file2="`+row.mojk_file2+`"
+                                name="mojk_jenis" data-placeholder="Pilih jenis dokumen" data-allow-clear="true">
+                                <option selected disabled>Pilih</option>
+                                <option value="1">Tanda Terima</option>
+                                <option value="2">Dokumen</option>
+                            </select>`
                         }
                     },
-                    
-                    // {
-                    //     data: null,
-                    //     orderable: false,
-                    //     className: 'text-center',
-                    //     render: function(data, type, row) {
-                    //         return `
-                    //     <button type="button" id="bmoViewPdf" data-resouce="` + row.mojk_pk + `" data-show-pdf="` + row
-                    //             .mojk_file1 + `"
-                    //                     class="btn btn-light-success" target="blank"> Lihat </button>`
-                    //     }
+                    {
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `<button type="button" id="btnPdf" class="btn btn-light-success" onclick="modalPdf()"> Lihat</button>`;
+                        }
 
-                    // },
+                    },
                 ],
 
-                {
-                        rowCallback: function(row, data, index) {
-                        console.log(data[10]);
-                    },
-                },
+                // {
+                //         rowCallback: function(row, data, index) {
+                //         console.log(data[10]);
+                //     },
+                // },
             );
+
+            // $('#jenis_dokumen').on('change', function(d){
+            //     console.log(d);
+            // });
+
+
+
+
 
             // selectServerSide( //select server side with api/route
             //     'mojk_jenis', //kode select
@@ -226,6 +238,23 @@
             //         };
             //     },
             // );
+            $('body').on('change', '#jenis_dokumen', function() {
+                var _this = $(this);
+                var file1 = _this.attr('data-file1');
+                var file2 = _this.attr('data-file2');
+                var url = '{{ url("storage/legal/ojk") }}';
+                // $('#view_pdf').attr('data', '');
+                if (_this.val() == 1) {
+                    var base1 = url+'/file1/' +file1;
+                    console.log(base1);
+                    $('#view_pdf').attr('data', base1);
+                }
+                if (_this.val() == 2) {
+                    var base2 = url+'/file2/' +file2;
+                    console.log(base2);
+                    $('#view_pdf').attr('data', base2);
+                }
+            }).change();
 
             $('body').on('click', '#omodTam', function() {
                 $('#modal').modal('show');
@@ -289,7 +318,7 @@
                                 res.success,
                                 'success'
                             ).then((res) => {
-                                lodTable();
+                                lodTable('serverSide_ojk');
                                 // reset();
                                 // $('#frxx').trigger("reset");
                                 $('#modal').modal('hide');
@@ -391,9 +420,49 @@
 
         });
 
-        // function close_pojk () {
-        //     $('#modalView').modal('hide');
-        //     $('#pdf').attr('data', '');
+        function modalPdf () {
+            var select = $('#jenis_dokumen').val();
+            if (select==1) {
+                openModal('modalView');
+                titleAction('tModView', 'Lihat Dokumen');
+            }
+            if (select==2) {
+                openModal('modalView');
+                titleAction('tModView', 'Lihat Dokumen');
+            }
+        }
+
+        function closePdf() {
+            closeModal('modalView');
+            $('#view_pdf').removeAttr('data');
+        }
+
+        function jenisDoc () {
+            $('body').on('change', '#jenis_dokumen', function() {
+                var _this = $(this);
+                var file1 = _this.attr('data-file1');
+                var file2 = _this.attr('data-file2');
+                var url = '{{ url("storage/legal/ojk") }}';
+                $('#view_pdf').attr('data', '');
+                if (_this.val() == 1) {
+                    var base1 = url+'/file1/' +file1;
+                    $('#view_pdf').attr('data', base1);
+                }
+                if (_this.val() == 2) {
+                    var base2 = url+'/file2/' +file2;
+                    $('#view_pdf').attr('data', base2);
+                }
+            }).change();
+        }
+
+        // function data(data){
+        //     // console.log(data.value);
+        //     if(data.value == 1){
+        //         alert('ini data 1');
+        //     }else{
+        //         alert('ini data 2');
+        //     }
         // }
+
     </script>
 @endsection

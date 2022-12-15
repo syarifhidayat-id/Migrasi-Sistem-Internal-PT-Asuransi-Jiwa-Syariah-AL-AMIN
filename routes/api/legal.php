@@ -6,6 +6,7 @@ use App\Http\Controllers\legal\PksController;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Legal\DraftController;
 use App\Http\Controllers\Legal\LaporanBerkalaContoller;
+use App\Http\Controllers\Legal\OjkController;
 use App\Http\Controllers\Legal\UndangUndangController;
 use Illuminate\Support\Facades\Route;
 // use Facade\FlareClient\Http\Response;
@@ -27,8 +28,9 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
     Route::get('unit_laporan_berkala', [ApiController::class, 'unit_laporan_berkala']);
     Route::get('get_edit_select_lap/{pk}', [LaporanBerkalaContoller::class, 'get_edit_lap_ber']);
     Route::get('ojk', [ApiController::class, 'ojk']);
+    Route::get('ojk/show-doc', [OjkController::class, 'showDoc']);
     Route::get('viewPdf/{file}', [ApiController::class, 'viewPdf']);
-    
+
     Route::group(['prefix' => '/uu_asuransi', 'as' => 'uu_asuransi.'], function () {
         Route::get('uu_asuransi', [UndangUndangController::class, 'uu_asuransi']);
         Route::get('get_uu_asuransi', [ApiController::class, 'get_uu']);
