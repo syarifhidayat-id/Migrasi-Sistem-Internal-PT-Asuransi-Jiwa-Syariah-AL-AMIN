@@ -2,10 +2,22 @@
     text-transform: capitalize;
 } */
 
-#frxx div .required_sel {
-    background-color: rgba(255, 204, 138, 0.514);
+form .form-control .required_sel {
+    /* background-color: rgba(255, 204, 138, 0.514); */
+    background-color: #ffc8c883;
+}
+
+form .form-select .required_sel {
+    /* background-color: rgba(255, 204, 138, 0.514); */
+    background-color: #ffc8c883;
+}
+
+.textbox-required .textbox-text{
+    /* background-color: rgba(255, 204, 138, 0.514); */
+    background-color: #ffc8c883;
 }
 
 .textbox-readonly .textbox-text{
-    background-color: rgba(255, 204, 138, 0.514);
+    /* background-color: rgba(255, 204, 138, 0.514); */
+    background-color: #ffcc8a83;
 }

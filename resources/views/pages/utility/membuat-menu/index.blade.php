@@ -28,7 +28,7 @@
         <div class="card-title">
             <div class="d-flex align-items-center position-relative my-1">
                 <div class="input-group input-group-solid">
-                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control w-250px" placeholder="Cari Menu" />
+                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control" placeholder="Cari Menu" />
                     <button type="submit" class="btn btn-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
                 </div>
             </div>
@@ -54,14 +54,10 @@
                                     <label class="form-label fs-6 fw-bold">Tipe Menu:</label>
                                     <div class="d-flex flex-stack">
                                         <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                            <input class="form-check-input" id="check_1" type="checkbox" data-checkbox="check_1" />
+                                            <input class="form-check-input" id="check_1" name="check_1" type="checkbox" data-checkbox="check_1" />
                                         </label>
                                         <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu">
                                             <option></option>
-                                            {{-- <option value="ALAMIN" selected>ALAMIN</option> --}}
-                                            @foreach ($type_menu as $type)
-                                                <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
-                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -75,9 +71,6 @@
                                         </label>
                                         <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
                                             <option></option>
-                                            {{-- @foreach ($nama_menu as $key=>$data)
-                                                <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                            @endforeach --}}
                                         </select>
                                     </div>
                                 </div>
@@ -146,76 +139,108 @@
 
 @section('script')
     <script>
-        $('#tipe_menu').select2();
+        // $('#tipe_menu').select2();
         $('#key').select2();
-        $('#wmn_tipe').select2();
+        // $('#wmn_tipe').select2();
         $('#wmn_key').select2({
             tags: true,
         });
         $('#wmn_mrkn_kode').select2();
         $('#wmn_mpol_kode').select2();
 
-        changeSelect(
-            'tipe_menu',
-            'key',
-            '{{ url("api/utility/menu/getTipe") }}',
-            function(data) {
-                return {
-                    results: $.map(data, function(d) {
-                        return {
-                            id: d.wmn_descp,
-                            text: d.wmn_descp
-                        }
-                    })
-                };
-            },
-            function(res) {
-                // setText('msoc_mssp_kode', res.params.data.id);
-                // setText('msoc_mssp_nama', res.params.data.text);
-            },
-        );
-
-        changeSelect(
-            'wmn_tipe',
-            'wmn_key',
-            '{{ url("api/utility/menu/getTipe") }}',
-            function(data) {
-                return {
-                    results: $.map(data, function(d) {
-                        return {
-                            id: d.wmn_kode,
-                            text: d.wmn_descp
-                        }
-                    })
-                };
-            },
-            function(res) {
-                // setText('msoc_mssp_kode', res.params.data.id);
-                // setText('msoc_mssp_nama', res.params.data.text);
-            },
-        );
-
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
+            selectSide(
+                'tipe_menu',
+                '{{ url("api/utility/menu/select-tipemenu") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmt_kode,
+                                text: d.wmt_nama
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+                false
+            )
+
+            selectSide(
+                'wmn_tipe',
+                '{{ url("api/utility/menu/select-tipemenu") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmt_kode,
+                                text: d.wmt_nama
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+                false,
+            )
+
+            changeSelect(
+                'tipe_menu',
+                'key',
+                '{{ url("api/utility/menu/getTipe") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmn_descp,
+                                text: d.wmn_descp
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+            );
+
+            changeSelect(
+                'wmn_tipe',
+                'wmn_key',
+                '{{ url("api/utility/menu/getTipe") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmn_kode,
+                                text: d.wmn_descp
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+            );
+
             filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
-
-            $('#check_1').on('change', function(){
-                this.value = this.checked ? 1 : 0;
-                // console.log(this.value);
-            }).change();
-
-            $('#check_2').on('change', function(){
-                this.value = this.checked ? 1 : 0;
-                // console.log(this.value);
-            }).change();
 
             serverSide( //datatable serverside
                 "dataMenu",
                 "{{ url('api/utility/menu/lihat-menu') }}", //url api/route
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
+                    d.check_1 = getText('check_1');
+                    d.check_2 = getText('check_2');
                     d.wmn_tipe = getText('tipe_menu');
                     d.wmn_descp = getText('key');
                     d.search = $('input[type="search"]').val();
@@ -285,7 +310,7 @@
                 clearSelect();
                 bsimpan('btn_simpan', 'Simpan');
                 $('#btn_reset').show();
-                tipeMenus();
+                // tipeMenus();
             });
 
             $('body').on('click', '#omodEdit', function() {
@@ -301,15 +326,13 @@
                     openModal('modalMenu');
                     $("#frxx").formToJson(data);
                     if (data.wmn_key == "MAIN") {
-                        var newOption = new Option('MAIN', 'MAIN', true, true);
-                        $('#wmn_key').append(newOption).trigger('change');
+                        selectEdit('wmn_key', 'MAIN', 'MAIN');
                     } else {
                         $.getJSON(key, function(res) {
                             if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']").length) {
                                 $('#wmn_key').val(res.wmn_kode).trigger('change');
                             } else {
-                                var newOption = new Option(res.wmn_descp, res.wmn_kode, true, true);
-                                $('#wmn_key').append(newOption).trigger('change');
+                                selectEdit('wmn_key', res.wmn_kode, res.wmn_descp);
                             }
                             // $('#wmn_key').append('<option value="'+ res.wmn_kode +'">'+ res.wmn_descp +'</option>');
                         });

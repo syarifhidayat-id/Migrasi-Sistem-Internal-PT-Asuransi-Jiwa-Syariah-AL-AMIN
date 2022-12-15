@@ -32,6 +32,7 @@
                             <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="showTarif">
                                 <thead>
                                     <tr class="fw-bold text-gray-800 border-bottom border-gray-200 text-center align-middle">
+                                        {{-- <th rowspan="2">No.</th> --}}
                                         <th rowspan="2">Usia (Tahun)</th>
                                         <th colspan="71">Tarif</th>
                                     </tr>
