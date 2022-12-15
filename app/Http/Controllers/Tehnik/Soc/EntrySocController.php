@@ -151,6 +151,45 @@ class EntrySocController extends Controller
                     'success' => 'Data berhasil disimpan dengan Kode '.$kode . '.' . $kdAkhir.' !'
                 ]);
             } else {
+                if($request->endors=="1") {
+                    $vtable = DB::table('eopr.mst_soc')->where('msoc_kode', $request->msoc_kode);
+                    $data = $request->all();
+                    $data = $request->except(
+                        '_token',
+                        'e_nasabah',
+                        'mpid_mssp_kode',
+                        'e_cabalamin',
+                        'e_manfaat',
+                        'e_manfaat_pol',
+                        'e_marketing',
+                        'e_pinca',
+                        'e_pras',
+                        'e_tarif',
+                        'e_uw',
+                        'edit_akses',
+                        'mpid_nama',
+                        'e_bersih',
+                        'endors',
+                    );
+                    // $data['msoc_kode'] = $kodepoliseds;
+                    // $data['msoc_kode_ori'] = $getFill->msoc_kode_ori;
+                    // $data['msoc_nomor'] = $nomor;
+                    // $data['msoc_endors'] = $request->endors;
+                    // $data['msoc_endos_idx'] = $msoc_endos_idx;
+                    // $data['msoc_status'] = 0;
+                    // $data['msoc_approve'] = 0;
+                    // $data['msoc_ins_date'] = date('Y-m-d H:i:s');
+                    // $data['msoc_ins_user'] = Auth::user()->email;
+                    // $data['msoc_upd_date'] = date('Y-m-d H:i:s');
+                    // $data['msoc_upd_user'] = Auth::user()->email;
+
+                    $vtable->update($data);
+
+                    return response()->json([
+                        'success' => 'Data berhasil diupdate dengan Kode '.$request->msoc_kode.' !'
+                    ]);
+                }
+
                 if($request->endors=="2") {
                     $msoc_endos_idx = 0;
                     $vtable = DB::table('eopr.mst_soc');
@@ -306,36 +345,34 @@ class EntrySocController extends Controller
     public function selectSegmen(Request $request)
     {
         $in = DB::table('emst.mst_protree_2')->select('mptr_kode')->where('mptr_induk', $request->mjns);
+
         $vtable1 = DB::table('emst.mst_produk_segment')
         ->select('mssp_kode as value', 'mssp_nama as text', 'mssp_group as group')
         ->where([
             ['mssp_group', '<>', ''],
         ]);
+        if (!empty($request->mjns)) {
+            $vtable1->whereIn('mssp_kode', $in);
+            // if (!empty($request->q)) {
+            //     $vtable1->where('mssp_kode', 'LIKE', "%$request->q%")->orWhere('mssp_nama', 'LIKE', "%$request->q%");
+            // }
+        }
+        $data1 = $vtable1->get();
+
         $vtable2 = DB::table('emst.mst_produk_segment')
         ->select('mssp_kode as value', 'mssp_nama as text')
         ->where([
             ['mssp_group', '=', ''],
         ]);
-
-        if (!empty($request->q)) {
-            $vtable1->where('mssp_kode', 'LIKE', "%$request->q%")->orWhere('mssp_nama', 'LIKE', "%$request->q%");
-            $vtable2->where('mssp_kode', 'LIKE', "%$request->q%")->orWhere('mssp_nama', 'LIKE', "%$request->q%");
-        }
-
         if (!empty($request->mjns)) {
-            $vtable1->whereIn('mssp_kode', $in);
             $vtable2->whereIn('mssp_kode', $in);
+            // if (!empty($request->q)) {
+            //     $vtable2->where('mssp_kode', 'LIKE', "%$request->q%")->orWhere('mssp_nama', 'LIKE', "%$request->q%");
+            // }
         }
-
-        $data1 = $vtable1->get();
         $data2 = $vtable2->get();
-        $merge = $data2->merge($data1);
-        // $data1 = $vtable1;
-        // $data2 = $vtable2
-        // ->union($data1)
-        // ->get();
-
-        return response()->json($merge);
+        $all = $data2->merge($data1);
+        return response()->json($all);
     }
 
     public function selectNoSpaj(Request $request)
