@@ -153,85 +153,37 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            selectSide(
-                'tipe_menu',
-                '{{ url("api/utility/menu/select-tipemenu") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.wmt_kode,
-                                text: d.wmt_nama
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-                },
-                false
-            )
+            selectSide('tipe_menu', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
+                id: d.wmt_kode,
+                text: d.wmt_nama
+            }}, function(res) {
+                // setText('msoc_mssp_kode', res.params.data.id);
+                // setText('msoc_mssp_nama', res.params.data.text);
+            });
 
-            selectSide(
-                'wmn_tipe',
-                '{{ url("api/utility/menu/select-tipemenu") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.wmt_kode,
-                                text: d.wmt_nama
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-                },
-                false,
-            )
+            selectSide('wmn_tipe', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
+                id: d.wmt_kode,
+                text: d.wmt_nama
+            }}, function(res) {
+                // setText('msoc_mssp_kode', res.params.data.id);
+                // setText('msoc_mssp_nama', res.params.data.text);
+            });
 
-            changeSelect(
-                'tipe_menu',
-                'key',
-                '{{ url("api/utility/menu/getTipe") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.wmn_descp,
-                                text: d.wmn_descp
-                            }
-                        })
-                    };
-                },
-                function(res) {
+            changeSelect('tipe_menu', 'key', '{{ url("api/utility/menu/getTipe") }}',function(d) { return {
+                id: d.wmn_descp,
+                text: d.wmn_descp
+            }}, function(res) {
                     // setText('msoc_mssp_kode', res.params.data.id);
                     // setText('msoc_mssp_nama', res.params.data.text);
-                },
-            );
+            });
 
-            changeSelect(
-                'wmn_tipe',
-                'wmn_key',
-                '{{ url("api/utility/menu/getTipe") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.wmn_kode,
-                                text: d.wmn_descp
-                            }
-                        })
-                    };
-                },
-                function(res) {
+            changeSelect('wmn_tipe', 'wmn_key', '{{ url("api/utility/menu/getTipe") }}',function(d) { return {
+                id: d.wmn_descp,
+                text: d.wmn_descp
+            }}, function(res) {
                     // setText('msoc_mssp_kode', res.params.data.id);
                     // setText('msoc_mssp_nama', res.params.data.text);
-                },
-            );
+            });
 
             filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
 

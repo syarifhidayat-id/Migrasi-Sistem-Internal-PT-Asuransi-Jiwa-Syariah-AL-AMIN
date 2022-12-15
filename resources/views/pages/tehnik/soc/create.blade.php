@@ -69,7 +69,7 @@
                 <div class="col-md-4">
                     <div class="mb-5">
                         <label class="required form-label">Segmen Pasar</label>
-                        <input type="text" class="easyui-combobox" name="msoc_mssp_nama" id="msoc_mssp_nama" data-options="prompt:'Pilih segmen pasar',
+                        {{-- <input type="text" class="easyui-combobox" name="msoc_mssp_nama" id="msoc_mssp_nama" data-options="prompt:'Pilih segmen pasar',
                         url: '{{ url("api/tehnik/soc/entry-soc/select-segmen") }}',
                         method: 'get',
                         valueField: 'value',
@@ -78,7 +78,8 @@
                         onSelect: function(rec){
                             hidePesan('msoc_mssp_nama');
                             setsegmen(rec);
-                        }" style="width: 100%; height: 38px;" />
+                        }" style="width: 100%; height: 38px;" /> --}}
+                        <input type="text" class="easyui-textbox selectGrid" name="msoc_mssp_nama" id="msoc_mssp_nama" data-options="prompt:'Pilih segmen pasar'" style="width: 100%; height: 38px;" />
                         <input type="text" class="form-control form-control-solid" name="msoc_mssp_kode" id="msoc_mssp_kode" placeholder="msoc_mssp_kode" />
                         <input type="text" class="form-control form-control-solid" name="mpid_mssp_kode" id="mpid_mssp_kode" placeholder="mpid_mssp_kode" />
                         <span class="text-danger error-text msoc_mssp_nama_err"></span>
@@ -90,7 +91,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-5">
-                                    <input type="text" class="easyui-combobox" name="msoc_mspaj_nama" id="msoc_mspaj_nama" data-options="prompt:'Pilih nomor spaj',
+                                    {{-- <input type="text" class="easyui-combobox" name="msoc_mspaj_nama" id="msoc_mspaj_nama" data-options="prompt:'Pilih nomor spaj',
                                     url: '{{ url("api/tehnik/soc/entry-soc/select-nospaj") }}',
                                     method: 'get',
                                     valueField: 'mspaj_nomor',
@@ -98,7 +99,8 @@
                                     groupField:'group',
                                     onSelect: function(rec){
                                         setText('msoc_mspaj_nomor', rec.mspaj_nomor);
-                                    }" style="width: 100%; height: 38px;" />
+                                    }" style="width: 100%; height: 38px;" /> --}}
+                                    <input type="text" class="easyui-textbox selectGrid" name="msoc_mspaj_nama" id="msoc_mspaj_nama" data-options="prompt:'Pilih nomor spaj'" style="width: 100%; height: 38px;" />
                                     <span class="text-danger error-text msoc_mspaj_nama_err"></span>
                                 </div>
                             </div>
@@ -740,12 +742,42 @@
                     setText('msoc_mjns_mpid_kode', row.mjns_mpid_nomor);
 
                     setText('msoc_mssp_nama', '');
-                    reSelBox('msoc_mssp_nama', '{{ url("api/tehnik/soc/entry-soc/select-segmen") }}' + '?' + '&mjns=' + getText('e_nasabah'));
+                    // reSelBox('msoc_mssp_nama', '{{ url("api/tehnik/soc/entry-soc/select-segmen") }}' + '?' + '&mjns=' + getText('e_nasabah'));
+				    reSelGrid('msoc_mssp_nama','{{ url("api/tehnik/soc/entry-soc/select-segmen") }}' + '?' + '&mjns=' + getText("e_nasabah"));
 
                     var rms = '&mjns='+getText("msoc_mjns_kode")+'&mft='+getText("msoc_mft_kode")+'&mrkn='+getText("msoc_mrkn_kode")+'&mssp='+getText("msoc_mssp_kode")+'&mkm='+getText("msoc_mekanisme")+'&mkm2='+getText("msoc_mekanisme2")+'&perush='+getText("msoc_jns_perusahaan")+'&byr='+getText("msoc_jenis_bayar")+'&mjm='+getText("msoc_mjm_kode")+'&mpid='+getText("msoc_mpid_kode");
 
                     reSelGrid('e_pras', '{{ url("api/tehnik/soc/entry-soc/pilih-program-asuransi") }}' + '?' + rms);
 				    reSelGrid('e_manfaat_pol','{{ url("api/tehnik/soc/entry-soc/select-manasu") }}' + '?' + '&mjns=' + getText("msoc_mjns_kode"));
+                }
+            );
+            selectGrid(
+                'msoc_mssp_nama',
+                'GET',
+                '{{ url("api/tehnik/soc/entry-soc/select-segmen") }}',
+                'kode',
+                'nama',
+                [
+					{field:'value',title:'Kode',width:120,hidden:true},
+					{field:'text',title:'Keterangan',width:300},
+				],
+                function(i, row) {
+                    hidePesan('msoc_mssp_nama');
+                    setsegmen(rec);
+                }
+            );
+            selectGrid(
+                'msoc_mspaj_nama',
+                'GET',
+                '{{ url("api/tehnik/soc/entry-soc/select-nospaj") }}',
+                'mspaj_nomor',
+                'mspaj_nomor',
+                [
+					{field:'mspaj_nomor',title:'Kode',width:120},
+					{field:'mspaj_keterangan',title:'Keterangan',width:300},
+				],
+                function(i, row) {
+                    setText('msoc_mspaj_nomor', row.mspaj_nomor);
                 }
             );
             selectGrid(
