@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Legal\DraftController;
 use App\Http\Controllers\Legal\LaporanBerkalaContoller;
 use App\Http\Controllers\Legal\OjkController;
+use App\Http\Controllers\Legal\PojkSeojkController;
 use App\Http\Controllers\Legal\UndangUndangController;
 use Illuminate\Support\Facades\Route;
 // use Facade\FlareClient\Http\Response;
@@ -21,7 +22,6 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
     Route::get('get_select_pks', [PksController::class, 'select_pk_pks'])->name('get_select_pks');
     Route::get('get_mojk_jenis', [ApiController::class, 'get_mojk_jenis'])->name('get_mojk_jenis');
     Route::get('jns-doc/{kode}', [ApiController::class, 'getJnsDoc']);
-    Route::get('pojk_seojk', [ApiController::class, 'pojk_seojk']);
     Route::get('peraturan_perusahaan', [ApiController::class, 'Peraturan_perusahaan']);
     Route::get('m_laporan_berkala', [ApiController::class, 'm_laporan_berkala']);
     Route::get('laporan_berkala', [ApiController::class, 'laporan_berkala']);
@@ -33,20 +33,50 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
 
     Route::group(['prefix' => '/uu_asuransi', 'as' => 'uu_asuransi.'], function () {
         Route::get('uu_asuransi', [UndangUndangController::class, 'uu_asuransi']);
-        Route::get('get_uu_asuransi', [ApiController::class, 'get_uu']);
-
+        //API FILTER DATATABLES DRAFT PKS
+        Route::get('selectNomor', [UndangUndangController::class, 'selectNomor']);
+        Route::get('getNomor/{id}', [UndangUndangController::class, 'getNomor']);
+        Route::get('selectTentang', [UndangUndangController::class, 'selectTentang']);
+        Route::get('getTentang/{id}', [UndangUndangController::class, 'getTentang']);
+        // Route::get('selectSegmen', [DraftController::class, 'selectSegmen']);
+        // Route::get('getSegmen/{id}', [DraftController::class, 'getSegmen']);
     });
 
+    Route::get('pojk_seojk', [PojkSeojkController::class, 'pojk_seojk']);
+     //API FILTER DATATABLES DRAFT PKS
+     Route::get('selectNomorPojk', [PojkSeojkController::class, 'selectNomorPojk']);
+     Route::get('getNomorPojk/{id}', [PojkSeojkController::class, 'getNomorPojk']);
+     Route::get('selectPerihalPojk', [PojkSeojkController::class, 'selectPerihalPojk']);
+     Route::get('getPerihalPojk/{id}', [PojkSeojkController::class, 'getPerihalPojk']);
+     Route::get('selectJenis', [PojkSeojkController::class, 'selectJenis']);
+     Route::get('getJenis/{id}', [PojkSeojkController::class, 'getJenis']);
+
+    Route::get('draft_pks', [DraftController::class, 'api_draft']);
     Route::group(['prefix' => '/pks', 'as' => 'pks.'], function () {
         Route::get('get_all_pks/{id}', [PksController::class, 'get_all_pks']);
         Route::get('polis', [ApiController::class, 'polis'])->name('polis');
         Route::get('mssp', [DraftController::class, 'select_mssp']);
         Route::get('get_edit_polis/{id}', [PksController::class, 'get_edit_polis']);
         Route::get('mssp_kode/{id}', [DraftController::class, 'mssp_kode']);
-        Route::get('draft_pks', [DraftController::class, 'api_draft']);
 
+        //API FILTER DATATABLES DRAFT PKS
+        Route::get('selectId', [DraftController::class, 'selectId']);
+        Route::get('getId/{id}', [DraftController::class, 'getId']);
+        Route::get('selectTentang', [DraftController::class, 'selectTentang']);
+        Route::get('getTentang/{id}', [DraftController::class, 'getTentang']);
+        Route::get('selectSegmen', [DraftController::class, 'selectSegmen']);
+        Route::get('getSegmen/{id}', [DraftController::class, 'getSegmen']);
+
+
+        //API FILTER DATATABLES PKS
         Route::get('select-instansi', [PksController::class, 'selectInstansi']);
         Route::get('getInstansi/{id}', [PksController::class, 'getInstansi']);
+        Route::get('select-no-pks', [PksController::class, 'selectNoPks']);
+        Route::get('getNoPks/{id}', [PksController::class, 'getNoPks']);
+        Route::get('selectPic', [PksController::class, 'selectPic']);
+        Route::get('getPic/{id}', [PksController::class, 'getPic']);
+        Route::get('selectInsUser', [PksController::class, 'selectInsUser']);
+        Route::get('getInsUser/{id}', [PksController::class, 'getInsUser']);
 
         Route::prefix('/lihat')->name('lihat.')->controller(PksController::class)->group(function () {
             Route::get('/pks/{pk}', 'viewPks');

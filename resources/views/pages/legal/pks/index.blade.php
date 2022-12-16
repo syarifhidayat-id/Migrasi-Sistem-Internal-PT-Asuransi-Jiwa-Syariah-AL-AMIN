@@ -16,11 +16,10 @@
         <div class="card-header border-0 pt-6">
             <div class="card-title">
                 <div class="d-flex align-items-center position-relative my-1">
-                    <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                        <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input type="text" data-kt-datatable-table-filter="search"
-                        class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
+                    <div class="input-group input-group-solid">
+                        <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control" placeholder="Cari pks" />
+                        <button type="submit" class="btn btn-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                    </div>
                 </div>
             </div>
 
@@ -47,6 +46,45 @@
                                                 <input class="form-check-input" id="check_instansi" name="check_instansi" type="checkbox" data-checkbox="check_instansi" />
                                             </label>
                                             <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih instansi" data-allow-clear="true" data-kt-datatable-table-filter="check_pks_instansi" data-hide-search="false" id="check_pks_instansi">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-10">
+                                        <label class="form-label fs-6 fw-bold">Nomor PKS:</label>
+                                        <div class="d-flex flex-stack">
+                                            <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                                <input class="form-check-input" id="check_no_pks" name="check_no_pks" type="checkbox" data-checkbox="check_no_pks" />
+                                            </label>
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih nomor pks" data-allow-clear="true" data-kt-datatable-table-filter="check_pks_no" data-hide-search="false" id="check_pks_no">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-10">
+                                        <label class="form-label fs-6 fw-bold">PIC Reminder:</label>
+                                        <div class="d-flex flex-stack">
+                                            <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                                <input class="form-check-input" id="check_pic" name="check_pic" type="checkbox" data-checkbox="check_pic" />
+                                            </label>
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih PIC" data-allow-clear="true" data-kt-datatable-table-filter="check_pic_pks" data-hide-search="false" id="check_pic_pks">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-10">
+                                        <label class="form-label fs-6 fw-bold">Status Berlaku:</label>
+                                        <div class="d-flex flex-stack">
+                                            <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                                <input class="form-check-input" id="check_status" name="check_status" type="checkbox" data-checkbox="check_status" />
+                                            </label>
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih status berlaku" data-allow-clear="true" data-kt-datatable-table-filter="check_status_berlaku" data-hide-search="false" id="check_status_berlaku">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -137,6 +175,9 @@
                 }
             });
 
+
+            //SELECT FILTER
+
             selectSide('check_pks_instansi', false, '{{ url("api/legal/pks/select-instansi") }}', function(d) { return {
                 id: d.mpks_instansi,
                 text: d.mpks_instansi
@@ -153,6 +194,122 @@
                     // setText('msoc_mssp_nama', res.params.data.text);
             });
 
+            selectSide('check_pks_no', false, '{{ url("api/legal/pks/select-no-pks") }}', function(d) { return {
+                id: d.mpks_nomor,
+                text: d.mpks_nomor
+            }}, function(res) {
+                // setText('msoc_mssp_kode', res.params.data.id);
+                // setText('msoc_mssp_nama', res.params.data.text);
+            });
+
+            changeSelect('check_pks_no', 'key', '{{ url("api/legal/pks/getNoPks") }}',function(d) { return {
+                id: d.mpks_nomor,
+                text: d.mpks_nomor
+            }}, function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+            });
+
+            selectSide('check_pic_pks', false, '{{ url("api/legal/pks/selectPic") }}', function(d) { return {
+                id: d.mpks_pic,
+                text: d.mpks_pic
+            }}, function(res) {
+                // setText('msoc_mssp_kode', res.params.data.id);
+                // setText('msoc_mssp_nama', res.params.data.text);
+            });
+
+            changeSelect('check_pic_pks', 'key', '{{ url("api/legal/pks/getPic") }}',function(d) { return {
+                id: d.mpks_pic,
+                text: d.mpks_pic
+            }}, function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+            });
+
+            selectSide('check_ins_user', false, '{{ url("api/legal/pks/selectInsUser") }}', function(d) { return {
+                id: d.mpks_ins_user,
+                text: d.mpks_ins_user
+            }}, function(res) {
+                // setText('msoc_mssp_kode', res.params.data.id);
+                // setText('msoc_mssp_nama', res.params.data.text);
+            });
+
+            changeSelect('check_ins_user', 'key', '{{ url("api/legal/pks/getInsUser") }}',function(d) { return {
+                id: d.mpks_ins_user,
+                text: d.mpks_ins_user
+            }}, function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+            });
+
+            // selectSide('check_status_berlaku', false, '{{ url("api/legal/pks/selectInsUser") }}', function(d) { return {
+            //     id: d.mpks_ins_user,
+            //     text: d.mpks_ins_user
+            // }}, function(res) {
+            //     // setText('msoc_mssp_kode', res.params.data.id);
+            //     // setText('msoc_mssp_nama', res.params.data.text);
+            // });
+
+            // changeSelect('check_status_berlaku', 'key', '{{ url("api/legal/pks/getInsUser") }}',function(d) { return {
+            //     id: d.mpks_ins_user,
+            //     text: d.mpks_ins_user
+            // }}, function(res) {
+            //         // setText('msoc_mssp_kode', res.params.data.id);
+            //         // setText('msoc_mssp_nama', res.params.data.text);
+            // });
+
+
+            //SELECT FORM
+
+            selectSide('mpks_mrkn_kode_test', false, '{{ url("api/legal/pks/polis") }}', function(data) { return {
+                text: data.mrkn_nama, // text nama
+                id: data.mrkn_kode // kode value
+            }}, function(res){
+                // setText('msoc_mssp_kode', res.params.data.id);
+                // setText('msoc_mssp_nama', res.params.data.text);
+            });
+
+            selectSide('cari_pk', false, '{{ url("api/legal/get_select_pks") }}', function(data) { return {
+                text: d.mpks_nomor, // text nama
+                // text: d.mpks_nomor + '|' + d.mpks_nama, // text nama
+                id: d.mpks_pk, // kode value
+            }},
+            function(res) {
+                var key = '{{ url('api/legal/pks/get_all_pks') }}' + '/' + res.params.data.id;
+                $.get(key, function(a) {
+                    $('#frxx_add').formToJson(a);
+                    if (a.mpks_mrkn_kode !== "") {
+                        var mrkn = "{{ url('api/legal/pks/get_edit_polis') }}" + "/" + a.mpks_mrkn_kode;
+                        $.get(mrkn, function(b) {
+                            selectEdit('mpks_mrkn_kode_test', b.mrkn_kode, b.mrkn_nama);
+
+                        });
+                    }
+                });
+            },
+        );
+
+            // selectServerSide( //select server side with api/route
+            //     'mpks_mrkn_kode_test', //kode select
+            //     '{{ url('api/legal/pks/polis') }}', //url
+            //     function(data) {
+            //         return {
+            //             results: $.map(data, function(d) {
+            //                 return {
+            //                     text: d.mrkn_nama, // text nama
+            //                     id: d.mrkn_kode, // kode value
+            //                     // nomor: d.tsm_nomor, // kode value
+            //                 }
+            //             })
+            //         };
+            //     },
+            //     function(res) {
+            //         // $('#tsin_noreferensi').val(res.params.data.nomor);
+            //         // setText('tsin_noreferensi', res.params.data.nomor); //membuat isi pada id input yang di inginkan
+            //         // getText('mpks_mrkn_kode_test'); //ambil data yang berada dalam input berdasarkan id input
+            //     },
+            // );
+
             filterAll('input[type="search"]', 'serverSidePks'); //khusus type search inputan
 
             serverSide( //datatable serverside
@@ -160,9 +317,15 @@
                 "{{ url('api/legal/api_pks') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.check_instansi = getText('check_instansi');
-                    // d.check_2 = getText('check_2');
                     d.mpks_instansi = getText('check_pks_instansi');
-                    // d.wmn_descp = getText('key');
+                    d.check_no_pks = getText('check_no_pks');
+                    d.mpks_nomor = getText('check_pks_no');
+                    d.check_pic = getText('check_pic');
+                    d.mpks_pic = getText('check_pic_pks');
+                    d.check_user_ins = getText('check_user_ins');
+                    d.mpks_ins_user = getText('check_ins_user');
+
+
                     d.search = $('input[type="search"]').val()
                 },
                 [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
@@ -229,81 +392,7 @@
                 ],
             );
 
-            selectServerSide( //select server side with api/route
-                'mpks_mrkn_kode', //kode select
-                '{{ url('api/legal/pks/polis') }}', //url
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                text: d.mrkn_nama, // text nama
-                                id: d.mrkn_kode // kode value
-                            }
-                        })
-                    };
-                },
-            );
 
-            selectServerSide( //select server side with api/route
-                'cari_pk', //kode select
-                '{{ url('api/legal/get_select_pks') }}', //url
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                text: d.mpks_nomor, // text nama
-                                // text: d.mpks_nomor + '|' + d.mpks_nama, // text nama
-                                id: d.mpks_pk, // kode value
-
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    // $('#tsin_noreferensi').val(res.params.data.nomor);
-                    var key = '{{ url('api/legal/pks/get_all_pks') }}' + '/' + res.params.data.id;
-                    $.get(key, function(a) {
-                        $('#frxx_add').formToJson(a);
-                        // if (a.mpks_endos == "0") {
-                        //     setText('mpks_endos', '2');
-                        // }
-                        // if (a.mpks_endos == "1") {
-                        //     setText('mpks_endos', '2');
-                        // }
-                        // if (a.mpks_endos == "2") {
-                        //     setText('mpks_endos', '2');
-                        // }
-                        if (a.mpks_mrkn_kode !== "") {
-                            var mrkn = "{{ url('api/legal/pks/get_edit_polis') }}" + "/" + a.mpks_mrkn_kode;
-                            $.get(mrkn, function(b) {
-                                selectEdit('mpks_mrkn_kode_test', b.mrkn_kode, b.mrkn_nama);
-
-                            });
-                        }
-                    });
-                },
-            );
-
-            selectServerSide( //select server side with api/route
-                'mpks_mrkn_kode_test', //kode select
-                '{{ url('api/legal/pks/polis') }}', //url
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                text: d.mrkn_nama, // text nama
-                                id: d.mrkn_kode, // kode value
-                                // nomor: d.tsm_nomor, // kode value
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    // $('#tsin_noreferensi').val(res.params.data.nomor);
-                    // setText('tsin_noreferensi', res.params.data.nomor); //membuat isi pada id input yang di inginkan
-                    // getText('mpks_mrkn_kode_test'); //ambil data yang berada dalam input berdasarkan id input
-                },
-            );
 
             $('body').on('click', '#bmoDetail', function() {
                 $('#tModView').text('Rincian PKS');
@@ -477,8 +566,8 @@
             }
 
             if (tipe == "2") {
-                setHide('hidePk', false);
-                setHide('hideField', false);
+                setHide('hidePk', true);
+                setHide('hideField', true);
                 // var eds = setText('eds', '0');
                 // endos(eds);
                 openModal('modalAddendum');
@@ -486,7 +575,7 @@
             }
 
             if (tipe == "3") {
-                setHide('hidePk', false);
+                setHide('hidePk', true);
                 setHide('hideField', true);
                 // var eds = setText('eds', '2');
                 // endos(eds);

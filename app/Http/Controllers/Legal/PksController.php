@@ -317,87 +317,44 @@ class PksController extends Controller
                         });
                     }
                 }
-                // if ($request->get('check_2') == "1") {
-                //     if (!empty($request->get('wmn_descp'))) {
-                //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                //             return Str::contains($row['wmn_descp'], $request->get('wmn_descp')) ? true : false;
-                //         });
-                //     }
-                // }
+                if ($request->get('check_no_pks') == "1") {
+                    if (!empty($request->get('mpks_nomor'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['mpks_nomor'], $request->get('mpks_nomor')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_pic') == "1") {
+                    if (!empty($request->get('mpks_pic'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['mpks_pic'], $request->get('mpks_pic')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_user_ins') == "1") {
+                    if (!empty($request->get('mpks_ins_user'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['mpks_ins_user'], $request->get('mpks_ins_user')) ? true : false;
+                        });
+                    }
+                }
                 if (!empty($request->get('search'))) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                         if (Str::contains(Str::lower($row['mpks_pk']), Str::lower($request->get('search')))){
                             return true;
-                        // }else if (Str::contains(Str::lower($row['wmn_descp']), Str::lower($request->get('search')))) {
-                        //     return true;
+                        }else if (Str::contains(Str::lower($row['mpks_instansi']), Str::lower($request->get('search')))) {
+                            return true;
+                        }else if (Str::contains(Str::lower($row['mpks_tentang']), Str::lower($request->get('search')))) {
+                            return true;
+                        }else if (Str::contains(Str::lower($row['mpks_pic']), Str::lower($request->get('search')))) {
+                            return true;
                         }
-
                         return false;
                     });
                 }
             })
             ->make(true);
         // }
-    }
-
-    public function selectInstansi(Request $request)
-    {
-        // $data = [];
-        // if ($request->has('q')) {
-        //     $search = $request->q;
-        //     $data = DB::table('eopr.mst_pks')
-        //     ->select('mpks_pk','mpks_instansi')
-        //     ->where([
-        //         ['mpks_instansi','like',"%$search%"],
-        //     ])
-        //     ->get();
-        // } else {
-        //     $data = DB::table('eopr.mst_pks')
-        //     ->select('mpks_pk','mpks_instansi')
-        //     ->get();
-        // }
-        $page = $request->page ? intval($request->page) : 1;
-        $rows = $request->rows ? intval($request->rows) : 100;
-        $offset = ($page - 1) * $rows;
-
-        $vtable = DB::table('eopr.mst_pks')
-        ->select('mpks_pk','mpks_instansi');
-
-        if(!empty($request->q)) {
-            $vtable->where('mpks_instansi', 'LIKE', "%$request->q%");
-        }
-
-        $data = $vtable
-        ->groupBy('mpks_instansi')
-        ->offset($offset)
-        ->limit($rows)
-        ->get();
-
-        return response()->json($data);
-    }
-
-    public function getInstansi(Request $request, $id)
-    {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('eopr.mst_pks')
-            ->select('*')
-            ->where([
-                ['mpks_pk', $id],
-                ['mpks_instansi','like',"%$search%"],
-            ])
-            ->get();
-        } else {
-            $data = DB::table('eopr.mst_pks')
-            ->select('*')
-            ->where([
-                ['mpks_pk', $id],
-            ])
-            ->get();
-        }
-
-        return response()->json($data);
     }
 
     public function select_pk_pks(Request $request)
@@ -447,4 +404,193 @@ class PksController extends Controller
 
         return response()->json($data);
     }
+
+
+
+    // QUERY FILTER DATATABLES
+
+    public function selectInstansi(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('eopr.mst_pks')
+        ->select('mpks_pk','mpks_instansi');
+
+        if(!empty($request->q)) {
+            $vtable->where('mpks_instansi', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->groupBy('mpks_instansi')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+
+    public function getInstansi(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            ->where([
+                ['mpks_pk', $id],
+                ['mpks_instansi','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            ->where([
+                ['mpks_pk', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
+    }
+
+    public function selectNoPks(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('eopr.mst_pks')
+        ->select('mpks_pk','mpks_nomor');
+
+        if(!empty($request->q)) {
+            $vtable->where('mpks_nomor', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        // ->groupBy('mpks_instansi')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function getNoPks(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            ->where([
+                ['mpks_pk', $id],
+                ['mpks_nomor','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            ->where([
+                ['mpks_pk', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
+    }
+
+    public function selectPic(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('eopr.mst_pks')
+        ->select('mpks_pk','mpks_pic');
+
+        if(!empty($request->q)) {
+            $vtable->where('mpks_pic', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->groupBy('mpks_pic')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function getPic(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            ->where([
+                ['mpks_pk', $id],
+                ['mpks_pic','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            ->where([
+                ['mpks_pk', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
+    }
+    public function selectInsUser(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('eopr.mst_pks')
+        ->select('mpks_pk','mpks_ins_user');
+
+        if(!empty($request->q)) {
+            $vtable->where('mpks_ins_user', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->groupBy('mpks_ins_user')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function getInsUser(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            ->where([
+                ['mpks_pk', $id],
+                ['mpks_ins_user','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            ->where([
+                ['mpks_pk', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
+    }
+
 }

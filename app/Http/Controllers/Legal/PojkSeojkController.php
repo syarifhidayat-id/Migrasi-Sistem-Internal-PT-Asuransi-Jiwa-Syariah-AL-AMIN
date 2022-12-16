@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Library\KodeController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 class PojkSeojkController extends Controller
 {
     /**
@@ -182,4 +183,206 @@ class PojkSeojkController extends Controller
             ]);
         }
     }
+
+    public function pojk_seojk(Request $request)
+    {
+        $data = DB::table('emst.mst_pojk')->select(
+            '*',
+            DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            DB::raw('DATE_FORMAT(mpojk_ins_date, "%d-%m-%Y") as ins_date'),
+            DB::raw('CASE WHEN mpojk_jenis = "2" THEN "POJK" WHEN mpojk_jenis = "1" THEN "SEOJK" END as jenis')
+        )->orderBy('mpojk_ins_date', 'DESC')->get();
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->filter(function ($instance) use ($request) {
+                if ($request->get('check_no_pojk') == "1") {
+                    if (!empty($request->get('mpojk_nomor'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['mpojk_nomor'], $request->get('mpojk_nomor')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_hal_pojk') == "1") {
+                    if (!empty($request->get('mpojk_tentang'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['mpojk_tentang'], $request->get('mpojk_tentang')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_jenis') == "1") {
+                    if (!empty($request->get('jenis'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['jenis'], $request->get('jenis')) ? true : false;
+                        });
+                    }
+                }
+                if (!empty($request->get('search'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if (Str::contains(Str::lower($row['mpojk_pk']), Str::lower($request->get('search')))){
+                            return true;
+                        }else if (Str::contains(Str::lower($row['mpojk_nomor']), Str::lower($request->get('search')))) {
+                            return true;
+                        }else if (Str::contains(Str::lower($row['mpojk_tentang']), Str::lower($request->get('search')))) {
+                            return true;
+                        }else if (Str::contains(Str::lower($row['jenis']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
+
+                        return false;
+                    });
+                }
+            })
+            ->make(true);
+        }
+
+        public function selectNomorPojk(Request $request)
+        {
+            $page = $request->page ? intval($request->page) : 1;
+            $rows = $request->rows ? intval($request->rows) : 100;
+            $offset = ($page - 1) * $rows;
+
+            $vtable = DB::table('emst.mst_pojk')
+            ->select('mpojk_nomor');
+            // $vtable = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+            // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama');
+
+            if(!empty($request->q)) {
+                $vtable->where('mpojk_nomor', 'LIKE', "%$request->q%");
+            }
+
+            $data = $vtable
+            ->groupBy('mpojk_nomor')
+            ->offset($offset)
+            ->limit($rows)
+            ->get();
+
+            return response()->json($data);
+        }
+
+        public function getNomorPojk(Request $request, $id)
+        {
+            $data = [];
+            if ($request->has('q')) {
+                $search = $request->q;
+                // $data = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+                // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama')
+                $data = DB::table('emst.mst_pojk')
+                ->select('mpojk_nomor')
+                ->where([
+                    ['mpojk_nomor', $id],
+                    ['mpojk_nomor','like',"%$search%"],
+                ])
+                ->get();
+            } else {
+                $data = DB::table('emst.mst_pojk')
+                ->select('*')
+                ->where([
+                    ['mpojk_nomor', $id],
+                ])
+                ->get();
+            }
+
+            return response()->json($data);
+        }
+
+        public function selectPerihalPojk(Request $request)
+        {
+            $page = $request->page ? intval($request->page) : 1;
+            $rows = $request->rows ? intval($request->rows) : 100;
+            $offset = ($page - 1) * $rows;
+
+            $vtable = DB::table('emst.mst_pojk')
+            ->select('mpojk_tentang');
+            // $vtable = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+            // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama');
+
+            if(!empty($request->q)) {
+                $vtable->where('mpojk_tentang', 'LIKE', "%$request->q%");
+            }
+
+            $data = $vtable
+            ->groupBy('mpojk_tentang')
+            ->offset($offset)
+            ->limit($rows)
+            ->get();
+
+            return response()->json($data);
+        }
+
+        public function getPerihalPojk(Request $request, $id)
+        {
+            $data = [];
+            if ($request->has('q')) {
+                $search = $request->q;
+                // $data = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+                // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama')
+                $data = DB::table('emst.mst_pojk')
+                ->select('mpojk_tentang')
+                ->where([
+                    ['mpojk_tentang', $id],
+                    ['mpojk_tentang','like',"%$search%"],
+                ])
+                ->get();
+            } else {
+                $data = DB::table('emst.mst_pojk')
+                ->select('*')
+                ->where([
+                    ['mpojk_tentang', $id],
+                ])
+                ->get();
+            }
+
+            return response()->json($data);
+        }
+
+        public function selectJenis(Request $request)
+        {
+            $page = $request->page ? intval($request->page) : 1;
+            $rows = $request->rows ? intval($request->rows) : 100;
+            $offset = ($page - 1) * $rows;
+
+            $vtable = DB::table('emst.mst_pojk')
+            ->select('mpojk_jenis', DB::raw('CASE WHEN mpojk_jenis = "2" THEN "POJK" WHEN mpojk_jenis = "1" THEN "SEOJK" END as jenis'));
+            // $vtable = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+            // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama');
+
+            if(!empty($request->q)) {
+                $vtable->where('mpojk_jenis', 'LIKE', "%$request->q%");
+            }
+
+            $data = $vtable
+            ->groupBy('mpojk_jenis')
+            ->offset($offset)
+            ->limit($rows)
+            ->get();
+
+            return response()->json($data);
+        }
+
+        public function getJenis(Request $request, $id)
+        {
+            $data = [];
+            if ($request->has('q')) {
+                $search = $request->q;
+                // $data = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+                // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama')
+                $data = DB::table('emst.mst_pojk')
+                ->select('mpojk_tentang')
+                ->where([
+                    ['mpojk_jenis', $id],
+                    ['mpojk_jenis','like',"%$search%"],
+                ])
+                ->get();
+            } else {
+                $data = DB::table('emst.mst_pojk')
+                ->select('*')
+                ->where([
+                    ['mpojk_jenis', $id],
+                ])
+                ->get();
+            }
+
+            return response()->json($data);
+        }
 }

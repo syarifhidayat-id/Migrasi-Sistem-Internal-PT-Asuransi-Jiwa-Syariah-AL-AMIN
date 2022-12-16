@@ -12,6 +12,7 @@ use App\Http\Controllers\Library\KodeController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class DraftController extends Controller
 {
@@ -199,47 +200,51 @@ class DraftController extends Controller
 
     public function api_draft(Request $request)
     {
-        // $data = DB::table('esur.trs_surat')->select(
-        //     '*',
-        //     DB::raw("@no:=@no+1 AS DT_RowIndex"),
-        //     DB::raw('DATE_FORMAT(tsm_ins_date, "%d-%m-%Y") as ins_date')
-        // )
-
         $data = DB::table('emst.mst_draft_pks')
-            // ->join('emst.mst_rekanan as rekanan', 'rekanan.mrkn_kode', '=', 'pks.mpks_mrkn_kode')
-            ->select(
-                '*',
-                // 'rekanan.mrkn_kode',
-                // 'rekanan.mrkn_nama',
-                DB::raw("@no:=@no+1 AS DT_RowIndex"),
-                DB::raw('DATE_FORMAT(mdp_ins_date, "%d-%m-%Y") as ins_date')
-                // DB::raw('(CASE WHEN pks.mpks_mrkn_kode = rekanan.mrkn_kode THEN rekanan.mrkn_nama END) as kode_rekanan')
-            )
-            ->orderBy('mdp_pk', 'desc')->limit(10);
+        ->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"), DB::raw('DATE_FORMAT(mdp_ins_date, "%d-%m-%Y") as ins_date'))
+        ->orderBy('mdp_ins_date', 'DESC')
+        ->get();
 
-        return DataTables::of($data)
+        return Datatables::of($data)
             ->addIndexColumn()
             ->filter(function ($instance) use ($request) {
-                // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
-                //     return $instance->where('wmn_tipe', $request->wmn_tipe);
-                // }
-                // if (!empty($request->get('wmn_tipe'))) {
-                //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
-                // }
-                // if (!empty($request->get('wmn_descp'))) {
-                //     $instance->where('wmn_descp', $request->get('wmn_descp'));
-                // }
+                if ($request->get('check_id') == "1") {
+                    if (!empty($request->get('mdp_pk'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['mdp_pk'], $request->get('mdp_pk')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_tentang') == "1") {
+                    if (!empty($request->get('mdp_tentang'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['mdp_tentang'], $request->get('mdp_tentang')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_segmen') == "1") {
+                    if (!empty($request->get('mdp_mssp_kode'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['mdp_mssp_kode'], $request->get('mdp_mssp_kode')) ? true : false;
+                        });
+                    }
+                }
                 if (!empty($request->get('search'))) {
-                    $instance->where(function ($w) use ($request) {
-                        $search = $request->get('search');
-                        $w->orWhere('mdp_tentang', 'LIKE', "%$search%")
-                            ->orWhere('mdp_pk', 'LIKE', "%$search%");
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if (Str::contains(Str::lower($row['mdp_pk']), Str::lower($request->get('search')))){
+                            return true;
+                        }else if (Str::contains(Str::lower($row['mdp_tentang']), Str::lower($request->get('search')))) {
+                            return true;
+                        }else if (Str::contains(Str::lower($row['mdp_ins_user']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
+
+                        return false;
                     });
                 }
             })
             ->make(true);
-        // }
-    }
+        }
 
     function mssp_kode($id)
     {
@@ -267,6 +272,150 @@ class DraftController extends Controller
                 ->orderBy('mssp_kode')
                 ->get();
         }
+        return response()->json($data);
+    }
+
+
+    //SELECT FILTER DRAFT PKS
+    public function selectId(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('emst.mst_draft_pks')
+        ->select('mdp_pk');
+
+        if(!empty($request->q)) {
+            $vtable->where('mdp_pk', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->groupBy('mdp_pk')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function getId(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('emst.mst_draft_pks')
+            ->select('*')
+            ->where([
+                ['mdp_pk', $id],
+                ['mdp_pk','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('emst.mst_draft_pks')
+            ->select('*')
+            ->where([
+                ['mdp_pk', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
+    }
+
+    public function selectTentang(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('emst.mst_draft_pks')
+        ->select('mdp_tentang');
+
+        if(!empty($request->q)) {
+            $vtable->where('mdp_tentang', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->groupBy('mdp_tentang')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function getTentang(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('emst.mst_draft_pks')
+            ->select('*')
+            ->where([
+                ['mdp_tentang', $id],
+                ['mdp_tentang','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('emst.mst_draft_pks')
+            ->select('*')
+            ->where([
+                ['mdp_tentang', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
+    }
+
+    public function selectSegmen(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('emst.mst_produk_segment')
+        ->select('mssp_kode', 'mssp_nama');
+        // $vtable = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+        // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama');
+
+        if(!empty($request->q)) {
+            $vtable->where('mssp_kode', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        // ->groupBy('mssp_kode')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function getSegmen(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            // $data = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+            // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama')
+            $data = DB::table('emst.mst_produk_segment')
+            ->select('mssp_kode', 'mssp_nama')
+            ->where([
+                ['mssp_kode', $id],
+                ['mssp_kode','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('emst.mst_draft_pks')
+            ->select('*')
+            ->where([
+                ['mssp_kode', $id],
+            ])
+            ->get();
+        }
+
         return response()->json($data);
     }
 }
