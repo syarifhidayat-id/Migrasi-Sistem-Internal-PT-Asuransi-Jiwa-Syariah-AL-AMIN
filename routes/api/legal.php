@@ -45,6 +45,9 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
         Route::get('mssp_kode/{id}', [DraftController::class, 'mssp_kode']);
         Route::get('draft_pks', [DraftController::class, 'api_draft']);
 
+        Route::get('select-instansi', [PksController::class, 'selectInstansi']);
+        Route::get('getInstansi/{id}', [PksController::class, 'getInstansi']);
+
         Route::prefix('/lihat')->name('lihat.')->controller(PksController::class)->group(function () {
             Route::get('/pks/{pk}', 'viewPks');
         });

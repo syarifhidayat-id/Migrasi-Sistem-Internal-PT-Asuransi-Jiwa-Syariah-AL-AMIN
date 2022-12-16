@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Legal;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Facade\FlareClient\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Legal\Pks;
 use App\Http\Controllers\Library\KodeController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class PksController extends Controller
 {
@@ -294,40 +293,111 @@ class PksController extends Controller
         //     DB::raw("@no:=@no+1 AS DT_RowIndex"),
         //     DB::raw('DATE_FORMAT(tsm_ins_date, "%d-%m-%Y") as ins_date')
         // )
-
+        // if ($request->ajax()) {
+        // $page = $request->page ? intval($request->page) : 1;
+        // $rows = $request->rows ? intval($request->rows) : 100;
+        // $offset = ($page - 1) * $rows;
         $data = DB::table('eopr.mst_pks as pks')
             ->join('emst.mst_rekanan as rekanan', 'rekanan.mrkn_kode', '=', 'pks.mpks_mrkn_kode')
-            ->select(
-                'pks.*',
-                'rekanan.mrkn_kode',
-                'rekanan.mrkn_nama',
+            ->select(DB::raw('pks.*', 'rekanan.mrkn_kode', 'rekanan.mrkn_nama'),
                 DB::raw("@no:=@no+1 AS DT_RowIndex"),
                 DB::raw('(CASE WHEN pks.mpks_mrkn_kode = rekanan.mrkn_kode THEN rekanan.mrkn_nama END) as kode_rekanan')
             )
-            ->orderBy('mpks_pk', 'desc')->limit(10);
+            ->orderBy('mpks_pk', 'desc')
+            // ->limit(10)
+            ->get();
 
         return DataTables::of($data)
             ->addIndexColumn()
-            ->filter(function ($instance) use ($request) {
-                // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
-                //     return $instance->where('wmn_tipe', $request->wmn_tipe);
-                // }
-                // if (!empty($request->get('wmn_tipe'))) {
-                //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
-                // }
-                // if (!empty($request->get('wmn_descp'))) {
-                //     $instance->where('wmn_descp', $request->get('wmn_descp'));
+            ->filter (function ($instance) use ($request) {
+                if ($request->get('check_instansi') == "1") {
+                    if (!empty($request->get('mpks_instansi'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['mpks_instansi'], $request->get('mpks_instansi')) ? true : false;
+                        });
+                    }
+                }
+                // if ($request->get('check_2') == "1") {
+                //     if (!empty($request->get('wmn_descp'))) {
+                //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //             return Str::contains($row['wmn_descp'], $request->get('wmn_descp')) ? true : false;
+                //         });
+                //     }
                 // }
                 if (!empty($request->get('search'))) {
-                    $instance->where(function ($w) use ($request) {
-                        $search = $request->get('search');
-                        $w->orWhere('mpks_tentang', 'LIKE', "%$search%")
-                            ->orWhere('mpks_pk', 'LIKE', "%$search%");
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if (Str::contains(Str::lower($row['mpks_pk']), Str::lower($request->get('search')))){
+                            return true;
+                        // }else if (Str::contains(Str::lower($row['wmn_descp']), Str::lower($request->get('search')))) {
+                        //     return true;
+                        }
+
+                        return false;
                     });
                 }
             })
             ->make(true);
         // }
+    }
+
+    public function selectInstansi(Request $request)
+    {
+        // $data = [];
+        // if ($request->has('q')) {
+        //     $search = $request->q;
+        //     $data = DB::table('eopr.mst_pks')
+        //     ->select('mpks_pk','mpks_instansi')
+        //     ->where([
+        //         ['mpks_instansi','like',"%$search%"],
+        //     ])
+        //     ->get();
+        // } else {
+        //     $data = DB::table('eopr.mst_pks')
+        //     ->select('mpks_pk','mpks_instansi')
+        //     ->get();
+        // }
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('eopr.mst_pks')
+        ->select('mpks_pk','mpks_instansi');
+
+        if(!empty($request->q)) {
+            $vtable->where('mpks_instansi', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->groupBy('mpks_instansi')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function getInstansi(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            ->where([
+                ['mpks_pk', $id],
+                ['mpks_instansi','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('eopr.mst_pks')
+            ->select('*')
+            ->where([
+                ['mpks_pk', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
     }
 
     public function select_pk_pks(Request $request)
