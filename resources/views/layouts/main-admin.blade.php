@@ -367,10 +367,10 @@
 
 
     <script>var hostUrl = "assets/";</script>
-    {{-- <script src="{{ asset('dist/js/jquery-3.6.1.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('dist/js/jquery-3.6.1.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/jquery/jquery.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
-    {{-- <script src="{{ asset('assets/plugins/custom/jquery/jquery.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/custom/jquery/jquery.easyui.min.js') }}"></script>
     {{-- <script src="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>

@@ -19,9 +19,43 @@ class EntrySocController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pages.tehnik.soc.create');
+        $mks1 =  $this->selectMeka1($request);
+        $mks2 =  $this->selectMeka2($request);
+        $jnskerja =  $this->selectJnsKerja($request);
+        $slurdis =  $this->selectSalDistri($request);
+        // $prodojk =  $this->selectProdOjk($request);
+        $feeppn =  $this->selectFeePPn($request);
+        $feepph =  $this->selectFeePPh23($request);
+        $ujroh =  $this->selectUjroh($request);
+        $mnfee =  $this->selectMnFee($request);
+        $komtidakpot =  $this->selectKomtidakpot($request);
+        $kompot =  $this->selectKompot($request);
+        $referal =  $this->selectReferal($request);
+        $maintenence =  $this->selectMaintenence($request);
+        $fbtpot =  $this->selectFeebtidakpotong($request);
+        $fbpot =  $this->selectFeebpotong($request);
+        $e_tarif =  $this->selectTarifImport($request);
+        $e_uw =  $this->selectUnderwritingImport($request);
+        return view('pages.tehnik.soc.create', [
+            // 'mks1' => $mks1,
+            // 'mks2' => $mks2,
+            // 'jnskerja' => $jnskerja,
+            // 'slurdis' => $slurdis,
+            'feeppn' => $feeppn,
+            'feepph' => $feepph,
+            'ujroh' => $ujroh,
+            'mnfee' => $mnfee,
+            'komtidakpot' => $komtidakpot,
+            'kompot' => $kompot,
+            'referal' => $referal,
+            'maintenence' => $maintenence,
+            'fbtpot' => $fbtpot,
+            'fbpot' => $fbpot,
+            // 'e_tarif' => $e_tarif,
+            // 'e_uw' => $e_uw,
+        ]);
     }
 
     /**
@@ -48,7 +82,7 @@ class EntrySocController extends Controller
             'msoc_mssp_nama' => 'required',
             'msoc_mekanisme' => 'required',
             'e_manfaat_pol' => 'required',
-            // 'msoc_jenis_bayar' => 'required',
+            'msoc_jenis_bayar' => 'required',
             'msoc_jns_perusahaan' => 'required',
             'e_manfaat' => 'required',
             'e_pras' => 'required',
@@ -68,7 +102,7 @@ class EntrySocController extends Controller
             'msoc_mssp_nama.required'=>'Segmen pasar tidak boleh kosong!',
             'msoc_mekanisme.required'=>'Mekanisme 1 tidak boleh kosong!',
             'e_manfaat_pol.required'=>'Manfaat asuransi tidak boleh kosong!',
-            // 'msoc_jenis_bayar.required'=>'Pembayaran kontribusi tidak boleh kosong!',
+            'msoc_jenis_bayar.required'=>'Pembayaran kontribusi tidak boleh kosong!',
             'msoc_jns_perusahaan.required'=>'Jenis pekerjaan tidak boleh kosong!',
             'e_manfaat.required'=>'Jaminan asuransi tidak boleh kosong!',
             'e_pras.required'=>'Program asuransi tidak boleh kosong!',
@@ -135,6 +169,7 @@ class EntrySocController extends Controller
                 // $data['msoc_pajakfee'] = '0';
                 // $data['msoc_handlingfee'] = '0';
                 // $data['msoc_handlingfee2'] = '0';
+                $data['msoc_endors'] = $request->endors;
                 $data['msoc_ins_date'] = date('Y-m-d H:i:s');
                 $data['msoc_ins_user'] = Auth::user()->email;
                 $data['msoc_upd_date'] = date('Y-m-d H:i:s');
@@ -171,17 +206,21 @@ class EntrySocController extends Controller
                         'e_bersih',
                         'endors',
                     );
-                    // $data['msoc_kode'] = $kodepoliseds;
-                    // $data['msoc_kode_ori'] = $getFill->msoc_kode_ori;
-                    // $data['msoc_nomor'] = $nomor;
-                    // $data['msoc_endors'] = $request->endors;
-                    // $data['msoc_endos_idx'] = $msoc_endos_idx;
+                    if ($request->hasFile('msoc_dok')) {
+                        $msoc_dok = $request->file('msoc_dok');
+                        $dir = 'public/tehnik/soc/doc';
+                        $fileOri = $msoc_dok->getClientOriginalName();
+                        $namaFile = $request->msoc_kode . '-DokumenSoc-' . $fileOri;
+                        $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
+                        $data['msoc_dok'] = $namaFile;
+                    }
+                    $data['msoc_endors'] = $request->endors;
                     // $data['msoc_status'] = 0;
-                    // $data['msoc_approve'] = 0;
-                    // $data['msoc_ins_date'] = date('Y-m-d H:i:s');
-                    // $data['msoc_ins_user'] = Auth::user()->email;
-                    // $data['msoc_upd_date'] = date('Y-m-d H:i:s');
-                    // $data['msoc_upd_user'] = Auth::user()->email;
+                    $data['msoc_approve'] = 0;
+                    $data['msoc_ins_date'] = date('Y-m-d H:i:s');
+                    $data['msoc_ins_user'] = Auth::user()->email;
+                    $data['msoc_upd_date'] = date('Y-m-d H:i:s');
+                    $data['msoc_upd_user'] = Auth::user()->email;
 
                     $vtable->update($data);
 
@@ -189,7 +228,6 @@ class EntrySocController extends Controller
                         'success' => 'Data berhasil diupdate dengan Kode '.$request->msoc_kode.' !'
                     ]);
                 }
-
                 if($request->endors=="2") {
                     $msoc_endos_idx = 0;
                     $vtable = DB::table('eopr.mst_soc');
@@ -220,6 +258,70 @@ class EntrySocController extends Controller
                         'e_bersih',
                         'endors',
                     );
+                    if ($request->hasFile('msoc_dok')) {
+                        $msoc_dok = $request->file('msoc_dok');
+                        $dir = 'public/tehnik/soc/doc';
+                        $fileOri = $msoc_dok->getClientOriginalName();
+                        $namaFile = $kodepoliseds . '-DokumenSoc-' . $fileOri;
+                        $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
+                        $data['msoc_dok'] = $namaFile;
+                    }
+                    $data['msoc_kode'] = $kodepoliseds;
+                    $data['msoc_kode_ori'] = $getFill->msoc_kode_ori;
+                    $data['msoc_nomor'] = $nomor;
+                    $data['msoc_endors'] = $request->endors;
+                    $data['msoc_endos_idx'] = $msoc_endos_idx;
+                    // $data['msoc_status'] = 0;
+                    $data['msoc_approve'] = 0;
+                    $data['msoc_ins_date'] = date('Y-m-d H:i:s');
+                    $data['msoc_ins_user'] = Auth::user()->email;
+                    $data['msoc_upd_date'] = date('Y-m-d H:i:s');
+                    $data['msoc_upd_user'] = Auth::user()->email;
+
+                    $vtable->insert($data);
+
+                    return response()->json([
+                        'success' => 'Data berhasil di Endors dengan Kode '.$kodepoliseds.' !'
+                    ]);
+                }
+                if($request->endors=="3") {
+                    $msoc_endos_idx = 0;
+                    $vtable = DB::table('eopr.mst_soc');
+                    $getFill = DB::table('eopr.mst_soc')
+                    ->select(DB::raw("IFNULL(MAX(msoc_endos_idx),0)+1 idx, msoc_kode_ori"))
+                    ->where('msoc_kode', $request->msoc_kode)
+                    ->first();
+
+                    $msoc_endos_idx = strval($getFill->idx);
+                    $kodepoliseds = 'EDS'.$msoc_endos_idx.'.'.$getFill->msoc_kode_ori;
+                    $nomor = substr($getFill->msoc_kode_ori,0,10);
+
+                    $data = $request->all();
+                    $data = $request->except(
+                        '_token',
+                        'e_nasabah',
+                        'mpid_mssp_kode',
+                        'e_cabalamin',
+                        'e_manfaat',
+                        'e_manfaat_pol',
+                        'e_marketing',
+                        'e_pinca',
+                        'e_pras',
+                        'e_tarif',
+                        'e_uw',
+                        'edit_akses',
+                        'mpid_nama',
+                        'e_bersih',
+                        'endors',
+                    );
+                    if ($request->hasFile('msoc_dok')) {
+                        $msoc_dok = $request->file('msoc_dok');
+                        $dir = 'public/tehnik/soc/doc';
+                        $fileOri = $msoc_dok->getClientOriginalName();
+                        $namaFile = $kodepoliseds . '-DokumenSoc-' . $fileOri;
+                        $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
+                        $data['msoc_dok'] = $namaFile;
+                    }
                     $data['msoc_kode'] = $kodepoliseds;
                     $data['msoc_kode_ori'] = $getFill->msoc_kode_ori;
                     $data['msoc_nomor'] = $nomor;
@@ -235,7 +337,7 @@ class EntrySocController extends Controller
                     $vtable->insert($data);
 
                     return response()->json([
-                        'success' => 'Data berhasil disimpan dengan Kode '.$kodepoliseds.' !'
+                        'success' => 'Data berhasil di Batal dengan Kode '.$kodepoliseds.' !'
                     ]);
                 }
             }
@@ -418,6 +520,7 @@ class EntrySocController extends Controller
         ->get();
 
         return response()->json($data);
+        // return $data;
     }
 
     public function selectMeka2(Request $request)
@@ -439,6 +542,7 @@ class EntrySocController extends Controller
         ->get();
 
         return response()->json($data);
+        // return $data;
     }
 
     public function selectManfaatAsu(Request $request)
@@ -490,6 +594,7 @@ class EntrySocController extends Controller
         ->get();
 
         return response()->json($data);
+        // return $data;
     }
 
     public function getNoSoc(Request $request)
@@ -741,6 +846,7 @@ class EntrySocController extends Controller
         ->get();
 
         return response()->json($data);
+        // return $data;
     }
 
     public function selectProdOjk(Request $request)
@@ -762,6 +868,7 @@ class EntrySocController extends Controller
         ->get();
 
         return response()->json($data);
+        // return $data;
     }
 
     public function selectCabAlamin(Request $request)
@@ -859,7 +966,8 @@ class EntrySocController extends Controller
         ->limit($rows)
         ->get();
 
-        return response()->json($data);
+        // return response()->json($data);
+        return $data;
     }
 
     public function selectFeePPh23(Request $request)
@@ -880,7 +988,8 @@ class EntrySocController extends Controller
         ->limit($rows)
         ->get();
 
-        return response()->json($data);
+        // return response()->json($data);
+        return $data;
     }
 
     public function selectUjroh(Request $request)
@@ -904,7 +1013,8 @@ class EntrySocController extends Controller
         ->limit($rows)
         ->get();
 
-        return response()->json($data);
+        // return response()->json($data);
+        return $data;
     }
 
     public function selectMnFee(Request $request)
@@ -925,7 +1035,8 @@ class EntrySocController extends Controller
         ->limit($rows)
         ->get();
 
-        return response()->json($data);
+        // return response()->json($data);
+        return $data;
     }
 
     public function selectKomtidakpot(Request $request)
@@ -946,7 +1057,8 @@ class EntrySocController extends Controller
         ->limit($rows)
         ->get();
 
-        return response()->json($data);
+        // return response()->json($data);
+        return $data;
     }
 
     public function selectKompot(Request $request)
@@ -967,7 +1079,8 @@ class EntrySocController extends Controller
         ->limit($rows)
         ->get();
 
-        return response()->json($data);
+        // return response()->json($data);
+        return $data;
     }
 
     public function selectReferal(Request $request)
@@ -988,7 +1101,8 @@ class EntrySocController extends Controller
         ->limit($rows)
         ->get();
 
-        return response()->json($data);
+        // return response()->json($data);
+        return $data;
     }
 
     public function selectMaintenence(Request $request)
@@ -1009,7 +1123,8 @@ class EntrySocController extends Controller
         ->limit($rows)
         ->get();
 
-        return response()->json($data);
+        // return response()->json($data);
+        return $data;
     }
 
     public function selectFeebtidakpotong(Request $request)
@@ -1030,7 +1145,8 @@ class EntrySocController extends Controller
         ->limit($rows)
         ->get();
 
-        return response()->json($data);
+        // return response()->json($data);
+        return $data;
     }
 
     public function selectFeebpotong(Request $request)
@@ -1051,7 +1167,8 @@ class EntrySocController extends Controller
         ->limit($rows)
         ->get();
 
-        return response()->json($data);
+        // return response()->json($data);
+        return $data;
     }
 
     public function selectTarifImport(Request $request)
@@ -1076,6 +1193,7 @@ class EntrySocController extends Controller
         // ->limit($rows)
         ->get();
         return response()->json($data);
+        // return $data;
     }
 
     public function selectUnderwritingImport(Request $request)
@@ -1101,6 +1219,7 @@ class EntrySocController extends Controller
         ->get();
 
         return response()->json($data);
+        // return $data;
     }
 
     public function lihatTarif(Request $request, $kode)

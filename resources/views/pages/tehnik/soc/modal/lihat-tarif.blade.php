@@ -7,19 +7,13 @@
             </div>
 
             <div class="modal-body">
-                <div class="mb-5" hidden>
-                    <form id="frxmodallihatTarif" action="" method="POST">
-                        <label for="">mth nomor</label>
-                        <input type="text" class="form-control" name="mth_nomor" id="mth_nomor">
-                    </form>
-                </div>
                 <div class="card-body py-2 scroll-y">
                     <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalLihatTarif_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modalLihatTarif_header" data-kt-scroll-wrappers="#modalLihatTarif_scroll" data-kt-scroll-offset="300px">
                         <div class="table-responsive">
                             <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="listTableTarif">
                                 <thead>
                                     <tr class="fw-bold text-gray-800 border-bottom border-gray-200 text-center align-middle">
-                                        {{-- <th rowspan="2">No.</th> --}}
+                                        <th rowspan="2">No.</th>
                                         <th rowspan="2">Usia (Tahun)</th>
                                         <th colspan="71">Tarif</th>
                                     </tr>
