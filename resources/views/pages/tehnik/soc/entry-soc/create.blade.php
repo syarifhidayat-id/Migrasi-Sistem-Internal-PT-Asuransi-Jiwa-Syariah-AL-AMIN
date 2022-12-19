@@ -36,7 +36,7 @@
 
             </div> --}}
             <div class="input-group input-group-solid">
-                <button type="button" id="btnBru" class="btn btn-light-primary active" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru" onclick="cekForm(0)">Baru</button>
+                <button type="button"                 <button type="button" id="btnBru" class="btn btn-light-primary active" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru" onclick="cekForm(0)">Baru</button>
                 <button type="button" id="btnEds" class="btn btn-light-primary" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Endors" onclick="cekForm(2)">Endors</button>
                 <button type="button" id="btnEdt" class="btn btn-light-primary" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Edit" onclick="cekForm(1)">Edit</button>
                 <button type="button" id="btnBtl" class="btn btn-light-primary" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tambah Batal" onclick="cekForm(3)">Batal</button>
@@ -180,8 +180,8 @@
                         <label class="required form-label">Program Asuransi</label>
                         <input type="text" class="easyui-textbox selectGrid" name="e_pras" id="e_pras" data-options="prompt:'Pilih program asuransi'" style="width: 100%; height: 38px;" />
                         <input type="text" class="form-control form-control-solid" name="msoc_mpras_kode" id="msoc_mpras_kode" placeholder="msoc_mpras_kode" />
+                        <label class="required form-label">Urutan Nomor filter/penyaringan harus benar !</label></br>
                         <span class="text-danger error-text e_pras_err"></span>
-                        <label class="required form-label">Urutan Nomor filter/penyaringan harus benar !</label>
                     </div>
                 </div>
             </div>
@@ -542,8 +542,8 @@
                                             </select> --}}
                                             <input type="text" class="form-control form-control-solid" name="msoc_mth_nomor" id="msoc_mth_nomor" placeholder="msoc_mth_nomor" />
                                         </div>
-                                        <span class="text-danger error-text e_tarif_err"></span>
                                     </div>
+                                    <span class="text-danger error-text e_tarif_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -582,8 +582,8 @@
                                             </select> --}}
                                             <input type="text" class="form-control form-control-solid" name="msoc_mpuw_nomor" id="msoc_mpuw_nomor" placeholder="msoc_mpuw_nomor" />
                                         </div>
-                                        <span class="text-danger error-text e_uw_err"></span>
                                     </div>
+                                    <span class="text-danger error-text e_uw_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -617,14 +617,14 @@
             <button type="button" class="btn btn-warning btn-sm" onclick="clear_f()"><i class="fa-solid fa-trash"></i> Hapus</button>
         </div>
     </form>
-    @include('pages.tehnik.soc.modal.program-asuransi')
-    @include('pages.tehnik.soc.modal.import-tarif')
-    @include('pages.tehnik.soc.modal.show-konfirmtarif')
-    @include('pages.tehnik.soc.modal.lihat-tarif')
-    @include('pages.tehnik.soc.modal.import-uw')
-    @include('pages.tehnik.soc.modal.lihat-uw')
-    @include('pages.tehnik.soc.modal.show-konfirmuw')
-    @include('pages.tehnik.soc.modal.lihat-docsoc')
+    @include('pages.tehnik.soc.entry-soc.modal.program-asuransi')
+    @include('pages.tehnik.soc.entry-soc.modal.import-tarif')
+    @include('pages.tehnik.soc.entry-soc.modal.show-konfirmtarif')
+    @include('pages.tehnik.soc.entry-soc.modal.lihat-tarif')
+    @include('pages.tehnik.soc.entry-soc.modal.import-uw')
+    @include('pages.tehnik.soc.entry-soc.modal.lihat-uw')
+    @include('pages.tehnik.soc.entry-soc.modal.show-konfirmuw')
+    @include('pages.tehnik.soc.entry-soc.modal.lihat-docsoc')
 </div>
 @endsection
 
@@ -808,7 +808,9 @@
                     setText('msoc_mspaj_nomor', row.mspaj_nomor);
                 }
             );
-            selectBox('msoc_mekanisme', 'POST', '{{ url("api/tehnik/soc/entry-soc/select-meka1") }}', 'mkm_kode', 'mkm_nama');
+            selectBox('msoc_mekanisme', 'POST', '{{ url("api/tehnik/soc/entry-soc/select-meka1") }}', 'mkm_kode', 'mkm_nama', function(rec) {
+                hidePesan('msoc_mekanisme');
+            });
             selectBox('msoc_mekanisme2', 'POST', '{{ url("api/tehnik/soc/entry-soc/select-meka2") }}', 'mkm_kode2', 'mkm_ket2');
             selectBox('msoc_jns_perusahaan', 'POST', '{{ url("api/tehnik/soc/entry-soc/select-jnskerja") }}', 'mker_kode', 'mker_nama', function(rec) {
                 hidePesan('msoc_jns_perusahaan');
@@ -1061,7 +1063,7 @@
                     titleAction("titleShowKonfirmTarif", "Konfirmasi Tabel Tarif");
                     var kode = getText("kode_import_tarif");
                     showTarifTable("showTarif", kode);
-                    reSelGrid('e_tarif', '{{ url("api/tehnik/soc/entry-soc/select-tarifimport") }}');
+                    reSelBox('e_tarif', '{{ url("api/tehnik/soc/entry-soc/select-tarifimport") }}');
                 },
             );
 
@@ -1074,6 +1076,7 @@
                     clearForm("frxx_tarifKonfim");
                     bsimpan('btnTarifKonfim_simpan', 'Simpan');
                     closeModal("modalShowKonfirmTarif");
+                    reSelBox('e_tarif', '{{ url("api/tehnik/soc/entry-soc/select-tarifimport") }}');
                 },
                 (resError) => {
                     console.log(resError);
@@ -1094,7 +1097,7 @@
                     titleAction("titleShowKonfirmUw", "Konfirmasi Tabel UW");
                     var kode = getText("kode_import_uw");
                     showUwTable("showUw", kode);
-                    reSelGrid('e_uw', '{{ url("api/tehnik/soc/entry-soc/select-underwritingimport") }}');
+                    reSelBox('e_uw', '{{ url("api/tehnik/soc/entry-soc/select-underwritingimport") }}');
                 },
             );
 
@@ -1107,6 +1110,7 @@
                     clearForm("frxx_uwKonfim");
                     bsimpan('btnUwKonfim_simpan', 'Simpan');
                     closeModal("modalShowKonfirmUw");
+                    reSelBox('e_uw', '{{ url("api/tehnik/soc/entry-soc/select-underwritingimport") }}');
                 },
                 (resError) => {
                     console.log(resError);
@@ -1153,7 +1157,7 @@
                 // setTextReadOnly('e_manfaat_pol',false);
                 // setTextReadOnly('msoc_mrkn_nama',false);
                 // setTextReadOnly('e_nasabah',false);
-                // setTextReadOnly('msoc_mspaj_nomor',false);
+                setTextReadOnly('msoc_mspaj_nomor',false);
                 // setTextReadOnly('msoc_mssp_nama',false);
                 // setTextReadOnly('msoc_jns_perusahaan',false);
                 setTextReadOnly('msoc_mpras_kode',false);
@@ -1179,7 +1183,7 @@
                 // setTextReadOnly('msoc_mrkn_nama',false);
                 // setTextReadOnly('e_nasabah',false);
                 // setTextReadOnly('e_manfaat_pol',false);
-                // setTextReadOnly('msoc_mspaj_nomor',false);
+                setTextReadOnly('msoc_mspaj_nomor',false);
                 // setTextReadOnly('msoc_mssp_nama',false);
                 // setTextReadOnly('msoc_jns_perusahaan',false);
                 setTextReadOnly('msoc_mpras_kode',false);
@@ -1204,7 +1208,7 @@
                 titleAction('title_action', 'SOC Batal');
                 // setTextReadOnly('msoc_mrkn_nama',false);
                 // setTextReadOnly('e_nasabah',false);
-                // setTextReadOnly('msoc_mspaj_nomor',false);
+                setTextReadOnly('msoc_mspaj_nomor',false);
                 // setTextReadOnly('e_manfaat_pol',false);
                 // setTextReadOnly('msoc_mssp_nama',false);
                 // setTextReadOnly('msoc_jns_perusahaan',false);
@@ -1334,7 +1338,7 @@
 
                 url = '{{ url("api/tehnik/soc/entry-soc/get-kodesoc") }}' + '?id=' + id + rms;
                 $.get(url, function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data) {
                         if(tipe=='1' && data.msoc_mlsr_kode=='4') {
                             setTextReadOnly('msoc_mkom_persen',true);
@@ -1618,8 +1622,6 @@
                 "{{ url('api/tehnik/soc/entry-soc/lihat-tarif') }}" + "/" + kode,
                 [
                     { data: "DT_RowIndex", className: "text-center" },
-                    { data: "mstuj_usia", className: "text-center" },
-                    { data: "mstuj_0", className: "text-center" },
                     { data: "mstuj_1", className: "text-center" },
                     { data: "mstuj_2", className: "text-center" },
                     { data: "mstuj_3", className: "text-center" },

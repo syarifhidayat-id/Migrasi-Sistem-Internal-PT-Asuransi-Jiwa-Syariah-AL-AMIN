@@ -63,6 +63,7 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
     Route::group(['prefix' => '/polis', 'as' => 'polis.'], function() {
         Route::group(['prefix' => '/approval-master-polis', 'as' => 'approval-master-polis.'], function() {
             Route::get('/list', [ApprovalMasterPolisController::class, 'getApprovalMasterPolis']);
+            Route::get('/get-kode-soc', [ApprovalMasterPolisController::class, 'getKodeSocApprove']);
         });
     });
 

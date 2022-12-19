@@ -38,7 +38,7 @@ class EntrySocController extends Controller
         $fbpot =  $this->selectFeebpotong($request);
         $e_tarif =  $this->selectTarifImport($request);
         $e_uw =  $this->selectUnderwritingImport($request);
-        return view('pages.tehnik.soc.create', [
+        return view('pages.tehnik.soc.entry-soc.create', [
             // 'mks1' => $mks1,
             // 'mks2' => $mks2,
             // 'jnskerja' => $jnskerja,
@@ -94,7 +94,7 @@ class EntrySocController extends Controller
             'msoc_handlingfee2' => 'required',
             'e_tarif' => 'required',
             'e_uw' => 'required',
-            'msoc_dok' => 'required|mimes:pdf',
+            'msoc_dok' => 'mimes:pdf',
         ],
         [
             'msoc_mrkn_nama.required'=>'Pemegang polis tidak boleh kosong!',
@@ -114,7 +114,7 @@ class EntrySocController extends Controller
             'msoc_handlingfee2.required'=>'Fee ppn 23 tidak boleh kosong!',
             'e_tarif.required'=>'Jenis tarif tidak boleh kosong!',
             'e_uw.required'=>'Jenis underwriting tidak boleh kosong!',
-            'msoc_dok.required'=>'File excel harus terisi!',
+            // 'msoc_dok.required'=>'File excel harus terisi!',
             'msoc_dok.mimes'=>'File harus berbentuk *pdf!',
         ]);
 
@@ -151,7 +151,7 @@ class EntrySocController extends Controller
                     $data['msoc_kode_ori'] = $kode . '.' . $kdAkhir;
                     $data['msoc_nomor'] = $kode;
                     $data['msoc_approve'] = 0;
-                    $data['msoc_endors'] = $request->endors;
+                    $data['msoc_endos'] = $request->endors;
                 }
                 if ($request->hasFile('msoc_dok')) {
                     $msoc_dok = $request->file('msoc_dok');
@@ -162,22 +162,13 @@ class EntrySocController extends Controller
                     $data['msoc_dok'] = $namaFile;
                 }
 
-                // $data['msoc_mkom_persen'] = '0';
-                // $data['msoc_mkomdisc_persen'] = '0';
-                // $data['msoc_referal'] = '0';
-                // $data['msoc_maintenance'] = '0';
-                // $data['msoc_pajakfee'] = '0';
-                // $data['msoc_handlingfee'] = '0';
-                // $data['msoc_handlingfee2'] = '0';
+                $data['msoc_endos'] = $request->endors;
                 $data['msoc_endors'] = $request->endors;
+                $data['msoc_approve'] = '0';
                 $data['msoc_ins_date'] = date('Y-m-d H:i:s');
                 $data['msoc_ins_user'] = Auth::user()->email;
                 $data['msoc_upd_date'] = date('Y-m-d H:i:s');
                 $data['msoc_upd_user'] = Auth::user()->email;
-                // $data['msoc_disc_lain'] = '0';
-                // $data['msoc_status'] = '0';
-                // $data['msoc_indexfolder'] = '0';
-                // $data['msoc_iscopy'] = '0';
 
                 // return $data;
                 $vtable->insert($data);
@@ -214,9 +205,10 @@ class EntrySocController extends Controller
                         $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
                         $data['msoc_dok'] = $namaFile;
                     }
+                    $data['msoc_endos'] = $request->endors;
                     $data['msoc_endors'] = $request->endors;
-                    // $data['msoc_status'] = 0;
                     $data['msoc_approve'] = 0;
+                    // $data['msoc_status'] = 0;
                     $data['msoc_ins_date'] = date('Y-m-d H:i:s');
                     $data['msoc_ins_user'] = Auth::user()->email;
                     $data['msoc_upd_date'] = date('Y-m-d H:i:s');
@@ -225,11 +217,11 @@ class EntrySocController extends Controller
                     $vtable->update($data);
 
                     return response()->json([
-                        'success' => 'Data berhasil diupdate dengan Kode '.$request->msoc_kode.' !'
+                        'success' => 'Data berhasil di Update dengan Kode '.$request->msoc_kode.' !'
                     ]);
                 }
                 if($request->endors=="2") {
-                    $msoc_endos_idx = 0;
+                    $msoc_endos_idx = '0';
                     $vtable = DB::table('eopr.mst_soc');
                     $getFill = DB::table('eopr.mst_soc')
                     ->select(DB::raw("IFNULL(MAX(msoc_endos_idx),0)+1 idx, msoc_kode_ori"))
@@ -269,9 +261,10 @@ class EntrySocController extends Controller
                     $data['msoc_kode'] = $kodepoliseds;
                     $data['msoc_kode_ori'] = $getFill->msoc_kode_ori;
                     $data['msoc_nomor'] = $nomor;
-                    $data['msoc_endors'] = $request->endors;
                     $data['msoc_endos_idx'] = $msoc_endos_idx;
                     // $data['msoc_status'] = 0;
+                    $data['msoc_endos'] = $request->endors;
+                    $data['msoc_endors'] = $request->endors;
                     $data['msoc_approve'] = 0;
                     $data['msoc_ins_date'] = date('Y-m-d H:i:s');
                     $data['msoc_ins_user'] = Auth::user()->email;
@@ -285,17 +278,7 @@ class EntrySocController extends Controller
                     ]);
                 }
                 if($request->endors=="3") {
-                    $msoc_endos_idx = 0;
-                    $vtable = DB::table('eopr.mst_soc');
-                    $getFill = DB::table('eopr.mst_soc')
-                    ->select(DB::raw("IFNULL(MAX(msoc_endos_idx),0)+1 idx, msoc_kode_ori"))
-                    ->where('msoc_kode', $request->msoc_kode)
-                    ->first();
-
-                    $msoc_endos_idx = strval($getFill->idx);
-                    $kodepoliseds = 'EDS'.$msoc_endos_idx.'.'.$getFill->msoc_kode_ori;
-                    $nomor = substr($getFill->msoc_kode_ori,0,10);
-
+                    $vtable = DB::table('eopr.mst_soc')->where('msoc_kode', $request->msoc_kode);
                     $data = $request->all();
                     $data = $request->except(
                         '_token',
@@ -318,26 +301,22 @@ class EntrySocController extends Controller
                         $msoc_dok = $request->file('msoc_dok');
                         $dir = 'public/tehnik/soc/doc';
                         $fileOri = $msoc_dok->getClientOriginalName();
-                        $namaFile = $kodepoliseds . '-DokumenSoc-' . $fileOri;
+                        $namaFile = $request->msoc_kode . '-DokumenSoc-' . $fileOri;
                         $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
                         $data['msoc_dok'] = $namaFile;
                     }
-                    $data['msoc_kode'] = $kodepoliseds;
-                    $data['msoc_kode_ori'] = $getFill->msoc_kode_ori;
-                    $data['msoc_nomor'] = $nomor;
+                    $data['msoc_endos'] = $request->endors;
                     $data['msoc_endors'] = $request->endors;
-                    $data['msoc_endos_idx'] = $msoc_endos_idx;
-                    $data['msoc_status'] = 0;
                     $data['msoc_approve'] = 0;
                     $data['msoc_ins_date'] = date('Y-m-d H:i:s');
                     $data['msoc_ins_user'] = Auth::user()->email;
                     $data['msoc_upd_date'] = date('Y-m-d H:i:s');
                     $data['msoc_upd_user'] = Auth::user()->email;
 
-                    $vtable->insert($data);
+                    $vtable->update($data);
 
                     return response()->json([
-                        'success' => 'Data berhasil di Batal dengan Kode '.$kodepoliseds.' !'
+                        'success' => 'Data berhasil di Batalkan dengan Kode '.$request->msoc_kode.' !'
                     ]);
                 }
             }

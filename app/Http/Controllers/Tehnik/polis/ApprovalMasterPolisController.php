@@ -13,7 +13,7 @@ class ApprovalMasterPolisController extends Controller
 {
     public function index(Request $request)
     {
-        return view('pages.tehnik.polis.index');
+        return view('pages.tehnik.polis.approval-master-polis.index');
     }
 
     public function getApprovalMasterPolis(Request $request)
@@ -55,7 +55,13 @@ class ApprovalMasterPolisController extends Controller
                 emst.f_getaprov(L8.mpap_status,'POLIS') L8sts
                 "))
                 ->leftJoin('emst.mst_lokasi as mlok', 'mlok.mlok_kode', '=', 'msoc_mlok_kode')
-                ->leftJoin('eopr.mst_polis as mpol', 'mpol.mpol_msoc_kode', '=', 'msoc_kode')
+                ->leftJoin('eopr.mst_polis as mpol', function($join) {
+                    $join->on('mpol.mpol_msoc_kode', '=', 'msoc_kode');
+                    $join->where([
+                        ['mpol.mpol_approve', '!=', '3'],
+                        ['mpol.mpol_endos', '!=', '3'],
+                    ]);
+                })
                 ->leftJoin('emst.mst_rekanan as ps', 'ps.mrkn_kode', '=', 'msoc_mrkn_kode')
                 ->leftJoin('emst.mst_jaminan as mjm', 'mjm.mjm_kode', '=', 'msoc_mjm_kode')
                 ->leftJoin('emst.mst_manfaat_plafond as mft', 'mft.mft_kode', '=', 'msoc_mft_kode')
@@ -106,25 +112,27 @@ class ApprovalMasterPolisController extends Controller
 
             return DataTables::of($data)
             ->addIndexColumn()
-            // ->filter (function ($instance) use ($request) {
-            //     if (!empty($request->get('msoc_kode'))) {
-            //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //             return Str::contains($row['msoc_kode'], $request->get('msoc_kode')) ? true : false;
-            //         });
-            //     }
-            //     if (!empty($request->get('search'))) {
-            //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //             if (Str::contains(Str::lower($row['msoc_kode']), Str::lower($request->get('search')))){
-            //                 return true;
-            //             }else if (Str::contains(Str::lower($row['msli_mrkn_nama']), Str::lower($request->get('search')))) {
-            //                 return true;
-            //             }
-
-            //             return false;
-            //         });
-            //     }
-            // })
             ->make(true);
+        }
+    }
+
+    public function getKodeSocApprove(Request $request)
+    {
+        $vtable = DB::table('eopr.mst_soc');
+        $cmd = $vtable->select(DB::raw("msoc_nomor,msoc_kode"))
+        ->leftJoin('eopr.mst_polis as msoc', 'msoc.mpol_msoc_kode', '=', 'msoc_kode');
+        if (!empty($request->kodepolis)) {
+            $cmd->where('msoc_nomor', $request->kodepolis);
+        }
+        $data = $cmd->first();
+
+        if (empty($data)==false) {
+            return response()->json($data);
+        } else {
+            $cmd = $vtable->select(DB::raw("'' msoc_nomor, '' msoc_kode"))
+            ->leftJoin('eopr.mst_polis as msoc', 'msoc.mpol_msoc_kode', '=', 'msoc_kode');
+            $data = $cmd->first();
+            return response()->json($data);
         }
     }
 }
