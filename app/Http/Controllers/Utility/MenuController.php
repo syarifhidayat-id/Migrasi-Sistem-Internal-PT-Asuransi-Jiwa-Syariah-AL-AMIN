@@ -68,31 +68,33 @@ class MenuController extends Controller
 
             if (empty($request->wmn_kode)) {
                 $kode = KodeController::__getKey(14);
+                $vtable = DB::table('web_menu');
 
                 if (empty($request->wmn_url)) {
                     $request->merge([
                         'wmn_url_n' => 'maintenance',
                     ]);
                 }
+                $data = $request->all();
+                $data = $request->except('_token');
+                $data['wmn_kode'] = $kode;
+                $data['wmn_slide'] = 0;
+                $data['wmn_timer'] = 0;
+                $data['wmn_open_w'] = 0;
+                $data['wmn_url_o_aktif_n'] = 0;
+                $data['wmn_bot'] = 0;
 
-                $request->merge([
-                    'wmn_kode' => $kode,
-                    'wmn_slide' => 0,
-                    'wmn_timer' => 0,
-                    'wmn_open_w' => 0,
-                    'wmn_url_o_aktif_n' => 0,
-                    'wmn_bot' => 0,
-                ]);
-
-                Menu::create($request->all());
+                $vtable->insert($data);
 
                 return response()->json([
                     'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
                 ]);
 
             } else {
-                $menu = Menu::findOrFail($request->wmn_kode);
-                $menu->update($request->all());
+                $vtable = DB::table('web_menu')->where('wmn_kode', $request->wmn_kode);
+                $data = $request->all();
+                $data = $request->except('_token');
+                $vtable->update($data);
 
                 return response()->json([
                     'success' => 'Data berhasil diupdate dengan Kode '.$request->wmn_kode.'!'

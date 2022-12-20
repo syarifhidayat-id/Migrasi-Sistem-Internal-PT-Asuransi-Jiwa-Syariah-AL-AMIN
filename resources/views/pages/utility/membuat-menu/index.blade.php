@@ -255,28 +255,27 @@
                 ],
             );
 
-            $('body').on('click', '#omodTam', function() {
+            tombol('click', 'omodTam', function() {
                 openModal('modalMenu');
                 titleAction('tModMenu', 'Tambah Menu');
-                clearForm("frxx");
+                clearForm("formMenu");
                 clearSelect();
                 bsimpan('btn_simpan', 'Simpan');
-                $('#btn_reset').show();
-                // tipeMenus();
+                setHide('btn_reset', false);
             });
 
-            $('body').on('click', '#omodEdit', function() {
+            tombol('click', 'omodEdit', function() {
                 titleAction('tModMenu', 'Edit Menu');
                 bsimpan('btn_simpan', 'Update');
                 // $('#wmn_key').val(null).trigger('change');
-                $('#btn_reset').hide();
+                setHide('btn_reset', true);
 
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
                 $.get(url, function(data) {
                     var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + data.wmn_key;
                     openModal('modalMenu');
-                    $("#frxx").formToJson(data);
+                    $("#formMenu").formToJson(data);
                     if (data.wmn_key == "MAIN") {
                         selectEdit('wmn_key', 'MAIN', 'MAIN');
                     } else {
@@ -292,67 +291,29 @@
                 });
             });
 
-            submitForm2(
-                "frxx",
-                "btn_simpan",
-                "POST",
-                "{{ route('utility.menu.store') }}",
-                (res) => {
-                    clearForm("frxx");
-                    clearSelect();
-                    bsimpan('btn_simpan', 'Simpan');
-                    lodTable("dataMenu");
-                    closeModal('modalMenu');
-                }
-            );
-
-            $('body').on('click', '#omodDelete', function() {
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ route('utility.menu.store') }}" + "/" + kode;
-
-                // console.log(kode);
-                Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: "Akan menghapus data menu dengan kode " + kode + " !",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                        'Terhapus!',
-                        'Anda berhasil menghapus data menu dengan kode ' + kode + ".",
-                        'success'
-                        ).then((result) => {
-                            console.log(kode);
-                            $.ajax({
-                                url: url,
-                                type: "DELETE",
-                                success: function(res) {
-                                    lodTable("dataMenu");
-                                },
-                                error: function(err) {
-                                    // console.log('Error', err);
-                                }
-                            });
-                        })
-                    }
-                })
+            submitForm("formMenu", "btn_simpan", "POST", "{{ route('utility.menu.store') }}", (resSuccess) => {
+                clearForm("formMenu");
+                bsimpan('btn_simpan', 'Simpan');
+                lodTable("dataMenu");
+                closeModal('modalMenu');
             });
 
-            $('#btn_reset').click(function() {
-                clearForm("frxx");
-                clearSelect();
+            tombol('click', 'omodDelete', function() {
+                var kode = $(this).attr('data-resouce'),
+                    url = "{{ route('utility.menu.store') }}" + "/" + kode;
+                submitDelete(kode, url, function(resSuccess) {
+                    lodTable("dataMenu");
+                    console.log(resSuccess);
+                }, function(resError) {
+                    console.log(resError);
+                });
             });
         });
 
 
         function closeBtnModal () {
             closeModal('modalMenu');
-            clearForm("frxx");
-            clearSelect();
+            clearForm("formMenu");
         };
 
         hidePesan('wmn_tipe');
