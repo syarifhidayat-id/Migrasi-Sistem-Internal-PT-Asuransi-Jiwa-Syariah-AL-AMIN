@@ -11,7 +11,7 @@
                 </div> --}}
             </div>
 
-            <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
+            <form id="formMenu" name="formMenu" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-5">
                     <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalMenu_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modalMenu_header" data-kt-scroll-wrappers="#modalMenu_scroll" data-kt-scroll-offset="300px">

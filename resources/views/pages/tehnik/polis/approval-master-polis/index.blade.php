@@ -136,12 +136,7 @@
         </table>
     </div>
 
-    {{-- <div class="card-footer">
-        <div align="center">
-            <button type="button" class="btn btn-primary btn-sm"><i class="fa-sharp fa-solid fa-floppy-disk"></i> Simpan</button>&nbsp;
-            <button type="button" class="btn btn-danger btn-sm"><i class="fa-sharp fa-solid fa-trash"></i> Hapus</button>
-        </div>
-    </div> --}}
+    @include('pages.tehnik.polis.approval-master-polis.modal.approval-soc')
 </div>
 @endsection
 
@@ -174,26 +169,26 @@
                     { data: "mpol_mpras_nama" },
                     { data: "mpol_mjns_keterangan" },
                     { data: "umur", className: "text-center" },
+                    {
+                        data: "mpol_msoc_nomor",
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<button type="button" class="btn btn-primary btn-sm" onclick="aprovalsoc('`+row.mpol_msoc_nomor+`', 0)">`+row.apr_soc+`</button>`;
+                        }
+                    },
+                    {
+                        data: "mpol_nomor",
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<button type="button" class="btn btn-primary btn-sm" onclick="aprovalpolis(`+row.mpol_nomor+`,0)">`+row.cek+`</button>`;
+                        }
+                    },
                     { data: "cabang", className: "text-center" },
                     { data: "cabang", className: "text-center" },
                     { data: "cabang", className: "text-center" },
                     { data: "cabang", className: "text-center" },
                     { data: "cabang", className: "text-center" },
                     { data: "cabang", className: "text-center" },
-                    { data: "cabang", className: "text-center" },
-                    { data: "cabang", className: "text-center" },
-                    // {
-                    //     data: "online",
-                    //     render: function(data, type, row, meta) {
-                    //         var sts = row.online;
-                    //         if (sts == "aktif") {
-                    //             var text = "success";
-                    //         } else if (sts == "mati") {
-                    //             var text = "danger";
-                    //         }
-                    //         return `<div class="badge badge-light-`+text+` fw-bolder">`+row.online+`</div>`;
-                    //     }
-                    // },
                 ],
             );
 
@@ -344,28 +339,42 @@
                     }
                 })
             });
-
-            $('#btn_reset').click(function() {
-                resetMod();
-            });
-
-            $('#btn_close').click(function() {
-                closeModal('#modalMenu');
-            });
-
-            $('#btn_close2').click(function() {
-                closeModal('#modalMenu');
-            });
         });
 
-        function resetMod() {
-            $('#frxx').trigger('reset');
-            $('#wmn_tipe').val(null).trigger('change');
-            $('#wmn_key').val(null).trigger('change');
-            // $('#wmn_key').empty();
-            // $('#wmn_key').append('<option></option>');
-            $('#wmn_mrkn_kode').val(null).trigger('change');
-            $('#wmn_mpol_kode').val(null).trigger('change');
+        function aprovalsoc(kodepolis,tipe) {
+            // ajaxData('ww.rpt/grd_approv_polis.php?nomor='+kodepolis,'#rptapv');
+            vv={ res : ''};
+            rms = "kodepolis="+kodepolis;
+            url = '{{ url("api/tehnik/polis/approval-master-polis/get-kode-soc") }}' + '?' + rms;
+            $.get(url,vv, function(data){
+                if (data) {
+                    if(tipe="0") {
+                        titleAction('titleModal', 'Approval Summary Of Commision');
+                        openModal('modalAppSoc');
+                        setText('mpap_msoc_kode', kodepolis);
+                        jsonForm('apprSoc', data);
+                    }
+                }
+            });
+        }
+        function aprovalpolis(kodepolis,tipe) {
+            // ajaxData('ww.rpt/grd_approv_polis.php?nomor='+kodepolis,'#rptapv');
+            // var tipe=getText("mpol_nomor");
+            // vv={ res : ''};
+            // rms="kodepolis="+kodepolis;
+            // url="ww.load/get_kodepoliskodeapprov.php?id=&"+rms;
+            // $.getJSON(url,vv, function(data){
+            //     if (data) {
+            //         if ( tipe="0")
+            //         {
+            //             setText("mpap_mpol_kode",kodepolis);
+            //             $('#ff').form('load',data);
+            //             //coba form file
+
+            //             setReadEdit(true);
+            //         }
+            //     }
+            // });
         }
     </script>
 @endsection
