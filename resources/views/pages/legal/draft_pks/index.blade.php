@@ -244,7 +244,7 @@
             // });
 
             filterAll('input[type="search"]', 'serverSide_draft');
-            serverSide( "serverSide_draft", "{{ url('api/legal/pks/draft_pks') }}", //url api/route
+            serverSide( "serverSide_draft", "{{ url('api/legal/draft_pks') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.check_id = getText('check_id');
                     d.mdp_pk = getText('check_id_draft');

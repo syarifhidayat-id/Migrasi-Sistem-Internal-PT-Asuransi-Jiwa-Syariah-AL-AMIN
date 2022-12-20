@@ -7,6 +7,8 @@ use App\Http\Controllers\Library\KodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class OjkController extends Controller
 {
@@ -198,6 +200,62 @@ class OjkController extends Controller
     ]);
     }
 
+
+    public function ojk(Request $request)
+    {
+        $data = DB::table('emst.mst_ojk')->select(
+            '*',
+            // DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            // DB::raw('DATE_FORMAT(map_ins_date, "%d-%m-%Y") as ins_date'),
+            DB::raw('CASE WHEN mojk_jenis = "0" THEN "Audit"
+            WHEN mojk_jenis = "1" THEN "Laporan"
+            WHEN mojk_jenis = "2" THEN "Tanda Terima" END as jenis_mojk')
+        )->orderBy('mojk_pk', 'desc')->get();
+
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->filter(function ($instance) use ($request) {
+            if ($request->get('check_id') == "1") {
+                if (!empty($request->get('mojk_pk'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['mojk_pk'], $request->get('mojk_pk')) ? true : false;
+                    });
+                }
+            }
+            // if ($request->get('check_hal_pojk') == "1") {
+            //     if (!empty($request->get('mpojk_tentang'))) {
+            //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //             return Str::contains($row['mpojk_tentang'], $request->get('mpojk_tentang')) ? true : false;
+            //         });
+            //     }
+            // }
+            // if ($request->get('check_jenis') == "1") {
+            //     if (!empty($request->get('jenis'))) {
+            //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //             return Str::contains($row['jenis'], $request->get('jenis')) ? true : false;
+            //         });
+            //     }
+            // }
+            if (!empty($request->get('search'))) {
+                $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                    if (Str::contains(Str::lower($row['mojk_pk']), Str::lower($request->get('search')))){
+                        return true;
+                    }else if (Str::contains(Str::lower($row['mojk_judul']), Str::lower($request->get('search')))) {
+                        return true;
+                    }else if (Str::contains(Str::lower($row['mojk_tahun']), Str::lower($request->get('search')))) {
+                        return true;
+                    }else if (Str::contains(Str::lower($row['mojk_ket_jenis']), Str::lower($request->get('search')))) {
+                        return true;
+                    }
+
+                    return false;
+                });
+            }
+        })
+        ->make(true);
+    }
+
     public function showDoc(Request $request)
     {
         $vtable = DB::table('emst.mst_ojk')
@@ -210,4 +268,60 @@ class OjkController extends Controller
 
         return response()->json($data);
     }
+
+
+    //SELECT FILTER
+
+    public function selectId(Request $request)
+        {
+            $page = $request->page ? intval($request->page) : 1;
+            $rows = $request->rows ? intval($request->rows) : 100;
+            $offset = ($page - 1) * $rows;
+
+            $vtable = DB::table('emst.mst_ojk')
+            ->select('mojk_pk'
+            // DB::raw('CASE WHEN mpojk_jenis = "2" THEN "POJK" WHEN mpojk_jenis = "1" THEN "SEOJK" END as jenis')
+        );
+            // $vtable = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+            // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama');
+
+            if(!empty($request->q)) {
+                $vtable->where('mojk_pk', 'LIKE', "%$request->q%");
+            }
+
+            $data = $vtable
+            ->groupBy('mojk_pk')
+            ->offset($offset)
+            ->limit($rows)
+            ->get();
+
+            return response()->json($data);
+        }
+
+        public function getId(Request $request, $id)
+        {
+            $data = [];
+            if ($request->has('q')) {
+                $search = $request->q;
+                // $data = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+                // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama')
+                $data = DB::table('emst.mst_ojk')
+                ->select('mojk_pk')
+                ->where([
+                    ['mojk_pk', $id],
+                    ['mojk_pk','like',"%$search%"],
+                ])
+                ->get();
+            } else {
+                $data = DB::table('emst.mst_ojk')
+                ->select('*')
+                ->where([
+                    ['mojk_pk', $id],
+                ])
+                ->get();
+            }
+
+            return response()->json($data);
+        }
+
 }

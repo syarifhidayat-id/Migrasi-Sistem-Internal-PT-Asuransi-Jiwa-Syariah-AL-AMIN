@@ -16,11 +16,10 @@
         <div class="card-header border-0 pt-6">
             <div class="card-title">
                 <div class="d-flex align-items-center position-relative my-1">
-                    <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                        <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input type="search" data-kt-datatable-table-filter="search" id="search"
-                        class="form-control form-control-solid w-250px ps-14" placeholder="Cari menu" />
+                    <div class="input-group input-group-solid">
+                        <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control" placeholder="Cari undang-undang" />
+                        <button type="submit" class="btn btn-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                    </div>
                 </div>
             </div>
 
@@ -203,6 +202,7 @@
             filterAll('input[type="search"]', 'serverSide_uu');
             serverSide( "serverSide_uu", "{{ url('api/legal/uu_asuransi/uu_asuransi') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
+                    d.search = $('input[type="search"]').val();
                     d.check_nomor = getText('check_nomor');
                     d.mua_nomor = getText('check_nomor_uu');
                     d.check_tentang = getText('check_tentang');
@@ -212,7 +212,6 @@
                     // d.check_user_ins = getText('check_user_ins');
                     // d.mpks_ins_user = getText('check_ins_user');
 
-                    d.search = $('input[type="search"]').val()
                 },
                 [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
                     {

@@ -226,7 +226,7 @@ class UndangUndangController extends Controller
                             return true;
                         }else if (Str::contains(Str::lower($row['mua_tentang']), Str::lower($request->get('search')))) {
                             return true;
-                        }else if (Str::contains(Str::lower($row['mdp_ins_user']), Str::lower($request->get('search')))) {
+                        }else if (Str::contains(Str::lower($row['mua_ins_user']), Str::lower($request->get('search')))) {
                             return true;
                         }
 

@@ -104,113 +104,11 @@ class ApiController extends Controller
         // }
     }
 
-    public function m_laporan_berkala(Request $request)
-    {
 
-        $data = DB::table('emst.mst_laporan_berkala')->leftJoin('emst.mst_unit_lap_berkala', 'id', 'mlapbkl_unit')
-        ->select('*',
-            // DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            // DB::raw('DATE_FORMAT(map_ins_date, "%d-%m-%Y") as ins_date'),
-            DB::raw('CASE WHEN mlapbkl_unit = id THEN nama END as unit'),
-            DB::raw('CASE WHEN mlapbkl_aktif = "1" THEN "Aktif"
-            WHEN mlapbkl_aktif = "0" THEN "Non-Aktif"  END as aktif')
-        )->orderBy('mlapbkl_update', 'DESC');
 
-        return Datatables::of($data)
-            ->addIndexColumn()
-            ->filter(function ($instance) use ($request) {
-                // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
-                //     return $instance->where('wmn_tipe', $request->wmn_tipe);
-                // }
-                // if (!empty($request->get('wmn_tipe'))) {
-                //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
-                // }
-                // if (!empty($request->get('wmn_descp'))) {
-                //     $instance->where('wmn_descp', $request->get('wmn_descp'));
-                // }
-                if (!empty($request->get('search'))) {
-                    $instance->where(function ($w) use ($request) {
-                        $search = $request->get('search');
-                        $w->orWhere('mlapbkl_jenis', 'LIKE', "%$search%")
-                            ->orWhere('mlapbkl_pk', 'LIKE', "%$search%");
-                    });
-                }
-            })
-            ->make(true);
-        // }
-    }
 
-    public function laporan_berkala(Request $request)
-    {
 
-        $data = DB::table('emst.mst_laporan_berkala_files')->leftJoin('emst.mst_laporan_berkala', 'mlapbkl_pk', 'mojk_jenis')
-        ->select('*',
-            // DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            DB::raw('DATE_FORMAT(mojk_ins_date, "%d-%m-%Y") as ins_date'),
-            DB::raw('CASE WHEN mojk_jenis = mlapbkl_pk THEN mlapbkl_jenis END as jenis')
-        )->orderBy('mojk_pk', 'desc');
 
-        return Datatables::of($data)
-            ->addIndexColumn()
-            ->filter(function ($instance) use ($request) {
-                // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
-                //     return $instance->where('wmn_tipe', $request->wmn_tipe);
-                // }
-                // if (!empty($request->get('wmn_tipe'))) {
-                //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
-                // }
-                // if (!empty($request->get('wmn_descp'))) {
-                //     $instance->where('wmn_descp', $request->get('wmn_descp'));
-                // }
-                if (!empty($request->get('search'))) {
-                    $instance->where(function ($w) use ($request) {
-                        $search = $request->get('search');
-                        $w->orWhere('mojk_ket_jenis', 'LIKE', "%$search%")
-                            ->orWhere('mojk_pk', 'LIKE', "%$search%");
-                    });
-                }
-            })
-            ->make(true);
-        // }
-    }
-
-    public function ojk(Request $request)
-    {
-        $data = DB::table('emst.mst_ojk')->select(
-            '*',
-            // DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            DB::raw("@no:=@no+1 AS DT_RowIndex"),
-            // DB::raw('DATE_FORMAT(map_ins_date, "%d-%m-%Y") as ins_date'),
-            DB::raw('CASE WHEN mojk_jenis = "0" THEN "Audit"
-            WHEN mojk_jenis = "1" THEN "Laporan"
-            WHEN mojk_jenis = "2" THEN "Tanda Terima" END as jenis_mojk')
-        )->orderBy('mojk_pk', 'desc');
-
-        return Datatables::of($data)
-            ->addIndexColumn()
-            ->filter(function ($instance) use ($request) {
-                // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
-                //     return $instance->where('wmn_tipe', $request->wmn_tipe);
-                // }
-                // if (!empty($request->get('wmn_tipe'))) {
-                //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
-                // }
-                // if (!empty($request->get('wmn_descp'))) {
-                //     $instance->where('wmn_descp', $request->get('wmn_descp'));
-                // }
-                if (!empty($request->get('search'))) {
-                    $instance->where(function ($w) use ($request) {
-                        $search = $request->get('search');
-                        $w->orWhere('mojk_judul', 'LIKE', "%$search%")
-                            ->orWhere('mojk_pk', 'LIKE', "%$search%");
-                    });
-                }
-            })
-            ->make(true);
-        // }
-    }
 
     public function viewPdf($id)
     {
@@ -223,23 +121,7 @@ class ApiController extends Controller
         return $response;
     }
 
-    public function unit_laporan_berkala(Request $request)
-    {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_unit_lap_berkala')
-                ->select('id', 'nama')
-                ->where('nama', 'like', "%$search%")
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_unit_lap_berkala')
-                ->select('id', 'nama')
-                ->orderBy('id')
-                ->get();
-        }
-        return response()->json($data);
-    }
+
 
     public function mssp_kode(Request $request)
     {

@@ -7,6 +7,8 @@ use App\Http\Controllers\Library\KodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class LaporanBerkalaContoller extends Controller
 {
@@ -256,6 +258,311 @@ class LaporanBerkalaContoller extends Controller
             // ->where('mrkn_nama', 'like', "%$search%")
             ->first();
 
+        return response()->json($data);
+    }
+
+    public function laporan_berkala(Request $request)
+    {
+        $data = DB::table('emst.mst_laporan_berkala_files')->leftJoin('emst.mst_laporan_berkala', 'mlapbkl_pk', 'mojk_jenis')
+        ->select('*',
+            // DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            DB::raw('DATE_FORMAT(mojk_ins_date, "%d-%m-%Y") as ins_date'),
+            DB::raw('CASE WHEN mojk_jenis = mlapbkl_pk THEN mlapbkl_jenis END as jenis'))
+        ->orderBy('mojk_pk', 'desc')->get();
+
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->filter(function ($instance) use ($request) {
+            if ($request->get('check_id') == "1") {
+                if (!empty($request->get('mojk_pk'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['mojk_pk'], $request->get('mojk_pk')) ? true : false;
+                    });
+                }
+            }
+            if ($request->get('check_jenis') == "1") {
+                if (!empty($request->get('mojk_jenis'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['mojk_jenis'], $request->get('mojk_jenis')) ? true : false;
+                    });
+                }
+            }
+            if ($request->get('check_tahun') == "1") {
+                if (!empty($request->get('mojk_tahun'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['mojk_tahun'], $request->get('mojk_tahun')) ? true : false;
+                    });
+                }
+            }
+            if (!empty($request->get('search'))) {
+                $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                    if (Str::contains(Str::lower($row['mojk_pk']), Str::lower($request->get('search')))){
+                        return true;
+                    }
+
+                    //else if (Str::contains(Str::lower($row['mua_ins_user']), Str::lower($request->get('search')))) {
+                    //     return true;
+                    // }
+
+                    return false;
+                });
+            }
+        })
+        ->make(true);
+    }
+
+    //JQUERY SELECT FILTER
+    public function selectIdLapBerkala(Request $request)
+        {
+            $page = $request->page ? intval($request->page) : 1;
+            $rows = $request->rows ? intval($request->rows) : 100;
+            $offset = ($page - 1) * $rows;
+
+            $vtable = DB::table('emst.mst_laporan_berkala_files')
+            ->select('mojk_pk');
+            // ->select('mpojk_jenis', DB::raw('CASE WHEN mpojk_jenis = "2" THEN "POJK" WHEN mpojk_jenis = "1" THEN "SEOJK" END as jenis'));
+            // $vtable = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+            // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama');
+
+            if(!empty($request->q)) {
+                $vtable->where('mojk_pk', 'LIKE', "%$request->q%");
+            }
+
+            $data = $vtable
+            ->groupBy('mojk_pk')
+            ->offset($offset)
+            ->limit($rows)
+            ->get();
+
+            return response()->json($data);
+        }
+
+        public function getIdLapBerkala(Request $request, $id)
+        {
+            $data = [];
+            if ($request->has('q')) {
+                $search = $request->q;
+                // $data = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+                // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama')
+                $data = DB::table('emst.mst_laporan_berkala_files')
+                ->select('mojk_pk')
+                ->where([
+                    ['mojk_pk', $id],
+                    ['mojk_pk','like',"%$search%"],
+                ])
+                ->get();
+            } else {
+                $data = DB::table('emst.mst_laporan_berkala_files')
+                ->select('*')
+                ->where([
+                    ['mojk_pk', $id],
+                ])
+                ->get();
+            }
+
+            return response()->json($data);
+        }
+
+        public function selectJenisDok(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('emst.mst_laporan_berkala')
+        ->select('mlapbkl_pk', 'mlapbkl_jenis');
+        // $vtable = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+        // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama');
+
+        if(!empty($request->q)) {
+            $vtable->where('mlapbkl_pk', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->groupBy('mlapbkl_jenis')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function getTahun(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            // $data = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+            // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama')
+            $data = DB::table('eset.tahun')
+            ->select('no')
+            ->where([
+                ['no', $id],
+                ['no','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('eset.tahun')
+            ->select('*')
+            ->where([
+                ['no', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
+    }
+
+        public function selectTahun(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('eset.tahun')
+        ->select('no');
+        // $vtable = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+        // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama');
+
+        if(!empty($request->q)) {
+            $vtable->where('no', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->groupBy('no')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function getJenisDok(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            // $data = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+            // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama')
+            $data = DB::table('emst.mst_laporan_berkala')
+            ->select('mlapbkl_pk', 'mlapbkl_jenis')
+            ->where([
+                ['mlapbkl_pk', $id],
+                ['mlapbkl_pk','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('emst.mst_laporan_berkala')
+            ->select('*')
+            ->where([
+                ['mlapbkl_pk', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
+    }
+
+    //QUERY MASTER LAPORAN BERKALA
+    public function m_laporan_berkala(Request $request)
+    {
+
+        $data = DB::table('emst.mst_laporan_berkala')->leftJoin('esdm.sdm_divisi', 'sdiv_pk', 'mlapbkl_unit')
+        ->select('*', DB::raw("@no:=@no+1 AS DT_RowIndex"),
+            // DB::raw('DATE_FORMAT(map_ins_date, "%d-%m-%Y") as ins_date'),
+            DB::raw('CASE WHEN mlapbkl_unit = sdiv_pk THEN sdiv_nama END as unit'),
+            DB::raw('CASE WHEN mlapbkl_aktif = "1" THEN "Aktif"
+            WHEN mlapbkl_aktif = "0" THEN "Non-Aktif"  END as aktif')
+        )->orderBy('mlapbkl_update', 'DESC')->get();
+
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->filter(function ($instance) use ($request) {
+            if ($request->get('check_judul') == "1") {
+                if (!empty($request->get('mlapbkl_jenis'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['mlapbkl_jenis'], $request->get('mlapbkl_jenis')) ? true : false;
+                    });
+                }
+            }
+
+            if (!empty($request->get('search'))) {
+                $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                    if (Str::contains(Str::lower($row['mlapbkl_jenis']), Str::lower($request->get('search')))){
+                        return true;
+                    }
+                    return false;
+                });
+            }
+        })
+        ->make(true);
+    }
+    public function selectJudul(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('emst.mst_laporan_berkala')
+        ->select('mlapbkl_jenis');
+        // $vtable = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+        // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama');
+
+        if(!empty($request->q)) {
+            $vtable->where('mlapbkl_jenis', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->groupBy('mlapbkl_jenis')
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+    public function getJudul(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            // $data = DB::table('emst.mst_draft_pks')->join('emst.mst_produk_segment', 'mssp_kode', 'mdp_mssp_kode')
+            // ->select('mdp_mssp_kode', 'mssp_kode', 'mssp_nama')
+            $data = DB::table('emst.mst_laporan_berkala')
+            ->select('mlapbkl_jenis')
+            ->where([
+                ['mlapbkl_jenis', $id],
+                ['mlapbkl_jenis','like',"%$search%"],
+            ])
+            ->get();
+        } else {
+            $data = DB::table('emst.mst_laporan_berkala')
+            ->select('*')
+            ->where([
+                ['mlapbkl_jenis', $id],
+            ])
+            ->get();
+        }
+
+        return response()->json($data);
+    }
+
+    public function unit_laporan_berkala(Request $request)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('esdm.sdm_divisi')
+                ->select('sdiv_pk', 'sdiv_nama')
+                ->where('sdiv_nama', 'like', "%$search%")
+                ->get();
+        } else {
+            $data = DB::table('esdm.sdm_divisi')
+                ->select('sdiv_pk', 'sdiv_nama')
+                ->orderBy('sdiv_pk')
+                ->get();
+        }
         return response()->json($data);
     }
 }

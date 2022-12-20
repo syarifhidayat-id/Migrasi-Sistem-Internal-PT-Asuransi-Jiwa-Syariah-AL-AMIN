@@ -23,13 +23,30 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
     Route::get('get_mojk_jenis', [ApiController::class, 'get_mojk_jenis'])->name('get_mojk_jenis');
     Route::get('jns-doc/{kode}', [ApiController::class, 'getJnsDoc']);
     Route::get('peraturan_perusahaan', [ApiController::class, 'Peraturan_perusahaan']);
-    Route::get('m_laporan_berkala', [ApiController::class, 'm_laporan_berkala']);
-    Route::get('laporan_berkala', [ApiController::class, 'laporan_berkala']);
-    Route::get('unit_laporan_berkala', [ApiController::class, 'unit_laporan_berkala']);
     Route::get('get_edit_select_lap/{pk}', [LaporanBerkalaContoller::class, 'get_edit_lap_ber']);
-    Route::get('ojk', [ApiController::class, 'ojk']);
+
+   //API OJK
+    Route::get('ojk', [OjkController::class, 'ojk']);
     Route::get('ojk/show-doc', [OjkController::class, 'showDoc']);
     Route::get('viewPdf/{file}', [ApiController::class, 'viewPdf']);
+    Route::group(['prefix' => '/ojk', 'as' => 'ojk.'], function () {
+        Route::get('selectId', [OjkController::class, 'selectId']);
+        Route::get('getId/{id}', [OjkController::class, 'selectId']);
+
+    });
+
+    //API FILTER LAPORAN BERKALA
+    Route::get('m_laporan_berkala', [LaporanBerkalaContoller::class, 'm_laporan_berkala']);
+    Route::get('laporan_berkala', [LaporanBerkalaContoller::class, 'laporan_berkala']);
+    Route::get('unit_laporan_berkala', [LaporanBerkalaContoller::class, 'unit_laporan_berkala']);
+    Route::get('selectIdLapBerkala', [LaporanBerkalaContoller::class, 'selectIdLapBerkala']);
+    Route::get('getIdLapBerkala/{id}', [LaporanBerkalaContoller::class, 'getJenisDok']);
+    Route::get('selectJenisDok', [LaporanBerkalaContoller::class, 'selectJenisDok']);
+    Route::get('getJenisDok/{id}', [LaporanBerkalaContoller::class, 'getIdLapBerkala']);
+    Route::get('selectTahun', [LaporanBerkalaContoller::class, 'selectTahun']);
+    Route::get('getTahun/{id}', [LaporanBerkalaContoller::class, 'getTahun']);
+    Route::get('selectJudul', [LaporanBerkalaContoller::class, 'selectJudul']);
+    Route::get('getJudul/{id}', [LaporanBerkalaContoller::class, 'getJudul']);
 
     Route::group(['prefix' => '/uu_asuransi', 'as' => 'uu_asuransi.'], function () {
         Route::get('uu_asuransi', [UndangUndangController::class, 'uu_asuransi']);
@@ -52,6 +69,7 @@ Route::group(['prefix' => '/legal', 'as' => 'legal.'], function () {
      Route::get('getJenis/{id}', [PojkSeojkController::class, 'getJenis']);
 
     Route::get('draft_pks', [DraftController::class, 'api_draft']);
+
     Route::group(['prefix' => '/pks', 'as' => 'pks.'], function () {
         Route::get('get_all_pks/{id}', [PksController::class, 'get_all_pks']);
         Route::get('polis', [ApiController::class, 'polis'])->name('polis');
