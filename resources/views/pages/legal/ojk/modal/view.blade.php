@@ -3,23 +3,15 @@
         <div class="modal-content">
             <div class="modal-header" id="modalView_header">
                 <h4 class="fw-bolder" id="tModView"></h4>
-
-                {{-- <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close3">
-                    <span class="svg-icon svg-icon-1">
-                        <i class="fa-sharp fa-solid fa-xmark"></i>
-                    </span>
-                </div> --}}
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeModal('modalView')"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body" id="modal-body">
-                <Object id="view_pdf" data="" type="application/pdf" width="100%" height="500"></Object>
+                <embed id="view_pdf" src="" type="application/pdf" width="100%" height="500">
             </div>
 
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-danger btn-sm" onclick="closePdf()">Close</button>
-                    {{-- <button type="button" class="btn btn-danger btn-sm" onclick="close_pojk()"><i
-                            class="fa-solid fa-xmark" ></i> Tutup</button> --}}
-                </div>
-            {{-- </form> --}}
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-danger btn-sm" onclick="closeModal('modalView')">Close</button>
+            </div>
         </div>
     </div>
 </div>

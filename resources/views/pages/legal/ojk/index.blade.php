@@ -235,9 +235,9 @@
                         className: 'text-center',
                         render: function (data, type, row) {
                             return `
-                            <select class="form-select" id="jenis_dokumen" data-pk="`+row.mojk_pk+`" data-file1="`+row.mojk_file1+`" data-file2="`+row.mojk_file2+`"
+                            <select class="form-select" id="jenis_dokumen" data-pk="`+row.mojk_pk+`"
                                 name="mojk_jenis" data-placeholder="Pilih jenis dokumen" data-allow-clear="true">
-                                <option selected disabled>Pilih</option>
+                                <option selected>Pilih</option>
                                 <option value="1">Tanda Terima</option>
                                 <option value="2">Dokumen</option>
                             </select>`
@@ -248,7 +248,7 @@
                         orderable: false,
                         className: 'text-center',
                         render: function(data, type, row) {
-                            return `<button type="button" id="btnPdf" class="btn btn-light-success" onclick="modalPdf()"> Lihat</button>`;
+                            return `<button type="button" onclick="jenisFile('`+row.mojk_file1+`', '`+row.mojk_file2+`')" class="btn btn-light-success"> Lihat</button>`;
                         }
 
                     },
@@ -256,21 +256,8 @@
             );
 
             $('body').on('change', '#jenis_dokumen', function() {
-                var _this = $(this);
-                var file1 = _this.attr('data-file1');
-                var file2 = _this.attr('data-file2');
-                var url = '{{ url("storage/legal/ojk") }}';
-                // $('#view_pdf').attr('data', '');
-                if (_this.val() == 1) {
-                    var base1 = url+'/file1/' +file1;
-                    console.log(base1);
-                    $('#view_pdf').attr('data', base1);
-                }
-                if (_this.val() == 2) {
-                    var base2 = url+'/file2/' +file2;
-                    console.log(base2);
-                    $('#view_pdf').attr('data', base2);
-                }
+                var _this = $(this).val();
+                console.log(_this);
             }).change();
 
             $('body').on('click', '#omodTam', function() {
@@ -436,44 +423,19 @@
             });
 
         });
-
-        function modalPdf () {
-            var select = $('#jenis_dokumen').val();
-            // alert(select);
-            if (select==1) {
+        
+        function jenisFile(jenis1, jenis2) {
+            var doc = $('#jenis_dokumen').val();
+            var url = '{{ url("storage/legal/ojk") }}' + '/';
+            if (doc=='1') {
+                $('#view_pdf').attr('src', url+'file1/'+jenis1);
                 openModal('modalView');
-                titleAction('tModView', 'Lihat Dokumen');
-            }
-            else if (select==2) {
+            } else if (doc=='2') {
+                $('#view_pdf').attr('src', url+'file2/'+jenis2);
                 openModal('modalView');
-                titleAction('tModView', 'Lihat Dokumen');
-            } else{
-                alert(select);
+            } else {
+                pesan('Silahkan pilih jenis file terlebih dahulu!');
             }
-        }
-
-        function closePdf() {
-            closeModal('modalView');
-            $('#view_pdf').removeAttr('data');
-        }
-
-        function jenisDoc () {
-            $('body').on('change', '#jenis_dokumen', function() {
-                var _this = $(this);
-                var file1 = _this.attr('data-file1');
-                var file2 = _this.attr('data-file2');
-                var url = '{{ url("storage/legal/ojk") }}';
-                // $('#view_pdf').attr('data', '');
-                if (_this.val() == 1) {
-                    var base1 = url+'/file1/' +file1;
-                    $('#view_pdf').attr('data', base1);
-                } else if (_this.val() == 2) {
-                    var base2 = url+'/file2/' +file2;
-                    $('#view_pdf').attr('data', base2);
-                } else {
-                    $('#view_pdf').attr('data', '');
-                }
-            }).change();
         }
 
     </script>
