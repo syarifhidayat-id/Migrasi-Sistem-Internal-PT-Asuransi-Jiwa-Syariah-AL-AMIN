@@ -159,22 +159,18 @@ class MenuController extends Controller
 
     public function selectTipeMenu(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('web_menu_tipe')
-            ->select('wmt_kode','wmt_nama')
-            ->where([
-                ['wmt_nama','like',"%$search%"],
-            ])
-            ->get();
-        } else {
-            $data = DB::table('web_menu_tipe')
-            ->select('wmt_kode','wmt_nama')
-            ->get();
+        $vtable = DB::table('web_menu_tipe')->select('wmt_kode','wmt_nama');
+        if (!empty($request->q)) {
+            $vtable->where('wmt_nama', 'LIKE', "%$request->q%");
         }
-
+        $data = $vtable->get();
         return response()->json($data);
+    }
+
+    public function tipeMenu($id)
+    {
+        $tipe = DB::table('web_menu_tipe')->where('wmt_kode', $id)->first();
+        return response()->json($tipe);
     }
 
     public function keyMenu($id)
@@ -183,26 +179,16 @@ class MenuController extends Controller
         return response()->json($keyMenu);
     }
 
-    public function getTipemenu(Request $request, $id)
+    public function selectMenu(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('web_menu')
-            ->select('*')
-            ->where([
-                ['wmn_tipe', $id],
-                ['wmn_descp','like',"%$search%"],
-            ])
-            ->get();
-        } else {
-            $data = DB::table('web_menu')
-            ->select('*')
-            ->where([
-                ['wmn_tipe', $id],
-            ])
-            ->get();
+        $vtable = DB::table('web_menu')->select(DB::raw("wmn_kode, wmn_descp"));
+        if (!empty($request->q)) {
+            $vtable->where('wmn_descp', 'LIKE', "%$request->q%");
         }
+        if (!empty($request->tipe)) {
+            $vtable->where('wmn_tipe', $request->tipe);
+        }
+        $data = $vtable->get();
 
         return response()->json($data);
     }

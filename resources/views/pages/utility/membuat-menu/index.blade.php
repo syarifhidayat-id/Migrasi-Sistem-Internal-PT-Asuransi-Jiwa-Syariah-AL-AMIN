@@ -38,12 +38,12 @@
             <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
 
                 <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                    <i class="fa-sharp fa-solid fa-filter"></i> Filter
+                    <i class="fa-sharp fa-solid fa-filter"></i> Filter Pencarian
                 </button>
 
                 <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
                     <div class="px-7 py-5">
-                        <div class="fs-5 text-dark fw-bolder">Filter Options</div>
+                        <div class="fs-5 text-dark fw-bolder">Filter Pencarian</div>
                     </div>
                     <div class="separator border-gray-200"></div>
 
@@ -56,7 +56,7 @@
                                         <label class="form-check form-switch form-check-custom form-check-solid me-5">
                                             <input class="form-check-input" id="check_1" name="check_1" type="checkbox" data-checkbox="check_1" />
                                         </label>
-                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu">
+                                        <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu" name="tipe_menu">
                                             <option></option>
                                         </select>
                                     </div>
@@ -69,7 +69,7 @@
                                         <label class="form-check form-switch form-check-custom form-check-solid me-5">
                                             <input class="form-check-input" id="check_2" type="checkbox" data-checkbox="check_2" />
                                         </label>
-                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
+                                        <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
                                             <option></option>
                                         </select>
                                     </div>
@@ -88,7 +88,7 @@
             <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
                 <div id="kt_table_datatable_export" class="d-none"></div>
 
-                <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button>
+                {{-- <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button> --}}
 
                 <div id="kt_table_datatable_export_menu" title-kt-export="Data Menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">
                     <div class="menu-item px-3">
@@ -139,9 +139,7 @@
 
 @section('script')
     <script>
-        // $('#tipe_menu').select2();
-        $('#key').select2();
-        // $('#wmn_tipe').select2();
+        setHide('kode_tipe', false);
         $('#wmn_key').select2({
             tags: true,
         });
@@ -157,32 +155,20 @@
                 id: d.wmt_kode,
                 text: d.wmt_nama
             }}, function(res) {
-                // setText('msoc_mssp_kode', res.params.data.id);
-                // setText('msoc_mssp_nama', res.params.data.text);
+                selectSide('key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('tipe_menu'), function(d) { return {
+                    id: d.wmn_descp,
+                    text: d.wmn_descp
+                }});
             });
 
             selectSide('wmn_tipe', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
                 id: d.wmt_kode,
                 text: d.wmt_nama
             }}, function(res) {
-                // setText('msoc_mssp_kode', res.params.data.id);
-                // setText('msoc_mssp_nama', res.params.data.text);
-            });
-
-            changeSelect('tipe_menu', 'key', '{{ url("api/utility/menu/getTipe") }}',function(d) { return {
-                id: d.wmn_descp,
-                text: d.wmn_descp
-            }}, function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-            });
-
-            changeSelect('wmn_tipe', 'wmn_key', '{{ url("api/utility/menu/getTipe") }}',function(d) { return {
-                id: d.wmn_descp,
-                text: d.wmn_descp
-            }}, function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
+                selectSide('wmn_key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('wmn_tipe'), function(d) { return {
+                    id: d.wmn_descp,
+                    text: d.wmn_descp
+                }});
             });
 
             filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
@@ -273,19 +259,26 @@
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
                 $.get(url, function(data) {
-                    var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + data.wmn_key;
                     openModal('modalMenu');
-                    $("#formMenu").formToJson(data);
+                    var tipe = "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe;
+                    var key = "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key;
+                    jsonForm('formMenu', data);
+                    $.get(tipe, function(res) {
+                        if ($('#wmn_tipe').find("option[value='" + res.wmt_kode + "']").length) {
+                            $('#wmn_tipe').val(res.wmt_kode).trigger('change');
+                        } else {
+                            selectEdit('wmn_tipe', res.wmt_kode, res.wmt_nama);
+                        }
+                    });
                     if (data.wmn_key == "MAIN") {
                         selectEdit('wmn_key', 'MAIN', 'MAIN');
                     } else {
-                        $.getJSON(key, function(res) {
+                        $.get(key, function(res) {
                             if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']").length) {
                                 $('#wmn_key').val(res.wmn_kode).trigger('change');
                             } else {
                                 selectEdit('wmn_key', res.wmn_kode, res.wmn_descp);
                             }
-                            // $('#wmn_key').append('<option value="'+ res.wmn_kode +'">'+ res.wmn_descp +'</option>');
                         });
                     }
                 });

@@ -10,10 +10,11 @@ Route::group(['prefix' => '/utility', 'as' => 'utility.'], function () {
     // Route::resource('/menu', MenuController::class);
     Route::group(['prefix' => '/menu', 'as' => 'menu.'], function() {
         Route::get('/select-tipemenu', [MenuController::class, 'selectTipeMenu']);
+        Route::get('/select-menu', [MenuController::class, 'selectMenu']);
         Route::get('/lihat-menu', [MenuController::class, 'datamenu']);
-        Route::get('/getTipe/{id}', [MenuController::class, 'getTipemenu']);
         Route::get('/edit/{id}', [MenuController::class, 'edit']);
-        Route::get('/keyMenu/{id}', [MenuController::class, 'keyMenu']);
+        Route::get('/tipe-menu/{id}', [MenuController::class, 'tipeMenu']);
+        Route::get('/key-menu/{id}', [MenuController::class, 'keyMenu']);
     });
 
     Route::group(['prefix' => '/daftar-user', 'as' => 'daftar-user.'], function() {
