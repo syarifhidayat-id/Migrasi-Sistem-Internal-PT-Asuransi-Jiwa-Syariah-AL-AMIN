@@ -611,10 +611,10 @@
 
         <div class="card-footer text-center">
             <button type="submit" class="btn btn-primary btn-sm me-3" id="btn_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
-            <button type="button" class="btn btn-warning btn-sm" onclick="clear_f()"><i class="fa-solid fa-trash"></i> Hapus</button>
+            <button type="button" class="btn btn-warning btn-sm" onclick="clear_f()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
         </div>
     </form>
-    @include('pages.tehnik.soc.entry-soc.modal.program-asuransi')
+    {{-- @include('pages.tehnik.soc.entry-soc.modal.program-asuransi') --}}
     @include('pages.tehnik.soc.entry-soc.modal.import-tarif')
     @include('pages.tehnik.soc.entry-soc.modal.show-konfirmtarif')
     @include('pages.tehnik.soc.entry-soc.modal.lihat-tarif')
@@ -1365,7 +1365,7 @@
                             if (tipe!='0') {
                                 setText('e_bersih','1');
                                 jsonForm('frxx_soc', data);
-                                console.log(data);
+                                // console.log(data);
                                 //coba form file
                                 // $('#ffile').form('load',data);
                                 setText('e_bersih','');

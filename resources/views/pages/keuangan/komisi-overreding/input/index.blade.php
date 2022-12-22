@@ -1,7 +1,7 @@
 @extends('layouts.main-admin')
 
 @section('title')
-    Menu
+    Input Pajak Komisi & Overreding
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
 
     <div class="card-header">
         <div class="card-title">
-            <h3>List Menu</h3>
+            <h3>List Input Pajak Komisi & Overreding</h3>
         </div>
 
         <div class="card-toolbar">
@@ -27,7 +27,6 @@
     <div class="card-header border-0 pt-6">
         <div class="card-title">
             <div class="d-flex justify-content-start" data-kt-datatable-table-toolbar="base">
-
                 <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
                     <i class="fa-sharp fa-solid fa-filter"></i> Filter Pencarian
                 </button>
@@ -43,25 +42,55 @@
                             <div class="col-md-12">
                                 <div class="mb-10">
                                     <label class="form-label fs-6 fw-bold">Berdasarkan Keyboard</label>
-                                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid" placeholder="Cari Menu" />
+                                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid" placeholder="Cari All" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
-                                    <label class="form-label fs-6 fw-bold">Tipe Menu</label>
+                                    <label class="form-label fs-6 fw-bold">Cabang Alamin</label>
                                     <div class="d-flex flex-stack">
-                                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                            <input class="form-check-input" id="check_1" name="check_1" type="checkbox" data-checkbox="check_1" />
-                                        </label>
-                                        <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu" name="tipe_menu">
+                                        <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="cabalamin" name="cabalamin">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="mb-5">
+                                    <label class="form-label fs-6 fw-bold">Periode Proses Inkaso</label>
+                                    <div class="input-group input-group-solid flex-nowrap">
+                                        <div class="overflow-hidden flex-grow-1">
+                                            <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 1" data-allow-clear="true" data-kt-datatable-table-filter="bulan1" data-hide-search="false" id="bln1" name="bln1">
+                                                <option></option>
+                                                @foreach (range(1,12) as $month)
+                                                    <option value="{{ date('m', strtotime('2016-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <span class="input-group-text">s.d</span>
+                                        <div class="overflow-hidden flex-grow-1">
+                                            <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 2" data-allow-clear="true" data-kt-datatable-table-filter="bulan2" data-hide-search="false" id="bln2" name="bln2">
+                                                <option></option>
+                                                @foreach (range(1,12) as $month)
+                                                    <option value="{{ date('m', strtotime('2016-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <span class="input-group-text">tahun</span>
+                                        <div class="overflow-hidden flex-grow-1">
+                                            <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Tahun" data-allow-clear="true" data-kt-datatable-table-filter="tahun" data-hide-search="false" id="thn" name="thn">
+                                                <option></option>
+                                                @for ($year = date('2007'); $year <= date('Y'); $year++)
+                                                    <option value="{{ $year }}">{{ $year }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
-                                    <label class="form-label fs-6 fw-bold">Nama Menu</label>
+                                    <label class="form-label fs-6 fw-bold">Nama Menu:</label>
                                     <div class="d-flex flex-stack">
                                         <label class="form-check form-switch form-check-custom form-check-solid me-5">
                                             <input class="form-check-input" id="check_2" type="checkbox" data-checkbox="check_2" />
@@ -73,7 +102,10 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="separator border-gray-200"></div>
+                    <div class="px-7 py-5">
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
                             <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
@@ -109,7 +141,6 @@
 
                 <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-sharp fa-solid fa-plus"></i> Tambah Menu</button>
             </div>
-
         </div>
     </div>
 
