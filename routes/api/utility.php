@@ -12,13 +12,16 @@ Route::group(['prefix' => '/utility', 'as' => 'utility.'], function () {
         Route::get('/select-tipemenu', [MenuController::class, 'selectTipeMenu']);
         Route::get('/select-menu', [MenuController::class, 'selectMenu']);
         Route::get('/lihat-menu', [MenuController::class, 'datamenu']);
-        Route::get('/edit/{id}', [MenuController::class, 'edit']);
+        // Route::get('/edit/{id}', [MenuController::class, 'edit']);
         Route::get('/tipe-menu/{id}', [MenuController::class, 'tipeMenu']);
         Route::get('/key-menu/{id}', [MenuController::class, 'keyMenu']);
     });
 
     Route::group(['prefix' => '/daftar-user', 'as' => 'daftar-user.'], function() {
         Route::get('/lihat-user', [DaftarUserController::class, 'datauser']);
+        // Route::get('/edit/{id}', [DaftarUserController::class, 'edit']);
+        Route::get('/select-tipemenu', [DaftarUserController::class, 'selectTipeMenu']);
+        Route::get('/tipe-menu/{id}', [DaftarUserController::class, 'tipeMenu']);
     });
 
     Route::group(['prefix' => '/wewenang-jabatan', 'as' => 'wewenang-jabatan.'], function() {

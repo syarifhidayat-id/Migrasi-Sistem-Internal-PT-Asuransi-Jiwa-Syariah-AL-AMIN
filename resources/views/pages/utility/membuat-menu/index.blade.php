@@ -250,15 +250,14 @@
             });
 
             tombol('click', 'omodEdit', function() {
-                titleAction('tModMenu', 'Edit Menu');
-                bsimpan('btn_simpan', 'Update');
-                // $('#wmn_key').val(null).trigger('change');
-                setHide('btn_reset', true);
-
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
                 $.get(url, function(data) {
                     openModal('modalMenu');
+                    titleAction('tModMenu', 'Edit Menu');
+                    bsimpan('btn_simpan', 'Update');
+                    setHide('btn_reset', true);
+
                     var tipe = "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe;
                     var key = "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key;
                     jsonForm('formMenu', data);
@@ -295,9 +294,9 @@
                     url = "{{ route('utility.menu.store') }}" + "/" + kode;
                 submitDelete(kode, url, function(resSuccess) {
                     lodTable("dataMenu");
-                    console.log(resSuccess);
+                    // console.log(resSuccess);
                 }, function(resError) {
-                    console.log(resError);
+                    // console.log(resError);
                 });
             });
         });

@@ -12,9 +12,9 @@ Route::group(['prefix' => '/utility', 'as' => 'utility.'], function () {
     Route::resource('/menu', MenuController::class);
     Route::resource('/daftar-user', DaftarUserController::class);
 
-    Route::prefix('/daftar-user')->name('daftar-user.')->controller(DaftarUserController::class)->group(function() {
-        Route::post('/store', 'store')->name('store');
-    });
+    // Route::prefix('/daftar-user')->name('daftar-user.')->controller(DaftarUserController::class)->group(function() {
+    //     Route::post('/store', 'store')->name('store');
+    // });
 
     Route::resource('/wewenang-jabatan', WewenangJabatanController::class);
     // Route::prefix('/menu')->name('menu.')->controller(MenuController::class)->group(function() {

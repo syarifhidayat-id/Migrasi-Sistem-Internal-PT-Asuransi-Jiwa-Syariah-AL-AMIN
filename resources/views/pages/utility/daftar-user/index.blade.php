@@ -26,49 +26,56 @@
 
     <div class="card-header border-0 pt-6">
         <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <div class="input-group input-group-solid">
-                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control w-250px" placeholder="Cari User" />
-                    <button type="submit" class="btn btn-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
-                </div>
-            </div>
-        </div>
+            <div class="d-flex justify-content-start" data-kt-datatable-table-toolbar="base">
 
-        <div class="card-toolbar">
-            <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
-
-                <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                    <i class="fa-sharp fa-solid fa-filter"></i> Filter
+                <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
+                    <i class="fa-sharp fa-solid fa-filter"></i> Filter Pencarian
                 </button>
 
                 <div class="menu menu-sub menu-sub-dropdown w-300px w-md-700px" data-kt-menu="true">
                     <div class="px-7 py-5">
-                        <div class="fs-5 text-dark fw-bolder">Filter Options</div>
+                        <div class="fs-5 text-dark fw-bolder">Filter Pencarian</div>
                     </div>
                     <div class="separator border-gray-200"></div>
 
                     <div class="px-7 py-5" data-kt-datatable-table-filter="form">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="mb-10">
-                                    <label class="form-label fs-6 fw-bold">Nama User:</label>
-                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih user" data-allow-clear="true" data-kt-datatable-table-filter="nama-user" data-hide-search="false">
-                                        <option></option>
-                                        @foreach ($user as $key=>$data)
-                                            <option value="{{ $data->name }}">{{ $data->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label class="form-label fs-6 fw-bold">Berdasarkan Keyboard</label>
+                                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid" placeholder="Cari User" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-10">
-                                    <label class="form-label fs-6 fw-bold">Nama Route:</label>
-                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false">
-                                        <option></option>
-                                        {{-- @foreach ($list_menu as $key=>$data)
-                                            <option value="{{ $data->wmn_url }}">{{ $data->wmn_url }}</option>
-                                        @endforeach --}}
-                                    </select>
+                                    <label class="form-label fs-6 fw-bold">Nama User</label>
+                                    <div class="d-flex flex-stack">
+                                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                            <input class="form-check-input" id="check_1" type="checkbox" data-checkbox="check_1" />
+                                        </label>
+                                        <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" id="name_user" name="name_user" data-placeholder="Pilih user" data-allow-clear="true" data-kt-datatable-table-filter="name_user">
+                                            <option></option>
+                                            @foreach ($nameUser as $key=>$data)
+                                                <option value="{{ $data->name }}">{{ $data->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-10">
+                                    <label class="form-label fs-6 fw-bold">Username</label>
+                                    <div class="d-flex flex-stack">
+                                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                            <input class="form-check-input" id="check_2" type="checkbox" data-checkbox="check_2" />
+                                        </label>
+                                        <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" id="username" name="username" data-placeholder="Pilih user" data-allow-clear="true" data-kt-datatable-table-filter="username">
+                                            <option></option>
+                                            @foreach ($username as $key=>$data)
+                                                <option value="{{ $data->email }}">{{ $data->email }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -80,11 +87,13 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="card-toolbar">
             <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
                 <div id="kt_table_datatable_export" class="d-none"></div>
 
-                <button type="button" id="btn_export" data-title="Data Daftar User" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button>
+                {{-- <button type="button" id="btn_export" data-title="Data Daftar User" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button> --}}
 
                 <div id="kt_table_datatable_export_menu" title-kt-export="Data Daftar User" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">
                     <div class="menu-item px-3">
@@ -142,42 +151,40 @@
 
 @section('script')
     <script>
-        $('#mrkn_kode_induk').select2();
-        $('#mrkn_kode').select2();
-        $('#mjns_kode').select2({
-            tokenSeparators: [',', ' '],
-        });
-        $('#mkm_kode').select2({
-            tokenSeparators: [',', ' '],
-        });
-        $('#mkm_kode2').select2({
-            tokenSeparators: [',', ' '],
-        });
-        $('#menu_tipe').select2();
-        $('#dboard').select2();
-        $('#isnews').select2();
-        $('#livevideo_hak').select2();
-        $('#livevideo_ses').select2({
-            tokenSeparators: [',', ' '],
-        });
-        $('#jabatan').select2();
-        $('#chat_tipe').select2({
-            tokenSeparators: [',', ' '],
-        });
-        $('#dirshare').select2();
-
-        Inputmask({
-            "mask" : "999-9999-9999"
-        }).mask("#no_hp");
-
-        // $('#phone').keyup(function() {
-        //     var val = $(this).val();
-        //     $('#no_hp').val(val.toLowerCase().replaceAll('-', ''));
+        // $('#mrkn_kode_induk').select2();
+        // $('#mrkn_kode').select2();
+        // $('#mjns_kode').select2({
+        //     tokenSeparators: [',', ' '],
         // });
+        // $('#mkm_kode').select2({
+        //     tokenSeparators: [',', ' '],
+        // });
+        // $('#mkm_kode2').select2({
+        //     tokenSeparators: [',', ' '],
+        // });
+        // $('#dboard').select2();
+        // $('#isnews').select2();
+        // $('#livevideo_hak').select2();
+        // $('#livevideo_ses').select2({
+        //     tokenSeparators: [',', ' '],
+        // });
+        // $('#jabatan').select2();
+        // $('#chat_tipe').select2({
+        //     tokenSeparators: [',', ' '],
+        // });
+        // $('#dirshare').select2();
+        formatHp("no_hp");
 
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            });
+
+            selectSide('menu_tipe', false, '{{ url("api/utility/daftar-user/select-tipemenu") }}', function(d) { return {
+                id: d.wmt_kode,
+                text: d.wmt_nama
+            }}, function(res) {
+
             });
 
             filterAll('input[type="search"]', 'dataUser'); //khusus type search inputan
@@ -186,8 +193,10 @@
                 "dataUser",
                 "{{ url('api/utility/daftar-user/lihat-user') }}",
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
-                    // d.wmn_tipe = $('#tipe_menu').val(),
-                    // d.wmn_descp = $('#key').val(),
+                    d.check_1 = getText('check_1'),
+                    d.name = getText('name_user'),
+                    d.check_2 = getText('check_2'),
+                    d.email = getText('username'),
                     d.search = $('input[type="search"]').val()
                 },
                 [
@@ -230,57 +239,44 @@
                 ],
             );
 
-            $('body').on('click', '#omodTam', function() {
+            tombol('click', 'omodTam', function() {
                 openModal('modalUser');
                 titleAction('tModUser', 'Tambah User');
-                clearForm("frxx");
-                clearSelect();
+                clearForm("frxx_user");
                 bsimpan('btn_simpan', 'Simpan');
-                $('#btn_reset').show();
+                setHide('btn_reset', false);
             });
 
-            $('body').on('click', '#omodEdit', function() {
-                openModal('modalUser');
-                titleAction('tModUser', 'Edit User');
-                bsimpan('btn_simpan', 'Update');
-                // resetMod();
-                // $('#wmn_key').empty();
-                $('#wmn_key').val(null).trigger('change');
-                $('#btn_reset').hide();
-
+            tombol('click', 'omodEdit', function() {
                 var kode = $(this).attr('data-resouce'),
-                    url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
-                    // url = "{{ url('api/utility/menu/edit') }}" + "/" + kode;
-
-                $.get(url, function(res) {
-                    var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + res.wmn_key;
-                    // var key = "{{ route('utility.menu.store') }}" + "/" + res.wmn_key + "/keyMenu";
+                    url = "{{ route('utility.daftar-user.index') }}" + "/" + kode + "/edit";
+                $.get(url, function(data) {
                     openModal('modalUser');
-                    $('#wmn_kode').val(res.wmn_kode);
-                    $('#wmn_tipe').val(res.wmn_tipe).trigger('change');
-                    // $.get(key, function(data) {
-                    //     $('#wmn_key').val(data.wmn_kode).trigger('change');
-                    // });
-                    $('#wmn_descp').val(res.wmn_descp);
-                    $('#wmn_icon').val(res.wmn_icon);
-                    $('#wmn_url').val(res.wmn_url);
-                    $('#wmn_urlkode').val(res.wmn_urlkode);
-                    $('#wmn_info').val(res.wmn_info);
-                    $('#wmn_url_o').val(res.wmn_url_o);
-                    $('#wmn_urut').val(res.wmn_urut);
-                    $('#wmn_mrkn_kode').val(res.wmn_mrkn_kode);
-                    $('#wmn_mpol_kode').val(res.wmn_mpol_kode);
+                    titleAction('tModUser', 'Edit User');
+                    bsimpan('btn_simpan', 'Update');
+                    setHide('btn_reset', true);
+
+                    var tipe = "{{ url('api/utility/daftar-user/tipe-menu') }}" + "/" + data.menu_tipe;
+                    var email = data.email_user;
+                    jsonForm('frxx_user', data);
+                    setText('email_user', email.replace(/@alamin.co.id/gi, ""));
+                    $.get(tipe, function(res) {
+                        if ($('#menu_tipe').find("option[value='" + res.wmt_kode + "']").length) {
+                            $('#menu_tipe').val(res.wmt_kode).trigger('change');
+                        } else {
+                            selectEdit('menu_tipe', res.wmt_kode, res.wmt_nama);
+                        }
+                    });
                 });
             });
 
             submitForm(
-                "frxx",
+                "frxx_user",
                 "btn_simpan",
                 "POST",
                 "{{ route('utility.daftar-user.store') }}",
                 (resSuccess) => {
-                    clearForm("frxx");
-                    clearSelect();
+                    clearForm("frxx_user");
                     bsimpan("btn_simpan", 'Simpan');
                     lodTable("dataUser");
                     closeModal('modalUser');
@@ -290,54 +286,59 @@
                 },
             );
 
-            $('body').on('click', '#omodDelete', function() {
+            tombol('click', 'omodDelete', function() {
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.daftar-user.store') }}" + "/" + kode;
-
-                console.log(kode);
-                Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: "Akan menghapus data user dengan kode " + kode + " !",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                        'Terhapus!',
-                        'Anda berhasil menghapus data user dengan kode ' + kode + ".",
-                        'success'
-                        ).then((result) => {
-                            console.log(kode);
-                            $.ajax({
-                                url: url,
-                                type: "DELETE",
-                                success: function(res) {
-                                lodTable("dataUser");
-                                },
-                                error: function(err) {
-                                    reset();
-                                    console.log('Error', err);
-                                }
-                            });
-                        })
-                    }
-                })
+                submitDelete(kode, url, function(resSuccess) {
+                    lodTable("dataUser");
+                    // console.log(resSuccess);
+                }, function(resError) {
+                    // console.log(resError);
+                });
             });
 
-            $('#btn_reset').click(function() {
-                clearForm("frxx");
-                clearSelect();
-            });
+            // $('body').on('click', '#omodDelete', function() {
+            //     var kode = $(this).attr('data-resouce'),
+            //         url = "{{ route('utility.daftar-user.store') }}" + "/" + kode;
+
+            //     console.log(kode);
+            //     Swal.fire({
+            //         title: 'Apakah anda yakin?',
+            //         text: "Akan menghapus data user dengan kode " + kode + " !",
+            //         icon: 'warning',
+            //         showCancelButton: true,
+            //         confirmButtonColor: '#3085d6',
+            //         cancelButtonColor: '#d33',
+            //         confirmButtonText: 'Ya, hapus!'
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             Swal.fire(
+            //             'Terhapus!',
+            //             'Anda berhasil menghapus data user dengan kode ' + kode + ".",
+            //             'success'
+            //             ).then((result) => {
+            //                 console.log(kode);
+            //                 $.ajax({
+            //                     url: url,
+            //                     type: "DELETE",
+            //                     success: function(res) {
+            //                     lodTable("dataUser");
+            //                     },
+            //                     error: function(err) {
+            //                         reset();
+            //                         console.log('Error', err);
+            //                     }
+            //                 });
+            //             })
+            //         }
+            //     })
+            // });
         });
 
 
-        function closeBtnModal () {
+        function closeBtnModal() {
             closeModal('modalUser');
-            clearForm("frxx");
-            clearSelect();
+            clearForm("frxx_user");
         };
 
         hidePesan('email');
