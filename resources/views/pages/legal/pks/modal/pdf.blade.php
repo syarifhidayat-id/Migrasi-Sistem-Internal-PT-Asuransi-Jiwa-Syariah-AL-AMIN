@@ -4,18 +4,14 @@
             <div class="modal-header" id="modalPdf_header">
                 <h4 class="fw-bolder" id="tModPdf"></h4>
 
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_close5">
-                    <span class="svg-icon svg-icon-1">
-                        <i class="fa-sharp fa-solid fa-xmark"></i>
-                    </span>
-                </div>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeModal('modalPdf')"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body" id="modal-body">
-                <Object id="pdf" type="application/pdf" width="100%" height="500"></Object>
+                <embed id="view_pdf" src="" type="application/pdf" width="100%" height="500">
             </div>
            
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-light btn-sm" id="btn_close5">Close</button>
+                    <button type="button" class="btn btn-light btn-sm" onclick="closeModal('modalPdf')">Close</button>
                     {{-- <button type="button" class="btn btn-danger btn-sm" onclick="close_pojk()"><i
                             class="fa-solid fa-xmark" ></i> Tutup</button> --}}
                 </div>

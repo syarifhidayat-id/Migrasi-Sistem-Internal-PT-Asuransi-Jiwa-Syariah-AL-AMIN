@@ -102,7 +102,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
-                    <div id="kt_table_datatable_export" class="d-none"></div>
+                    {{-- <div id="kt_table_datatable_export" class="d-none"></div>
 
                     <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm"
                         data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i
@@ -126,14 +126,11 @@
                         <div class="menu-item px-3">
                             <a href="#" class="menu-link px-3" data-kt-export="pdf">Export as PDF</a>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <button type="button" class="btn btn-light-primary btn-sm me-3" data-bs-toggle="tooltip"
-                        data-bs-trigger="hover" id="omodTam" data-bs-placement="top" title="Tambah Baru">Tambah</button>
+                        data-bs-trigger="hover" id="omodTam" data-bs-placement="top" title="Tambah Baru">Tambah OJK</button>
                 </div>
-
-                @include('pages.legal.ojk.modal.create')
-                @include('pages.legal.ojk.modal.view')
             </div>
         </div>
 
@@ -158,6 +155,10 @@
                 </table>
             </div>
         </div>
+        
+
+        @include('pages.legal.ojk.modal.create')
+        @include('pages.legal.ojk.modal.view')
     </div>
 @endsection
 
@@ -255,46 +256,38 @@
                 ],
             );
 
+            tombol('click', 'omodTam', function() {
+
+            });
+
             $('body').on('change', '#jenis_dokumen', function() {
                 var _this = $(this).val();
                 console.log(_this);
             }).change();
 
-            $('body').on('click', '#omodTam', function() {
+            tombol('click', 'omodTam', function() {
                 $('#modal').modal('show');
+                setHide('btn_reset', false);
                 bsimpan('btn_simpan', 'Simpan');
                 $('#tMod').text('Tambah data');
                 bsimpan('btn_simpan', 'Simpan');
+                clearForm('frxx');
+                clearSelect();
+                
             });
 
-            $('body').on('click', '#bmoViewPdf', function() {
-                // $('#tModView').text('Rincian PKS');
-                var kode = $(this).attr('data-show-pdf');
-                var loc2 = $(location).attr('origin') + '/storage/legal/laporan-berkala/' + kode;
-                $('#modalView').modal('show')
-                $('#tModView').text('File : ' + kode);
-                $('#pdf').attr('data', loc2);
-
-                $("#modalView").on("hidden.bs.modal", function() {
-                    $("#modal-body").html("");
-                    $('#pdf').attr('data', loc2);
-                });
-                console.log(loc2);
-            });
-
-            $('body').on('click', '#omodEdit', function() {
+            tombol('click', 'omodEdit', function() {
                 $('#tMod').text('Edit Data');
+                setHide('btn_reset', true);
                 bsimpan('btn_simpan', 'Update');
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ url('legal/ojk') }}" + "/" + kode + "/edit";
                 $.get(url, function(res) {
                     // var key = "{{ url('api/legal/get_mojk_jenis') }}";
                     $('#modal').modal('show');
-                    $('#mojk_pk').val(kode);
-                    $('#mojk_judul').val(res.mojk_judul);
-                    $('#mojk_tahun').val(res.mojk_tahun);
-                    $('#mojk_jenis').val(res.mojk_jenis);
-                    $('#mojk_ket_jenis').val(res.mojk_ket_jenis);
+                    openModal('modal');
+                    jsonForm('frxx', res);
+
                 });
             });
 

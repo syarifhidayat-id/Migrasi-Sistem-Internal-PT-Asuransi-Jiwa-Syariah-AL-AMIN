@@ -4,7 +4,11 @@
             <div class="modal-header" id="modalMenu_header">
                 <h2 class="fw-bolder" id="tMod"></h2>
 
-                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeMod()"><i class="fa-sharp fa-solid fa-xmark"></i></button>
+                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_closeCreate">
+                    <span class="svg-icon svg-icon-1">
+                        <i class="fa-sharp fa-solid fa-xmark"></i>
+                    </span>
+                </div>
             </div>
 
             <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
@@ -18,19 +22,11 @@
 
                             <input class="form-control" name="mojk_pk" id="mojk_pk" type="hidden"
                                 data-allow-clear="false" readonly />
-                                <div class="col-md-6 mb-5">
-                                    <label class="form-label">Jenis Dokumen</label>
-                                    <select class="form-select" data-dropdown-parent="#modal" id="mojk_jenis"
-                                        name="mojk_jenis" data-placeholder="Pilih jenis dokumen" data-allow-clear="true">
-                                        <option></option>
-                                    </select>
-                                    {{-- <span class="text-danger error-text mpks_mrkn_kode_err"></span> --}}
-                                </div>
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
-                                    <label class="required form-label">Keterangan Dokumen</label>
-                                    <input class="form-control" name="mojk_ket_jenis" id="mojk_ket_jenis" type="text"
-                                        data-allow-clear="true" placeholder="Masukan ket jenis" />
+                                    <label class="required form-label">Judul</label>
+                                    <input class="form-control" name="mojk_judul" id="mojk_judul" type="text"
+                                        data-allow-clear="true" placeholder="Masukan judul!" />
                                     {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
 
                                 </div>
@@ -38,9 +34,9 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Tahun</label>
-                                    <select class="form-select" data-control="select2" data-dropdown-parent="#modal" name="mojk_tahun" id="mojk_tahun" type="text" data-allow-clear="true" data-placeholder="Masukan tahun">
-                                        <option></option>
-                                    <option value="2007"    >2007</option>
+                                    <select class="form-control" name="mojk_tahun" id="mojk_tahun" type="text"
+                                        data-allow-clear="true" placeholder="Masukan tahun">
+                                    <option value="2007" selected>2007</option>
                                     <option value="2008">2008</option>
                                     <option value="2009">2009</option>
                                     <option value="2010">2010</option>
@@ -63,11 +59,40 @@
 
                                 </div>
                             </div>
+                            <div class="col-md-6 mb-5">
+                                <div class="mb-5">
+                                    <label class="required form-label">Jenis Dokumen</label>
+                                    <select class="form-control" name="mojk_jenis" id="mojk_jenis" type="text"
+                                        data-allow-clear="true" placeholder="Masukan jenis dokumen">
+                                    <option value="0" selected>Audit</option>
+                                    <option value="1">Laporan</option>
+                                    <option value="2">Tanda Terima</option>
+                                    </select>
+                                    {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-5">
+                                <div class="mb-5">
+                                    <label class="required form-label">Keterangan Jenis</label>
+                                    <input class="form-control" name="mojk_ket_jenis" id="mojk_ket_jenis" type="text"
+                                        data-allow-clear="true" placeholder="Masukan keterangan jenis!" />
+                                    {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-5">
+                                    <label class="required form-label">Upload Tanda Terima</label>
+                                    <input type="file" class="form-control" name="mojk_file1"
+                                        placeholder="pilih file" id="mojk_file1" />
+                                    {{-- <span class="text-danger error-text mpojk_dokumen_err"></span> --}}
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Upload Dokumen</label>
-                                    <input type="file" class="form-control" name="mojk_file1"
-                                        placeholder="pilih file" id="mojk_file1" />
+                                    <input type="file" class="form-control" name="mojk_file2"
+                                        placeholder="pilih file" id="mojk_file2" />
                                     {{-- <span class="text-danger error-text mpojk_dokumen_err"></span> --}}
                                 </div>
                             </div>
@@ -79,7 +104,8 @@
                             class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
                             class="fa-solid fa-trash"></i> Hapus</button>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="closeMod()"> Tutup</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="btn_tutup"><i
+                            class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>
         </div>

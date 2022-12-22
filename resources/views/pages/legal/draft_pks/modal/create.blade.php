@@ -3,7 +3,6 @@
         <div class="modal-content">
             <div class="modal-header" id="modalMenu_header">
                 <h2 class="fw-bolder" id="tmod"></h2>
-                
                 <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeModal('modalDraftPks')"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
@@ -46,7 +45,7 @@
                 <div class="modal-footer justify-content-center">
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i
                             class="fa-solid fa-floppy-disk"></i> Simpan</button>
-                    <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
+                    <button type="button" class="btn btn-warning btn-sm" id="btnReset" name="btnReset"><i
                             class="fa-solid fa-trash"></i> Hapus</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="closeModal('modalDraftPks')"> Tutup</button>
                 </div>

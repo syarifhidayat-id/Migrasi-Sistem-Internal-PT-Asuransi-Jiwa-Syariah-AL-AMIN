@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
-                    <div id="kt_table_datatable_export" class="d-none"></div>
+                    {{-- <div id="kt_table_datatable_export" class="d-none"></div>
 
                     <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm"
                         data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i
@@ -125,11 +125,11 @@
                         <div class="menu-item px-3">
                             <a href="#" class="menu-link px-3" data-kt-export="pdf">Export as PDF</a>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <button type="button" class="btn btn-light-primary btn-sm me-3" data-bs-toggle="tooltip"
                         data-bs-trigger="hover" data-bs-placement="top" title="Tambah Baru"
-                        onclick="tombolAct(0)">Tambah</button>
+                        onclick="tombolAct(0)">Tambah draft pks</button>
                 </div>
                 @include('pages.legal.draft_pks.modal.create')
             </div>
@@ -165,7 +165,7 @@
             });
 
             //SELECT FORM DRAFT PKS
-            selectSide('mdp_mssp_kode', false, '{{ url("api/legal/pks/mssp") }}', function(data) { return {
+            selectSide('mdp_mssp_kode', false, '{{ url("api/legal/pks/mssp") }}', function(d) { return {
                         text: d.mssp_nama, // text nama
                         id: d.mssp_kode // kode value
                     };
@@ -187,28 +187,12 @@
                 // setText('msoc_mssp_nama', res.params.data.text);
             });
 
-            changeSelect('check_id_draft', 'key', '{{ url("api/legal/pks/getId") }}',function(d) { return {
-                id: d.mdp_pk,
-                text: d.mdp_pk
-            }}, function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-            });
-
             selectSide('check_mdp_tentang', false, '{{ url("api/legal/pks/selectTentang") }}', function(d) { return {
                 id: d.mdp_tentang,
                 text: d.mdp_tentang
             }}, function(res) {
                 // setText('msoc_mssp_kode', res.params.data.id);
                 // setText('msoc_mssp_nama', res.params.data.text);
-            });
-
-            changeSelect('check_mdp_tentang', 'key', '{{ url("api/legal/pks/getTentang") }}',function(d) { return {
-                id: d.mdp_tentang,
-                text: d.mdp_tentang
-            }}, function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
             });
 
             selectSide('check_segmen_pasar', false, '{{ url("api/legal/pks/selectSegmen") }}', function(d) { return {
@@ -218,30 +202,6 @@
                 // setText('msoc_mssp_kode', res.params.data.id);
                 // setText('msoc_mssp_nama', res.params.data.text);
             });
-
-            changeSelect('check_segmen_pasar', 'key', '{{ url("api/legal/pks/getSegmen") }}',function(d) { return {
-                id: d.mssp_kode,
-                text: d.mssp_nama
-            }}, function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-            });
-
-            // selectSide('check_periode_input', false, '{{ url("api/legal/pks/selectSegmen") }}', function(d) { return {
-            //     id: d.mssp_kode,
-            //     text: d.mssp_nama
-            // }}, function(res) {
-            //     // setText('msoc_mssp_kode', res.params.data.id);
-            //     // setText('msoc_mssp_nama', res.params.data.text);
-            // });
-
-            // changeSelect('check_periode_input', 'key', '{{ url("api/legal/pks/getSegmen") }}',function(d) { return {
-            //     id: d.mssp_kode,
-            //     text: d.mssp_nama
-            // }}, function(res) {
-            //         // setText('msoc_mssp_kode', res.params.data.id);
-            //         // setText('msoc_mssp_nama', res.params.data.text);
-            // });
 
             filterAll('input[type="search"]', 'serverSide_draft');
             serverSide( "serverSide_draft", "{{ url('api/legal/draft_pks') }}", //url api/route
@@ -319,14 +279,14 @@
             // setHide('mpks_pk', true);
 
             if (tipe == "0") {
-                // setHide('hidePk', true);
+                setHide('btnReset', false);
                 // setHide('hideField', true);
                 openModal('modalDraftPks');
                 titleAction('tmod', 'Tambah');
             }
 
             if (tipe == "1") {
-                // setHide('hidePk', true);
+                setHide('btnReset', true);
                 // setHide('hideField', true);
                 var kode = $('#omodEdit').attr('data-resouce'),
                     url = "{{ url('legal/pks/draft') }}" + "/" + kode + "/edit";

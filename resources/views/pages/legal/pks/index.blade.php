@@ -103,9 +103,9 @@
                 <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
                     <div id="kt_table_datatable_export" class="d-none"></div>
 
-                    <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm"
+                    {{-- <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm"
                         data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i
-                            class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button>
+                            class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button> --}}
 
                     <div id="kt_table_datatable_export_menu" title-kt-export="Data PKS"
                         class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4"
@@ -134,11 +134,7 @@
                         data-bs-trigger="hover" data-bs-placement="top" title="Batal" onclick="tombolAct(3)">Batal</button>
                 </div>
 
-                @include('pages.legal.pks.modal.create')
-                @include('pages.legal.pks.modal.view')
-                @include('pages.legal.pks.modal.pdf')
-                @include('pages.legal.pks.modal.addendum')
-                @include('pages.legal.pks.modal.batal')
+                
             </div>
         </div>
 
@@ -163,6 +159,12 @@
                 </table>
             </div>
         </div>
+
+        @include('pages.legal.pks.modal.create')
+                @include('pages.legal.pks.modal.view')
+                @include('pages.legal.pks.modal.pdf')
+                @include('pages.legal.pks.modal.addendum')
+                @include('pages.legal.pks.modal.batal')
     </div>
 @endsection
 
@@ -186,28 +188,12 @@
                 // setText('msoc_mssp_nama', res.params.data.text);
             });
 
-            changeSelect('check_pks_instansi', 'key', '{{ url("api/legal/pks/getInstansi") }}',function(d) { return {
-                id: d.mpks_instansi,
-                text: d.mpks_instansi
-            }}, function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-            });
-
             selectSide('check_pks_no', false, '{{ url("api/legal/pks/select-no-pks") }}', function(d) { return {
                 id: d.mpks_nomor,
                 text: d.mpks_nomor
             }}, function(res) {
                 // setText('msoc_mssp_kode', res.params.data.id);
                 // setText('msoc_mssp_nama', res.params.data.text);
-            });
-
-            changeSelect('check_pks_no', 'key', '{{ url("api/legal/pks/getNoPks") }}',function(d) { return {
-                id: d.mpks_nomor,
-                text: d.mpks_nomor
-            }}, function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
             });
 
             selectSide('check_pic_pks', false, '{{ url("api/legal/pks/selectPic") }}', function(d) { return {
@@ -218,14 +204,6 @@
                 // setText('msoc_mssp_nama', res.params.data.text);
             });
 
-            changeSelect('check_pic_pks', 'key', '{{ url("api/legal/pks/getPic") }}',function(d) { return {
-                id: d.mpks_pic,
-                text: d.mpks_pic
-            }}, function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-            });
-
             selectSide('check_ins_user', false, '{{ url("api/legal/pks/selectInsUser") }}', function(d) { return {
                 id: d.mpks_ins_user,
                 text: d.mpks_ins_user
@@ -233,30 +211,6 @@
                 // setText('msoc_mssp_kode', res.params.data.id);
                 // setText('msoc_mssp_nama', res.params.data.text);
             });
-
-            changeSelect('check_ins_user', 'key', '{{ url("api/legal/pks/getInsUser") }}',function(d) { return {
-                id: d.mpks_ins_user,
-                text: d.mpks_ins_user
-            }}, function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-            });
-
-            // selectSide('check_status_berlaku', false, '{{ url("api/legal/pks/selectInsUser") }}', function(d) { return {
-            //     id: d.mpks_ins_user,
-            //     text: d.mpks_ins_user
-            // }}, function(res) {
-            //     // setText('msoc_mssp_kode', res.params.data.id);
-            //     // setText('msoc_mssp_nama', res.params.data.text);
-            // });
-
-            // changeSelect('check_status_berlaku', 'key', '{{ url("api/legal/pks/getInsUser") }}',function(d) { return {
-            //     id: d.mpks_ins_user,
-            //     text: d.mpks_ins_user
-            // }}, function(res) {
-            //         // setText('msoc_mssp_kode', res.params.data.id);
-            //         // setText('msoc_mssp_nama', res.params.data.text);
-            // });
 
 
             //SELECT FORM
@@ -269,7 +223,7 @@
                 // setText('msoc_mssp_nama', res.params.data.text);
             });
 
-            selectSide('cari_pk', false, '{{ url("api/legal/get_select_pks") }}', function(data) { return {
+            selectSide('cari_pk', false, '{{ url("api/legal/get_select_pks") }}', function(d) { return {
                 text: d.mpks_nomor, // text nama
                 // text: d.mpks_nomor + '|' + d.mpks_nama, // text nama
                 id: d.mpks_pk, // kode value
@@ -289,27 +243,6 @@
             },
         );
 
-            // selectServerSide( //select server side with api/route
-            //     'mpks_mrkn_kode_test', //kode select
-            //     '{{ url('api/legal/pks/polis') }}', //url
-            //     function(data) {
-            //         return {
-            //             results: $.map(data, function(d) {
-            //                 return {
-            //                     text: d.mrkn_nama, // text nama
-            //                     id: d.mrkn_kode, // kode value
-            //                     // nomor: d.tsm_nomor, // kode value
-            //                 }
-            //             })
-            //         };
-            //     },
-            //     function(res) {
-            //         // $('#tsin_noreferensi').val(res.params.data.nomor);
-            //         // setText('tsin_noreferensi', res.params.data.nomor); //membuat isi pada id input yang di inginkan
-            //         // getText('mpks_mrkn_kode_test'); //ambil data yang berada dalam input berdasarkan id input
-            //     },
-            // );
-
             filterAll('input[type="search"]', 'serverSidePks'); //khusus type search inputan
 
             serverSide( //datatable serverside
@@ -324,8 +257,6 @@
                     d.mpks_pic = getText('check_pic_pks');
                     d.check_user_ins = getText('check_user_ins');
                     d.mpks_ins_user = getText('check_ins_user');
-
-
                     d.search = $('input[type="search"]').val()
                 },
                 [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
@@ -362,10 +293,7 @@
                         className: 'text-center',
                         render: function(data, type, row) {
                             return `
-                        <button type="button" id="bmoViewPdf" data-resouce="` + row.mpks_pk + `" data-show-pdf="` + row
-                                .mpks_dokumen + `"
-                                        class="btn btn-light-primary" target="blank"> ` + row.kode_rekanan +
-                                ` </button>`
+                        <button type="button" data-resouce="` + row.mpks_pk + `" onclick="jenisFile('`+row.mpks_dokumen+`')" class="btn btn-light-primary" target="blank"> ` + row.kode_rekanan + ` </button>`
                         }
                     },
                     {
@@ -490,55 +418,19 @@
                     }
                 })
             });
-
-            function x() {
-                $(document).ready(function() {
-                    $("button").click(function() {
-                        $("#frxx")[0].reset();
-                    });
-                });
-            }
-
-            $('#btn_reset').click(function() {
-                x();
-                // clearError();
-            });
-            $('#btn_close3').click(function() {
-                $('#modalView').modal('hide');
-                x();
-            });
-            $('#btn_close4').click(function() {
-                $('#modalView').modal('hide');
-                x();
-            });
-            $('#btn_close5').click(function() {
-                $('#modalPdf').modal('hide');
-            });
-            $('#btn_closeCreate').click(function() {
-                $('#modalPks').modal('hide');
-                x();
-            });
-            $('#btn_tutup').click(function() {
-                $('#modalPks').modal('hide');
-                x();
-            });
-            $('#btn_tutup_a').click(function() {
-                $('#modalAddendum').modal('hide');
-                x();
-            });
-            $('#btn_tutup_b').click(function() {
-                $('#modalAddendum').modal('hide');
-                x();
-            });
-
         });
+
+        // function closeMod (id, tipe) {
+        //     closeModal(id);
+        //     clearForm(tipe);
+        // }
 
         function tombolAct(tipe) {
             clearForm('frxx_add');
-            clearSelect();
             setHide('mpks_pk', true);
 
             if (tipe == "0") {
+                setHide('btnBersih', false);
                 setHide('hidePk', true);
                 setHide('hideField', true);
                 openModal('modalAddendum');
@@ -547,6 +439,7 @@
 
             if (tipe == "1") {
                 setHide('hidePk', true);
+                setHide('btnBersih', true);
                 setHide('hideField', true);
                 var kode = $('#omodEdit').attr('data-resouce'),
                     url = "{{ url('legal/pks/lihat') }}" + "/" + kode + "/edit";
@@ -566,7 +459,8 @@
             }
 
             if (tipe == "2") {
-                setHide('hidePk', true);
+                setHide('hidePk', false);
+                setHide('btnBersih', true);
                 setHide('hideField', true);
                 // var eds = setText('eds', '0');
                 // endos(eds);
@@ -575,7 +469,8 @@
             }
 
             if (tipe == "3") {
-                setHide('hidePk', true);
+                setHide('hidePk', false);
+                setHide('btnBersih', true);
                 setHide('hideField', true);
                 // var eds = setText('eds', '2');
                 // endos(eds);
@@ -584,6 +479,12 @@
             }
             setText('eds', tipe);
         }
+
+        function jenisFile(jenis1) {
+            var url = '{{ url("storage/legal/pks") }}' + '/';
+                $('#view_pdf').attr('src', url + jenis1);
+                openModal('modalPdf');
+            }
 
         // hidePesan('wmn_tipe');
     </script>

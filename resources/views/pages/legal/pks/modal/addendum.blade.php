@@ -18,7 +18,7 @@
                             <div class="col-md-6 mb-5" id="hidePk">
                                 <label class="form-label">Cari PK</label>
                                 <select class="form-select" data-dropdown-parent="#modalAddendum" id="cari_pk"
-                                    name="cari_pk" data-placeholder="Cari PK untuk Addendum" data-allow-clear="true">
+                                    name="cari_pk" data-placeholder="Cari PK" data-allow-clear="true">
                                     <option></option>
                                 </select>
                                 {{-- <input type="text" class="form-control" name="eds" id="eds"> --}}
@@ -141,7 +141,7 @@
                 <div class="modal-footer justify-content-center">
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i
                             class="fa-solid fa-floppy-disk"></i> Simpan</button>
-                    <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
+                    <button type="button" class="btn btn-warning btn-sm" onclick="clearForm('frxx_add')" id="btnBersih" name="btnBersih"><i
                             class="fa-solid fa-trash"></i> Hapus</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="closeModal('modalAddendum')"> Tutup</button>
                 </div>

@@ -102,7 +102,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
-                    <div id="kt_table_datatable_export" class="d-none"></div>
+                    {{-- <div id="kt_table_datatable_export" class="d-none"></div>
 
                     <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm"
                         data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i
@@ -126,10 +126,10 @@
                         <div class="menu-item px-3">
                             <a href="#" class="menu-link px-3" data-kt-export="pdf">Export as PDF</a>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <button type="button" class="btn btn-light-primary btn-sm me-3" data-bs-toggle="tooltip"
-                        data-bs-trigger="hover" id="omodTam" data-bs-placement="top" title="Tambah Baru">Tambah</button>
+                        data-bs-trigger="hover" id="omodTam" data-bs-placement="top" title="Tambah Baru">Tambah Laporan Berkala</button>
                 </div>
 
                 @include('pages.legal.laporan-berkala.modal.create')
@@ -172,7 +172,7 @@
 
             //SELECT FORM
             selectSide( 'mojk_jenis', false, '{{ url('api/legal/get_mojk_jenis') }}', //url
-                function(data) {
+                function(d) {
                     return {
                         text: d.mlapbkl_jenis, // text nama
                         id: d.mlapbkl_pk // kode value
@@ -298,10 +298,12 @@
 
 
             $('body').on('click', '#omodTam', function() {
+                setHide('btn_reset', false);
                 $('#modal').modal('show');
                 bsimpan('btn_simpan', 'Simpan');
                 $('#tMod').text('Tambah data');
                 bsimpan('btn_simpan', 'Simpan');
+                
             });
 
             $('body').on('click', '#bmoViewPdf', function() {
@@ -321,24 +323,17 @@
 
             $('body').on('click', '#omodEdit', function() {
                 $('#tMod').text('Edit Data');
+                setHide('btn_reset', true);
                 bsimpan('btn_simpan', 'Update');
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ url('legal/laporan-berkala') }}" + "/" + kode + "/edit";
                 $.get(url, function(res) {
-                    // var key = "{{ url('api/legal/get_mojk_jenis') }}";
                     $('#modal').modal('show');
-                    // $('#mojk_pk').val(kode);
-                    // $('#mojk_jenis').val(res.mojk_jenis);
-                    // $('#mojk_ket_jenis').val(res.mojk_ket_jenis);
-                    // $('#mojk_tahun').val(res.mojk_tahun);
                     var key = "{{ url('api/legal/get_edit_select_lap') }}" + "/" + res
                         .mojk_jenis;
                     $('#frxx').formToJson(res);
                     $.get(key, function(data) {
                         selectEdit('mojk_jenis', data.mlapbkl_pk, data.mlapbkl_jenis);
-                        // var op = new Option(data.mrkn_nama, data.mrkn_kode, true, true);
-                        // $('#mpks_mrkn_kode').append(op).trigger('change');
-                        // console.log(data);
                     });
                 });
             });
@@ -428,6 +423,11 @@
             });
 
         });
+
+        function closeMod() {
+            closeModal('modal');
+            clearForm('frxx');
+        }
 
         // function close_pojk () {
         //     $('#modalView').modal('hide');
