@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <form id="frxx_soc" name="frxx_soc" method="post" enctype="multipart/form-data">
+    <form id="frxx_soc" name="frxx_soc" class="form-mixs" method="post" enctype="multipart/form-data">
         @csrf
         <div class="card-body py-10">
             <div class="row">

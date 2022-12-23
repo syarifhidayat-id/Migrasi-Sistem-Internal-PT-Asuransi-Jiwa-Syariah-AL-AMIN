@@ -24,13 +24,12 @@ class DaftarUserController extends Controller
      */
     public function index()
     {
-        $user = DaftarUser::all();
-        $ftipe_menu = DB::table('web_menu_tipe')
-        ->select('wmt_kode','wmt_nama')
-        ->get();
+        $userTb = DB::table('user_accounts');
+        $nameUser = $userTb->select(DB::raw("name"))->get();
+        $username = $userTb->select(DB::raw("email"))->get();
         return view('pages.utility.daftar-user.index', [
-            'user' => $user,
-            'tipe_menu' => $ftipe_menu,
+            'nameUser' => $nameUser,
+            'username' => $username,
         ]);
     }
 
@@ -190,7 +189,8 @@ class DaftarUserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = DB::table('user_accounts')->where('id', $id)->first();
+        return response()->json($data);
     }
 
     /**
@@ -213,7 +213,28 @@ class DaftarUserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = DB::table('user_accounts')->where('id', $id);
+        $data->delete();
+
+        return response()->json([
+            'success' => 'Data berhasil dihapus dengan Kode '.$data->id.'!'
+        ]);
+    }
+
+    public function selectTipeMenu(Request $request)
+    {
+        $vtable = DB::table('web_menu_tipe')->select('wmt_kode','wmt_nama');
+        if (!empty($request->q)) {
+            $vtable->where('wmt_nama', 'LIKE', "%$request->q%");
+        }
+        $data = $vtable->get();
+        return response()->json($data);
+    }
+
+    public function tipeMenu($id)
+    {
+        $tipe = DB::table('web_menu_tipe')->where('wmt_kode', $id)->first();
+        return response()->json($tipe);
     }
 
     public function datauser(Request $request)
@@ -223,16 +244,20 @@ class DaftarUserController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->filter (function ($instance) use ($request) {
-                    // if (!empty($request->get('wmn_tipe'))) {
-                    //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                    //         return Str::contains($row['wmn_tipe'], $request->get('wmn_tipe')) ? true : false;
-                    //     });
-                    // }
-                    // if (!empty($request->get('wmn_descp'))) {
-                    //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                    //         return Str::contains($row['wmn_descp'], $request->get('wmn_descp')) ? true : false;
-                    //     });
-                    // }
+                    if ($request->get('check_1') == "1") {
+                        if (!empty($request->get('name'))) {
+                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                                return Str::contains($row['name'], $request->get('name')) ? true : false;
+                            });
+                        }
+                    }
+                    if ($request->get('check_2') == "1") {
+                        if (!empty($request->get('email'))) {
+                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                                return Str::contains($row['email'], $request->get('email')) ? true : false;
+                            });
+                        }
+                    }
                     if (!empty($request->get('search'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                             if (Str::contains(Str::lower($row['name']), Str::lower($request->get('search')))){

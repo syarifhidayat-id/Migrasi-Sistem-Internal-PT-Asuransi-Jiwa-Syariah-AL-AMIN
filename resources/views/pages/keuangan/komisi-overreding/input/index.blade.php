@@ -63,7 +63,7 @@
                                             <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 1" data-allow-clear="true" data-kt-datatable-table-filter="bulan1" data-hide-search="false" id="bln1" name="bln1">
                                                 <option></option>
                                                 @foreach (range(1,12) as $month)
-                                                    <option value="{{ date('m', strtotime('2016-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
+                                                    <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -72,7 +72,7 @@
                                             <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 2" data-allow-clear="true" data-kt-datatable-table-filter="bulan2" data-hide-search="false" id="bln2" name="bln2">
                                                 <option></option>
                                                 @foreach (range(1,12) as $month)
-                                                    <option value="{{ date('m', strtotime('2016-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
+                                                    <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -169,12 +169,19 @@
 
 @section('script')
     <script>
-        setHide('kode_tipe', false);
         $('#wmn_key').select2({
             tags: true,
         });
         $('#wmn_mrkn_kode').select2();
         $('#wmn_mpol_kode').select2();
+
+        setText('bln1', '01');
+        setText('bln2', '01');
+
+        // $('#bln1').change(function() {
+        //     var _this = $(this).val();
+        //     console.log(_this);
+        // });
 
         $(function () {
             $.ajaxSetup({
