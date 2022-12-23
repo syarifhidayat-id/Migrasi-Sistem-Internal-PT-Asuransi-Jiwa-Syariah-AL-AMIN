@@ -17,7 +17,7 @@
             @csrf
             <div class="card-body py-10">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="mb-5">
                             <label class="required form-label">Kantor Al Amin</label>
                             <select class="form-select" id="tdna_mlok_kode" name="tdna_mlok_kode"
@@ -27,7 +27,7 @@
                             {{-- <input type="text" id="test" /> --}}
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="mb-5">
                             <label class="required form-label">Kategori Transaksi</label>
                             <select class="form-select" id="tdna_dk" data-control="select2" name="tdna_dk"
@@ -39,14 +39,14 @@
                             {{-- <input type="text" id="test" /> --}}
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="mb-5">
                             <label class="required form-label">Tgl. Pengajuan</label>
                             <input type="date" class="form-control" id="tdna_tgl_aju" name="tdna_tgl_aju"
                                 data-allow-clear="true" />
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="mb-5">
                             <label class="required form-label">Diterima Dari/Penerima Dana</label>
                             <select class="form-select" id="tdna_penerima" data-control="select2" name="tdna_penerima"
@@ -56,7 +56,7 @@
                             {{-- <input type="text" id="test" /> --}}
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="mb-5">
                             <label class="required form-label">Keterangan</label>
                             <input type="text" class="form-control" id="tdna_ket" name="tdna_ket"
@@ -92,14 +92,14 @@
                     </div>
                     <div class="card-body py-10">
                         <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="mb-5">
                                 <label class="required form-label">Nominal Dana</label>
                                 <input type="number" class="form-control" id="tdna_total" name="tdna_total"
                                     data-allow-clear="true" placeholder="input nominal dana" />
                             </div>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="mb-5">
                                 <label class="required form-label">Nomor Voucher</label>
                                 <input type="number" class="form-control" id="tdna_total" name="tdna_total"
