@@ -380,7 +380,7 @@
     <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/pdf-view/pdf.min.js') }}"></script>
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
-    <script src="{{ asset('dist/js/jquery-plugin.min.js') }}"></script>
+    <script src="{{ asset('dist/js/jquery-config.min.js') }}"></script>
     <script src="{{ asset('dist/js/jquery.capitalize.js') }}"></script>
 
     <script>
