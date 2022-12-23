@@ -49,7 +49,7 @@
                     <div class="mb-5">
                         <label class="required form-label">Nama Pemegang Polis</label>
                         <input type="text" class="easyui-textbox selectGrid" name="msoc_mrkn_nama" id="msoc_mrkn_nama" data-options="prompt:'Pilih pemegang polis'" style="width: 100%; height: 38px;" />
-                        <input type="text" class="form-control form-control-solid" name="msoc_mrkn_kode" id="msoc_mrkn_kode" placeholder="msoc_mrkn_nama" />
+                        <input type="text" class="form-control form-control-solid" name="msoc_mrkn_kode" id="msoc_mrkn_kode" placeholder="msoc_mrkn_kode" />
                         <span class="text-danger error-text msoc_mrkn_nama_err"></span>
                     </div>
                 </div>
@@ -611,10 +611,10 @@
 
         <div class="card-footer text-center">
             <button type="submit" class="btn btn-primary btn-sm me-3" id="btn_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
-            <button type="button" class="btn btn-warning btn-sm" onclick="clear_f()"><i class="fa-solid fa-trash"></i> Hapus</button>
+            <button type="button" class="btn btn-warning btn-sm" onclick="clear_f()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
         </div>
     </form>
-    @include('pages.tehnik.soc.entry-soc.modal.program-asuransi')
+    {{-- @include('pages.tehnik.soc.entry-soc.modal.program-asuransi') --}}
     @include('pages.tehnik.soc.entry-soc.modal.import-tarif')
     @include('pages.tehnik.soc.entry-soc.modal.show-konfirmtarif')
     @include('pages.tehnik.soc.entry-soc.modal.lihat-tarif')
@@ -1237,8 +1237,6 @@
             $.get(url, function(data){
                 if (data) {
                     jsonForm('frxx_soc', data);
-                    //setloadpolis();
-                    // $('#ffile').form('load',data);
                 }
             });
         }
@@ -1367,6 +1365,7 @@
                             if (tipe!='0') {
                                 setText('e_bersih','1');
                                 jsonForm('frxx_soc', data);
+                                // console.log(data);
                                 //coba form file
                                 // $('#ffile').form('load',data);
                                 setText('e_bersih','');
@@ -1523,13 +1522,11 @@
         }
 
         function clear_f() {
-            // e_pras();
             clearForm('frxx_soc');
             clearForm('frxx_uploadTarif');
             clearForm('frxx_uploadUw');
             bsimpan('btn_simpan', 'Simpan');
             setText('sjab_editsoc','1');
-            // setText('endors', '0');
 
             setText('msoc_mujh_persen', '0');
             setText('msoc_mmfe_persen', '0');
@@ -1551,20 +1548,20 @@
             setReadEdit(false);
         }
 
-        function e_pras() {
-            setTextReadOnly('e_pras', false);
-            setTextReadOnly('msoc_mpras_kode',false);
-            setTextReadOnly('msoc_mrkn_nama',false);
-            setTextReadOnly('msoc_mrkn_kode',false);
-            setTextReadOnly('e_nasabah',false);
-            setTextReadOnly('msoc_mspaj_nama',false);
-            setTextReadOnly('msoc_mft_kode',false);
-            setTextReadOnly('e_manfaat',false);
-            setTextReadOnly('e_manfaat_pol',false);
-            setTextReadOnly('msoc_mssp_nama',false);
-            setTextReadOnly('msoc_jenis_bayar',false);
-            setTextReadOnly('msoc_mekanisme',false);
-        }
+        // function e_pras() {
+        //     setTextReadOnly('e_pras', false);
+        //     setTextReadOnly('msoc_mpras_kode',false);
+        //     setTextReadOnly('msoc_mrkn_nama',false);
+        //     setTextReadOnly('msoc_mrkn_kode',false);
+        //     setTextReadOnly('e_nasabah',false);
+        //     setTextReadOnly('msoc_mspaj_nama',false);
+        //     setTextReadOnly('msoc_mft_kode',false);
+        //     setTextReadOnly('e_manfaat',false);
+        //     setTextReadOnly('e_manfaat_pol',false);
+        //     setTextReadOnly('msoc_mssp_nama',false);
+        //     setTextReadOnly('msoc_jenis_bayar',false);
+        //     setTextReadOnly('msoc_mekanisme',false);
+        // }
 
         function bersih(tipe) {
             if (getText('e_bersih')=='1') {

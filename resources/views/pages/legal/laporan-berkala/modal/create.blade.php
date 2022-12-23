@@ -40,7 +40,7 @@
                                     <label class="required form-label">Tahun</label>
                                     <select class="form-select" data-control="select2" data-dropdown-parent="#modal" name="mojk_tahun" id="mojk_tahun" type="text" data-allow-clear="true" data-placeholder="Masukan tahun">
                                         <option></option>
-                                    <option value="2007"    >2007</option>
+                                    <option value="2007">2007</option>
                                     <option value="2008">2008</option>
                                     <option value="2009">2009</option>
                                     <option value="2010">2010</option>

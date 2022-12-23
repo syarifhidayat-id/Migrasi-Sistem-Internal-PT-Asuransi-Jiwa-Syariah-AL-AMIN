@@ -498,6 +498,7 @@ class LaporanBerkalaContoller extends Controller
         })
         ->make(true);
     }
+    
     public function selectJudul(Request $request)
     {
         $page = $request->page ? intval($request->page) : 1;

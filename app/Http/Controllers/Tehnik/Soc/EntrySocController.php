@@ -634,6 +634,7 @@ class EntrySocController extends Controller
         msoc_maintenance,
         msoc_pajakfee,
         msoc_handlingfee,
+        msoc_handlingfee2,
         msoc_kode,
         msoc_mslr_kode,
         msoc_file_polis,
@@ -648,6 +649,7 @@ class EntrySocController extends Controller
         msoc_mmfe_persen,
         msoc_mfee_persen,
         msoc_mkom_persen,
+        msoc_mkomdisc_persen,
         msoc_overreding,
         msoc_endors,
         msoc_mkar_kode_pim,
@@ -661,6 +663,7 @@ class EntrySocController extends Controller
         msoc_mujhrf_kode,
         msoc_mdr_kode,
         msoc_mpras_kode,
+        msoc_status,
         msoc_no_endors,
         IF(IFNULL(msoc_mrkn_nama,'')='',mrkn_nama,msoc_mrkn_nama) msoc_mrkn_nama,
         mlok_nama e_cabalamin,
@@ -675,8 +678,8 @@ class EntrySocController extends Controller
         ->leftJoin('emst.mst_jaminan as jmn', 'jmn.mjm_kode', '=', 'msoc_mjm_kode')
         ->leftJoin('emst.mst_rekanan as rkn', 'rkn.mrkn_kode', '=', 'msoc_mrkn_kode')
         ->leftJoin('emst.mst_lokasi as lok', 'lok.mlok_kode', '=', 'msoc_mlok_kode')
-        ->leftJoin('esdm.sdm_karyawan as pnc', 'pnc.skar_nip', '=', 'msoc_mkar_kode_pim')
-        ->leftJoin('esdm.sdm_karyawan as mkr', 'mkr.skar_nip', '=', 'msoc_mkar_kode_mkr')
+        ->leftJoin('esdm.sdm_karyawan_new as pnc', 'pnc.skar_pk', '=', 'msoc_mkar_kode_pim')
+        ->leftJoin('esdm.sdm_karyawan_new as mkr', 'mkr.skar_pk', '=', 'msoc_mkar_kode_mkr')
         ->leftJoin('emst.mst_tarif as trf', 'trf.mth_nomor', '=', 'msoc_mth_nomor')
         ->leftJoin('eopr.mst_spaj_polis as spaj', 'spaj.mspaj_nomor', '=', 'msoc_mspaj_nomor');
 
