@@ -33,12 +33,14 @@ class Pks extends Model
             'mpks_ket',
             'mpks_nomor_ori' ,
             'mpks_endos' ,
-            'mpks_mrkn_kode',
             'mpks_endos_idx',
             'mpks_indexfolder',
             'mpks_hapus',
             'mpks_ins_user',
-            'mpks_ins_date'
+            'mpks_ins_date',
+            'mpks_upd_date',
+            'mpks_upd_user',
+            'mpks_dokumen',
         ],
         $keyType = 'string';
 

@@ -1,15 +1,11 @@
 <?php
 
-use App\Http\Controllers\Sekper\DokumenKantorCabangController;
-use App\Http\Controllers\Sekper\DokumenKantorPusatController;
-use App\Http\Controllers\Sekper\DokumenPerusahaanLihatController;
-use App\Http\Controllers\Sekper\RekananController;
+// use App\Http\Controllers\Api\ApiController;
+
+use App\Http\Controllers\Sekper\DokumenPerusahaanController;
 use App\Http\Controllers\Sekper\SlidePresentasiController;
+use App\Http\Controllers\Sekper\SuratKeluarController;
 use App\Http\Controllers\Sekper\SuratMasukController;
-use App\Http\Controllers\Sekper\UploadSuratKeluarController;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,49 +13,32 @@ Route::group(['prefix' => '/sekper', 'as' => 'sekper.'], function () {
 
   Route::group(['prefix' => '/suratmasuk', 'as' => 'suratmasuk.'], function() {
 
-    Route::get('lov', [SuratMasukController::class, 'lov']);
-    Route::get('edit/{id}', [SuratMasukController::class, 'edit']);
-
-    // Route::get('/lovsm', function() {
-    //   $sm = DB::table('trs_surat_masuk AS sm')
-    //   ->select('sm.*')
-    //   ->orderBy('sm.tsm_ins_date', 'DESC')
-    //   ->get();
-    //   return response()->json([
-    //     'data' => $sm
-    //   ]);
-    // });
+    Route::get('surat_masuk', [SuratMasukController::class, 'surat_masuk']);
 
   });
 
   Route::group(['prefix' => '/suratkeluar', 'as' => 'suratkeluar.'], function() {
 
-    Route::group(['prefix' => '/uploadsurat', 'as' => 'uploadsurat.'], function() {
-        Route::get('lov', [UploadSuratKeluarController::class, 'lov']);
-        Route::get('edit/{id}', [UploadSuratKeluarController::class, 'edit']);
-    });
+    Route::get('surat_keluar', [SuratKeluarController::class, 'surat_keluar']);
+    Route::get('get_js', [SuratKeluarController::class, 'get_js']);
+    Route::get('get_surat_dir', [SuratKeluarController::class, 'get_surat_dir']);
+    Route::get('get_ref_surat', [SuratKeluarController::class, 'get_ref_surat']);
+    Route::get('get_aju_surat', [SuratKeluarController::class, 'get_aju_surat']);
+    Route::get('get_setuju_surat', [SuratKeluarController::class, 'get_setuju_surat']);
+    Route::get('gettsjs-edit/{kode}', [SuratKeluarController::class, 'getTsinjs_edit']);
+    Route::get('get_user_ttd', [SuratKeluarController::class, 'get_user_ttd']);
+    
+  });
+  
+  Route::group(['prefix' => '/slide_presentasi', 'as' => 'slide_presentasi.'], function() {
+    Route::get('slide_presentasi', [SlidePresentasiController::class, 'getSlide']);
 
   });
 
-  Route::group(['prefix' => '/slidepresentasi', 'as' => 'slidepresentasi.'], function() {
-
-    Route::get('lov', [SlidePresentasiController::class, 'lov']);
-    Route::get('lovcarippt', [SlidePresentasiController::class, 'lovPpt']);
-    Route::get('edit/{id}', [SlidePresentasiController::class, 'edit']);
-    Route::get('down/{id}', [SlidePresentasiController::class, 'down']);
-    Route::get('storage/{filename}', [SlidePresentasiController::class, 'getFile']);
-
+  Route::group(['prefix' => '/dokumen_perusahaan', 'as' => 'dokumen_perusahaan.'], function () {
+    
+    Route::get('get_dok_perusahaan', [DokumenPerusahaanController::class, 'get_dok_perusahaan']);
   });
 
-  Route::group(['prefix' => '/dokumen-perusahaan', 'as' => 'dokumenperusahaan.'], function () {
-    Route::get('kantorpusat/lov', [DokumenKantorPusatController::class, 'lov']);
-    Route::get('kantorpusat/edit/{id}', [DokumenKantorPusatController::class, 'edit']);
-    Route::get('kantorcabang/lov', [DokumenKantorCabangController::class, 'lov']);
-    Route::get('kantorcabang/edit/{id}', [DokumenKantorCabangController::class, 'edit']);
-    Route::get('lihat/{id}', [DokumenPerusahaanLihatController::class, 'edit']);
-  });
-
-    Route::get('/rekanan/lov', [RekananController::class, 'lov']);
-    Route::get('/rekanan/edit/{id}', [RekananController::class, 'edit']);
 
 });

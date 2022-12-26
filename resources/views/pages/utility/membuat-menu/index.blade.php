@@ -26,50 +26,47 @@
 
     <div class="card-header border-0 pt-6">
         <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <div class="input-group input-group-solid">
-                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control" placeholder="Cari Menu" />
-                    <button type="submit" class="btn btn-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
-                </div>
-            </div>
-        </div>
+            <div class="d-flex justify-content-start" data-kt-datatable-table-toolbar="base">
 
-        <div class="card-toolbar">
-            <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
-
-                <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                    <i class="fa-sharp fa-solid fa-filter"></i> Filter
+                <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
+                    <i class="fa-sharp fa-solid fa-filter"></i> Filter Pencarian
                 </button>
 
                 <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
                     <div class="px-7 py-5">
-                        <div class="fs-5 text-dark fw-bolder">Filter Options</div>
+                        <div class="fs-5 text-dark fw-bolder">Filter Pencarian</div>
                     </div>
                     <div class="separator border-gray-200"></div>
 
                     <div class="px-7 py-5" data-kt-datatable-table-filter="form">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="mb-10">
-                                    <label class="form-label fs-6 fw-bold">Tipe Menu:</label>
+                                    <label class="form-label fs-6 fw-bold">Berdasarkan Keyboard</label>
+                                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid" placeholder="Cari Menu" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-5">
+                                    <label class="form-label fs-6 fw-bold">Tipe Menu</label>
                                     <div class="d-flex flex-stack">
                                         <label class="form-check form-switch form-check-custom form-check-solid me-5">
                                             <input class="form-check-input" id="check_1" name="check_1" type="checkbox" data-checkbox="check_1" />
                                         </label>
-                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu">
+                                        <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="tipe_menu" name="tipe_menu">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="mb-10">
-                                    <label class="form-label fs-6 fw-bold">Nama Menu:</label>
+                                <div class="mb-5">
+                                    <label class="form-label fs-6 fw-bold">Nama Menu</label>
                                     <div class="d-flex flex-stack">
                                         <label class="form-check form-switch form-check-custom form-check-solid me-5">
                                             <input class="form-check-input" id="check_2" type="checkbox" data-checkbox="check_2" />
                                         </label>
-                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
+                                        <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
                                             <option></option>
                                         </select>
                                     </div>
@@ -84,11 +81,13 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="card-toolbar">
             <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
                 <div id="kt_table_datatable_export" class="d-none"></div>
 
-                <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button>
+                {{-- <button type="button" id="btn_export" data-title="Data Menu" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"><i class="fa-sharp fa-solid fa-arrow-up-from-bracket"></i> Export</button> --}}
 
                 <div id="kt_table_datatable_export_menu" title-kt-export="Data Menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">
                     <div class="menu-item px-3">
@@ -139,9 +138,7 @@
 
 @section('script')
     <script>
-        // $('#tipe_menu').select2();
-        $('#key').select2();
-        // $('#wmn_tipe').select2();
+        setHide('kode_tipe', false);
         $('#wmn_key').select2({
             tags: true,
         });
@@ -153,6 +150,7 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
+<<<<<<< HEAD
             selectSide(
                 'tipe_menu',
                 '{{ url("api/utility/menu/select-tipemenu") }}',
@@ -232,6 +230,27 @@
                     // setText('msoc_mssp_nama', res.params.data.text);
                 },
             );
+=======
+            selectSide('tipe_menu', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
+                id: d.wmt_kode,
+                text: d.wmt_nama
+            }}, function(res) {
+                selectSide('key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('tipe_menu'), function(d) { return {
+                    id: d.wmn_descp,
+                    text: d.wmn_descp
+                }});
+            });
+
+            selectSide('wmn_tipe', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
+                id: d.wmt_kode,
+                text: d.wmt_nama
+            }}, function(res) {
+                selectSide('wmn_key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('wmn_tipe'), function(d) { return {
+                    id: d.wmn_descp,
+                    text: d.wmn_descp
+                }});
+            });
+>>>>>>> 49716982dbec0200cc7530313527b4abced78b1b
 
             filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
 
@@ -303,104 +322,71 @@
                 ],
             );
 
-            $('body').on('click', '#omodTam', function() {
+            tombol('click', 'omodTam', function() {
                 openModal('modalMenu');
                 titleAction('tModMenu', 'Tambah Menu');
-                clearForm("frxx");
+                clearForm("formMenu");
                 clearSelect();
                 bsimpan('btn_simpan', 'Simpan');
-                $('#btn_reset').show();
-                // tipeMenus();
+                setHide('btn_reset', false);
             });
 
-            $('body').on('click', '#omodEdit', function() {
-                titleAction('tModMenu', 'Edit Menu');
-                bsimpan('btn_simpan', 'Update');
-                // $('#wmn_key').val(null).trigger('change');
-                $('#btn_reset').hide();
-
+            tombol('click', 'omodEdit', function() {
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
                 $.get(url, function(data) {
-                    var key = "{{ url('api/utility/menu/keyMenu') }}" + "/" + data.wmn_key;
                     openModal('modalMenu');
-                    $("#frxx").formToJson(data);
+                    titleAction('tModMenu', 'Edit Menu');
+                    bsimpan('btn_simpan', 'Update');
+                    setHide('btn_reset', true);
+
+                    var tipe = "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe;
+                    var key = "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key;
+                    jsonForm('formMenu', data);
+                    $.get(tipe, function(res) {
+                        if ($('#wmn_tipe').find("option[value='" + res.wmt_kode + "']").length) {
+                            $('#wmn_tipe').val(res.wmt_kode).trigger('change');
+                        } else {
+                            selectEdit('wmn_tipe', res.wmt_kode, res.wmt_nama);
+                        }
+                    });
                     if (data.wmn_key == "MAIN") {
                         selectEdit('wmn_key', 'MAIN', 'MAIN');
                     } else {
-                        $.getJSON(key, function(res) {
+                        $.get(key, function(res) {
                             if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']").length) {
                                 $('#wmn_key').val(res.wmn_kode).trigger('change');
                             } else {
                                 selectEdit('wmn_key', res.wmn_kode, res.wmn_descp);
                             }
-                            // $('#wmn_key').append('<option value="'+ res.wmn_kode +'">'+ res.wmn_descp +'</option>');
                         });
                     }
                 });
             });
 
-            submitForm2(
-                "frxx",
-                "btn_simpan",
-                "POST",
-                "{{ route('utility.menu.store') }}",
-                (res) => {
-                    clearForm("frxx");
-                    clearSelect();
-                    bsimpan('btn_simpan', 'Simpan');
-                    lodTable("dataMenu");
-                    closeModal('modalMenu');
-                }
-            );
-
-            $('body').on('click', '#omodDelete', function() {
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ route('utility.menu.store') }}" + "/" + kode;
-
-                // console.log(kode);
-                Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: "Akan menghapus data menu dengan kode " + kode + " !",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                        'Terhapus!',
-                        'Anda berhasil menghapus data menu dengan kode ' + kode + ".",
-                        'success'
-                        ).then((result) => {
-                            console.log(kode);
-                            $.ajax({
-                                url: url,
-                                type: "DELETE",
-                                success: function(res) {
-                                    lodTable("dataMenu");
-                                },
-                                error: function(err) {
-                                    // console.log('Error', err);
-                                }
-                            });
-                        })
-                    }
-                })
+            submitForm("formMenu", "btn_simpan", "POST", "{{ route('utility.menu.store') }}", (resSuccess) => {
+                clearForm("formMenu");
+                bsimpan('btn_simpan', 'Simpan');
+                lodTable("dataMenu");
+                closeModal('modalMenu');
             });
 
-            $('#btn_reset').click(function() {
-                clearForm("frxx");
-                clearSelect();
+            tombol('click', 'omodDelete', function() {
+                var kode = $(this).attr('data-resouce'),
+                    url = "{{ route('utility.menu.store') }}" + "/" + kode;
+                submitDelete(kode, url, function(resSuccess) {
+                    lodTable("dataMenu");
+                    // console.log(resSuccess);
+                }, function(resError) {
+                    // console.log(resError);
+                });
             });
         });
 
 
         function closeBtnModal () {
             closeModal('modalMenu');
-            clearForm("frxx");
-            clearSelect();
+            clearForm("formMenu");
         };
 
         hidePesan('wmn_tipe');

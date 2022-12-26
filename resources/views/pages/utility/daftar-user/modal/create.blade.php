@@ -6,7 +6,7 @@
                 <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeBtnModal()"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
-            <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
+            <form id="frxx_user" name="frxx_user" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-5">
                     <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalUser_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modalUser_header" data-kt-scroll-wrappers="#modalUser_scroll" data-kt-scroll-offset="300px">
@@ -19,7 +19,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Password</label>
-                                    <input type="text" class="form-control form-control-solid" name="password_n" id="password_n" placeholder="Password" value="221001" />
+                                    <input type="text" class="form-control form-control-solid" name="password_n" id="password_n" placeholder="Password" />
                                     <label class="required form-label">Standar Password 9</label>
                                     <span class="text-danger error-text password_n_err"></span>
                                 </div>
@@ -62,7 +62,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Daftar Pemegang Polis/ Reas</label>
-                                    <select class="form-select form-select-solid" name="mrkn_kode_induk" id="mrkn_kode_induk" data-dropdown-parent="#modalUser" data-placeholder="Pilih Daftar Pemegang Polis/ Reas" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" data-control="select2" name="mrkn_kode_induk" id="mrkn_kode_induk" data-dropdown-parent="#modalUser" data-placeholder="Pilih Daftar Pemegang Polis/ Reas" data-allow-clear="true">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -74,7 +74,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Daftar Cabang Pemegang Polis/ Reas</label>
-                                    <select class="form-select form-select-solid" name="mrkn_kode" id="mrkn_kode" data-dropdown-parent="#modalUser" data-placeholder="Pilih Daftar Cabang Pemegang Polis/ Reas" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" data-control="select2" name="mrkn_kode" id="mrkn_kode" data-dropdown-parent="#modalUser" data-placeholder="Pilih Daftar Cabang Pemegang Polis/ Reas" data-allow-clear="true">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -86,7 +86,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Jenis Nasabah</label>
-                                    <select class="form-select form-select-solid" name="mjns_kode" id="mjns_kode" data-dropdown-parent="#modalUser" data-placeholder="Pilih Jenis Nasabah" data-allow-clear="true" multiple="multiple">
+                                    <select class="form-select form-select-solid" data-control="select2" name="mjns_kode" id="mjns_kode" data-dropdown-parent="#modalUser" data-placeholder="Pilih Jenis Nasabah" data-allow-clear="true" multiple="multiple">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -98,7 +98,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Mekanisme 1 (Umum)</label>
-                                    <select class="form-select form-select-solid" name="mkm_kode" id="mkm_kode" data-dropdown-parent="#modalUser" data-placeholder="Pilih Mekanisme 1 (Umum)" data-allow-clear="true" multiple="multiple">
+                                    <select class="form-select form-select-solid" data-control="select2" name="mkm_kode" id="mkm_kode" data-dropdown-parent="#modalUser" data-placeholder="Pilih Mekanisme 1 (Umum)" data-allow-clear="true" multiple="multiple">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -110,7 +110,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Mekanisme 2 (Penutupan)</label>
-                                    <select class="form-select form-select-solid" name="mkm_kode2" id="mkm_kode2" data-dropdown-parent="#modalUser" data-placeholder="Pilih Mekanisme 2 (Penutupan)" data-allow-clear="true" multiple="multiple">
+                                    <select class="form-select form-select-solid" data-control="select2" name="mkm_kode2" id="mkm_kode2" data-dropdown-parent="#modalUser" data-placeholder="Pilih Mekanisme 2 (Penutupan)" data-allow-clear="true" multiple="multiple">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -129,11 +129,8 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Menu Tipe</label>
-                                    <select class="form-select form-select-solid" name="menu_tipe" id="menu_tipe" data-dropdown-parent="#modalUser" data-placeholder="Pilih Menu Tipe" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" data-control="select2" name="menu_tipe" id="menu_tipe" data-dropdown-parent="#modalUser" data-placeholder="Pilih Menu Tipe" data-allow-clear="true">
                                         <option></option>
-                                        @foreach ($tipe_menu as $key=>$data)
-                                            <option value="{{ $data->wmt_kode }}">{{ $data->wmt_nama }}</option>
-                                        @endforeach
                                     </select>
                                     <span class="text-danger error-text menu_tipe_err"></span>
                                 </div>
@@ -141,7 +138,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Home Dashboard Tipe</label>
-                                    <select class="form-select form-select-solid" name="dboard" id="dboard" data-dropdown-parent="#modalUser" data-placeholder="Pilih Home Dashboard Tipe" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" data-control="select2" name="dboard" id="dboard" data-dropdown-parent="#modalUser" data-placeholder="Pilih Home Dashboard Tipe" data-allow-clear="true">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -153,7 +150,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Akses Berita Dashboard</label>
-                                    <select class="form-select form-select-solid" name="isnews" id="isnews" data-dropdown-parent="#modalUser" data-placeholder="Pilih Akses Berita Dashboard" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" data-control="select2" name="isnews" id="isnews" data-dropdown-parent="#modalUser" data-placeholder="Pilih Akses Berita Dashboard" data-allow-clear="true">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -165,7 +162,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Akses Live Conference</label>
-                                    <select class="form-select form-select-solid" name="livevideo_hak" id="livevideo_hak" data-dropdown-parent="#modalUser" data-placeholder="Pilih Akses Live Conference" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" data-control="select2" name="livevideo_hak" id="livevideo_hak" data-dropdown-parent="#modalUser" data-placeholder="Pilih Akses Live Conference" data-allow-clear="true">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -177,7 +174,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Hak Session Live Conference</label>
-                                    <select class="form-select form-select-solid" name="livevideo_ses" id="livevideo_ses" data-dropdown-parent="#modalUser" data-placeholder="Pilih Hak Session Live Conference" data-allow-clear="true" multiple="multiple">
+                                    <select class="form-select form-select-solid" data-control="select2" name="livevideo_ses" id="livevideo_ses" data-dropdown-parent="#modalUser" data-placeholder="Pilih Hak Session Live Conference" data-allow-clear="true" multiple="multiple">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -189,7 +186,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Jabatan User</label>
-                                    <select class="form-select form-select-solid" name="jabatan" id="jabatan" data-dropdown-parent="#modalUser" data-placeholder="Pilih Jabatan User" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" data-control="select2" name="jabatan" id="jabatan" data-dropdown-parent="#modalUser" data-placeholder="Pilih Jabatan User" data-allow-clear="true">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -201,7 +198,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Hak Akses Chat User</label>
-                                    <select class="form-select form-select-solid" name="chat_tipe" id="chat_tipe" data-dropdown-parent="#modalUser" data-placeholder="Pilih Hak Akses Chat User" data-allow-clear="true" multiple="multiple">
+                                    <select class="form-select form-select-solid" data-control="select2" name="chat_tipe" id="chat_tipe" data-dropdown-parent="#modalUser" data-placeholder="Pilih Hak Akses Chat User" data-allow-clear="true" multiple="multiple">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -213,7 +210,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Hak Akses File Share Public</label>
-                                    <select class="form-select form-select-solid" name="dirshare" id="dirshare" data-dropdown-parent="#modalUser" data-placeholder="Pilih Hak Akses File Share Public" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" data-control="select2" name="dirshare" id="dirshare" data-dropdown-parent="#modalUser" data-placeholder="Pilih Hak Akses File Share Public" data-allow-clear="true">
                                         <option></option>
                                         {{-- @foreach ($type_menu as $type)
                                             <option value="{{ $type->wmt_kode }}">{{ $type->wmt_nama }}</option>
@@ -260,7 +257,7 @@
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
-                    <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i class="fa-solid fa-trash"></i> Hapus</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="btn_reset" onclick="clearForm('frxx_user')"><i class="fa-solid fa-trash"></i> Hapus</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="closeBtnModal()"><i class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>

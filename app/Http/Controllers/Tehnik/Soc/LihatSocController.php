@@ -17,7 +17,7 @@ class LihatSocController extends Controller
      */
     public function index()
     {
-        return view('pages.tehnik.soc.index');
+        return view('pages.tehnik.soc.lihat-soc.index');
     }
 
     /**

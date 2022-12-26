@@ -34,8 +34,8 @@ class MenuController extends Controller
     public function create()
     {
         $type_menu = DB::table('web_menu_tipe')
-        ->select('wmt_kode','wmt_nama')
-        ->get();
+            ->select('wmt_kode', 'wmt_nama')
+            ->get();
 
         return view('pages.utility.membuat-menu.modal.create', [
             'type_menu' => $type_menu,
@@ -68,31 +68,33 @@ class MenuController extends Controller
 
             if (empty($request->wmn_kode)) {
                 $kode = KodeController::__getKey(14);
+                $vtable = DB::table('web_menu');
 
                 if (empty($request->wmn_url)) {
                     $request->merge([
                         'wmn_url_n' => 'maintenance',
                     ]);
                 }
+                $data = $request->all();
+                $data = $request->except('_token');
+                $data['wmn_kode'] = $kode;
+                $data['wmn_slide'] = 0;
+                $data['wmn_timer'] = 0;
+                $data['wmn_open_w'] = 0;
+                $data['wmn_url_o_aktif_n'] = 0;
+                $data['wmn_bot'] = 0;
 
-                $request->merge([
-                    'wmn_kode' => $kode,
-                    'wmn_slide' => 0,
-                    'wmn_timer' => 0,
-                    'wmn_open_w' => 0,
-                    'wmn_url_o_aktif_n' => 0,
-                    'wmn_bot' => 0,
-                ]);
-
-                Menu::create($request->all());
+                $vtable->insert($data);
 
                 return response()->json([
                     'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
                 ]);
 
             } else {
-                $menu = Menu::findOrFail($request->wmn_kode);
-                $menu->update($request->all());
+                $vtable = DB::table('web_menu')->where('wmn_kode', $request->wmn_kode);
+                $data = $request->all();
+                $data = $request->except('_token');
+                $vtable->update($data);
 
                 return response()->json([
                     'success' => 'Data berhasil diupdate dengan Kode '.$request->wmn_kode.'!'
@@ -151,28 +153,24 @@ class MenuController extends Controller
         WewenangJabatan::where('wmj_wmn_kode', $id)->delete();
 
         return response()->json([
-            'success' => 'Data berhasil dihapus dengan Kode '.$menu->wmn_kode.'!'
+            'success' => 'Data berhasil dihapus dengan Kode ' . $menu->wmn_kode . '!'
         ]);
     }
 
     public function selectTipeMenu(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('web_menu_tipe')
-            ->select('wmt_kode','wmt_nama')
-            ->where([
-                ['wmt_nama','like',"%$search%"],
-            ])
-            ->get();
-        } else {
-            $data = DB::table('web_menu_tipe')
-            ->select('wmt_kode','wmt_nama')
-            ->get();
+        $vtable = DB::table('web_menu_tipe')->select('wmt_kode','wmt_nama');
+        if (!empty($request->q)) {
+            $vtable->where('wmt_nama', 'LIKE', "%$request->q%");
         }
-
+        $data = $vtable->get();
         return response()->json($data);
+    }
+
+    public function tipeMenu($id)
+    {
+        $tipe = DB::table('web_menu_tipe')->where('wmt_kode', $id)->first();
+        return response()->json($tipe);
     }
 
     public function keyMenu($id)
@@ -181,26 +179,16 @@ class MenuController extends Controller
         return response()->json($keyMenu);
     }
 
-    public function getTipemenu(Request $request, $id)
+    public function selectMenu(Request $request)
     {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('web_menu')
-            ->select('*')
-            ->where([
-                ['wmn_tipe', $id],
-                ['wmn_descp','like',"%$search%"],
-            ])
-            ->get();
-        } else {
-            $data = DB::table('web_menu')
-            ->select('*')
-            ->where([
-                ['wmn_tipe', $id],
-            ])
-            ->get();
+        $vtable = DB::table('web_menu')->select(DB::raw("wmn_kode, wmn_descp"));
+        if (!empty($request->q)) {
+            $vtable->where('wmn_descp', 'LIKE', "%$request->q%");
         }
+        if (!empty($request->tipe)) {
+            $vtable->where('wmn_tipe', $request->tipe);
+        }
+        $data = $vtable->get();
 
         return response()->json($data);
     }
@@ -208,23 +196,35 @@ class MenuController extends Controller
     public function loadmenu()
     {
         $menulist = Menu::select(
-            'wmn_kode', 'wmn_key', 'wmn_descp', 'wmn_icon', 'wmn_url', 'wmn_url_o', 'wmn_tipe', 'email', 'menu_tipe', 'wmj_wmn_kode', 'wmj_sjab_kode', 'wmj_aktif', 'wmn_urut'
+            'wmn_kode',
+            'wmn_key',
+            'wmn_descp',
+            'wmn_icon',
+            'wmn_url',
+            'wmn_url_o',
+            'wmn_tipe',
+            'email',
+            'menu_tipe',
+            'wmj_wmn_kode',
+            'wmj_sjab_kode',
+            'wmj_aktif',
+            'wmn_urut'
             // '*'
             // 'user.*',
             // 'jab.*'
         )
-        ->leftJoin('user_accounts', 'wmn_tipe', '=', 'menu_tipe')
-        ->leftJoin('web_menu_jabatan', 'wmn_kode', '=', 'wmj_wmn_kode')
-        ->where([
-            ['wmn_key', '=', 'MAIN'],
-            ['wmn_tipe', '=', Auth::user()->menu_tipe],
-            ['email', '=', Auth::user()->email],
-            ['wmj_sjab_kode', '=', Auth::user()->jabatan],
-            ['wmj_aktif', 1],
-        ])
-        ->orderBy('wmn_urut', 'ASC')
-        // ->paginate();
-        ->get();
+            ->leftJoin('user_accounts', 'wmn_tipe', '=', 'menu_tipe')
+            ->leftJoin('web_menu_jabatan', 'wmn_kode', '=', 'wmj_wmn_kode')
+            ->where([
+                ['wmn_key', '=', 'MAIN'],
+                ['wmn_tipe', '=', Auth::user()->menu_tipe],
+                ['email', '=', Auth::user()->email],
+                ['wmj_sjab_kode', '=', Auth::user()->jabatan],
+                ['wmj_aktif', 1],
+            ])
+            ->orderBy('wmn_urut', 'ASC')
+            // ->paginate();
+            ->get();
 
         // return $menulist;
 

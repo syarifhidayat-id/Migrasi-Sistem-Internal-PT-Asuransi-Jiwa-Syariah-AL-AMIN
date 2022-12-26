@@ -19,113 +19,116 @@
                         data-kt-scroll-dependencies="#modalMenu_header" data-kt-scroll-wrappers="#modalMenu_scroll"
                         data-kt-scroll-offset="300px">
                         <div class="row mb-5">
-                            <div class="col-md-6">
-                                <div class="mb-5">
-                                    <label class="required form-label">Nomor PK</label>
-                                    <input class="form-control" name="mpks_pk" id="mpks_pk" type="text"
-                                        data-allow-clear="false" placeholder="Masukan instansi" readonly/>
-                                </div>
 
-                            </div>
+                            <input class="form-control" name="mpks_pk" id="mpks_pk" type="hidden"
+                                data-allow-clear="false" placeholder="Masukan instansi" readonly />
                             <div class="col-md-6 mb-5">
                                 <label class="form-label">Pemegang Polis</label>
-                                <select class="form-select" data-dropdown-parent="#modalPks"
-                                id="dd_polis" name="dd_polis">
-                                <option></option>
-
-                                @foreach ($polis as $key => $pks)
-                                <option value="{{$pks->mrkn_kode}}">{{$pks->mrkn_nama}}</option>
-                                @endforeach
-
+                                <select class="form-select" data-dropdown-parent="#modalPks" id="mpks_mrkn_kode"
+                                    name="mpks_mrkn_kode" data-placeholder="Pilih pemegang polis" data-allow-clear="true">
+                                    <option></option>
                                 </select>
+                                <span class="text-danger error-text mpks_mrkn_kode_err"></span>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Instansi</label>
-                                    <input class="form-control" name="pks_instansi" id="pks_instansi" type="text"
-                                        data-allow-clear="true" placeholder="Masukan instansi" required />
+                                    <input class="form-control" name="mpks_instansi" id="mpks_instansi" type="text"
+                                        data-allow-clear="true" placeholder="Masukan instansi" />
+                                <span class="text-danger error-text mpks_instansi_err"></span>
+
                                 </div>
                             </div>
-                            {{--  <div class="col-md-6 mb-5">
+                            <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Nomor PKS</label>
-                                    <input class="form-control" name="pks_nomor" id="pks_nomor" type="text"
-                                        data-allow-clear="true" placeholder="Masukan nomor pks" required />
+                                    <input class="form-control" name="mpks_nomor" id="mpks_nomor" type="text"
+                                        data-allow-clear="true" placeholder="Masukan nomor pks" />
+                                        <span class="text-danger error-text mpks_nomor_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Perihal</label>
-                                    <input type="text" class="form-control" name="pks_tentang" id="pks_tentang"
-                                        data-allow-clear="true" type="text" placeholder="Masukan perihal" required />
+                                    <input type="text" class="form-control" name="mpks_tentang" id="mpks_tentang"
+                                        data-allow-clear="true" type="text" placeholder="Masukan perihal" />
+                                        <span class="text-danger error-text mpks_tentang_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-5">
                                     <label class="required form-label">Tgl Mulai</label>
-                                    <input type="date" class="form-control" name="pks_tgl_mulai" id="pks_tgl_mulai"
-                                        required />
+                                    <input type="date" class="form-control" name="mpks_tgl_mulai" id="mpks_tgl_mulai"
+                                     />
+                                     <span class="text-danger error-text mpks_tgl_mulai_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-5">
                                     <label class="required form-label">Tgl Akhir</label>
-                                    <input type="date" class="form-control" name="pks_tgl_akhir" id="pks_tgl_akhir"
-                                        required />
+                                    <input type="date" class="form-control" name="mpks_tgl_akhir" id="mpks_tgl_akhir"
+                                     />
+                                     <span class="text-danger error-text mpks_tgl_akhir_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">PIC Reminder</label>
-                                    <input type="text" class="form-control" name="pks_pic" id="pks_pic"
-                                        placeholder="Masukan pic" required />
+                                    <input type="text" class="form-control" name="mpks_pic" id="mpks_pic"
+                                        placeholder="Masukan pic" />
+                                        <span class="text-danger error-text mpks_pic_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">No. HP PIC</label>
-                                    <input type="text" class="form-control" name="pks_pic_hp" id="pks_pic_hp"
-                                        placeholder="Masukan hp pic" required />
+                                    <input type="text" class="form-control" name="mpks_pic_hp" id="mpks_pic_hp"
+                                        placeholder="Masukan hp pic" />
+                                        <span class="text-danger error-text mpks_pic_hp_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Email PIC</label>
-                                    <input type="email" class="form-control" name="pks_pic_email"
-                                        id="pks_pic_email" placeholder="Masukan email pic" required />
+                                    <input type="text" class="form-control" name="mpks_pic_email"
+                                        id="mpks_pic_email" placeholder="Masukan email pic" />
+                                        <span class="text-danger error-text mpks_pic_email_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">No. HP Atasan</label>
-                                    <input type="text" class="form-control" name="pks_atasan_hp"
-                                        placeholder="Masukan hp atasan" id="pks_atasan_hp" required />
+                                    <input type="text" class="form-control" name="mpks_atasan_hp"
+                                        placeholder="Masukan hp atasan" id="mpks_atasan_hp" />
+                                        <span class="text-danger error-text mpks_atasan_hp_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Email Atasan</label>
-                                    <input type="email" class="form-control" name="pks_atasan_email"
-                                        placeholder="Masukan email atasan" id="pks_atasan_email" required />
+                                    <input type="text" class="form-control" name="mpks_atasan_email"
+                                        placeholder="Masukan email atasan" id="mpks_atasan_email" />
+                                        <span class="text-danger error-text mpks_atasan_email_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
-                                    <label class="form-label">Ket/Catatan</label>
-                                    <input type="text" class="form-control" name="pks_ket"
-                                        placeholder="Masukan keterangan" id="pks_ket" />
+                                    <label class="required form-label">Ket/Catatan</label>
+                                    <input type="text" class="form-control" name="mpks_ket"
+                                        placeholder="Masukan keterangan" id="mpks_ket" />
+                                        <span class="text-danger error-text mpks_ket_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label">Upload Dokumen</label>
-                                    <input type="file" class="form-control" name="pks_dokumen"
-                                        id="pks_dokumen" />
+                                    <input type="file" class="form-control" name="mpks_dokumen" placeholder="pilih file"
+                                        id="mpks_dokumen" />
+                                        <span class="text-danger error-text mpks_dokumen_err"></span>
                                 </div>
-                            </div>  --}}
+                            </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i

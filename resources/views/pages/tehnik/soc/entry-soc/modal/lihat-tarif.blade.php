@@ -1,37 +1,19 @@
-<div class="modal fade" id="modalShowKonfirmTarif" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalLihatTarif" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-950px">
         <div class="modal-content">
-            <div class="modal-header" id="modalShowKonfirmTarif_header">
-                <h2 class="fw-bolder" id="titleShowKonfirmTarif"></h2>
+            <div class="modal-header" id="modalLihatTarif_header">
+                <h2 class="fw-bolder" id="titleLihatTarif"></h2>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeModal('modalLihatTarif')"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
-            <form id="frxx_tarifKonfim" name="frxx_tarifKonfim" method="post" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body mx-5">
-                    <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalShowKonfirmTarif_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modalShowKonfirmTarif_header" data-kt-scroll-wrappers="#modalShowKonfirmTarif_scroll" data-kt-scroll-offset="300px">
-                        <div class="row mb-5">
-                            <div class="col-md-12" hidden>
-                                <div class="mb-5">
-                                    <label class="form-label">Nomor</label>
-                                    <input type="text" class="form-control form-control-solid" name="kode_import_tarif" id="kode_import_tarif" placeholder="Nomor" readonly />
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="mb-5">
-                                    <label class="required form-label">Apakah Data Yang Diupload Tarif Sudah Benar ?</label>
-                                    <select class="form-select form-select-solid" data-control="select2" name="mth_final" id="mth_final" data-dropdown-parent="#modalShowKonfirmTarif" data-placeholder="Pilih konfirmasi" data-allow-clear="true">
-                                        <option></option>
-                                        <option value="1">Ya</option>
-                                        <option value="0">Tidak</option>
-                                    </select>
-                                    <span class="text-danger error-text mth_final_err"></span>
-                                </div>
-                            </div>
-                        </div>
+            <div class="modal-body">
+                <div class="card-body py-2 scroll-y">
+                    <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalLihatTarif_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modalLihatTarif_header" data-kt-scroll-wrappers="#modalLihatTarif_scroll" data-kt-scroll-offset="300px">
                         <div class="table-responsive">
-                            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="showTarif">
+                            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="listTableTarif">
                                 <thead>
                                     <tr class="fw-bold text-gray-800 border-bottom border-gray-200 text-center align-middle">
+                                        <th rowspan="2">No.</th>
                                         <th rowspan="2">Usia (Tahun)</th>
                                         <th colspan="71">Tarif</th>
                                     </tr>
@@ -130,10 +112,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="submit" class="btn btn-primary btn-sm" id="btnTarifKonfim_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
-                </div>
-            </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" onclick="closeModal('modalLihatTarif')"><i class="fa-solid fa-xmark"></i> Tutup</button>
+            </div>
         </div>
     </div>
 </div>
