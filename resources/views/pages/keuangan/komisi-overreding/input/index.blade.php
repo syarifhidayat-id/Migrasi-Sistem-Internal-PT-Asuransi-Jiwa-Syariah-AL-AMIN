@@ -9,7 +9,7 @@
 
     <div class="card-header">
         <div class="card-title">
-            <h3>List Input Pajak Komisi & Overreding</h3>
+            <h3>List Pajak Komisi & Overreding</h3>
         </div>
 
         <div class="card-toolbar">
@@ -49,7 +49,7 @@
                                 <div class="mb-5">
                                     <label class="form-label fs-6 fw-bold">Cabang Alamin</label>
                                     <div class="d-flex flex-stack">
-                                        <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih route" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" id="cabalamin" name="cabalamin">
+                                        <select class="form-select form-select-solid fw-bolder" id="e_cabalamin" name="e_cabalamin" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="true" data-kt-datatable-table-filter="e_cabalamin" data-hide-search="false">
                                             <option></option>
                                         </select>
                                     </div>
@@ -60,7 +60,7 @@
                                     <label class="form-label fs-6 fw-bold">Periode Proses Inkaso</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 1" data-allow-clear="true" data-kt-datatable-table-filter="bulan1" data-hide-search="false" id="bln1" name="bln1">
+                                            <select class="form-select form-select-solid fw-bolder" id="e_bln1" name="e_bln1" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 1" data-allow-clear="true" data-kt-datatable-table-filter="e_bln1" data-hide-search="false">
                                                 <option></option>
                                                 @foreach (range(1,12) as $month)
                                                     <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
@@ -69,7 +69,7 @@
                                         </div>
                                         <span class="input-group-text">s.d</span>
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 2" data-allow-clear="true" data-kt-datatable-table-filter="bulan2" data-hide-search="false" id="bln2" name="bln2">
+                                            <select class="form-select form-select-solid fw-bolder" id="e_bln2" name="e_bln2" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 2" data-allow-clear="true" data-kt-datatable-table-filter="e_bln2" data-hide-search="false">
                                                 <option></option>
                                                 @foreach (range(1,12) as $month)
                                                     <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
@@ -78,7 +78,7 @@
                                         </div>
                                         <span class="input-group-text">tahun</span>
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Tahun" data-allow-clear="true" data-kt-datatable-table-filter="tahun" data-hide-search="false" id="thn" name="thn">
+                                            <select class="form-select form-select-solid fw-bolder" id="e_thn" name="e_thn" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Tahun" data-allow-clear="true" data-kt-datatable-table-filter="e_thn" data-hide-search="false">
                                                 <option></option>
                                                 @for ($year = date('2007'); $year <= date('Y'); $year++)
                                                     <option value="{{ $year }}">{{ $year }}</option>
@@ -90,12 +90,25 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
-                                    <label class="form-label fs-6 fw-bold">Nama Menu:</label>
+                                    <label class="form-label fs-6 fw-bold">Pemegang Polis</label>
                                     <div class="d-flex flex-stack">
                                         <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                            <input class="form-check-input" id="check_2" type="checkbox" data-checkbox="check_2" />
+                                            <input class="form-check-input" id="c_pmgpolis" name="c_pmgpolis" type="checkbox" data-checkbox="c_pmgpolis" />
                                         </label>
-                                        <select class="form-select form-select-solid fw-bolder" data-control="select2" data-kt-select2="true" data-placeholder="Pilih menu" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="key">
+                                        <select class="form-select form-select-solid fw-bolder" id="e_pmgpolis" name="e_pmgpolis" data-control="select2" data-kt-select2="true" data-placeholder="Pilih pemegang polis" data-allow-clear="true" data-kt-datatable-table-filter="e_pmgpolis" data-hide-search="false">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-5">
+                                    <label class="form-label fs-6 fw-bold">Cabang Pmg Polis</label>
+                                    <div class="d-flex flex-stack">
+                                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                            <input class="form-check-input" id="c_cbpmgpolis" type="checkbox" data-checkbox="c_cbpmgpolis" />
+                                        </label>
+                                        <select class="form-select form-select-solid fw-bolder" id="e_cbpmgpolis" name="e_cbpmgpolis" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang pmg polis" data-allow-clear="true" data-kt-datatable-table-filter="e_cbpmgpolis" data-hide-search="false">
                                             <option></option>
                                         </select>
                                     </div>
@@ -139,31 +152,63 @@
                     </div>
                 </div>
 
-                <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-sharp fa-solid fa-plus"></i> Tambah Menu</button>
+                <button type="button" id="omodTam" class="btn btn-primary me-3 btn-sm"><i class="fa-solid fa-square-plus"></i> Input Pic Tax</button>
+                <button type="button" id="omodEdit" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i> Update Saldo Tax</button>
             </div>
         </div>
     </div>
 
     <div class="card-body py-10">
         <div class="table-responsive">
-            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="dataMenu">
+            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="InpOjkKomOver">
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                         <th class="min-w-50px">No.</th>
-                        <th class="min-w-50px">Icon</th>
-                        <th class="min-w-125px">Nama Menu</th>
-                        <th class="min-w-125px">Tipe</th>
-                        <th class="min-w-125px">Route</th>
-                        <th class="min-w-250px">Url</th>
-                        <th class="min-w-125px">Aksi</th>
+                        <th class="min-w-200px">Pemegang Polis</th>
+                        <th class="min-w-150px">Kode Polis</th>
+                        <th class="min-w-125px">Peserta</th>
+                        <th class="min-w-200px">Uang Pertanggungan</th>
+                        <th class="min-w-200px">Kontribusi Tagih</th>
+                        <th class="min-w-200px">Kontribusi Bayar</th>
+                        <th class="min-w-120px">Komisi</th>
+                        <th class="min-w-200px">Pic Pajak Komisi 1</th>
+                        <th class="min-w-200px">Komisi Bruto 1</th>
+                        <th class="min-w-200px">Pic Pajak Komisi 2</th>
+                        <th class="min-w-200px">Komisi Bruto 2</th>
+                        <th class="min-w-120px">Overreding</th>
+                        <th class="min-w-200px">Pic Pajak Overreding 1</th>
+                        <th class="min-w-200px">Komisi Bruto 1</th>
+                        <th class="min-w-150px">Proses Data</th>
+                        <th class="min-w-200px">Keterangan</th>
+                        <th class="min-w-150px">Cab. Alamin</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
+                <tfoot>
+                    <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 align-middle" align="right">
+                        <th colspan="3"></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
 
-    @include('pages.utility.membuat-menu.modal.create')
+    @include('pages.keuangan.kas.master_kas.modal.create')
 </div>
 @endsection
 
@@ -175,13 +220,8 @@
         $('#wmn_mrkn_kode').select2();
         $('#wmn_mpol_kode').select2();
 
-        setText('bln1', '01');
-        setText('bln2', '01');
-
-        // $('#bln1').change(function() {
-        //     var _this = $(this).val();
-        //     console.log(_this);
-        // });
+        setText('e_bln1', '01');
+        setText('e_bln2', '01');
 
         $(function () {
             $.ajaxSetup({
@@ -208,87 +248,202 @@
                 }});
             });
 
-            filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
+            filterAll('input[type="search"]', 'InpOjkKomOver'); //khusus type search inputan
 
             serverSide( //datatable serverside
-                "dataMenu",
-                "{{ url('api/utility/menu/lihat-menu') }}", //url api/route
+                "InpOjkKomOver",
+                "{{ url('api/keuangan/komisi-overreding/input-komisi-overreding/list-input-komisioverreding') }}", //url api/route
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
-                    d.check_1 = getText('check_1');
-                    d.check_2 = getText('check_2');
-                    d.wmn_tipe = getText('tipe_menu');
-                    d.wmn_descp = getText('key');
-                    d.search = $('input[type="search"]').val();
+                    // d.check_1 = getText('check_1'),
+                    // d.check_2 = getText('check_2'),
+                    // d.wmn_tipe = getText('tipe_menu'),
+                    // d.wmn_descp = getText('key'),
+                    d.search = $('input[type="search"]').val()
                 },
                 [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
-                    { data: "DT_RowIndex", className: "text-center" },
                     {
-                        data: "wmn_icon",
+                        data: "DT_RowIndex",
                         className: "text-center",
                         render: function(data, type, row, meta) {
-                            return `<i class="`+row.wmn_icon+`"></i>`;
+                            return row.DT_RowIndex+`.`;
                         }
                     },
-                    { data: "wmn_descp" },
-                    { data: "wmn_tipe" },
                     {
-                        data: "wmn_url_n",
+                        data: "nama",
                         render: function(data, type, row, meta) {
-                            var route = row.wmn_url_n;
-                            if (route !== "" && route !== null) {
-                                return `<div class="badge badge-light-success fw-bolder">`+row.wmn_url_n+`</div>`;
-                            } else {
-                                return `<div class="badge badge-light-success fw-bolder">-</div>`;
-                            }
+                            return `<div class="badge badge-light-success fw-bolder">`+row.nama+`</div>`;
                         }
                     },
+                    { data: "kdpolis" },
+                    { data: "tpst", className: "text-center" },
                     {
-                        data: "wmn_url_o_n",
+                        data: "tup",
+                        className: "dt-body-right",
                         render: function(data, type, row, meta) {
-                            var url = row.wmn_url_o_n;
-                            if (url !== "" && url !== null) {
-                                return `<div class="badge badge-light fw-bolder">`+row.wmn_url_o_n+`</div>`;
-                            } else {
-                                return `<div class="badge badge-light fw-bolder">-</div>`;
-                            }
+                            return formatNum(row.tup, 2);
                         }
                     },
                     {
-                        data: "wmn_kode",
-                        orderable: false,
-                        className: 'text-center',
-                        render: function (data, type, row) {
-                            return `
-                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
-                                    <span class="svg-icon svg-icon-5 m-0">
-                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
-                                    </span>
-                                </a>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Edit</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Delete</a>
-                                    </div>
-                                </div>
-                            `;
-                        },
+                        data: "ttagih",
+                        className: "dt-body-right",
+                        render: function(data, type, row, meta) {
+                            return formatNum(row.ttagih, 2);
+                        }
                     },
+                    {
+                        data: "tbyr",
+                        className: "dt-body-right",
+                        render: function(data, type, row, meta) {
+                            return formatNum(row.tbyr, 2);
+                        }
+                    },
+                    {
+                        data: "tkomisi",
+                        className: "dt-body-right",
+                        render: function(data, type, row, meta) {
+                            return formatNum(row.tkomisi, 2);
+                        }
+                    },
+                    {
+                        data: null,
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<div class="badge badge-light-success fw-bolder">-</div>`;
+                        }
+                    },
+                    {
+                        data: null,
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<div class="badge badge-light-success fw-bolder">-</div>`;
+                        }
+                    },
+                    {
+                        data: null,
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<div class="badge badge-light-success fw-bolder">-</div>`;
+                        }
+                    },
+                    {
+                        data: null,
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<div class="badge badge-light-success fw-bolder">-</div>`;
+                        }
+                    },
+                    {
+                        data: "toverreding",
+                        className: "dt-body-right",
+                        render: function(data, type, row, meta) {
+                            return formatNum(row.toverreding, 2);
+                        }
+                    },
+                    {
+                        data: null,
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<div class="badge badge-light-success fw-bolder">-</div>`;
+                        }
+                    },
+                    {
+                        data: null,
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<div class="badge badge-light-success fw-bolder">-</div>`;
+                        }
+                    },
+                    {
+                        data: null,
+                        className: "text-center",
+                        render: function(data, type, row, meta) {
+                            return `<div class="badge badge-light-success fw-bolder">-</div>`;
+                        }
+                    },
+                    { data: "ket" },
+                    { data: "cabang" },
+                    // {
+                    //     data: "wmn_kode",
+                    //     orderable: false,
+                    //     className: 'text-center',
+                    //     render: function (data, type, row) {
+                    //         return `
+                    //             <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
+                    //                 <span class="svg-icon svg-icon-5 m-0">
+                    //                     <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                    //                 </span>
+                    //             </a>
+                    //             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
+                    //                 <div class="menu-item px-3">
+                    //                     <a href="#" id="omodEdit" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Edit</a>
+                    //                 </div>
+                    //                 <div class="menu-item px-3">
+                    //                     <a href="#" id="omodDelete" class="menu-link px-3" data-resouce="`+row.wmn_kode+`">Delete</a>
+                    //                 </div>
+                    //             </div>
+                    //         `;
+                    //     },
+                    // },
                 ],
+                function(row, data, start, end, display) {
+                    var api = this.api(), data;
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '')*1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    var totPst = api.column(3).data().reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                    var totUangPert = api.column(4).data().reduce(function(a, b) {
+                        var tot = intVal(a) + intVal(b);
+                        return formatNum(tot, 2);
+                    }, 0);
+
+                    var totKonTagih = api.column(5).data().reduce(function(a, b) {
+                        var tot = intVal(a) + intVal(b);
+                        return formatNum(tot, 2);
+                    }, 0);
+
+                    var totKonByr = api.column(6).data().reduce(function(a, b) {
+                        var tot = intVal(a) + intVal(b);
+                        return formatNum(tot, 2);
+                    }, 0);
+
+                    var totKomisi = api.column(7).data().reduce(function(a, b) {
+                        var tot = intVal(a) + intVal(b);
+                        return formatNum(tot, 2);
+                    }, 0);
+
+                    var totOver = api.column(12).data().reduce(function(a, b) {
+                        var tot = intVal(a) + intVal(b);
+                        return formatNum(tot, 2);
+                    }, 0);
+
+                    $( api.column(0).footer() ).html('TOTAL');
+                    $( api.column(3).footer() ).html(totPst);
+                    $( api.column(4).footer() ).html(totUangPert);
+                    $( api.column(5).footer() ).html(totKonTagih);
+                    $( api.column(6).footer() ).html(totKonByr);
+                    $( api.column(7).footer() ).html(totKomisi);
+                    $( api.column(12).footer() ).html(totOver);
+                },
             );
 
             tombol('click', 'omodTam', function() {
-                openModal('modalMenu');
-                titleAction('tModMenu', 'Tambah Menu');
-                clearForm("formMenu");
+                openModal('modalInputTax');
+                titleAction('tModInputTax', 'Tambah Menu');
+                clearForm("formInputTax");
                 clearSelect();
                 bsimpan('btn_simpan', 'Simpan');
                 setHide('btn_reset', false);
             });
 
             tombol('click', 'omodEdit', function() {
-                titleAction('tModMenu', 'Edit Menu');
+                titleAction('tModInputTax', 'Edit Menu');
                 bsimpan('btn_simpan', 'Update');
                 // $('#wmn_key').val(null).trigger('change');
                 setHide('btn_reset', true);
@@ -296,10 +451,10 @@
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
                 $.get(url, function(data) {
-                    openModal('modalMenu');
+                    openModal('modalInputTax');
                     var tipe = "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe;
                     var key = "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key;
-                    jsonForm('formMenu', data);
+                    jsonForm('formInputTax', data);
                     $.get(tipe, function(res) {
                         if ($('#wmn_tipe').find("option[value='" + res.wmt_kode + "']").length) {
                             $('#wmn_tipe').val(res.wmt_kode).trigger('change');
@@ -321,18 +476,18 @@
                 });
             });
 
-            submitForm("formMenu", "btn_simpan", "POST", "{{ route('utility.menu.store') }}", (resSuccess) => {
-                clearForm("formMenu");
+            submitForm("formInputTax", "btn_simpan", "POST", "{{ route('utility.menu.store') }}", (resSuccess) => {
+                clearForm("formInputTax");
                 bsimpan('btn_simpan', 'Simpan');
-                lodTable("dataMenu");
-                closeModal('modalMenu');
+                lodTable("InpOjkKomOver");
+                closeModal('modalInputTax');
             });
 
             tombol('click', 'omodDelete', function() {
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.store') }}" + "/" + kode;
                 submitDelete(kode, url, function(resSuccess) {
-                    lodTable("dataMenu");
+                    lodTable("InpOjkKomOver");
                     console.log(resSuccess);
                 }, function(resError) {
                     console.log(resError);
@@ -340,10 +495,9 @@
             });
         });
 
-
         function closeBtnModal () {
-            closeModal('modalMenu');
-            clearForm("formMenu");
+            closeModal('modalInputTax');
+            clearForm("formInputTax");
         };
 
         hidePesan('wmn_tipe');
