@@ -56,13 +56,10 @@
                 <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-1">
                     <div class="col">
                         <div class="fv-row mb-7">
-                            <label class="form-label fs-6 fw-bold">Nama Pemegang Polis :</label>
-                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih pemegang polis" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" name="mpol_mrkn_nama" id="mpol_mrkn_nama">
-                                <option></option>
-                                @foreach ($carirekanan as $key=>$data)
-                                    <option value="{{ $data->mrkn_nama }}">{{ $data->mrkn_nama }}</option>
-                                @endforeach
-                            </select>
+                            <label class="required form-label">Nama Pemegang Polis</label>
+                            <input type="text" class="easyui-textbox selectGrid" name="mpol_mrkn_nama" id="mpol_mrkn_nama" data-options="prompt:'Pilih pemegang polis'" style="width: 100%; height: 38px;" />
+                            <input type="text" class="form-control form-control-solid" name="mpol_mrkn_kode" id="mpol_mrkn_kode" placeholder="mpol_mrkn_nama" />
+                            <span class="text-danger error-text mpol_mrkn_nama_err"></span>
                         </div>
                     </div>
                 </div>
@@ -70,13 +67,9 @@
                 <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
                     <div class="col">
                         <div class="fv-row mb-7">
-                            <label class="form-label fs-6 fw-bold">Kode SOC :</label>
-                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih pemegang polis" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" name="mpol_msoc_kode" id="mpol_msoc_kode">
-                                <option></option>
-                                @foreach ($carirekanan as $key=>$data)
-                                    <option value="{{ $data->mrkn_nama }}">{{ $data->mrkn_nama }}</option>
-                                @endforeach
-                            </select>
+                            <label class="required form-label">Kode SOC</label>
+                            <input type="text" class="easyui-textbox selectGrid" name="mpol_msoc_kode" id="mpol_msoc_kode" data-options="prompt:'Pilih Kode SOC'" style="width: 100%; height: 38px;" />
+                            <span class="text-danger error-text mpol_mrkn_nama_err"></span>
                         </div>
                     </div>
                     <div class="col">
@@ -99,7 +92,7 @@
                                 <select class="form-select form-select-solid fw-bolder bg-warning" data-kt-select2="true" data-placeholder="---" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" name="mpol_mjns_kode" id="mpol_mjns_kode" data-dropdown-parent="#modal_element_id">
                                     <option></option>
                                     @foreach ($carirekanan as $key=>$data)
-                                        <option value="{{ $data->mrkn_nama }}">{{ $data->mrkn_nama }}</option>
+                                        <option value="{{ $data->nama }}">{{ $data->nama }}</option>
                                     @endforeach
                                 </select>
                         </div>
@@ -111,7 +104,7 @@
                                 <select class="form-select form-select-solid fw-bolder bg-warning" data-kt-select2="true" data-placeholder="---" data-allow-clear="true" data-kt-datatable-table-filter="nama-route" data-hide-search="false" name="mpol_mssp_kode" id="mpol_mssp_kode" data-dropdown-parent="#modal_element_id">
                                     <option></option>
                                     @foreach ($carirekanan as $key=>$data)
-                                        <option value="{{ $data->mrkn_nama }}">{{ $data->mrkn_nama }}</option>
+                                        <option value="{{ $data->nama }}">{{ $data->nama }}</option>
                                     @endforeach
                                 </select>
                         </div>
@@ -1502,6 +1495,62 @@
             }
         });
 
+        selectGrid(
+                'mpol_mrkn_nama',
+                'GET',
+                '{{ url("api/tehnik/soc/entry-soc/select-pmgpolis") }}',
+                'nama',
+                'nama',
+                [
+					{field:'kode',title:'Kode',align:'left',width:180},
+					{field:'nama',title:'Nama',align:'left',width:280},
+				],
+                function(i, row) {
+                    hidePesan('mpol_mrkn_nama');
+                    var kode = row.kode;
+                        setText('mpol_mrkn_kode', kode);
+
+                    //reComboGrid("#mpol_msoc_kode",'/live/ww.load/lod_soc.php?&pmgpolis='+getText("mpol_mrkn_kode"));
+                    reSelGrid('mpol_msoc_kode', '{{ url("api/tehnik/polis/entry-master-polis/select-soc") }}' + '?q=' + getText("mpol_mrkn_kode"));
+
+                }
+            );
+
+            selectGrid(
+                'mpol_msoc_kode',
+                'GET',
+                '{{ url("api/tehnik/polis/entry-master-polis/select-soc") }}',
+                'msoc_kode',
+                'mjns_Keterangan',
+                'mssp_nama',
+                'mkm_nama',
+                'mkm_ket2',
+                'mker_nama',
+                'mft_nama',
+                'bayar',
+                'msoc_mjm_nama',
+                'mpras_nama',
+                'msoc_mrkn_nama',
+                [
+					{field:'msoc_kode',title:'Kode SOC',align:'left',width:180},
+					{field:'mjns_Keterangan',title:'Nama Nasabah',align:'left',width:280},
+					{field:'mssp_nama',title:'Segemen',align:'left',width:280},
+					{field:'mkm_nama',title:'Mekanisme 1',align:'left',width:280},
+					{field:'mkm_ket2',title:'Mekanisme 2',align:'left',width:280},
+					{field:'mker_nama',title:'Pekerjaan',align:'left',width:280},
+					{field:'mft_nama',title:'Manfaat',align:'left',width:280},
+					{field:'bayar',title:'Pembayaran',align:'left',width:280},
+					{field:'msoc_mjm_nama',title:'Jaminan',align:'left',width:280},
+					{field:'mpras_nama',title:'Program Asuransi',align:'left',width:280},
+                    {field:'msoc_mrkn_nama',title:'Pmg Polis',width:200,hidden:true},
+				],
+                function(i, row) {
+                    hidePesan('mpol_msoc_kode');
+                    var kode = row.kode;
+                    setText('mpol_msoc_kode', kode);
+                }
+            );
+
 
         $('#frxx').submit(function(e) {
             // $('#btn_simpan').click(function(e) {
@@ -1511,7 +1560,7 @@
             bsimpan('btn_simpan', 'Please wait..');
 
             $.ajax({
-                url: "{{ route('tehnik.entry-master-polis.store') }}",
+                url: "{{ route('tehnik.polis.entry-master-polis.store') }}",
 
                 type: "POST",
                 data: formData,
@@ -1584,6 +1633,9 @@
     });
 
     $(document).ready(function() {
+        // setHide
+        setHide('mpol_mrkn_kode', true);
+
         $("#pol_baru").click(function(){
             $("h3").text("POLIS BARU");
         });

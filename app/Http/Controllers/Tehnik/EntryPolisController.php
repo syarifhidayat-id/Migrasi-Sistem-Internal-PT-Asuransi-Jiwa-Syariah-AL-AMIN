@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
+
 class EntryPolisController extends Controller
 {
     /**
@@ -26,12 +27,20 @@ class EntryPolisController extends Controller
      */
     public function index()
     {
-        $carirekanan = Rekanan::select('mrkn_nama')
+       /* $carirekanan = Rekanan::select('mrkn_nama as nama')
         ->where('mrkn_kantor_pusat', '=', 1)
         ->where('mrkn_status', '!=', 1)
         ->orderBy('mrkn_kode', 'ASC')
-        ->get();
-
+        ->get();*/
+        $carirekanan = DB::table('emst.mst_rekanan as cb')
+        ->select('cb.mrkn_kode as kode', DB::raw("if(cb.mrkn_nama = ps.mrkn_nama OR ps.mrkn_nama IS NULL, cb.mrkn_nama, concat(ps.mrkn_nama, ' ', cb.mrkn_nama)) as nama"))
+        ->leftJoin('emst.mst_rekanan as ps', 'ps.mrkn_kode', '=', 'cb.mrkn_kode')
+        ->where([
+            ['cb.mrkn_kode','<>',''],
+            ['cb.mrkn_kantor_pusat','1'],
+            ['cb.mrkn_nama','!=',''],
+            // ['cb.mrkn_nama','like',"%$search%"],
+        ])->get();
         $cariojk = Ojk::select('mpojk_nama')
         ->get();
 
@@ -48,6 +57,68 @@ class EntryPolisController extends Controller
                 'carilini' => $carilini,
                 'carigolongan' => $carigolongan,
             ]);
+    }
+
+   /* public function selectPmgPolis(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 1000;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('emst.mst_rekanan as cb')
+        ->select('cb.mrkn_kode as kode', DB::raw("if(cb.mrkn_nama = ps.mrkn_nama OR ps.mrkn_nama IS NULL, cb.mrkn_nama, concat(ps.mrkn_nama, ' ', cb.mrkn_nama)) as nama"))
+        ->leftJoin('emst.mst_rekanan as ps', 'ps.mrkn_kode', '=', 'cb.mrkn_kode')
+        ->where([
+            ['cb.mrkn_kode','<>',''],
+            ['cb.mrkn_kantor_pusat','1'],
+            ['cb.mrkn_nama','!=',''],
+            // ['cb.mrkn_nama','like',"%$search%"],
+        ]);
+
+        if (!empty($request->q)) {
+            $vtable->where('cb.mrkn_kode', 'LIKE', "%$request->q%")->orWhere('cb.mrkn_nama', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        //return response()->json($data);
+        echo response()->json($data);
+    }*/
+
+    public function selectSOC(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 1000;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('eopr.mst_soc')
+        ->select('msoc_mjns_kode','msoc_mssp_kode','msoc_mpras_kode','msoc_mjm_kode','msoc_mft_kode','msoc_mekanisme','msoc_jns_perusahaan','msoc_mekanisme2','msoc_kode','msoc_mrkn_nama', 'mjm.mjm_nama as msoc_mjm_nama',
+        'msoc_mujh_persen','msoc_mmfe_persen','msoc_overreding','msoc_mfee_persen','msoc_mkom_persen','msoc_mdr_kode','mjns_Keterangan',
+        'mssp_nama','mpras_nama','mjns_wp_pens','mjns_phk_pens','mjm_jiwa','mjm_gu','mjm_tlo','mjm_fire','mpras_uptambah','mpras_ujrah_referal','mpras_disc_rate','mjns_jl','mjns_jl_pst','mjns_jl_pas','mjns_mpid_nomor',
+        'mft_nama','mkm_nama','mpras_nama','mkm_ket2','mker_nama','msoc_ins_date','msoc_ins_user','mjm_nama', DB::raw("if(mjm_kode='05',0,mjm_phk) mjm_phk"),DB::raw("if(mjm_kode='05',0,mjm_wp) mjm_wp"),
+        DB::RAW("IF(mjns_kode!='11' OR mjns_kode!='14',0,mjm_wp_pensiun) mjm_wp_pensiun"),DB::raw("IF(mjns_kode='11' OR mjns_kode='14',0,mjm_wp_pns) mjm_wp_pns"),
+        DB::RAW("IF(mjns_kode='11' OR mjns_kode='14',0,mjm_wp_swasta) mjm_wp_swasta"), DB::RAW(" IF(mjns_kode!='11' OR mjns_kode!='14',0,mjm_phk_pensiun) mjm_phk_pensiun"),
+        DB::RAW("IF(mjns_kode='11' OR mjns_kode='14',0,mjm_phk_pns) mjm_phk_pns"),DB::RAW("IF(mjns_kode='11' OR mjns_kode='14',0,mjm_phk_swasta) mjm_phk_swasta"),DB::RAW("if(msoc_jenis_bayar=2,'PER BULAN',if(msoc_jenis_bayar=1,'PER TAHUN','SEKALIGUS')) bayar "))
+        ->leftJoin('emst.mst_jenis_nasabah as mjns', 'mjns.mjns_kode', '=', 'msoc_mjns_kode')
+        ->leftJoin('emst.mst_produk_segment as mssp', 'mssp.mssp_kode', '=', 'msoc_mssp_kode')
+        ->leftJoin('emst.mst_program_asuransi as mpras', 'mpras.mpras_kode', '=', 'msoc_mpras_kode')
+        ->leftJoin('emst.mst_jaminan as mjm', 'mjm.mjm_kode', '=', 'msoc_mjm_kode')
+        ->leftJoin('emst.mst_manfaat_plafond', 'mft_kode', '=', 'msoc_mft_kode')
+        ->leftJoin('emst.mst_mekanisme', 'mkm_kode', '=', 'msoc_mekanisme')
+        ->leftJoin('emst.mst_pekerjaan', 'mker_kode', '=', 'msoc_jns_perusahaan')
+        ->leftJoin('emst.mst_mekanisme2', 'mkm_kode2', '=', 'msoc_mekanisme2')
+        ->where([
+            ['msoc_mrkn_kode',$request->q],
+            ['msoc_approve','1'],
+            ['msoc_endos','!=','3'],
+        ]);
+        $data = $vtable
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
     }
 
     /**

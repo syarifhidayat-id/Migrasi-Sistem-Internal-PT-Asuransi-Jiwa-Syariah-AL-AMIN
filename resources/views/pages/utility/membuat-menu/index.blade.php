@@ -170,6 +170,7 @@
                     // setText('msoc_mssp_kode', res.params.data.id);
                     // setText('msoc_mssp_nama', res.params.data.text);
                 },
+                false
             )
 
             selectSide(
@@ -189,6 +190,7 @@
                     // setText('msoc_mssp_kode', res.params.data.id);
                     // setText('msoc_mssp_nama', res.params.data.text);
                 },
+                false
             )
 
             changeSelect(

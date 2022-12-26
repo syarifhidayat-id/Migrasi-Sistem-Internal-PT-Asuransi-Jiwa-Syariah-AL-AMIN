@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
     Route::resource('/lihat-polis', PolisController::class);
-    Route::resource('/entry-master-polis', EntryPolisController::class);
     // Route::get('/entry-master-polis', [EntryPolisController::class, 'index'])->name('entry-master-polis.index');
     // Route::post('/entry-master-polis/store', [EntryPolisController::class, 'store'])->name('entry-master-polis.store');
 
@@ -28,7 +27,7 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
 
 
   Route::group(['prefix' => '/polis', 'as' => 'polis.'], function() {
-
+    Route::resource('/entry-master-polis', EntryPolisController::class);
     Route::resource('/approval-master-polis', ApprovalMasterPolisController::class);
   });
 
