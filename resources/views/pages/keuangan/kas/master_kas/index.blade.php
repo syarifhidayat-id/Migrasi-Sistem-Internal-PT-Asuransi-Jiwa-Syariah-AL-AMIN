@@ -64,56 +64,144 @@
                         </div>
                     </div>
 
-                    <div class="card-toolbar shadow-xs">
-                        <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
-                            <button type="button" class="btn btn-light-primary btn-sm me-3 mt-5" data-bs-toggle="tooltip"
-                                data-bs-trigger="hover" data-bs-placement="top" title="Transaksi baru"
-                                onclick="tombolAct(0)">Transaksi baru</button>
-                        </div>
-                        <div class="card-body py-10">
+                    <div class="card-body py-10">
+                        <div class="card-toolbar shadow-xs">
                             <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
-                                <div class="table-responsive">
-                                    <table class="table table-rounded table-striped border align-middle gy-5 gs-5"
-                                        id="serverSide_kas">
-                                        <thead>
-                                            <tr
-                                                class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
-                                                <th class="min-w-250px">Keterangan</th>
-                                                <th>Debit/Kredit</th>
-                                                <th>Nilai</th>
-                                                <th>Akun</th>
-                                                <th>Nama Akun</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                                <button type="button" class="btn btn-light-primary btn-sm me-3 mt-5"
+                                    data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
+                                    title="Transaksi baru" onclick="tombolAct(0)">Transaksi baru</button>
+                            </div>
+                            <div class="card-body py-5">
+                                <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
+                                    <div class="table-responsive">
+                                        <table class="table table-rounded table-striped border align-middle gy-5 gs-5"
+                                            id="serverSide_kas">
+                                            <thead>
+                                                <tr
+                                                    class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
+                                                    <th class="min-w-150px">Keterangan</th>
+                                                    <th class="min-w-150px">Debit/Kredit</th>
+                                                    <th class="min-w-150px">Nilai</th>
+                                                    <th class="min-w-150px">Akun</th>
+                                                    <th class="min-w-150px">Nama Akun</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body py-10">
-                        <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-5">
-                                <label class="required form-label">Nominal Dana</label>
+
+                    <div class="col-md-6">
+                        <div class="mb-5">
+                            <label class="required form-label">Nominal Dana</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp.</span>
+                                </div>
                                 <input type="number" class="form-control" id="tdna_total" name="tdna_total"
-                                    data-allow-clear="true" placeholder="input nominal dana" />
+                                    data-allow-clear="true" placeholder="input nominal dana" value="0" />
+                                {{-- <div class="input-group-append">
+                                  <span class="input-group-text">.00</span>
+                                </div> --}}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-5">
+                            <label class="required form-label">Nomor Voucher</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="tdna_kode_vcr" name="tdna_kode_vcr"
+                                    data-allow-clear="true" placeholder="input voucher" readonly />
+                                <button type="button" class="btn btn-success" onclick="tombolVcr(0)">Input VCR</button>
+                                <button type="button" class="btn btn-primary" id="btn_lihat_vcr"><i
+                                        class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-5">
-                                <label class="required form-label">Nomor Voucher</label>
-                                <input type="number" class="form-control" id="tdna_total" name="tdna_total"
-                                    data-allow-clear="true" placeholder="input nominal dana" />
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-5">
+                            <label class="required form-label">Otorisasi Admin</label>
+                            <select class="form-select" data-control="select2" id="tdna_aprov_admin"
+                                name="tdna_aprov_admin" data-allow-clear="true" data-placeholder="-pilih-">
+                                <option></option>
+                                <option value="0">Tidak</option>
+                                <option value="1">Iya</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-5">
+                            <label class="required form-label">Otorisasi Pinca</label>
+                            <select class="form-select" data-control="select2" id="tdna_aprov_kacab"
+                                name="tdna_aprov_kacab" data-allow-clear="true" data-placeholder="-pilih-">
+                                <option></option>
+                                <option value="0">Tidak</option>
+                                <option value="1">Iya</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-5">
+                            <label class="required form-label">Persetujuan Kadiv/Wakadiv Pemasaran</label>
+                            <select class="form-select" data-control="select2" id="tdna_aprov_kapms"
+                                name="tdna_aprov_kapms" data-allow-clear="true" data-placeholder="-pilih-">
+                                <option></option>
+                                <option value="0">Tidak</option>
+                                <option value="1">Iya</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-5">
+                            <label class="required form-label">Persetujuan Korwil Pemasaran</label>
+                            <select class="form-select" data-control="select2" id="tdna_aprov_korwil"
+                                name="tdna_aprov_korwil" data-allow-clear="true" data-placeholder="-pilih-">
+                                <option></option>
+                                <option value="0">Tidak</option>
+                                <option value="1">Iya</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-5">
+                            <label class="required form-label">Persetujuan Keuangan</label>
+                            <select class="form-select" data-control="select2" id="tdna_aprov_ho" name="tdna_aprov_ho"
+                                data-allow-clear="true" data-placeholder="-pilih-">
+                                <option></option>
+                                <option value="0">Tidak</option>
+                                <option value="1">Iya</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-5">
+                            <label class="required form-label">Upload Dokumen</label>
+                            <div class="input-group">
+
+                                <input type="file" class="form-control" name="tdna_bukti" placeholder="pilih file"
+                                    id="tdna_bukti" />
+                                {{-- <span class="text-danger error-text mpojk_dokumen_err"></span> --}}
+                                <button type="button" class="btn btn-success" id="preview_bukti"><i
+                                        class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i
+                        class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
+                        class="fa-solid fa-trash"></i> Hapus</button>
             </div>
         </form>
 
-        {{-- @include('pages.legal.ojk.modal.create')
-        @include('pages.legal.ojk.modal.view') --}}
+        @include('pages.keuangan.kas.master_kas.modal.create')
+        @include('pages.keuangan.kas.master_kas.modal.create-voucher')
+        @include('pages.keuangan.kas.master_kas.modal.view')
     </div>
 @endsection
 
@@ -148,6 +236,19 @@
             // );
 
 
+            
+
+
+            selectSide('tkad_jns_realisasi', false, '{{ url('api/keuangan/kas/e_realisasi') }}', function(d) {
+                    return {
+                        text: d.mar_kode + ' - ' + d.mar_nama, // text nama
+                        id: d.mar_kode, // kode value
+                    }
+                },
+                function(res) {
+                    //
+                },
+            );
             selectSide('tdna_penerima', false, '{{ url('api/keuangan/kas/s_karyawan') }}', function(d) {
                     return {
                         text: d.skar_nip + ' - ' + d.skar_nama, // text nama
@@ -191,72 +292,62 @@
 
             // filterAll('input[type="search"]', 'serverSide_ojk'); //khusus type search inputan
 
-            // serverSide( //datatable serverside
-            // "serverSide_kas",
-            //     "{{ url('api/legal/ojk') }}", //url api/route
-            //     function(d) { // di isi sesuai dengan data yang akan di filter ->
-            //         d.check_id = getText('check_id'),
-            //         d.mojk_pk = getText('check_id_upload'),
-            //         d.search = $('input[type="search"]').val()
-            //     },
-            //     [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
-            //         {
-            //             data: "DT_RowIndex",
-            //             className: "text-center"
-            //         },
-            //         {
-            //             // data: 'mojk_pk'
-            //             data: null,
-            //             orderable: false,
-            //             className: 'text-center',
-            //             render: function(data, type, row) {
-            //                 return `
-        //         <button type="button" id="omodEdit" data-resouce="` + row.mojk_pk + `" class="btn btn-light-success" target="blank"> `+ row.mojk_pk +` </button>`
-            //             }
-            //         },
-            //         {
-            //             data: 'mojk_judul'
-            //         },
-            //         {
-            //             data: 'jenis_mojk'
-            //         },
-            //         {
-            //             data: 'mojk_ket_jenis'
-            //         },
-            //         {
-            //             data: 'mojk_tahun'
-            //         },
-            //         {
-            //             data: 'mojk_ins_user'
-            //         },
-            //         {
-            //             data: 'mojk_ins_date'
-            //         },
-            //         {
-            //             data: 'select',
-            //             orderable: false,
-            //             className: 'text-center',
-            //             render: function (data, type, row) {
-            //                 return `
-        //             <select class="form-select" id="jenis_dokumen" data-pk="`+row.mojk_pk+`"
-        //                 name="mojk_jenis" data-placeholder="Pilih jenis dokumen" data-allow-clear="true">
-        //                 <option selected>Pilih</option>
-        //                 <option value="1">Tanda Terima</option>
-        //                 <option value="2">Dokumen</option>
-        //             </select>`
-            //             }
-            //         },
-            //         {
-            //             data: null,
-            //             orderable: false,
-            //             className: 'text-center',
-            //             render: function(data, type, row) {
-            //                 return `<button type="button" onclick="jenisFile('`+row.mojk_file1+`', '`+row.mojk_file2+`')" class="btn btn-light-success"> Lihat</button>`;
-            //             }
+            serverSide( //datatable serverside
+            "serverSide_kas",
+                "{{ url('api/legal/laporan_berkala') }}", //url api/route
+                function(d) { // di isi sesuai dengan data yang akan di filter ->
+                    // d.check_id = getText('check_id'),
+                    // d.mojk_pk = getText('check_id_mojk'),
+                    // d.check_jenis = getText('check_jenis'),
+                    // d.mojk_jenis = getText('check_jenis_dokumen'),
+                    // d.check_tahun = getText('check_tahun'),
+                    // d.mojk_tahun = getText('check_tahun_laporan'),
+                    // d.search = $('input[type="search"]').val();
+                },
+                [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
+                    {
+                        data: "DT_RowIndex",
+                        className: "text-center"
+                    },
+                    {
+                        // data: 'mojk_pk'
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `
+                        <button type="button" id="omodEdit" data-resouce="` + row.mojk_pk + `" class="btn btn-light-success" target="blank"> `+ row.mojk_pk +` </button>`
+                        }
+                    },
+                    {
+                        data: 'jenis'
+                    },
+                    {
+                        data: 'mojk_ket_jenis'
+                    },
+                    {
+                        data: 'mojk_tahun'
+                    },
+                    {
+                        data: 'mojk_ins_user'
+                    },
+                    {
+                        data: 'ins_date'
+                    },
+                   {
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `
+                        <button type="button" id="bmoViewPdf" data-resouce="` + row.mojk_pk + `" data-show-pdf="` + row
+                                .mojk_file1 + `"
+                                        class="btn btn-light-success" target="blank"> Lihat </button>`
+                        }
 
-            //         },
-            //     ],
-            // );
+                    },
+                ],
+            );
 
             tombol('click', 'omodTam', function() {
 
@@ -383,54 +474,36 @@
                 })
             });
 
-            function x() {
-                $(document).ready(function() {
-                    $("button").click(function() {
-                        $("#frxx")[0].reset();
-                    });
-                });
-            }
-
-            $('#btn_reset').click(function() {
-                x();
-                // clearError();
-            });
-            $('#btn_close3').click(function() {
-                $('#modalView').modal('hide');
-                // lodTable();
-                x();
-            });
-            $('#btn_close4').click(function() {
-                // var kode = $(this).attr('data-resouce'),
-                // var loc2 = $(location).attr('origin') + '/storage/legal/pojk/' + kode;
-                $('#modalView').modal('hide');
-                x();
-
-            });
-
-            $('#btn_closeCreate').click(function() {
-                $('#modal').modal('hide');
-                x();
-            });
-            $('#btn_tutup').click(function() {
-                $('#modal').modal('hide');
-                x();
-            });
-
         });
 
-        function jenisFile(jenis1, jenis2) {
-            var doc = $('#jenis_dokumen').val();
-            var url = '{{ url('storage/legal/ojk') }}' + '/';
-            if (doc == '1') {
-                $('#view_pdf').attr('src', url + 'file1/' + jenis1);
-                openModal('modalView');
-            } else if (doc == '2') {
-                $('#view_pdf').attr('src', url + 'file2/' + jenis2);
-                openModal('modalView');
-            } else {
-                pesan('Silahkan pilih jenis file terlebih dahulu!');
+
+        function tombolAct(tipe) {
+            if (tipe == '0') {
+                $('#tMod').text('Rincian Transaksi');
+                openModal('modal_rincian_transaksi');
+                // setHide('btn_reset');
             }
         }
+
+        function tombolVcr(tipe) {
+            if (tipe == '0') {
+                $('#tMod_vcr').text('Input Voucher Kas');
+                openModal('modal_voucher');
+            }
+        }
+
+        // function jenisFile(jenis1, jenis2) {
+        //     var doc = $('#jenis_dokumen').val();
+        //     var url = '{{ url('storage/legal/ojk') }}' + '/';
+        //     if (doc == '1') {
+        //         $('#view_pdf').attr('src', url + 'file1/' + jenis1);
+        //         openModal('modalView');
+        //     } else if (doc == '2') {
+        //         $('#view_pdf').attr('src', url + 'file2/' + jenis2);
+        //         openModal('modalView');
+        //     } else {
+        //         pesan('Silahkan pilih jenis file terlebih dahulu!');
+        //     }
+        // }
     </script>
 @endsection

@@ -17,6 +17,8 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
     Route::group(['prefix' => '/kas', 'as' => 'kas.'], function () {
         Route::get('kantor-alamin', [MasterKasController::class, 'kantor_alamin']);
         Route::get('s_karyawan', [MasterKasController::class, 'm_karyawan']);
+        Route::get('e_realisasi', [MasterKasController::class, 'e_realisasi']);
+        Route::get('e_akun', [MasterKasController::class, 'e_akun']);
     });
 
 });

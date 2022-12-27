@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Library\KodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -16,6 +17,13 @@ class MasterKasController extends Controller
      */
     public function index()
     {
+
+        // $kode = KodeController::__getKey(14);
+        // response()->json([
+        //     'kode' => $kode,
+        // ]);
+        // // var_dump($kode);
+
         return view('pages.keuangan.kas.master_kas.index');
     }
 
@@ -85,6 +93,21 @@ class MasterKasController extends Controller
         //
     }
 
+    public function e_akun(Request $request)
+    {
+        if (!isset($tipedk)) $tipedk="K";
+        if (!isset($ckorek)) $ckorek="0";
+        if (!isset($e_value)) $e_value="0";
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 200;
+        $offset = ($page - 1) * $rows;
+        // $vtable = DB::select(DB::raw("epms.P_AMBILAKUN_KASKOR('K', '01', '0', '0')"));
+        $vtable = DB::raw("epms.P_AMBILAKUN_KASKOR('K', '01', '0', '0')");
+        // DB::raw("epms.P_AMBILAKUN_KASKOR")
+
+        return response()->json($vtable);
+    }
+
     // public function m_kas(Request $request)
     // {
 
@@ -144,12 +167,12 @@ class MasterKasController extends Controller
         return response()->json($data);
     }
 
-    public function m_karyawan(Request $request){
+    public function e_realisasi(Request $request){
         $page = $request->page ? intval($request->page) : 1;
         $rows = $request->rows ? intval($request->rows) : 1000;
         $offset = ($page - 1) * $rows;
-        $vtable = DB::table('esdm.sdm_karyawan_new')
-        ->select('skar_nip', 'skar_nama');
+        $vtable = DB::table('emst.mst_anggaran_realisasi')
+        ->select('mar_kode', 'mar_nama');
         // ->where([
         //     ['cb.mrkn_kode','<>',''],
         //     ['cb.mrkn_kantor_pusat','1'],
@@ -158,7 +181,7 @@ class MasterKasController extends Controller
         // ]);
 
         if (!empty($request->q)) {
-            $vtable->where('skar_nip', 'LIKE', "%$request->q%")->orWhere('skar_nama', 'LIKE', "%$request->q%");
+            $vtable->where('mar_kode', 'LIKE', "%$request->q%")->orWhere('mar_nama', 'LIKE', "%$request->q%");
         }
 
         $data = $vtable
@@ -168,6 +191,10 @@ class MasterKasController extends Controller
 
         return response()->json($data);
     }
+
+
+
+    //
 
 
 }
