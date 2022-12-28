@@ -7,6 +7,7 @@ use App\Http\Controllers\Library\KodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class MasterKasController extends Controller
 {
@@ -101,11 +102,27 @@ class MasterKasController extends Controller
         $page = $request->page ? intval($request->page) : 1;
         $rows = $request->rows ? intval($request->rows) : 200;
         $offset = ($page - 1) * $rows;
-        // $vtable = DB::select(DB::raw("epms.P_AMBILAKUN_KASKOR('K', '01', '0', '0')"));
-        $vtable = DB::raw("epms.P_AMBILAKUN_KASKOR('K', '01', '0', '0')");
+        // $vtable = DB::select(DB::raw("epms.P_AMBILAKUN_KASKOR('D', '01', '', '1')"));
+        // $vtable = DB::raw("CALL epms.P_AMBILAKUN_KASKOR('D', '01', '', '1')");
+        // $vtable = DB::table('epms')->select(DB::raw("epms.P_AMBILAKUN_KASKOR('K', '01', '0', '0')"))->get();
         // DB::raw("epms.P_AMBILAKUN_KASKOR")
 
-        return response()->json($vtable);
+        $a = DB::table('eacc.ams_sub_akun')
+        ->select(DB::raw("asakn_kode, asakn_keterangan"))
+        ->where(DB::raw("LEFT(asakn_kode,3)"), '=', '550')
+        ->orderBy('asakn_kode')
+        ->get();
+
+        $vtable = DB::table('eacc.ams_sub_akun')
+        ->select('asakn_kode','asakn_keterangan')
+        ->where('asakn_mrpt_kode', 'LABRUG')
+        // ->where([
+        //     [$a, '550']
+        // ])
+        ->get();
+
+        return $a;
+        // return response()->json($b);
     }
 
     // public function m_kas(Request $request)
