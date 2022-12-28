@@ -279,12 +279,7 @@
         </div>
     </div>
 
-    {{-- <div class="card-footer">
-        <div align="center">
-            <button type="button" class="btn btn-primary btn-sm"><i class="fa-sharp fa-solid fa-floppy-disk"></i> Simpan</button>&nbsp;
-            <button type="button" class="btn btn-danger btn-sm"><i class="fa-sharp fa-solid fa-trash"></i> Hapus</button>
-        </div>
-    </div> --}}
+    @include('pages.keuangan.komisi.modal.approv')
 </div>
 @endsection
 
@@ -298,7 +293,7 @@
                 "datalistKomisi",
                 "{{ url('api/keuangan/komisi-overriding/approval-komisi-overriding/list-komisi') }}",
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
-                    d.mlok_nama = getText('cabang'),
+                    d.cabang = getText('cabang'),
                     d.bulan1 = $('#inputbulan1').val(),
                     d.bulan2 = $('#inputbulan2').val(),
                     d.tahun = $('#inputtahun').val(),
@@ -310,7 +305,7 @@
                     { data: "DT_RowIndex", className: "text-center" },
                     { data: "nama" },
                     { data: "id" },
-                    { data: "kdpolis" },
+                    { data: "kdpolis"  },
                     { data: "tpst" },
                     { data: "tup" },
                     { data: "ttagih" },
@@ -323,7 +318,8 @@
                     {
                         data: "id",
                         render: function(data, type, row, meta) {
-                            return `<button type="button" id="kode" title="Lihat Detail" class="btn btn-sm btn-light-danger"><i class="fa-solid fa-eye"></i> Approval</button>`;
+                            var polis = row.kdpolis;
+                            return `<button type="button" id="kode" title="Lihat Detail" kdpolis="`+polis+`" data-kode="`+row.id+`" class="btn btn-sm btn-light-danger"><i class="fa-solid fa-eye"></i> Approval</button>`;
                         }
                     },
                     { data: "ket" },
@@ -334,6 +330,42 @@
                 ],
 
             );
+
+            tombol('click', 'kode', function() {
+                var kode = $(this).attr('data-kode'),
+                    url = "{{ route('keuangan.komisi-overriding.approval-komisi-overriding.index') }}" + "/" + kode + "/edit";
+                $.get(url, function(data) {
+                    openModal('modalAppKomOver');
+                    titleAction('titleMod', 'Approval Tax Komisi & Overriding');
+                    jsonForm('formAppKom', data);
+                    setText('kdpolis_x', $(this).attr('kdpolis'));
+                });
+
+
+                // setText('tkomh_pk', $(this).attr('data-kode'));
+                // setText('kdpolis_x', $(this).attr('kdpolis'));
+                // setText('x_giro','');
+                // setText('tkomh_penerima','');
+                // setText('tkomh_penerima_o','');
+                // setText('x_status','');
+            });
+
+             // $('#frxx').submit(function(e) {
+            submitForm(
+                "formAppKom",
+                "btn_simpan",
+                "POST",
+                "{{ route('keuangan.komisi-overriding.approval-komisi-overriding.store') }}",
+                (resSuccess) => {
+                    lodTable('datalistKomisi');
+                    closeModal('modalAppKomOver');
+                    bsimpan("btn_simpan", 'Simpan');
+                },
+                (resError) => {
+                    console.log(resError);
+                },
+            );
+
         });
 /*
         $(function () {

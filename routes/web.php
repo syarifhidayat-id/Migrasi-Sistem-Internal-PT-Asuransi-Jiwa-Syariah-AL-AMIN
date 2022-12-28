@@ -32,17 +32,12 @@ Route::middleware(['auth'])->group(function () {
     require __DIR__ . '/web/legal.php';
     require __DIR__ . '/web/keuangan.php';
     // require __DIR__ . '/web/master.php';
-    require __DIR__ . '/web/keuangan.php';
     require __DIR__ . '/web/tehnik.php';
     // require __DIR__ . '/web/sdm.php';
     require __DIR__ . '/web/layanan.php';
     require __DIR__ . '/web/utility.php';
-<<<<<<< HEAD
-    require __DIR__ . '/web/keuangan.php';
     // require __DIR__ . '/web/sekper.php';
-=======
     require __DIR__ . '/web/sekper.php';
->>>>>>> 49716982dbec0200cc7530313527b4abced78b1b
     // require __DIR__ . '/web/exports.php';
     // require __DIR__ . '/web/ajax.php';
 });
