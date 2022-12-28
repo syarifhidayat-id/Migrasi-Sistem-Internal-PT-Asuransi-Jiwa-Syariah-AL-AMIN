@@ -167,6 +167,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
+        // 'Mews\Captcha\CaptchaServiceProvider',
 
         /*
          * Package Service Providers...
@@ -240,6 +241,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'FastExcel' => Rap2hpoutre\FastExcel\Facades\FastExcel::class,
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
+        // 'Captcha' => 'Mews\Captcha\Facades\Captcha',
     ],
 
 ];

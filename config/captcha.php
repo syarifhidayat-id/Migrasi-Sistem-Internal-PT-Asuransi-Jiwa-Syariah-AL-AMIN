@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'disable' => env('CAPTCHA_DISABLE', !str_contains(env('APP_ENV', 'local'), 'prod')),
+    // 'disable' => env('CAPTCHA_DISABLE', !str_contains(env('APP_ENV', 'local'), 'prod')),
     'characters' => ['2', '3', '4', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'm', 'n', 'p', 'q', 'r', 't', 'u', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'M', 'N', 'P', 'Q', 'R', 'T', 'U', 'X', 'Y', 'Z'],
     'default' => [
         'length' => 4,
@@ -26,15 +26,17 @@ return [
     ],
 
     'flat' => [
-        'length' => 6,
+        'length' => 4,
         'width' => 160,
-        'height' => 46,
+        'height' => 45,
         'quality' => 90,
-        'lines' => 6,
+        'lines' => 12,
         'bgImage' => false,
         'bgColor' => '#ecf2f4',
         'fontColors' => ['#2c3e50', '#c0392b', '#16a085', '#c0392b', '#8e44ad', '#303f9f', '#f57c00', '#795548'],
         'contrast' => -5,
+        'expire' => 60,
+        'encrypt' => false,
     ],
     'mini' => [
         'length' => 3,
@@ -52,5 +54,5 @@ return [
         'blur' => 2,
         'invert' => true,
         'contrast' => -5,
-    ]
+    ],
 ];
