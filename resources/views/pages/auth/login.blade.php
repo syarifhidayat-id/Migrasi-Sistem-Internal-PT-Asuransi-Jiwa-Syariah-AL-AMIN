@@ -37,20 +37,20 @@
         @enderror
     </div>
 
-    {{-- <div class="fv-row mb-10">
+    <div class="fv-row mb-20">
         <label class="form-label fs-6 fw-bolder text-dark">{{ __('Captcha') }}</label>
-        <div class="input-group input-group-solid mb-5">
-            <input class="form-control form-control-lg @error('captcha') is-invalid @enderror" type="text" name="captcha" id="captcha" maxlength="4" placeholder="Masukkan captcha" required autocomplete="captcha" autofocus />
-            <input class="form-control form-control-lg" type="text" name="captcha_val" id="captcha_val" hidden />
-            <a id="reload" title="Reload Captcha"><span>{!! captcha_img() !!}</span></a>
-        </div>
+        <div class="input-group mb-5">
+            <input class="form-control form-control-solid form-control-lg @error('captcha') is-invalid @enderror" type="text" name="captcha" id="captcha" maxlength="4" placeholder="Masukkan captcha" required autocomplete="captcha" autofocus />
+            <a id="reload" title="Reload Captcha"><span>{!! captcha_img('flat') !!}</span></a>
+            {{-- <a id="reload" title="Reload Captcha"><span>{!! captcha_image_html('ConfigCaptcha') !!}</span></a> --}}
 
-        @error('captcha')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-    </div> --}}
+            @error('captcha')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+    </div>
 
     <div class="text-center">
         <button type="submit" id="kt_sign_in_submit" class="btn btn-lg btn-primary w-100 mb-5">

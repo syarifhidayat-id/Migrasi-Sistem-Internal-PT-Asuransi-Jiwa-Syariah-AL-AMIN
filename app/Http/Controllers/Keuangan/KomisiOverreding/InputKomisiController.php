@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Keuangan\KomisiOverreding;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Library\KodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 
@@ -38,7 +40,36 @@ class InputKomisiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validasi = Validator::make($request->all(), [
+            'mtx_kode' => 'required|max:16',
+            'mtx_npwp' => 'required|max:20',
+            'mtx_nama' => 'required',
+            'mtx_status' => 'required',
+        ],
+        [
+            'mtx_kode.required'=>'Kode user tidak boleh kosong!',
+            'mtx_kode.max'=>'Kode user maksimal 16 karakter!',
+            'mtx_npwp.required'=>'NPWP tidak boleh kosong!',
+            'mtx_npwp.max'=>'NPWP maksimal 20 karakter!',
+            'mtx_nama.required'=>'Nama user tidak boleh kosong!',
+            'mtx_status.required'=>'Status user tidak boleh kosong!',
+        ]);
+
+        if ($validasi->fails()) {
+            return response()->json([
+                'error' => $validasi->errors()
+            ]);
+        } else {
+            $vtable = DB::table('emst.mst_tax');
+            $data = $request->all();
+            $data = $request->except('_token');
+
+            $vtable->insert($data);
+
+            return response()->json([
+                'success' => 'Data berhasil disimpan dengan Kode '.$request->mtx_kode.' !'
+            ]);
+        }
     }
 
     /**
@@ -135,12 +166,11 @@ class InputKomisiController extends Controller
             return DataTables::of($data)
             ->addIndexColumn()
             ->filter (function ($instance) use ($request) {
-                // if ($request->get('check_1') == "1") {
-                //     if (!empty($request->get('wmn_tipe'))) {
-                //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                //             return Str::contains($row['wmn_tipe'], $request->get('wmn_tipe')) ? true : false;
-                //         });
-                //     }
+                // if (!empty($request->get('e_bln1')) && !empty($request->get('e_bln2'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        // return Str::contains($row['tpprd_insert_fix'], $request->get('e_bln1')) ? true : false;
+                        // return Str::between($row['tpprd_insert_fix'], date('m', strtotime($request->get('e_bln1'))), date('m', strtotime($request->get('e_bln2'))));
+                    });
                 // }
                 // if ($request->get('check_2') == "1") {
                 //     if (!empty($request->get('wmn_descp'))) {

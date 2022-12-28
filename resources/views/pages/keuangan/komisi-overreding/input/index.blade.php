@@ -208,7 +208,7 @@
         </div>
     </div>
 
-    @include('pages.keuangan.kas.master_kas.modal.create')
+    @include('pages.keuangan.komisi-overreding.input.modal.input')
 </div>
 @endsection
 
@@ -217,6 +217,7 @@
         $('#wmn_key').select2({
             tags: true,
         });
+
         $('#wmn_mrkn_kode').select2();
         $('#wmn_mpol_kode').select2();
 
@@ -254,7 +255,8 @@
                 "InpOjkKomOver",
                 "{{ url('api/keuangan/komisi-overreding/input-komisi-overreding/list-input-komisioverreding') }}", //url api/route
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
-                    // d.check_1 = getText('check_1'),
+                    d.e_bln1 = getText('e_bln1'),
+                    d.e_bln2 = getText('e_bln2'),
                     // d.check_2 = getText('check_2'),
                     // d.wmn_tipe = getText('tipe_menu'),
                     // d.wmn_descp = getText('key'),
@@ -423,27 +425,26 @@
                         return formatNum(tot, 2);
                     }, 0);
 
-                    $( api.column(0).footer() ).html('TOTAL');
-                    $( api.column(3).footer() ).html(totPst);
-                    $( api.column(4).footer() ).html(totUangPert);
-                    $( api.column(5).footer() ).html(totKonTagih);
-                    $( api.column(6).footer() ).html(totKonByr);
-                    $( api.column(7).footer() ).html(totKomisi);
-                    $( api.column(12).footer() ).html(totOver);
+                    $(api.column(0).footer()).html('TOTAL');
+                    $(api.column(3).footer()).html(totPst);
+                    $(api.column(4).footer()).html(totUangPert);
+                    $(api.column(5).footer()).html(totKonTagih);
+                    $(api.column(6).footer()).html(totKonByr);
+                    $(api.column(7).footer()).html(totKomisi);
+                    $(api.column(12).footer()).html(totOver);
                 },
             );
 
             tombol('click', 'omodTam', function() {
                 openModal('modalInputTax');
-                titleAction('tModInputTax', 'Tambah Menu');
+                titleAction('tModInputTax', 'Entry User Tax');
                 clearForm("formInputTax");
-                clearSelect();
                 bsimpan('btn_simpan', 'Simpan');
                 setHide('btn_reset', false);
             });
 
             tombol('click', 'omodEdit', function() {
-                titleAction('tModInputTax', 'Edit Menu');
+                titleAction('tModInputTax', 'Pic Tax Update Saldo');
                 bsimpan('btn_simpan', 'Update');
                 // $('#wmn_key').val(null).trigger('change');
                 setHide('btn_reset', true);
@@ -476,7 +477,7 @@
                 });
             });
 
-            submitForm("formInputTax", "btn_simpan", "POST", "{{ route('utility.menu.store') }}", (resSuccess) => {
+            submitForm("formInputTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overreding.input-komisi-overreding.store') }}", (resSuccess) => {
                 clearForm("formInputTax");
                 bsimpan('btn_simpan', 'Simpan');
                 lodTable("InpOjkKomOver");
@@ -495,15 +496,14 @@
             });
         });
 
-        function closeBtnModal () {
+        function closeBtnModal() {
             closeModal('modalInputTax');
             clearForm("formInputTax");
         };
 
-        hidePesan('wmn_tipe');
-        hidePesan('wmn_key');
-        hidePesan('wmn_descp');
-        hidePesan('wmn_url_o_n');
-        hidePesan('wmn_urut');
+        hidePesan('mtx_kode');
+        hidePesan('mtx_npwp');
+        hidePesan('mtx_nama');
+        hidePesan('mtx_status');
     </script>
 @endsection

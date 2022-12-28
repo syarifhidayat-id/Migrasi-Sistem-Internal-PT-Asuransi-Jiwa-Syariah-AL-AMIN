@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
     Route::group(['prefix' => '/komisi-overriding', 'as' => 'komisi-overriding.'], function() {
 
-        Route::group(['prefix' => '/input-komisi-overreding', 'as' => 'input-komisi-overreding.'], function() {
-            Route::get('/list-input-komisioverreding', [InputKomisiController::class, 'inputKomisi']);
+        Route::group(['prefix' => '/input-komisi-overriding', 'as' => 'input-komisi-overriding.'], function() {
+            Route::get('/list-input-komisioverriding', [InputKomisiController::class, 'inputKomisi']);
         });
 
         Route::group(['prefix' => '/approval-komisi-overriding', 'as' => 'approval-komisi-overriding.'], function() {
