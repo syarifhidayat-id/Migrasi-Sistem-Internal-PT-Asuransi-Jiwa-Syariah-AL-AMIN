@@ -66,13 +66,13 @@ class LoginController extends Controller
         $validasi = Validator::make($request->all(), [
             'email' => 'required',
             'password_n' => 'required',
-            // 'captcha_login' => 'required|captcha',
+            'captcha' => 'required|captcha',
         ],
         [
             'email.required'=>'Username harus terisi!',
             'password_n.required'=>'Password harus terisi!',
-            // 'captcha_login.required'=>'Captcha harus terisi!',
-            // 'captcha_login.captcha'=>'Jawaban kamu salah!',
+            'captcha.required'=>'Captcha harus terisi!',
+            'captcha.captcha'=>'Jawaban kamu salah!',
         ]);
 
         if ($validasi->fails()) {
@@ -80,7 +80,7 @@ class LoginController extends Controller
         } else {
             $validasi = $request->except(
                 '_token',
-                // 'captcha_login'
+                'captcha'
             );
             if (Auth::attempt($validasi)) {
                 // return redirect()->intended(RouteServiceProvider::HOME);
@@ -89,50 +89,20 @@ class LoginController extends Controller
                 return back()->withErrors([
                     'email' => 'Username anda salah, silahkan cek kembali!',
                     'password_n' => 'Password anda salah, silahkan cek kembali!',
-                    // 'captcha_login' => 'Jawaban kamu salah!',
+                    'captcha' => 'Jawaban kamu salah!',
                 ])->onlyInput(
                     'email',
                     'password_n',
-                    // 'captcha_login',
+                    'captcha',
                 );
             }
         }
-
-        // if (Auth::attempt($validasi)) {
-        //     $request->session()->regenerate();
-        //     // $data = $request->all();
-        //     // $data = $request->except('_token', 'password_n', 'captcha_login');
-        //     // $data['token'] = $request->_token;
-        //     // $data['email'] = $request->email;
-        //     // $data['name'] = Auth::user()->name;
-        //     // $data['groups'] = Auth::user()->groupuser;
-        //     // $data['password'] = Hash::make($request->password_n);
-        //     // $data['log_start'] = date('Y-m-d H:i:s');
-        //     // $data['log_end'] = '0000-00-00 00:00:00';
-        //     // $data['active'] = 1;
-        //     // $data['max_trxday'] = '1000';
-        //     // $data['isaprovrkn'] = '0';
-
-        //     // DB::table('web_conf.user_token')->insert($data);
-
-        //     return redirect()->intended('dashboard');
-        // } else {
-        //     return back()->withErrors([
-        //         'email' => 'Username anda salah, silahkan cek kembali!',
-        //         'password_n' => 'Password anda salah, silahkan cek kembali!',
-        //         // 'captcha_login' => 'Jawaban kamu salah!',
-        //     ])->onlyInput(
-        //         'email',
-        //         'password_n',
-        //         // 'captcha_login',
-        //     );
-        // }
     }
 
     public function reloadCaptha()
     {
         return response()->json([
-            'captcha' => captcha_img()
+            'captcha' => captcha_img('flat')
         ]);
     }
 
