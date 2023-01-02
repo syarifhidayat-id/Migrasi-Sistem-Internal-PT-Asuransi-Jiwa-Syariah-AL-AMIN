@@ -80,6 +80,7 @@
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
+    <script src="{{ asset('dist/js/jquery-config.min.js') }}"></script>
 
     @yield('script')
     @livewireScripts

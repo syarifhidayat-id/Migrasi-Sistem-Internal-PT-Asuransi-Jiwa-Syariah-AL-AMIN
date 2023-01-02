@@ -120,7 +120,7 @@ class InputKomisiController extends Controller
     public function inputKomisi(Request $request)
     {
         // if ($request->ajax()) {
-            $data = DB::table('epstfix.peserta_all')
+            $vtable = DB::table('epstfix.peserta_all')
             ->select(DB::raw("
             mpol_kode kdpolis,
             mpol_mrkn_kode kode,
@@ -134,7 +134,8 @@ class InputKomisiController extends Controller
             mlok_nama cabang,
             CONCAT(mjns_keterangan,'/',mjm_nama,'/',mft_nama,'/',mpol_kode) ket,
             tpprd_extra_persen,
-            tpprd_insert_fix"))
+            tpprd_insert_fix,
+            tpprd_mlok_kode"))
             ->leftJoin('eopr.mst_polis', function($join) {
                 $join->on('mpol_kode', '=', 'tpprd_nomor_polish');
             })
@@ -149,28 +150,55 @@ class InputKomisiController extends Controller
                 $join->on(DB::raw("IF(IFNULL(cb.mrkn_mrkn_kode_induk,'')='' OR cb.mrkn_mrkn_kode_induk='-', cb.mrkn_kode,cb.mrkn_mrkn_kode_induk)"), '=', 'ps.mrkn_kode');
             })
             ->where([
-                [DB::raw("(tpprd_total_bayar_dtl-tpprd_premi_bayar)"), '>-', 0.1],
+                [DB::raw("tpprd_total_bayar_dtl - tpprd_premi_bayar"), '>-', 0.1],
                 [DB::raw("IFNULL(tpprd_komisi_persen,0)"), '>', 0],
                 [DB::raw("IFNULL(tpprd_tax_persen,0)"), '<', 1],
                 ['tpprd_status_klaim', '!=', 1],
                 ['tpprd_status_refund', '!=', 1],
                 ['tpprd_status_batal', '!=', 1],
                 ['tpprd_status_bayar', '!=', 1],
-                ['tpprd_status', 1],
-            ])
+                ['tpprd_status', '=', 1],
+            ]);
+
+            // if (!empty($request->get('search'))) {
+            //     // $vtable->whereRaw("mlok_nama LIKE '%".$request->get('search')."%'");
+            //     $vtable->where('mpol_mrkn_nama', 'LIKE', '%'.$request->get('search').'%');
+            //     // $vtable->whereRaw("mpol_mrkn_nama LIKE '%".$request->get('search')."%'");
+            // } else if (!empty($request->get('search'))) {
+            //     $vtable->where('mlok_nama', 'LIKE', '%'.$request->get('search').'%');
+            // }
+
+            if (!empty($request->get('e_cabalamin'))) {
+                $vtable->where('tpprd_mlok_kode', $request->get('e_cabalamin'));
+            }
+            if (!empty($request->get('e_bln1')) && !empty($request->get('e_bln2')) && !empty($request->get('e_thn'))) {
+                $vtable->whereRaw("month(date(tpprd_insert_fix)) BETWEEN '".$request->get('e_bln1')."' and '".$request->get('e_bln1')."' and year(date(tpprd_insert_fix))='".$request->get('e_thn')."' ");
+            }
+
+            $data = $vtable
             ->orderBy(DB::raw("mpol_mrkn_nama,mlok_nama"), 'ASC')
             ->groupBy('mpol_kode')
-            // ->limit(10000)
+            ->limit(10000)
             ->get();
 
             return DataTables::of($data)
             ->addIndexColumn()
             ->filter (function ($instance) use ($request) {
-                // if (!empty($request->get('e_bln1')) && !empty($request->get('e_bln2'))) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        // return Str::contains($row['tpprd_insert_fix'], $request->get('e_bln1')) ? true : false;
-                        // return Str::between($row['tpprd_insert_fix'], date('m', strtotime($request->get('e_bln1'))), date('m', strtotime($request->get('e_bln2'))));
-                    });
+                // if (!empty($request->get('e_cabalamin'))) {
+                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //         return Str::contains($row['tpprd_mlok_kode'], $request->get('e_cabalamin')) ? true : false;
+                //     });
+                // }
+                // if (!empty($request->get('e_bln1')) && !empty($request->get('e_bln2')) && !empty($request->get('e_thn'))) {
+                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //         return Str::contains(date('m', strtotime($row['tpprd_insert_fix'])), $request->get('e_bln1')) ? true : false;
+                //     });
+                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //         return Str::contains(date('m', strtotime($row['tpprd_insert_fix'])), $request->get('e_bln2')) ? true : false;
+                //     });
+                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //         return Str::contains(date('Y', strtotime($row['tpprd_insert_fix'])), $request->get('e_thn')) ? true : false;
+                //     });
                 // }
                 // if ($request->get('check_2') == "1") {
                 //     if (!empty($request->get('wmn_descp'))) {
@@ -179,19 +207,42 @@ class InputKomisiController extends Controller
                 //         });
                 //     }
                 // }
-                // if (!empty($request->get('search'))) {
-                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                //         if (Str::contains(Str::lower($row['wmn_tipe']), Str::lower($request->get('search')))){
-                //             return true;
-                //         }else if (Str::contains(Str::lower($row['wmn_descp']), Str::lower($request->get('search')))) {
-                //             return true;
-                //         }
+                if (!empty($request->get('search'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if (Str::contains(Str::lower($row['nama']), Str::lower($request->get('search')))){
+                            return true;
+                        }else if (Str::contains(Str::lower($row['cabang']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
 
-                //         return false;
-                //     });
-                // }
+                        return false;
+                    });
+                }
             })
             ->make(true);
         // }
+    }
+
+    public function selectCabAlm(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('emst.mst_lokasi');
+        $vField = DB::raw("mlok_kode kode,mlok_nama nama");
+
+        $vtable->select($vField)->where('mlok_kode', '<>', '');
+
+        if (!empty($request->q)) {
+            $vtable->where('mlok_kode', 'LIKE', "%$request->q%")->orWhere('mlok_nama', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
     }
 }
