@@ -332,9 +332,8 @@
             });
 
             tombol('click', 'omodEdit', function() {
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
-                $.get(url, function(data) {
+                var kode = $(this).attr('data-resouce');
+                lodJson("GET", "{{ route('utility.menu.index') }}" + "/" + kode + "/edit", function (data) {
                     openModal('modalMenu');
                     titleAction('tModMenu', 'Edit Menu');
                     bsimpan('btn_simpan', 'Update');
@@ -343,7 +342,7 @@
                     var tipe = "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe;
                     var key = "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key;
                     jsonForm('formMenu', data);
-                    $.get(tipe, function(res) {
+                    lodJson("GET", "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe, function (res) {
                         if ($('#wmn_tipe').find("option[value='" + res.wmt_kode + "']").length) {
                             $('#wmn_tipe').val(res.wmt_kode).trigger('change');
                         } else {
@@ -353,7 +352,7 @@
                     if (data.wmn_key == "MAIN") {
                         selectEdit('wmn_key', 'MAIN', 'MAIN');
                     } else {
-                        $.get(key, function(res) {
+                        lodJson("GET", "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key, function (res) {
                             if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']").length) {
                                 $('#wmn_key').val(res.wmn_kode).trigger('change');
                             } else {

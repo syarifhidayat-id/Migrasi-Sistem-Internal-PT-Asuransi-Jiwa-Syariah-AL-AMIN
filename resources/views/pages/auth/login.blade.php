@@ -42,7 +42,6 @@
         <div class="input-group mb-5">
             <input class="form-control form-control-solid form-control-lg @error('captcha') is-invalid @enderror" type="text" name="captcha" id="captcha" maxlength="4" placeholder="Masukkan captcha" required autocomplete="captcha" autofocus />
             <a id="reload" title="Reload Captcha"><span>{!! captcha_img('flat') !!}</span></a>
-            {{-- <a id="reload" title="Reload Captcha"><span>{!! captcha_image_html('ConfigCaptcha') !!}</span></a> --}}
 
             @error('captcha')
                 <span class="invalid-feedback" role="alert">
@@ -64,13 +63,9 @@
 
 @section('script')
     <script>
-        $('#reload').click(function () {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('reload.captcha') }}",
-                success: function (data) {
-                    $("#reload span").html(data.captcha);
-                }
+        tombol('click', 'reload', function() {
+            lodJson("GET", "{{ url('api/reload-captcha') }}", function (data) {
+                setHtml("#reload span", data.captcha);
             });
         });
     </script>
