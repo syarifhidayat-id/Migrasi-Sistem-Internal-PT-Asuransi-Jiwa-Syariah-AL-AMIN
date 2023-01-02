@@ -9,6 +9,8 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
     Route::group(['prefix' => '/komisi-overriding', 'as' => 'komisi-overriding.'], function () {
         Route::resource('/approval-komisi-overriding', ApprovalKomisiController::class);
         Route::resource('/input-komisi-overreding', InputKomisiController::class);
+        Route::get('export/{pk}/{mpol}', [ApprovalKomisiController::class, 'export']);
+
     });
 
     Route::group(['prefix' => '/kas', 'as' => 'kas.'], function () {

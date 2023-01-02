@@ -43,11 +43,16 @@
                           </div>
                           <div class="separator border-gray-200"></div>
 
-                          <div class="px-7 py-5" data-kt-datatable-table-filter="form">
-                              <div class="row">
-                                  <div class="col-md-12">
-                                      <div class="mb-10">
-                                          <label class="form-label fs-6 fw-bold">Cabang Al Amin:</label>
+                          <div data-kt-datatable-table-filter="form">
+                            <div class="px-7 py-5">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                      <div class="mb-5">
+                                      <label class="form-label fs-6 fw-bold">Cabang Alamin</label>
+                                      <div class="d-flex flex-stack">
+                                          <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                              <input class="form-check-input" id="check_1" name="check_1" type="checkbox" data-checkbox="check_1" />
+                                          </label>
                                           <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih Cabang" data-allow-clear="true" data-kt-datatable-table-filter="cabang" data-hide-search="false" id="cabang" name="cabang">
                                               <option></option>
                                                @foreach ($cabang as $key=>$data)
@@ -57,16 +62,17 @@
                                       </div>
                                   </div>
                               </div>
-                              <div class="row">
-                                  <div class="col-md-4">
-                                      <div class="mb-10">
-                                          <label class="form-label fs-6 fw-bold">Periode Input Komisi:</label>
-                                          <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih bulan" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="inputbulan1">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                      <label class="form-label fs-6 fw-bold">Periode Input Komisi:</label>
+                                      <div class="d-flex flex-stack">
+                                          <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                              <input class="form-check-input" id="check_2" name="check_2" type="checkbox" data-checkbox="check_2" />
+                                          </label>
+                                          <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih bulan" data-allow-clear="true" data-kt-datatable-table-filter="inputbulan1" data-hide-search="false" id="inputbulan1" name="inputbulan1">
                                               <option></option>
-                                              {{-- @foreach ($nama_menu as $key=>$data)
-                                                  <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                              @endforeach --}}
-                                              <option value="01" selected>Januari</option>
+                                              <option value="01">Januari</option>
                                               <option value="02">Februari</option>
                                               <option value="03">Maret</option>
                                               <option value="04">April</option>
@@ -80,143 +86,145 @@
                                               <option value="12">Desember</option>
                                           </select>
                                       </div>
-                                  </div>
 
-                                  <div class="col-md-4">
-                                      <div class="mb-10">
-                                          <label class="form-label fs-6 fw-bold">s/d</label>
-                                          <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih bulan" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="inputbulan2">
+
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-10">
+                                            <label class="form-label fs-6 fw-bold">s/d</label>
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih bulan" data-allow-clear="true" data-kt-datatable-table-filter="inputbulan2" data-hide-search="false" id="inputbulan2" name="inputbulan2">
                                               <option></option>
-                                              {{-- @foreach ($nama_menu as $key=>$data)
-                                                  <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                              @endforeach --}}
-                                              <option value="01" selected>Januari</option>
-                                              <option value="02">Februari</option>
-                                              <option value="03">Maret</option>
-                                              <option value="04">April</option>
-                                              <option value="05">Mei</option>
-                                              <option value="06">Juni</option>
-                                              <option value="07">Juli</option>
-                                              <option value="08">Agustus</option>
-                                              <option value="09">September</option>
-                                              <option value="10">Oktober</option>
-                                              <option value="11">November</option>
-                                              <option value="12">Desember</option>
-                                          </select>
-                                      </div>
-                                  </div>
+                                               <option value="01">Januari</option>
+                                                <option value="02">Februari</option>
+                                                <option value="03">Maret</option>
+                                                <option value="04">April</option>
+                                                <option value="05">Mei</option>
+                                                <option value="06">Juni</option>
+                                                <option value="07">Juli</option>
+                                                <option value="08">Agustus</option>
+                                                <option value="09">September</option>
+                                                <option value="10">Oktober</option>
+                                                <option value="11">November</option>
+                                                <option value="12">Desember</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                  <div class="col-md-4">
-                                      <div class="mb-10">
-                                          <label class="form-label fs-6 fw-bold">Tahun</label>
-                                          <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih tahun" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="inputtahun">
-                                              <option></option>
-                                              {{-- @foreach ($nama_menu as $key=>$data)
-                                                  <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                              @endforeach --}}
-                                              <option value="2007">2007</option>
-                                              <option value="2008">2008</option>
-                                              <option value="2009">2009</option>
-                                              <option value="2010">2010</option>
-                                              <option value="2011">2011</option>
-                                              <option value="2012">2012</option>
-                                              <option value="2013">2013</option>
-                                              <option value="2014">2014</option>
-                                              <option value="2015">2015</option>
-                                              <option value="2016">2016</option>
-                                              <option value="2017">2017</option>
-                                              <option value="2018">2018</option>
-                                              <option value="2019">2019</option>
-                                              <option value="2020">2020</option>
-                                              <option value="2021">2021</option>
-                                              <option value="2022" selected>2022</option>
-                                          </select>
-                                      </div>
-                                  </div>
-                              </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-10">
+                                            <label class="form-label fs-6 fw-bold">Tahun</label>
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih tahun" data-allow-clear="true" data-kt-datatable-table-filter="inputtahun" data-hide-search="false" id="inputtahun" name="inputtahun">
+                                                <option></option>
+                                                <option value="2007">2007</option>
+                                                <option value="2008">2008</option>
+                                                <option value="2009">2009</option>
+                                                <option value="2010">2010</option>
+                                                <option value="2011">2011</option>
+                                                <option value="2012">2012</option>
+                                                <option value="2013">2013</option>
+                                                <option value="2014">2014</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                                <option value="2019">2019</option>
+                                                <option value="2020">2020</option>
+                                                <option value="2021">2021</option>
+                                                <option value="2022">2022</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
-                              <div class="row">
-                                  <div class="col-md-4">
-                                      <div class="mb-10">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-5">
                                           <label class="form-label fs-6 fw-bold">Periode Proses Inkaso:</label>
-                                          <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih bulan" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="inkasobulan1">
-                                              <option></option>
-                                              {{-- @foreach ($nama_menu as $key=>$data)
-                                                  <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                              @endforeach --}}
-                                              <option value="01" selected>Januari</option>
-                                              <option value="02">Februari</option>
-                                              <option value="03">Maret</option>
-                                              <option value="04">April</option>
-                                              <option value="05">Mei</option>
-                                              <option value="06">Juni</option>
-                                              <option value="07">Juli</option>
-                                              <option value="08">Agustus</option>
-                                              <option value="09">September</option>
-                                              <option value="10">Oktober</option>
-                                              <option value="11">November</option>
-                                              <option value="12">Desember</option>
-                                          </select>
-                                      </div>
-                                  </div>
 
-                                  <div class="col-md-4">
-                                      <div class="mb-10">
-                                          <label class="form-label fs-6 fw-bold">s/d</label>
-                                          <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih bulan" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="inkasobulan2">
-                                              <option></option>
-                                              {{-- @foreach ($nama_menu as $key=>$data)
-                                                  <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                              @endforeach --}}
-                                              <option value="01" selected>Januari</option>
-                                              <option value="02">Februari</option>
-                                              <option value="03">Maret</option>
-                                              <option value="04">April</option>
-                                              <option value="05">Mei</option>
-                                              <option value="06">Juni</option>
-                                              <option value="07">Juli</option>
-                                              <option value="08">Agustus</option>
-                                              <option value="09">September</option>
-                                              <option value="10">Oktober</option>
-                                              <option value="11">November</option>
-                                              <option value="12">Desember</option>
-                                          </select>
-                                      </div>
-                                  </div>
+                                          <div class="d-flex flex-stack">
+                                              <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                                  <input class="form-check-input" id="check_3" name="check_3" type="checkbox" data-checkbox="check_3" />
+                                              </label>
+                                              <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih bulan" data-allow-clear="true" data-kt-datatable-table-filter="inkasobulan1" data-hide-search="false" id="inkasobulan1" name="inkasobulan1">
+                                                  <option></option>
+                                                  <option value="1">Januari</option>
+                                                  <option value="2">Februari</option>
+                                                  <option value="3">Maret</option>
+                                                  <option value="4">April</option>
+                                                  <option value="5">Mei</option>
+                                                  <option value="6">Juni</option>
+                                                  <option value="7">Juli</option>
+                                                  <option value="8">Agustus</option>
+                                                  <option value="9">September</option>
+                                                  <option value="10">Oktober</option>
+                                                  <option value="11">November</option>
+                                                  <option value="12">Desember</option>
+                                              </select>
+                                          </div>
 
-                                  <div class="col-md-4">
-                                      <div class="mb-10">
-                                          <label class="form-label fs-6 fw-bold">Tahun</label>
-                                          <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih tahun" data-allow-clear="true" data-kt-datatable-table-filter="nama-menu" data-hide-search="false" id="inkasotahun">
-                                              <option></option>
-                                              {{-- @foreach ($nama_menu as $key=>$data)
-                                                  <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
-                                              @endforeach --}}
-                                              <option value="2007">2007</option>
-                                              <option value="2008">2008</option>
-                                              <option value="2009">2009</option>
-                                              <option value="2010">2010</option>
-                                              <option value="2011">2011</option>
-                                              <option value="2012">2012</option>
-                                              <option value="2013">2013</option>
-                                              <option value="2014">2014</option>
-                                              <option value="2015">2015</option>
-                                              <option value="2016">2016</option>
-                                              <option value="2017">2017</option>
-                                              <option value="2018">2018</option>
-                                              <option value="2019">2019</option>
-                                              <option value="2020">2020</option>
-                                              <option value="2021">2021</option>
-                                              <option value="2022" selected>2022</option>
-                                          </select>
-                                      </div>
-                                  </div>
-                              </div>
 
-                              <div class="d-flex justify-content-end">
-                                  <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
-                                  <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
-                              </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-10">
+                                            <label class="form-label fs-6 fw-bold">s/d</label>
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih bulan" data-allow-clear="true" data-kt-datatable-table-filter="inkasobulan2" data-hide-search="false" id="inkasobulan2" name="inkasobulan2">
+                                                <option></option>
+                                                {{-- @foreach ($nama_menu as $key=>$data)
+                                                    <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
+                                                @endforeach --}}
+                                                <option value="1">Januari</option>
+                                                <option value="2">Februari</option>
+                                                <option value="3">Maret</option>
+                                                <option value="4">April</option>
+                                                <option value="5">Mei</option>
+                                                <option value="6">Juni</option>
+                                                <option value="7">Juli</option>
+                                                <option value="8">Agustus</option>
+                                                <option value="9">September</option>
+                                                <option value="10">Oktober</option>
+                                                <option value="11">November</option>
+                                                <option value="12">Desember</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-10">
+                                            <label class="form-label fs-6 fw-bold">Tahun</label>
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih tahun" data-allow-clear="true" data-kt-datatable-table-filter="inkasotahun" data-hide-search="false" id="inkasotahun" name="inkasotahun">
+                                                <option></option>
+                                                {{-- @foreach ($nama_menu as $key=>$data)
+                                                    <option value="{{ $data->wmn_descp }}">{{ $data->wmn_descp }}</option>
+                                                @endforeach --}}
+                                                <option value="2007">2007</option>
+                                                <option value="2008">2008</option>
+                                                <option value="2009">2009</option>
+                                                <option value="2010">2010</option>
+                                                <option value="2011">2011</option>
+                                                <option value="2012">2012</option>
+                                                <option value="2013">2013</option>
+                                                <option value="2014">2014</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                                <option value="2019">2019</option>
+                                                <option value="2020">2020</option>
+                                                <option value="2021">2021</option>
+                                                <option value="2022">2022</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                                    <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
+                                </div>
+                            </div>
                           </div>
                       </div>
                   </div>
@@ -255,7 +263,7 @@
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                         <th>No.</th>
                         <th class="min-w-250px">Pemegang Polis</th>
-                        <th>ID</th>
+                        <th class="min-w-250px">ID</th>
                         <th>Kode Polis</th>
                         <th>Peserta</th>
                         <th>Uang Pertanggungan</th>
@@ -285,6 +293,12 @@
 
 @section('script')
     <script>
+
+        $('#inputbulan1').change(function() {
+            var _this=$(this).val();
+            alert(_this);
+            console.log(_this);
+        });
          $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
@@ -293,18 +307,31 @@
                 "datalistKomisi",
                 "{{ url('api/keuangan/komisi-overriding/approval-komisi-overriding/list-komisi') }}",
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
+                    d.check_1 = getText('check_1'),
+                    d.check_2 = getText('check_2'),
+                    d.check_3 = getText('check_3'),
                     d.cabang = getText('cabang'),
-                    d.bulan1 = $('#inputbulan1').val(),
-                    d.bulan2 = $('#inputbulan2').val(),
-                    d.tahun = $('#inputtahun').val(),
-                    d.inkasobulan1 = $('#inkasobulan1').val(),
-                    d.inkasobulan2 = $('#inkasobulan2').val(),
-                    d.inkasotahun = $('#inkasotahun').val()
+                    d.inputbulan1 = getText('inputbulan1'),
+                    d.inputbulan2 = getText('inputbulan2'),
+                    d.inputtahun = getText('inputtahun'),
+                    d.inkasobulan1 = getText('inkasobulan1'),
+                    d.inkasobulan2 = getText('inkasobulan2'),
+                    d.inkasotahun = getText('inkasotahun')
                 },
                 [
                     { data: "DT_RowIndex", className: "text-center" },
-                    { data: "nama" },
-                    { data: "id" },
+                    { data: "nama",
+                        render: function(data, type, row, meta) {
+                            var id = row.id;
+                            var polis = row.kdpolis;
+                            return `<a href="{{ url('keuangan/komisi-overriding/export/`+id+`/`+polis+`') }}">`+row.nama+`</a>`;
+                        }
+                    },
+                    { data: "id",
+                    render: function(data, type, row, meta) {
+                        return ``+row.id+` <i class="fa-solid fa-trash" style="color:red" id="kodehapus" title="Hapus PK" data-kode="`+row.id+`"></i>`;
+                    }
+                    },
                     { data: "kdpolis"  },
                     { data: "tpst" },
                     { data: "tup" },
@@ -319,7 +346,7 @@
                         data: "id",
                         render: function(data, type, row, meta) {
                             var polis = row.kdpolis;
-                            return `<button type="button" id="kode" title="Lihat Detail" kdpolis="`+polis+`" data-kode="`+row.id+`" class="btn btn-sm btn-light-danger"><i class="fa-solid fa-eye"></i> Approval</button>`;
+                            return `<button type="button" id="kode" title="Lihat Detail" kdpolis="`+polis+`" data-kode="`+row.id+`" class="btn btn-sm btn-light-success"><i class="fa-solid fa-eye"></i> Approval</button>`;
                         }
                     },
                     { data: "ket" },
@@ -338,33 +365,29 @@
                     openModal('modalAppKomOver');
                     titleAction('titleMod', 'Approval Tax Komisi & Overriding');
                     jsonForm('formAppKom', data);
-                    setText('kdpolis_x', $(this).attr('kdpolis'));
                 });
+                setText('kdpolis_x', $(this).attr('kdpolis'));
 
-
-                // setText('tkomh_pk', $(this).attr('data-kode'));
-                // setText('kdpolis_x', $(this).attr('kdpolis'));
-                // setText('x_giro','');
-                // setText('tkomh_penerima','');
-                // setText('tkomh_penerima_o','');
-                // setText('x_status','');
             });
 
-             // $('#frxx').submit(function(e) {
-            submitForm(
-                "formAppKom",
-                "btn_simpan",
-                "POST",
-                "{{ route('keuangan.komisi-overriding.approval-komisi-overriding.store') }}",
-                (resSuccess) => {
-                    lodTable('datalistKomisi');
-                    closeModal('modalAppKomOver');
-                    bsimpan("btn_simpan", 'Simpan');
-                },
-                (resError) => {
-                    console.log(resError);
-                },
-            );
+            tombol('click', 'kodehapus', function() {
+                var kode = $(this).attr('data-kode');
+                //alert(kode);
+                url = "{{ route('keuangan.komisi-overriding.approval-komisi-overriding.store') }}" + "/" + kode;
+                submitDelete(kode, url, function(resSuccess) {
+                    lodTable("datalistKomisi");
+                     console.log(resSuccess);
+                }, function(resError) {
+                     console.log(resError);
+                });
+            });
+
+            submitForm("formAppKom", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.approval-komisi-overriding.store') }}", (resSuccess) => {
+                clearForm("formAppKom");
+                bsimpan('btn_simpan', 'Simpan');
+                lodTable("datalistKomisi");
+                closeModal('modalAppKomOver');
+            });
 
         });
 /*

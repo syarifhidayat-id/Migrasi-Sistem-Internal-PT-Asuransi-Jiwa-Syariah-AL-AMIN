@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 class ApprovalKomisiController extends Controller
 {
@@ -145,12 +148,8 @@ class ApprovalKomisiController extends Controller
     public function edit($id)
     {
         $tkom_header = DB::table('etrs.trs_komisi_hdr')
-        ->select(DB::raw("REPLACE(tkomh_pk,'K','') tkomh_pk,mpol_kode kdpolis_x, mgro_pk x_giro, skar_pk kode tkomh_penerima, tovh_penerima tkomh_penerima_o"))
-        ->leftJoin('etrs.trs_over_dtl', DB::raw("REPLACE('tkomd_tkomh_pk','K','')"), '=', DB::raw("REPLACE('tovd_tovh_pk','O','')"))
-        ->leftJoin('eacc.mst_giro', 'mgro_pk', '=', 'tkomh_mgro_pk')
-        ->leftJoin('epstfix.peserta_all', 'tpprd_pk', '=', 'tkomd_tpprd_pk')
-        ->leftJoin('esdm.sdm_karyawan_new', 'skar_pk kode', '=', 'tkomh_penerima')
-        ->leftJoin('eopr.mst_polis', 'mpol_kode', '=', 'tpprd_nomor_polish')
+        ->select(DB::raw("REPLACE(tkomh_pk,'K','') tkomh_pk, tkomh_mgro_pk x_giro, tkomh_penerima, tovh_penerima tkomh_penerima_o"))
+        ->leftJoin('etrs.trs_over_hdr', DB::raw("REPLACE(tovh_pk,'O','')"), '=', DB::raw("REPLACE(tkomh_pk,'K','')"))
         ->where('tkomh_pk', $id.'K')
         ->first();
         return response()->json($tkom_header);
@@ -175,15 +174,20 @@ class ApprovalKomisiController extends Controller
      * @param  \App\Models\Komisi  $komisi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Komisi $komisi)
+    public function destroy($id)
     {
-        //
+        $data = DB::table('etrs.trs_komisi_hdr')->where('tkomh_pk',$id.'K');
+        $data->delete();
+
+        return response()->json([
+            'success' => 'Data berhasil dihapus dengan Kode '.$id.'!'
+        ]);
     }
 
     public function listKomisi(Request $request)
     {
-         if ($request->ajax()) {
-            $data = DB::table('etrs.trs_komisi_hdr')
+        //  if ($request->ajax()) {
+            $vtable = DB::table('etrs.trs_komisi_hdr')
                 ->select(DB::raw("REPLACE(tkomd_tkomh_pk,'K','') id,
                 mpol_kode kdpolis,
 	            mpol_mrkn_nama nama,
@@ -195,6 +199,8 @@ class ApprovalKomisiController extends Controller
                 FORMAT(IFNULL(SUM(`tovd_over`),0),2) toverreding,
                 FORMAT(IFNULL(SUM(`tovd_tax`),0),2) ttax_overr,
                 CONCAT(mjns_keterangan,'/ ',mjm_nama) ket,
+                tkomh_crud,
+                tpprd_insert_fix,
                 mlok_nama cabang,tkomh_sts1_user,tkomh_sts2_user,tkomh_sts3_user,
                 FORMAT(IFNULL(SUM(tkomd_komisi),0) - IFNULL(SUM(tkomd_tax),0),2) as tkomisinetto,
                 FORMAT(IFNULL(SUM(`tovd_over`),0) - IFNULL(SUM(`tovd_tax`),0),2) as toverreding_netto,
@@ -205,22 +211,279 @@ class ApprovalKomisiController extends Controller
                 ->leftJoin('eopr.mst_polis', 'mpol_kode', '=', 'tpprd_nomor_polish')
                 ->leftJoin('emst.mst_jenis_nasabah', 'mjns_kode', '=', 'mpol_mjns_kode')
                 ->leftJoin('emst.mst_jaminan', 'mjm_kode', '=', 'mpol_mjm_kode')
-                ->leftJoin('etrs.trs_over_dtl', DB::raw("REPLACE('tkomd_tkomh_pk','K','')"), '=', DB::raw("REPLACE('tovd_tovh_pk','O','')"))
+                ->leftJoin('etrs.trs_over_dtl', DB::raw("REPLACE('tkomd_tkomh_pk','K','')"), '=', DB::raw("REPLACE('tovd_tovh_pk','O','')"));
+
+              /*  if ($request->get('check_1') == "1") {
+                    if (!empty($request->get('cabang'))) {
+                        $vtable->whereRaw("mlok_nama = '".$request->get('cabang')."'");
+                    }
+                }*/
+               if ($request->get('check_2') == "1") {
+               if ( !empty($request->get('inputbulan1')) && !empty($request->get('inputbulan2')) && !empty($request->get('inputtahun')) ) {
+                   //$vtable->whereRaw("YEAR(date(tkomh_crud))='2021' AND month(date(tkomh_crud))=1 and 1");
+                //    $vtable->whereRaw("YEAR(date(tkomh_crud))='".$request->get('inputtahun')."' AND month(date(tkomh_crud)) = '".$request->get('inputbulan1')."' and '".$request->get('inputbulan2')."'");
+                    $vtable->whereRaw("month(date(tkomh_crud)) BETWEEN '".$request->get('inputbulan1')."' and '".$request->get('inputbulan2')."' and year(date(tkomh_crud))='".$request->get('inputtahun')."' ");
+               }
+              }
+            /*   if ($request->get('check_3') == "1") {
+                if (!empty($request->get('inkasobulan1')) && !empty($request->get('inkasobulan2')) && !empty($request->get('inkasotahun'))) {
+                    $vtable->whereRaw("month(date(tpprd_insert_fix)) BETWEEN '".$request->get('inkasobulan1')."' and '".$request->get('inkasobulan2')."' and year(date(tpprd_insert_fix))='".$request->get('inkasotahun')."'");
+                }
+              }*/
+
+                $data = $vtable
                 ->groupBy('mpol_kode')
                 ->orderBy('mpol_mrkn_nama', 'ASC')
                 ->get();
 
             return DataTables::of($data)
             ->addIndexColumn()
-            ->filter (function ($instance) use ($request) {
-                if (!empty($request->get('cabang'))) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['cabang'], $request->get('cabang')) ? true : false;
-                    });
+         /*   ->filter (function ($instance) use ($request) {
+                if ($request->get('check_1') == "1") {
+                    if (!empty($request->get('cabang'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['cabang'], $request->get('cabang')) ? true : false;
+                        });
+                    }
                 }
 
-            })
+                if ($request->get('check_2') == "1") {
+                    if (!empty($request->get('inputbulan1') && !empty($request->get('inputbulan2') && !empty($request->get('inputtahun'))))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['inputkomdate'], $request->get('cabang')) ? true : false;
+                        });
+                    }
+                }
+
+            })*/
             ->make(true);
-         }
+        //  }
+    }
+    public function export($id,$mpol) {
+
+        $komisi = DB::select("SELECT
+        tpprd_pk PK,
+        tpprd_nomor_peserta `NO_PESERTA`,
+        tpprd_nomor_polish `KODE_POLIS`,
+        mpol_mrkn_nama `PEMEGANG_POLIS`,
+        cb.mrkn_nama `CAB_PEMEGANG_POLIS`,
+        mlok_nama `CABANG_AL_AMIN`,
+        mjns_keterangan `JNS_NASABAH`,
+        mjm_nama JAMINAN,
+        tpprd_nama NAMA,
+        tpprd_tanggal_lahir `TGL_LAHIR`,
+        tpprd_umur UMUR,
+        tpprd_tanggal_awal `TGL_AWAL`,
+        tpprd_tanggal_akhir `TGL_AKHIR`,
+        tpprd_masa_bulan `TENOR`,
+        tpprd_up UP,
+        tpprd_premi `KONTRIBUSI_GROSS`,
+        tpprd_premi_co `KONTRIBUSI_CO`,
+        tpprd_discpolis `FEEBASE_POTONG`,
+        tpprd_premi_bayar `KONTRIBUSI_TAGIH`,
+        tpprd_admin `FEEBASE_TDK_POTONG`,
+        tpprd_total_bayar_dtl `KONTRIBUSI_BAYAR`,
+        IFNULL(pic1.mtx_nama,'') `PIC_PAJAK_KOMISI`,
+        IFNULL(tkomd_komisi_persen,0) `KOMISI_PERSEN`,
+        IFNULL(tkomd_komisi,0) KOMISI,
+        IFNULL(tkomd_tax_persen,0) `TAX_KOMISI_PERSEN`,
+        IFNULL(tkomd_tax,0) `TAX_KOMISI`,
+        IFNULL(tkomd_komisi-tkomd_tax,0) `KOMISI_NETT`,
+        IFNULL(pic2.mtx_nama,'') `PIC_PAJAK_OVERRIDING`,
+        IFNULL(tovd_over_persen,0) `OVERRIDING_PERSEN`,
+        IFNULL(tovd_over,0) `OVERRIDING`,
+        IFNULL(tovd_tax_persen,0) `TAX_OVERRIDING_PERSEN`,
+        IFNULL(tovd_tax,0) `TAX_OVERRIDING`,
+        IFNULL(tovd_over-tovd_tax,0) `OVERRIDING_NETT`
+    FROM etrs.`trs_komisi_hdr`, etrs.`trs_komisi_dtl`
+    LEFT JOIN emst.`mst_tax` pic1 ON pic1.mtx_kode=tkomd_tax_user
+    LEFT JOIN epstfix.`peserta_all` ON tpprd_pk=tkomd_tpprd_pk
+    LEFT JOIN etrs.`trs_over_dtl` ON REPLACE(tkomd_tkomh_pk,'K','')=REPLACE(`tovd_tovh_pk`,'O','') AND tovd_tpprd_pk=tpprd_pk
+    LEFT JOIN eopr.mst_polis ON mpol_kode=tpprd_nomor_polish
+    LEFT JOIN emst.`mst_jenis_nasabah` ON mpol_mjns_kode=mjns_kode
+    LEFT JOIN emst.`mst_jaminan` ON mjm_kode=mpol_mjm_kode
+    LEFT JOIN emst.`mst_manfaat_plafond` ON mft_kode=mpol_mft_kode
+    LEFT JOIN emst.mst_lokasi ON tpprd_mlok_kode=mlok_kode
+    LEFT JOIN emst.mst_tax pic2 ON pic2.mtx_kode=tovd_pic,
+    emst.mst_rekanan cb
+    LEFT JOIN emst.mst_rekanan ps ON  IF(IFNULL(cb.mrkn_mrkn_kode_induk,'')='' OR cb.mrkn_mrkn_kode_induk='-' ,cb.mrkn_kode,cb.mrkn_mrkn_kode_induk) =ps.mrkn_kode
+    WHERE tkomd_tkomh_pk=tkomh_pk AND tpprd_mrkn_kode=cb.mrkn_kode  AND tkomh_pk = '".$id."K'
+    AND mpol_kode= '".$mpol."'
+    GROUP BY tkomd_pk
+    LIMIT 10000000");
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet(0);
+
+        $sheet->setCellValue('A1', 'DETAIL PESERTA KOMISI & OVERREDING');
+        $sheet->setCellValue('A3', 'NO');
+        $sheet->setCellValue('B3', 'PK');
+        $sheet->setCellValue('C3', 'NO PESERTA');
+        $sheet->setCellValue('D3', 'KODE POLIS');
+        $sheet->setCellValue('E3', 'PEMEGANG POLIS');
+        $sheet->setCellValue('F3', 'CAB. PEMEGANG POLIS');
+        $sheet->setCellValue('G3', 'CABANG AL AMIN');
+        $sheet->setCellValue('H3', 'JNS NASABAH');
+        $sheet->setCellValue('I3', 'JAMINAN');
+        $sheet->setCellValue('J3', 'NAMA');
+        $sheet->setCellValue('K3', 'TGL LAHIR');
+        $sheet->setCellValue('L3', 'UMUR');
+        $sheet->setCellValue('M3', 'TGL AWAL');
+        $sheet->setCellValue('N3', 'TGL AKHIR');
+        $sheet->setCellValue('O3', 'TENOR');
+        $sheet->setCellValue('P3', 'UP');
+        $sheet->setCellValue('Q3', 'KONTRIBUSI GROSS');
+        $sheet->setCellValue('R3', 'KONTRIBUSI CO');
+        $sheet->setCellValue('S3', 'FEEBASE POTONG');
+        $sheet->setCellValue('T3', 'KONTRIBUSI TAGIH');
+        $sheet->setCellValue('U3', 'FEEBASE TDK POTONG');
+        $sheet->setCellValue('V3', 'KONTRIBUSI BAYAR');
+        $sheet->setCellValue('W3', 'PIC PAJAK KOMISI');
+        $sheet->setCellValue('X3', 'KOMISI(%)');
+        $sheet->setCellValue('Y3', 'KOMISI');
+        $sheet->setCellValue('Z3', 'TAX KOMISI(%)');
+        $sheet->setCellValue('AA3', 'TAX KOMISI');
+        $sheet->setCellValue('AB3', 'KOMISI NETT');
+        $sheet->setCellValue('AC3', 'PIC PAJAK OVERRIDING');
+        $sheet->setCellValue('AD3', 'OVERRIDING(%)');
+        $sheet->setCellValue('AE3', 'OVERRIDING');
+        $sheet->setCellValue('AF3', 'TAX OVERRIDING(%)');
+        $sheet->setCellValue('AG3', 'TAX OVERRIDING');
+        $sheet->setCellValue('AH3', 'OVERRIDING NETT');
+
+        $i=0;
+        foreach($komisi as $data){
+        $sheet = $spreadsheet->getActiveSheet(0);
+        $sheet->setCellValue('A'.(4+$i),($i+1));
+        $sheet->setCellValue('B'.(4+$i), "'".$data->PK);
+        $sheet->setCellValue('C'.(4+$i), "'".$data->NO_PESERTA);
+        $sheet->setCellValue('D'.(4+$i), "'".$data->KODE_POLIS);
+        $sheet->setCellValue('E'.(4+$i), $data->PEMEGANG_POLIS);
+        $sheet->setCellValue('F'.(4+$i), $data->CAB_PEMEGANG_POLIS);
+        $sheet->setCellValue('G'.(4+$i), $data->CABANG_AL_AMIN);
+        $sheet->setCellValue('H'.(4+$i), $data->JNS_NASABAH);
+        $sheet->setCellValue('I'.(4+$i), $data->JAMINAN);
+        $sheet->setCellValue('J'.(4+$i), $data->NAMA);
+        $sheet->setCellValue('K'.(4+$i), $data->TGL_LAHIR);
+        $sheet->setCellValue('L'.(4+$i), $data->UMUR);
+        $sheet->setCellValue('M'.(4+$i), $data->TGL_AWAL);
+        $sheet->setCellValue('N'.(4+$i), $data->TGL_AKHIR);
+        $sheet->setCellValue('O'.(4+$i), $data->TENOR);
+        $sheet->setCellValue('P'.(4+$i), $data->UP);
+        $sheet->setCellValue('Q'.(4+$i), $data->KONTRIBUSI_GROSS);
+        $sheet->setCellValue('R'.(4+$i), $data->KONTRIBUSI_CO);
+        $sheet->setCellValue('S'.(4+$i), $data->FEEBASE_POTONG);
+        $sheet->setCellValue('T'.(4+$i), $data->KONTRIBUSI_TAGIH);
+        $sheet->setCellValue('U'.(4+$i), $data->FEEBASE_TDK_POTONG);
+        $sheet->setCellValue('V'.(4+$i), $data->KONTRIBUSI_BAYAR);
+        $sheet->setCellValue('W'.(4+$i), $data->PIC_PAJAK_KOMISI);
+        $sheet->setCellValue('X'.(4+$i), $data->KOMISI_PERSEN);
+        $sheet->setCellValue('Y'.(4+$i), $data->KOMISI);
+        $sheet->setCellValue('Z'.(4+$i), $data->TAX_KOMISI_PERSEN);
+        $sheet->setCellValue('AA'.(4+$i), $data->TAX_KOMISI);
+        $sheet->setCellValue('AB'.(4+$i), $data->KOMISI_NETT);
+        $sheet->setCellValue('AC'.(4+$i), $data->PIC_PAJAK_OVERRIDING);
+        $sheet->setCellValue('AD'.(4+$i), $data->OVERRIDING_PERSEN);
+        $sheet->setCellValue('AE'.(4+$i), $data->OVERRIDING);
+        $sheet->setCellValue('AF'.(4+$i), $data->TAX_OVERRIDING_PERSEN);
+        $sheet->setCellValue('AG'.(4+$i), $data->TAX_OVERRIDING);
+        $sheet->setCellValue('AH'.(4+$i), $data->OVERRIDING_NETT);
+
+         // # CETAK FORMAT NUMERIC
+
+         $sheet->getStyle('P'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('Q'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('R'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('S'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('T'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('U'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('V'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('X'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('Y'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('Z'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('AA'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('AB'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('AD'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('AE'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('AF'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('AG'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+         $sheet->getStyle('AH'.(4+$i))
+         ->getNumberFormat()
+         ->setFormatCode('#,##0.00');
+
+        $i++;
+        }
+
+
+        // # CETAK WARNA
+
+        $sheet->getStyle('A3:AH3')->getFill()
+    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+    ->getStartColor()->setARGB('BDBDBD');
+
+        $fileName = "DETAIL PESERTA KOMISI & OVERREDING.".$id;
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$fileName.'.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 }

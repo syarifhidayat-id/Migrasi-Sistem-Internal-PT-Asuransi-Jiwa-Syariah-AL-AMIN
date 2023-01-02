@@ -14,13 +14,13 @@
                             <div class="col-md-12">
                                 <div class="mb-5">
                                     <label class="form-label">ID</label>
-                                    <input type="text" class="form-control form-control-solid bg-warning" name="tkomh_pk" id="tkomh_pk" placeholder="ID PK">
+                                    <input type="text" class="form-control form-control-solid bg-warning" name="tkomh_pk" id="tkomh_pk" placeholder="ID PK" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="mb-5">
                                     <label class="form-label">Kode Polis</label>
-                                    <input type="text" class="form-control form-control-solid bg-warning" name="kdpolis_x" id="kdpolis_x" placeholder="Kode Polis">
+                                    <input type="text" class="form-control form-control-solid bg-warning" name="kdpolis_x" id="kdpolis_x" placeholder="Kode Polis" readonly>
                                 </div>
                             </div>
 
@@ -40,7 +40,9 @@
                             <div class="col-md-12">
                                 <div class="mb-5">
                                     <label class="form-label">Penerima Komisi</label>
-                                    <select class="form-select form-select-solid fw-bolder" name="tkomh_penerima" id="tkomh_penerima" data-dropdown-parent="#modalAppKomOver_header" data-placeholder="Pilih Penerima Komisi" data-allow-clear="true" required>
+                                    <!--<select class="form-select form-select-solid fw-bolder" name="tkomh_penerima" id="tkomh_penerima" data-dropdown-parent="#modalAppKomOver_header" data-placeholder="Pilih Penerima Komisi" data-allow-clear="true" required>-->
+                                      <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih Penerima Komisi" data-allow-clear="true" data-dropdown-parent="#modalAppKomOver_header" data-hide-search="false" id="tkomh_penerima" name="tkomh_penerima" required>
+
                                         <option></option>
                                         @foreach ($karyawan as $key=>$datas)
                                            <option value="{{ $datas->kode }}">{{ $datas->nama }}</option>
