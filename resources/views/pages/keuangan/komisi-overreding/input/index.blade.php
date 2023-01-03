@@ -292,7 +292,7 @@
                         orderable: false,
                         className: 'text-center',
                         render: function (data, type, row) {
-                            return `<input type="text" class="easyui-textbox selectGrid" name="kode_pic" id="kode_pic" data-options="prompt:'Pilih pemegang polis'" style="width: 100%; height: 38px;" />`;
+                            return `<input type="text" class="easyui-textbox selectGrid" name="kode_pic" id="kode_pic" data-options="prompt:'Pic pajak komisi 1'" style="width: 100%; height: 38px;" />`;
                             // return `
                             // <select class="form-select form-select-solid fw-bolder" id="coba" name="coba" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Tahun" data-allow-clear="true" data-kt-datatable-table-filter="coba" data-hide-search="false">
                             //     <option></option>
