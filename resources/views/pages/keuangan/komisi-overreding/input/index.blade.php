@@ -37,91 +37,91 @@
                     </div>
                     <div class="separator border-gray-200"></div>
 
-                    <div class="px-7 py-5" data-kt-datatable-table-filter="form">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="mb-10">
-                                    <label class="form-label fs-6 fw-bold">Berdasarkan Keyboard</label>
-                                    <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid" placeholder="Cari All" />
+                    <div data-kt-datatable-table-filter="form">
+                        <div class="px-7 py-5">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-10">
+                                        <label class="form-label fs-6 fw-bold">Berdasarkan Keyboard</label>
+                                        <input type="search" data-kt-datatable-table-filter="search" name="seacrh" id="seacrh" class="form-control form-control-solid" placeholder="Cari All" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-5">
-                                    <label class="form-label fs-6 fw-bold">Cabang Alamin</label>
-                                    <div class="d-flex flex-stack">
+                                <div class="col-md-6">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Cabang Alamin</label>
                                         <select class="form-select form-select-solid fw-bolder" id="e_cabalamin" name="e_cabalamin" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="true" data-kt-datatable-table-filter="e_cabalamin" data-hide-search="false">
                                             <option></option>
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="mb-5">
-                                    <label class="form-label fs-6 fw-bold">Periode Proses Inkaso</label>
-                                    <div class="input-group input-group-solid flex-nowrap">
-                                        <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid fw-bolder" id="e_bln1" name="e_bln1" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 1" data-allow-clear="true" data-kt-datatable-table-filter="e_bln1" data-hide-search="false">
-                                                <option></option>
-                                                @foreach (range(1,12) as $month)
-                                                    <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
-                                                @endforeach
-                                            </select>
+                                <div class="col-md-12">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Periode Proses Inkaso</label>
+                                        <div class="input-group input-group-solid flex-nowrap">
+                                            <div class="overflow-hidden flex-grow-1">
+                                                <select class="form-select form-select-solid fw-bolder" id="e_bln1" name="e_bln1" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 1" data-allow-clear="true" data-kt-datatable-table-filter="e_bln1" data-hide-search="false">
+                                                    <option></option>
+                                                    @foreach (range(1,12) as $month)
+                                                        <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <span class="input-group-text">s.d</span>
+                                            <div class="overflow-hidden flex-grow-1">
+                                                <select class="form-select form-select-solid fw-bolder" id="e_bln2" name="e_bln2" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 2" data-allow-clear="true" data-kt-datatable-table-filter="e_bln2" data-hide-search="false">
+                                                    <option></option>
+                                                    @foreach (range(1,12) as $month)
+                                                        <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <span class="input-group-text">tahun</span>
+                                            <div class="overflow-hidden flex-grow-1">
+                                                <select class="form-select form-select-solid fw-bolder" id="e_thn" name="e_thn" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Tahun" data-allow-clear="true" data-kt-datatable-table-filter="e_thn" data-hide-search="false">
+                                                    <option></option>
+                                                    @for ($year = date('2007'); $year <= date('Y'); $year++)
+                                                        <option value="{{ $year }}">{{ $year }}</option>
+                                                    @endfor
+                                                </select>
+                                            </div>
                                         </div>
-                                        <span class="input-group-text">s.d</span>
-                                        <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid fw-bolder" id="e_bln2" name="e_bln2" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 2" data-allow-clear="true" data-kt-datatable-table-filter="e_bln2" data-hide-search="false">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Pemegang Polis</label>
+                                        <div class="d-flex flex-stack">
+                                            <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                                <input class="form-check-input" id="c_pmgpolis" name="c_pmgpolis" type="checkbox" data-checkbox="c_pmgpolis" />
+                                            </label>
+                                            <select class="form-select form-select-solid fw-bolder" id="e_pmgpolis" name="e_pmgpolis" data-control="select2" data-kt-select2="true" data-placeholder="Pilih pemegang polis" data-allow-clear="true" data-kt-datatable-table-filter="e_pmgpolis" data-hide-search="false">
                                                 <option></option>
-                                                @foreach (range(1,12) as $month)
-                                                    <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <span class="input-group-text">tahun</span>
-                                        <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid fw-bolder" id="e_thn" name="e_thn" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Tahun" data-allow-clear="true" data-kt-datatable-table-filter="e_thn" data-hide-search="false">
-                                                <option></option>
-                                                @for ($year = date('2007'); $year <= date('Y'); $year++)
-                                                    <option value="{{ $year }}">{{ $year }}</option>
-                                                @endfor
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-5">
-                                    <label class="form-label fs-6 fw-bold">Pemegang Polis</label>
-                                    <div class="d-flex flex-stack">
-                                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                            <input class="form-check-input" id="c_pmgpolis" name="c_pmgpolis" type="checkbox" data-checkbox="c_pmgpolis" />
-                                        </label>
-                                        <select class="form-select form-select-solid fw-bolder" id="e_pmgpolis" name="e_pmgpolis" data-control="select2" data-kt-select2="true" data-placeholder="Pilih pemegang polis" data-allow-clear="true" data-kt-datatable-table-filter="e_pmgpolis" data-hide-search="false">
-                                            <option></option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-5">
-                                    <label class="form-label fs-6 fw-bold">Cabang Pmg Polis</label>
-                                    <div class="d-flex flex-stack">
-                                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                            <input class="form-check-input" id="c_cbpmgpolis" type="checkbox" data-checkbox="c_cbpmgpolis" />
-                                        </label>
-                                        <select class="form-select form-select-solid fw-bolder" id="e_cbpmgpolis" name="e_cbpmgpolis" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang pmg polis" data-allow-clear="true" data-kt-datatable-table-filter="e_cbpmgpolis" data-hide-search="false">
-                                            <option></option>
-                                        </select>
+                                <div class="col-md-6">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Cabang Pmg Polis</label>
+                                        <div class="d-flex flex-stack">
+                                            <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                                                <input class="form-check-input" id="c_cbpmgpolis" type="checkbox" data-checkbox="c_cbpmgpolis" />
+                                            </label>
+                                            <select class="form-select form-select-solid fw-bolder" id="e_cbpmgpolis" name="e_cbpmgpolis" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang pmg polis" data-allow-clear="true" data-kt-datatable-table-filter="e_cbpmgpolis" data-hide-search="false">
+                                                <option></option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="separator border-gray-200"></div>
-                    <div class="px-7 py-5">
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
-                            <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
+                        <div class="separator border-gray-200"></div>
+                        <div class="px-7 py-5">
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter" if><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                                <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
 
     <div class="card-body py-10">
         <div class="table-responsive">
-            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="InpOjkKomOver">
+            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" data-kt-menu="true" tabindex="-1" id="InpOjkKomOver">
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                         <th class="min-w-50px">No.</th>
@@ -171,12 +171,12 @@
                         <th class="min-w-200px">Kontribusi Tagih</th>
                         <th class="min-w-200px">Kontribusi Bayar</th>
                         <th class="min-w-120px">Komisi</th>
-                        <th class="min-w-200px">Pic Pajak Komisi 1</th>
+                        <th class="min-w-300px">Pic Pajak Komisi 1</th>
                         <th class="min-w-200px">Komisi Bruto 1</th>
-                        <th class="min-w-200px">Pic Pajak Komisi 2</th>
+                        <th class="min-w-300px">Pic Pajak Komisi 2</th>
                         <th class="min-w-200px">Komisi Bruto 2</th>
                         <th class="min-w-120px">Overreding</th>
-                        <th class="min-w-200px">Pic Pajak Overreding 1</th>
+                        <th class="min-w-300px">Pic Pajak Overreding 1</th>
                         <th class="min-w-200px">Komisi Bruto 1</th>
                         <th class="min-w-150px">Proses Data</th>
                         <th class="min-w-200px">Keterangan</th>
@@ -214,49 +214,30 @@
 
 @section('script')
     <script>
-        $('#wmn_key').select2({
-            tags: true,
-        });
-
-        $('#wmn_mrkn_kode').select2();
-        $('#wmn_mpol_kode').select2();
-
-        setText('e_bln1', '01');
-        setText('e_bln2', '01');
+        // setText('e_bln1', '01');
+        // setText('e_bln2', '01');
+        // setText('e_thn', '2019');
 
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            selectSide('tipe_menu', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
-                id: d.wmt_kode,
-                text: d.wmt_nama
-            }}, function(res) {
-                selectSide('key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('tipe_menu'), function(d) { return {
-                    id: d.wmn_descp,
-                    text: d.wmn_descp
-                }});
-            });
-
-            selectSide('wmn_tipe', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
-                id: d.wmt_kode,
-                text: d.wmt_nama
-            }}, function(res) {
-                selectSide('wmn_key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('wmn_tipe'), function(d) { return {
-                    id: d.wmn_descp,
-                    text: d.wmn_descp
-                }});
-            });
+            selectSide('e_cabalamin', false, '{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/select-cabalamin") }}', function(d) { return {
+                id: d.kode,
+                text: d.nama
+            }});
 
             filterAll('input[type="search"]', 'InpOjkKomOver'); //khusus type search inputan
 
             serverSide( //datatable serverside
                 "InpOjkKomOver",
-                "{{ url('api/keuangan/komisi-overreding/input-komisi-overreding/list-input-komisioverreding') }}", //url api/route
+                "{{ url('api/keuangan/komisi-overriding/input-komisi-overriding/list-input-komisioverriding') }}", //url api/route
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
+                    d.e_cabalamin = getText('e_cabalamin'),
                     d.e_bln1 = getText('e_bln1'),
                     d.e_bln2 = getText('e_bln2'),
+                    d.e_thn = getText('e_thn'),
                     // d.check_2 = getText('check_2'),
                     // d.wmn_tipe = getText('tipe_menu'),
                     // d.wmn_descp = getText('key'),
@@ -308,10 +289,18 @@
                     },
                     {
                         data: null,
-                        className: "text-center",
-                        render: function(data, type, row, meta) {
-                            return `<div class="badge badge-light-success fw-bolder">-</div>`;
-                        }
+                        orderable: false,
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return `<input type="text" class="easyui-textbox selectGrid" name="kode_pic" id="kode_pic" data-options="prompt:'Pic pajak komisi 1'" style="width: 100%; height: 38px;" />`;
+                            // return `
+                            // <select class="form-select form-select-solid fw-bolder" id="coba" name="coba" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Tahun" data-allow-clear="true" data-kt-datatable-table-filter="coba" data-hide-search="false">
+                            //     <option></option>
+                            //     @for ($year = date('2007'); $year <= date('Y'); $year++)
+                            //         <option value="{{ $year }}">{{ $year }}</option>
+                            //     @endfor
+                            // </select>`;
+                        },
                     },
                     {
                         data: null,
@@ -433,6 +422,22 @@
                     $(api.column(7).footer()).html(totKomisi);
                     $(api.column(12).footer()).html(totOver);
                 },
+                function (api) {
+                    selectGrids(
+                        '.easyui-textbox',
+                        'GET',
+                        '{{ url("api/tehnik/soc/entry-soc/select-pmgpolis") }}',
+                        'nama',
+                        'nama',
+                        [
+                            {field:'kode',title:'Kode',align:'left',width:180},
+                            {field:'nama',title:'Nama',align:'left',width:280},
+                        ],
+                        function(i, row) {
+
+                        }
+                    );
+                },
             );
 
             tombol('click', 'omodTam', function() {
@@ -477,7 +482,7 @@
                 });
             });
 
-            submitForm("formInputTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overreding.input-komisi-overreding.store') }}", (resSuccess) => {
+            submitForm("formInputTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.input-komisi-overriding.store') }}", (resSuccess) => {
                 clearForm("formInputTax");
                 bsimpan('btn_simpan', 'Simpan');
                 lodTable("InpOjkKomOver");
