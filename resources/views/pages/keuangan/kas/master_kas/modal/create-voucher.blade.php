@@ -4,7 +4,7 @@
             <div class="modal-header" id="modalMenu_header">
                 <h2 class="fw-bolder" id="tMod_vcr"></h2>
 
-                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeModal('modal_voucher')"><i class="fa-sharp fa-solid fa-xmark"></i></button>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeModalVcr()"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
             <form id="frxx_vcr" name="frxx_vcr" method="post" enctype="multipart/form-data">
@@ -15,13 +15,16 @@
                         data-kt-scroll-dependencies="#modalMenu_header" data-kt-scroll-wrappers="#modalMenu_scroll"
                         data-kt-scroll-offset="300px">
                         <div class="row mb-5">
-                            {{-- <input class="form-control" name="mojk_pk" id="mojk_pk" type="hidden"
-                                data-allow-clear="false" readonly /> --}}
+                            
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Nomor Voucher</label>
-                                    <input class="form-control" name="tkav_nomor" id="tkav_nomor" type="text"
-                                        data-allow-clear="true" readonly/>
+                                    
+                                    <input class="form-control" name="tkav_nomor" id="tkav_nomor" type="text" data-allow-clear="true" readonly/>
+                                    {{-- <input class="form-control" name="e_nopk" id="e_nopk" data-allow-clear="false" readonly /> --}}
+                                    {{-- <input class="form-control" name="tkav_pk" id="tkav_pk" data-allow-clear="false" readonly /> --}}
+                                    <input class="form-control" name="tkav_tdna_pk" id="tkav_tdna_pk" data-allow-clear="false" value="{{ $kode }}" readonly />
+                                    <input class="form-control" name="tkav_akun" id="tkav_akun" data-allow-clear="false" readonly />
                                     {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
                                 </div>
                             </div>
@@ -93,7 +96,7 @@
                             class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     {{-- <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
                             class="fa-solid fa-trash"></i> Hapus</button> --}}
-                    <button type="button" class="btn btn-danger btn-sm" onclick="closeModal('modal_voucher')" id="btn_tutup"><i
+                    <button type="button" class="btn btn-danger btn-sm" onclick="closeModalVcr()" id="btn_tutup"><i
                             class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>

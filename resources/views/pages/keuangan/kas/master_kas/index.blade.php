@@ -17,6 +17,7 @@
             @csrf
             <div class="card-body py-10">
                 <div class="row">
+                    <input class="form-control" type="text" id="a_pk" value="{{ $kode }}" />
                     <div class="col-md-6">
                         <div class="mb-5">
                             <label class="required form-label">Kantor Al Amin</label>
@@ -56,7 +57,7 @@
                             {{-- <input type="text" id="test" /> --}}
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="mb-5">
                             <label class="required form-label">Keterangan</label>
                             <input type="text" class="form-control" id="tdna_ket" name="tdna_ket"
@@ -86,6 +87,7 @@
                                                     <th class="min-w-150px">Nama Akun</th>
                                                 </tr>
                                             </thead>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -176,7 +178,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="mb-5">
                             <label class="required form-label">Upload Dokumen</label>
                             <div class="input-group">
@@ -194,8 +196,8 @@
             <div class="modal-footer justify-content-center">
                 <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i
                         class="fa-solid fa-floppy-disk"></i> Simpan</button>
-                <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
-                        class="fa-solid fa-trash"></i> Hapus</button>
+                <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i class="fa-solid fa-trash"></i>
+                    Hapus</button>
             </div>
         </form>
 
@@ -207,6 +209,9 @@
 
 @section('script')
     <script type="text/javascript">
+        setTextReadOnly('tkad_tipe_dk', true);
+        setTextReadOnly('tkav_nomor', true);
+
         $(function() {
             $.ajaxSetup({
                 headers: {
@@ -235,18 +240,17 @@
             //     }
             // );
 
-
-            
-
-
-            selectSide('tkad_jns_realisasi', false, '{{ url('api/keuangan/kas/e_realisasi') }}', function(d) {
+            selectSide('tkad_jns_realisasi', true, '{{ url('api/keuangan/kas/e_realisasi') }}', function(d) {
                     return {
                         text: d.mar_kode + ' - ' + d.mar_nama, // text nama
                         id: d.mar_kode, // kode value
+                        // nama: d.mar_nama,
                     }
                 },
                 function(res) {
-                    //
+                    // setText('nama_akun', res.params.data.nama);
+                    // console.log(res.params.data.id);
+
                 },
             );
             selectSide('tdna_penerima', false, '{{ url('api/keuangan/kas/s_karyawan') }}', function(d) {
@@ -282,76 +286,77 @@
                 },
             );
 
-            // selectSide('check_id_upload', false, '{{ url('api/legal/ojk/selectId') }}', function(d) { return {
-            //     id: d.mojk_pk,
-            //     text: d.mojk_pk
-            // }}, function(res) {
-            //     // setText('msoc_mssp_kode', res.params.data.id);
-            //     // setText('msoc_mssp_nama', res.params.data.text);
-            // });
+            selectSide('e_akun', false, '{{ url('api/keuangan/kas/e_akun') }}', function(d) {
+                    return {
+                        text: d.asakn_kode + ' - ' + d.asakn_keterangan, // text nama
+                        id: d.asakn_kode, // kode value
+                        nama: d.asakn_keterangan,
+                    }
+                },
+                function(res) {
+                    // alert(res.params.data.nama);
+                    setText('nama_akun', res.params.data.nama);
+                },
+            );
 
             // filterAll('input[type="search"]', 'serverSide_ojk'); //khusus type search inputan
 
-            serverSide( //datatable serverside
-            "serverSide_kas",
-                "{{ url('api/legal/laporan_berkala') }}", //url api/route
-                function(d) { // di isi sesuai dengan data yang akan di filter ->
-                    // d.check_id = getText('check_id'),
-                    // d.mojk_pk = getText('check_id_mojk'),
-                    // d.check_jenis = getText('check_jenis'),
-                    // d.mojk_jenis = getText('check_jenis_dokumen'),
-                    // d.check_tahun = getText('check_tahun'),
-                    // d.mojk_tahun = getText('check_tahun_laporan'),
-                    // d.search = $('input[type="search"]').val();
-                },
-                [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
-                    {
-                        data: "DT_RowIndex",
-                        className: "text-center"
-                    },
-                    {
-                        // data: 'mojk_pk'
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            return `
-                        <button type="button" id="omodEdit" data-resouce="` + row.mojk_pk + `" class="btn btn-light-success" target="blank"> `+ row.mojk_pk +` </button>`
-                        }
-                    },
-                    {
-                        data: 'jenis'
-                    },
-                    {
-                        data: 'mojk_ket_jenis'
-                    },
-                    {
-                        data: 'mojk_tahun'
-                    },
-                    {
-                        data: 'mojk_ins_user'
-                    },
-                    {
-                        data: 'ins_date'
-                    },
-                   {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            return `
-                        <button type="button" id="bmoViewPdf" data-resouce="` + row.mojk_pk + `" data-show-pdf="` + row
-                                .mojk_file1 + `"
-                                        class="btn btn-light-success" target="blank"> Lihat </button>`
-                        }
-
-                    },
-                ],
-            );
+            //     serverSide( //datatable serverside
+            //         "serverSide_kas", //url api/route
+            //         // "serverSide_kas", "{{ url('api/legal/laporan_berkala') }}", //url api/route
+            //         function(a) { // di isi sesuai dengan data yang akan di filter ->
+            //             // d.check_id = getText('check_id'),
+            //             // d.mojk_pk = getText('check_id_mojk'),
+            //             // d.search = $('input[type="search"]').val();
+            //         },
+            //         [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
+            //             {
+            //                 data: 'tkad_keterangan'
+            //             },
+            //             {
+            //                 data: 'mojk_ket_jenis'
+            //             },
+            //             {
+            //                 data: 'mojk_tahun'
+            //             },
+            //             {
+            //                 data: 'mojk_ins_user'
+            //             },
+            //             {
+            //                 data: 'ins_date'
+            //             },
+            //         ],
+            //     );
+            // });
 
             tombol('click', 'omodTam', function() {
 
             });
+
+
+            tombol('click', 'btn_simpan', function() {
+                closeModal('modal_rincian_transaksi');
+                // var e_pk = $('#e_pk').val();
+                var e_akun = $('#e_akun').val();
+                var tkad_keterangan = $('#tkad_keterangan').val();
+                var tkad_tipe_dk = $('#tkad_tipe_dk').val();
+                var tkad_mta_pk = $('#tkad_mta_pk').val();
+                var tkad_total = $('#tkad_total').val();
+                var tkad_jns_realisasi = $('#tkad_jns_realisasi').val();
+                var e_kasbon = $('#e_kasbon').val();
+                var nama_akun = $('#nama_akun').val();
+               
+
+                if (tkad_tipe_dk == 'D') {
+                    var tipe_dk = 'Debit';
+                }
+                if (e_pk != "") {
+                    $('#serverSide_kas tbody').append('<tr class="child"><td>' + tkad_keterangan +
+                        '</td><td>' + tipe_dk + '</td><td>' + tkad_total + '</td><td>' + e_akun +
+                        '</td><td>' + nama_akun + '</td></tr>');
+                }
+            });
+
 
             $('body').on('change', '#jenis_dokumen', function() {
                 var _this = $(this).val();
@@ -384,53 +389,6 @@
                 });
             });
 
-            $('#frxx').submit(function(e) {
-                // $('#btn_simpan').click(function(e) {
-                e.preventDefault();
-                // var dataFrx = $('#frxx').serialize();
-                var formData = new FormData(this); //jika ada input file atau dokumen
-                bsimpan('btn_simpan', 'Please wait..');
-
-                $.ajax({
-                    url: "{{ route('legal.ojk.store') }}",
-                    type: "POST",
-                    data: formData,
-                    cache: false, //jika ada input file atau dokumen
-                    contentType: false, //jika ada input file atau dokumen
-                    processData: false, //jika ada input file atau dokumen
-                    // dataType: 'json',
-                    success: function(res) {
-                        // window.location.reload();
-                        if ($.isEmptyObject(res.error)) {
-                            console.log(res);
-                            Swal.fire(
-                                'Berhasil!',
-                                res.success,
-                                'success'
-                            ).then((res) => {
-                                lodTable('serverSide_ojk');
-                                // reset();
-                                // $('#frxx').trigger("reset");
-                                $('#modal').modal('hide');
-                                bsimpan('btn_simpan', 'Simpan');
-                                // x();
-                            });
-                        } else {
-                            bsimpan('btn_simpan', 'Simpan');
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Field harus ter isi!',
-                            });
-                            messages(res.error);
-                        }
-                    },
-                    error: function(err) {
-                        console.log('Error:', err);
-                        bsimpan('btn_simpan', 'Simpan');
-                    }
-                });
-            });
 
             $('body').on('click', '#omodDelete', function() {
                 var kode = $(this).attr('data-resouce'),
@@ -473,9 +431,29 @@
                     }
                 })
             });
-
         });
 
+
+        // function grd_submit() {
+
+        // }
+        // function grd_submit() {
+        //     submitForm(
+        //         "frxx_tkad",
+        //         "btn_simpan",
+        //         "POST",
+        //         (resSuccess) => {
+        //             clearForm("frxx_tkad");
+        //             clearSelect();
+        //             lodTable('serverSide_kas');
+        //             bsimpan("btn_simpan", 'Simpan');
+        //             closeMod('#modal_rincian_transaksi');
+        //         },
+        //         (resError) => {
+        //             console.log(resError);
+        //         },
+        //     );
+        // }
 
         function tombolAct(tipe) {
             if (tipe == '0') {
@@ -485,11 +463,53 @@
             }
         }
 
+
+        //Voucher kas
         function tombolVcr(tipe) {
             if (tipe == '0') {
-                $('#tMod_vcr').text('Input Voucher Kas');
-                openModal('modal_voucher');
+                url = "{{ url('api/keuangan/kas/tkav_nomor') }}";
+                $.get(url, function(res) {
+                    var tdna_tgl_aju = getText('tdna_tgl_aju');
+                    var tdna_dk = getText('tdna_dk');
+                    // var tdna_dk = getText('tdna_dk');
+                    // var tdna_dk = getText('tdna_dk');
+                    // var tdna_dk = getText('tdna_dk');
+                    $('#tMod_vcr').text('Input Voucher Kas');
+                    openModal('modal_voucher');
+                    setText('tkav_nomor', res);
+                    setText('tkav_tanggal', tdna_tgl_aju);
+                    setText('tkav_tipe_kas', tdna_dk);
+                    
+                });
             }
+        }
+
+        submitForm(
+            "frxx_vcr",
+            "btn_simpan",
+            "POST",
+            "{{ url('api/keuangan/kas/vcr') }}",
+            (resSuccess) => {
+                clearForm("frxx_vcr");
+                clearSelect();
+                // lodTable('serverSide_draft');
+                bsimpan("btn_simpan", 'Simpan');
+                closeModal('modal_voucher');
+                clearForm('frxx_vcr');
+            },
+            (resError) => {
+                console.log(resError);
+            },
+        );
+
+        function closeMod() {
+            closeModal('modal_rincian_transaksi');
+            clearForm('frxx_tkad');
+        }
+
+        function closeModalVcr() {
+            closeModal('modal_voucher');
+            clearForm('frxx_vcr');
         }
 
         // function jenisFile(jenis1, jenis2) {

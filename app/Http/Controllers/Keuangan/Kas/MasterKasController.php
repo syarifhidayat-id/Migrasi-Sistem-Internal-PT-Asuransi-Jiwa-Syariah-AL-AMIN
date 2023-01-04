@@ -19,13 +19,13 @@ class MasterKasController extends Controller
     public function index()
     {
 
-        // $kode = KodeController::__getKey(14);
-        // response()->json([
-        //     'kode' => $kode,
-        // ]);
-        // // var_dump($kode);
+         $kode = KodeController::__getKey(14);
+         response()->json([
+             'kode' => $kode,
+        ]);
+        // var_dump($kode);
 
-        return view('pages.keuangan.kas.master_kas.index');
+        return view('pages.keuangan.kas.master_kas.index', compact('kode'));
     }
 
     /**
@@ -94,36 +94,7 @@ class MasterKasController extends Controller
         //
     }
 
-    public function e_akun(Request $request)
-    {
-        if (!isset($tipedk)) $tipedk="K";
-        if (!isset($ckorek)) $ckorek="0";
-        if (!isset($e_value)) $e_value="0";
-        $page = $request->page ? intval($request->page) : 1;
-        $rows = $request->rows ? intval($request->rows) : 200;
-        $offset = ($page - 1) * $rows;
-        // $vtable = DB::select(DB::raw("epms.P_AMBILAKUN_KASKOR('D', '01', '', '1')"));
-        // $vtable = DB::raw("CALL epms.P_AMBILAKUN_KASKOR('D', '01', '', '1')");
-        // $vtable = DB::table('epms')->select(DB::raw("epms.P_AMBILAKUN_KASKOR('K', '01', '0', '0')"))->get();
-        // DB::raw("epms.P_AMBILAKUN_KASKOR")
-
-        $a = DB::table('eacc.ams_sub_akun')
-        ->select(DB::raw("asakn_kode, asakn_keterangan"))
-        ->where(DB::raw("LEFT(asakn_kode,3)"), '=', '550')
-        ->orderBy('asakn_kode')
-        ->get();
-
-        $vtable = DB::table('eacc.ams_sub_akun')
-        ->select('asakn_kode','asakn_keterangan')
-        ->where('asakn_mrpt_kode', 'LABRUG')
-        // ->where([
-        //     [$a, '550']
-        // ])
-        ->get();
-
-        return $a;
-        // return response()->json($b);
-    }
+    
 
     // public function m_kas(Request $request)
     // {
@@ -209,6 +180,13 @@ class MasterKasController extends Controller
         return response()->json($data);
     }
 
+
+    public function testInput(Request $request){
+        
+        $data = $request->all();
+
+        return response()->json($data);
+    }
 
 
     //
