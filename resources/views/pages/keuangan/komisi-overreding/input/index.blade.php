@@ -49,7 +49,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-5">
                                         <label class="form-label fs-6 fw-bold">Cabang Alamin</label>
-                                        <select class="form-select form-select-solid fw-bolder" id="e_cabalamin" name="e_cabalamin" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="true" data-kt-datatable-table-filter="e_cabalamin" data-hide-search="false">
+                                        <select class="form-select form-select-solid fw-bolder" id="e_cabalamin" name="e_cabalamin" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="true" data-hide-search="false">
                                             <option></option>
                                         </select>
                                     </div>
@@ -59,7 +59,7 @@
                                         <label class="form-label fs-6 fw-bold">Periode Proses Inkaso</label>
                                         <div class="input-group input-group-solid flex-nowrap">
                                             <div class="overflow-hidden flex-grow-1">
-                                                <select class="form-select form-select-solid fw-bolder" id="e_bln1" name="e_bln1" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 1" data-allow-clear="true" data-kt-datatable-table-filter="e_bln1" data-hide-search="false">
+                                                <select class="form-select form-select-solid fw-bolder" id="e_bln1" name="e_bln1" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 1" data-allow-clear="true" data-hide-search="false">
                                                     <option></option>
                                                     @foreach (range(1,12) as $month)
                                                         <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
@@ -68,7 +68,7 @@
                                             </div>
                                             <span class="input-group-text">s.d</span>
                                             <div class="overflow-hidden flex-grow-1">
-                                                <select class="form-select form-select-solid fw-bolder" id="e_bln2" name="e_bln2" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 2" data-allow-clear="true" data-kt-datatable-table-filter="e_bln2" data-hide-search="false">
+                                                <select class="form-select form-select-solid fw-bolder" id="e_bln2" name="e_bln2" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 2" data-allow-clear="true" data-hide-search="false">
                                                     <option></option>
                                                     @foreach (range(1,12) as $month)
                                                         <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
@@ -77,7 +77,7 @@
                                             </div>
                                             <span class="input-group-text">tahun</span>
                                             <div class="overflow-hidden flex-grow-1">
-                                                <select class="form-select form-select-solid fw-bolder" id="e_thn" name="e_thn" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Tahun" data-allow-clear="true" data-kt-datatable-table-filter="e_thn" data-hide-search="false">
+                                                <select class="form-select form-select-solid fw-bolder" id="e_thn" name="e_thn" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Tahun" data-allow-clear="true" data-hide-search="false">
                                                     <option></option>
                                                     @for ($year = date('2007'); $year <= date('Y'); $year++)
                                                         <option value="{{ $year }}">{{ $year }}</option>
@@ -94,7 +94,7 @@
                                             <label class="form-check form-switch form-check-custom form-check-solid me-5">
                                                 <input class="form-check-input" id="c_pmgpolis" name="c_pmgpolis" type="checkbox" data-checkbox="c_pmgpolis" />
                                             </label>
-                                            <select class="form-select form-select-solid fw-bolder" id="e_pmgpolis" name="e_pmgpolis" data-control="select2" data-kt-select2="true" data-placeholder="Pilih pemegang polis" data-allow-clear="true" data-kt-datatable-table-filter="e_pmgpolis" data-hide-search="false">
+                                            <select class="form-select form-select-solid fw-bolder" id="e_pmgpolis" name="e_pmgpolis" data-control="select2" data-kt-select2="true" data-placeholder="Pilih pemegang polis" data-allow-clear="true" data-hide-search="false">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -107,7 +107,7 @@
                                             <label class="form-check form-switch form-check-custom form-check-solid me-5">
                                                 <input class="form-check-input" id="c_cbpmgpolis" type="checkbox" data-checkbox="c_cbpmgpolis" />
                                             </label>
-                                            <select class="form-select form-select-solid fw-bolder" id="e_cbpmgpolis" name="e_cbpmgpolis" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang pmg polis" data-allow-clear="true" data-kt-datatable-table-filter="e_cbpmgpolis" data-hide-search="false">
+                                            <select class="form-select form-select-solid fw-bolder" id="e_cbpmgpolis" name="e_cbpmgpolis" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang pmg polis" data-allow-clear="true" data-hide-search="false">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -254,7 +254,7 @@
                     {
                         data: "nama",
                         render: function(data, type, row, meta) {
-                            return `<div class="badge badge-light-success fw-bolder">`+row.nama+`</div>`;
+                            return `<div class="badge badge-light-success fw-bolder" id="exportExcel">`+row.nama+`</div>`;
                         }
                     },
                     { data: "kdpolis" },
@@ -440,6 +440,10 @@
                 },
             );
 
+            tombol('click', 'exportExcel', function() {
+                alert('bisa');
+            });
+
             tombol('click', 'omodTam', function() {
                 openModal('modalInputTax');
                 titleAction('tModInputTax', 'Entry User Tax');
@@ -500,6 +504,10 @@
                 });
             });
         });
+
+        function getExport() {
+            alret('bisa')
+        }
 
         function closeBtnModal() {
             closeModal('modalInputTax');

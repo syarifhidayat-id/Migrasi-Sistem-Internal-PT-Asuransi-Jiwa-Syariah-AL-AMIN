@@ -223,6 +223,11 @@ class InputKomisiController extends Controller
         // }
     }
 
+    public function getExport(Request $request)
+    {
+        $objPHPExcel;
+    }
+
     public function selectCabAlm(Request $request)
     {
         $page = $request->page ? intval($request->page) : 1;

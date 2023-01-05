@@ -77,7 +77,7 @@ class EntrySocController extends Controller
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
-            'msoc_mrkn_nama' => 'required',
+            // 'msoc_mrkn_nama' => 'required',
             'e_nasabah' => 'required',
             'msoc_mssp_nama' => 'required',
             'msoc_mekanisme' => 'required',
@@ -97,7 +97,7 @@ class EntrySocController extends Controller
             'msoc_dok' => 'mimes:pdf',
         ],
         [
-            'msoc_mrkn_nama.required'=>'Pemegang polis tidak boleh kosong!',
+            // 'msoc_mrkn_nama.required'=>'Pemegang polis tidak boleh kosong!',
             'e_nasabah.required'=>'Nasabah bank/peserta tidak boleh kosong!',
             'msoc_mssp_nama.required'=>'Segmen pasar tidak boleh kosong!',
             'msoc_mekanisme.required'=>'Mekanisme 1 tidak boleh kosong!',

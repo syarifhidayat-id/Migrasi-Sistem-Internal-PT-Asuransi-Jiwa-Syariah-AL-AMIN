@@ -4,19 +4,12 @@ namespace App\Http\Controllers\Tehnik\Soc;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Library\KodeController;
-use App\Imports\Tehnik\Soc\UploadTarifSocImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use Rap2hpoutre\FastExcel\FastExcel;
-use Shuchkin\SimpleXLSX;
-use Yajra\DataTables\Facades\DataTables;
 
 class UploadTarifController extends Controller
 {
