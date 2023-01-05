@@ -203,61 +203,38 @@ class ApprovalKomisiController extends Controller
                 tpprd_insert_fix,
                 mlok_nama cabang,tkomh_sts1_user,tkomh_sts2_user,tkomh_sts3_user,
                 FORMAT(IFNULL(SUM(tkomd_komisi),0) - IFNULL(SUM(tkomd_tax),0),2) as tkomisinetto,
-                FORMAT(IFNULL(SUM(`tovd_over`),0) - IFNULL(SUM(`tovd_tax`),0),2) as toverreding_netto,
-                @no:=@no+1 AS DT_RowIndex"))
+                FORMAT(IFNULL(SUM(`tovd_over`),0) - IFNULL(SUM(`tovd_tax`),0),2) as toverreding_netto"))
                 ->leftJoin('etrs.trs_komisi_dtl', 'tkomh_pk', '=', 'tkomd_tkomh_pk')
                 ->leftJoin('epstfix.peserta_all', 'tpprd_pk', '=', 'tkomd_tpprd_pk')
                 ->leftJoin('emst.mst_lokasi', 'mlok_kode', '=', 'tpprd_mlok_kode')
                 ->leftJoin('eopr.mst_polis', 'mpol_kode', '=', 'tpprd_nomor_polish')
                 ->leftJoin('emst.mst_jenis_nasabah', 'mjns_kode', '=', 'mpol_mjns_kode')
                 ->leftJoin('emst.mst_jaminan', 'mjm_kode', '=', 'mpol_mjm_kode')
-                ->leftJoin('etrs.trs_over_dtl', DB::raw("REPLACE('tkomd_tkomh_pk','K','')"), '=', DB::raw("REPLACE('tovd_tovh_pk','O','')"));
+                ->leftJoin('etrs.trs_over_dtl', DB::raw("REPLACE('tkomd_tkomh_pk','K','')"), '=', DB::raw("REPLACE('tovd_tovh_pk','O','')"))
+                ->where('mpol_kode', '!=', '');
 
-              /*  if ($request->get('check_1') == "1") {
+             //    $vtable->whereRaw("month(date(tkomh_crud)) BETWEEN 01 and 01 and year(date(tkomh_crud))='2021'");
+                //$vtable->whereRaw("year(date(tkomh_crud))='".$request->get('tahun')."'");
+
+               /* if ($request->get('check_1') == "1") {
                     if (!empty($request->get('cabang'))) {
                         $vtable->whereRaw("mlok_nama = '".$request->get('cabang')."'");
-                    }
+                   }
                 }*/
-               if ($request->get('check_2') == "1") {
-               if ( !empty($request->get('inputbulan1')) && !empty($request->get('inputbulan2')) && !empty($request->get('inputtahun')) ) {
-                   //$vtable->whereRaw("YEAR(date(tkomh_crud))='2021' AND month(date(tkomh_crud))=1 and 1");
-                //    $vtable->whereRaw("YEAR(date(tkomh_crud))='".$request->get('inputtahun')."' AND month(date(tkomh_crud)) = '".$request->get('inputbulan1')."' and '".$request->get('inputbulan2')."'");
-                    $vtable->whereRaw("month(date(tkomh_crud)) BETWEEN '".$request->get('inputbulan1')."' and '".$request->get('inputbulan2')."' and year(date(tkomh_crud))='".$request->get('inputtahun')."' ");
+
+
+                if (!empty($request->get('bulan1')) && !empty($request->get('bulan2')) && !empty($request->get('tahun'))) {
+                    $vtable->whereRaw("month(date(tkomh_crud)) BETWEEN '".$request->get('bulan1')."' and '".$request->get('bulan2')."' and year(date(tkomh_crud))='".$request->get('tahun')."'");
                }
-              }
-            /*   if ($request->get('check_3') == "1") {
-                if (!empty($request->get('inkasobulan1')) && !empty($request->get('inkasobulan2')) && !empty($request->get('inkasotahun'))) {
-                    $vtable->whereRaw("month(date(tpprd_insert_fix)) BETWEEN '".$request->get('inkasobulan1')."' and '".$request->get('inkasobulan2')."' and year(date(tpprd_insert_fix))='".$request->get('inkasotahun')."'");
-                }
-              }*/
+
 
                 $data = $vtable
                 ->groupBy('mpol_kode')
                 ->orderBy('mpol_mrkn_nama', 'ASC')
                 ->get();
 
-            return DataTables::of($data)
-            ->addIndexColumn()
-         /*   ->filter (function ($instance) use ($request) {
-                if ($request->get('check_1') == "1") {
-                    if (!empty($request->get('cabang'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['cabang'], $request->get('cabang')) ? true : false;
-                        });
-                    }
-                }
-
-                if ($request->get('check_2') == "1") {
-                    if (!empty($request->get('inputbulan1') && !empty($request->get('inputbulan2') && !empty($request->get('inputtahun'))))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['inputkomdate'], $request->get('cabang')) ? true : false;
-                        });
-                    }
-                }
-
-            })*/
-            ->make(true);
-        //  }
+            return DataTables::of($data)->addIndexColumn()->make(true);
+        //   }
     }
     public function export($id,$mpol) {
 
