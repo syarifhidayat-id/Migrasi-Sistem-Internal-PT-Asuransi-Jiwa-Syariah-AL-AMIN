@@ -160,7 +160,7 @@
 
     <div class="card-body py-10">
         <div class="table-responsive">
-            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="InpOjkKomOver">
+            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" data-kt-menu="true" tabindex="-1" id="InpOjkKomOver">
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                         <th class="min-w-50px">No.</th>
@@ -292,14 +292,14 @@
                         orderable: false,
                         className: 'text-center',
                         render: function (data, type, row) {
-                            // return `<input type="text" class="form-control form-control-solid" name="mtx_nama" id="mtx_nama" placeholder="Pilih"/>`;
-                            return `
-                            <select class="form-select form-select-solid" data-control="select2" name="coba123" id="coba123" data-placeholder="Pilih status user" data-allow-clear="true">
-                                <option></option>
-                                <option value="0">Karyawan Al Amin</option>
-                                <option value="1">Non Karyawan Al Amin</option>
-                            </select>
-                            `;
+                            return `<input type="text" class="easyui-textbox selectGrid" name="kode_pic" id="kode_pic" data-options="prompt:'Pic pajak komisi 1'" style="width: 100%; height: 38px;" />`;
+                            // return `
+                            // <select class="form-select form-select-solid fw-bolder" id="coba" name="coba" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Tahun" data-allow-clear="true" data-kt-datatable-table-filter="coba" data-hide-search="false">
+                            //     <option></option>
+                            //     @for ($year = date('2007'); $year <= date('Y'); $year++)
+                            //         <option value="{{ $year }}">{{ $year }}</option>
+                            //     @endfor
+                            // </select>`;
                         },
                     },
                     {
@@ -421,6 +421,22 @@
                     $(api.column(6).footer()).html(totKonByr);
                     $(api.column(7).footer()).html(totKomisi);
                     $(api.column(12).footer()).html(totOver);
+                },
+                function (api) {
+                    selectGrids(
+                        '.easyui-textbox',
+                        'GET',
+                        '{{ url("api/tehnik/soc/entry-soc/select-pmgpolis") }}',
+                        'nama',
+                        'nama',
+                        [
+                            {field:'kode',title:'Kode',align:'left',width:180},
+                            {field:'nama',title:'Nama',align:'left',width:280},
+                        ],
+                        function(i, row) {
+
+                        }
+                    );
                 },
             );
 
