@@ -18,128 +18,121 @@
                           <div class="input-group input-group-solid flex-nowrap">
                               <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid w-250px" placeholder="Cari Soc" />
                               <button type="submit" class="btn btn-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
-                          </div>
-                      </div>-->
+                          </div> -->
                 </div>
-
-                <div class="card-toolbar">
-                    <div class="card-header border-0 pt-6">
-                        <div class="card-title">
-                            <div class="d-flex justify-content-start" data-kt-datatable-table-toolbar="base">
-
-                                <button type="button" class="btn btn-light-primary me-3 btn-sm"
-                                    data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
-                                    <i class="fa-sharp fa-solid fa-filter"></i> Filter Pencarian
-                                </button>
-
-                                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
-                                    <div class="px-7 py-5">
-                                        <div class="fs-5 text-dark fw-bolder">Filter Pencarian</div>
-                                    </div>
-                                    <div class="separator border-gray-200"></div>
-
-                                    <div class="px-7 py-5" data-kt-datatable-table-filter="form">
-                                        {{-- Start Row --}} <div class="row">
-                                            <input type="hidden" data-kt-datatable-table-filter="search" id="search"
-                                                class="form-control form-control-solid" placeholder="Search" />
-
-                                            <div class="col-md-12">
-                                                <div class="mb-5">
-                                                    <label class="form-label fs-6 fw-bold">Tahun</label>
-                                                    <div class="d-flex flex-stack">
-                                                        <select class="form-select form-select-solid fw-bolder"
-                                                            data-kt-select2="true" data-placeholder="Pilih tahun"
-                                                            data-allow-clear="true" data-hide-search="false" id="tahun"
-                                                            name="tahun">
-                                                            <option></option>
-                                                            <option value="2014">2014</option>
-                                                            <option value="2015">2015</option>
-                                                            <option value="2016">2016</option>
-                                                            <option value="2017">2017</option>
-                                                            <option value="2018">2018</option>
-                                                            <option value="2019">2019</option>
-                                                            <option value="2020">2020</option>
-                                                            <option value="2021">2021</option>
-                                                            <option value="2022" selected>2022</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                <div class="mb-5">
-                                                    <label class="form-label fs-6 fw-bold">Bulan</label>
-                                                    <div class="d-flex flex-stack">
-                                                        <select class="form-select form-select-solid fw-bolder"
-                                                            data-kt-select2="true" data-placeholder="Pilih bulan"
-                                                            data-allow-clear="true" data-hide-search="false" id="bulan1"
-                                                            name="bulan1">
-                                                            <option></option>
-                                                            <option value="1" selected>Januari</option>
-                                                            <option value="2">Februari</option>
-                                                            <option value="3">Maret</option>
-                                                            <option value="4">April</option>
-                                                            <option value="5">Mei</option>
-                                                            <option value="6">Juni</option>
-                                                            <option value="7">Juli</option>
-                                                            <option value="8">Agustus</option>
-                                                            <option value="9">September</option>
-                                                            <option value="10">Oktober</option>
-                                                            <option value="11">November</option>
-                                                            <option value="12">Desember</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                <div class="mb-5">
-                                                    <label class="form-label fs-6 fw-bold">Bulan</label>
-                                                    <div class="d-flex flex-stack">
-                                                        <select class="form-select form-select-solid fw-bolder"
-                                                            data-kt-select2="true" data-placeholder="Pilih bulan"
-                                                            data-allow-clear="true" data-hide-search="false" id="bulan2"
-                                                            name="bulan2">
-                                                            <option></option>
-                                                            <option value="1">Januari</option>
-                                                            <option value="2" selected>Februari</option>
-                                                            <option value="3">Maret</option>
-                                                            <option value="4">April</option>
-                                                            <option value="5">Mei</option>
-                                                            <option value="6">Juni</option>
-                                                            <option value="7">Juli</option>
-                                                            <option value="8">Agustus</option>
-                                                            <option value="9">September</option>
-                                                            <option value="10">Oktober</option>
-                                                            <option value="11">November</option>
-                                                            <option value="12">Desember</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex justify-content-end">
-                                            <button type="submit" class="btn btn-primary fw-bold btn-sm me-2"
-                                                data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i
-                                                    class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
-                                            <button type="reset"
-                                                class="btn btn-danger btn-active-light-primary fw-bold btn-sm"
-                                                data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i
-                                                    class="fa-solid fa-repeat"></i> Reset</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
             </div>
         </div>
 
+        <div class="card-header border-0 pt-6">
+            <div class="card-title">
+                <div class="d-flex justify-content-start" data-kt-datatable-table-toolbar="base">
+
+                    <button type="button" class="btn btn-light-primary me-3 btn-sm"
+                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start">
+                        <i class="fa-sharp fa-solid fa-filter"></i> Filter Pencarian
+                    </button>
+
+                    <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
+                        <div class="px-7 py-5">
+                            <div class="fs-5 text-dark fw-bolder">Filter Pencarian</div>
+                        </div>
+                        <div class="separator border-gray-200"></div>
+
+                        <div class="px-7 py-5" data-kt-datatable-table-filter="form">
+                            {{-- Start Row --}} <div class="row">
+                                <input type="hidden" data-kt-datatable-table-filter="search" id="search"
+                                    class="form-control form-control-solid" placeholder="Search" />
+
+                                <div class="col-md-12">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Tahun</label>
+                                        <div class="d-flex flex-stack">
+                                            <select class="form-select form-select-solid fw-bolder"
+                                                data-kt-select2="true" data-placeholder="Pilih tahun"
+                                                data-allow-clear="true" data-hide-search="false" id="tahun"
+                                                name="tahun">
+                                                <option></option>
+                                                <option value="2014">2014</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                                <option value="2019">2019</option>
+                                                <option value="2020">2020</option>
+                                                <option value="2021">2021</option>
+                                                <option value="2022" selected>2022</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Bulan</label>
+                                        <div class="d-flex flex-stack">
+                                            <select class="form-select form-select-solid fw-bolder"
+                                                data-kt-select2="true" data-placeholder="Pilih bulan"
+                                                data-allow-clear="true" data-hide-search="false" id="bulan1"
+                                                name="bulan1">
+                                                <option></option>
+                                                <option value="1" selected>Januari</option>
+                                                <option value="2">Februari</option>
+                                                <option value="3">Maret</option>
+                                                <option value="4">April</option>
+                                                <option value="5">Mei</option>
+                                                <option value="6">Juni</option>
+                                                <option value="7">Juli</option>
+                                                <option value="8">Agustus</option>
+                                                <option value="9">September</option>
+                                                <option value="10">Oktober</option>
+                                                <option value="11">November</option>
+                                                <option value="12">Desember</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Bulan</label>
+                                        <div class="d-flex flex-stack">
+                                            <select class="form-select form-select-solid fw-bolder"
+                                                data-kt-select2="true" data-placeholder="Pilih bulan"
+                                                data-allow-clear="true" data-hide-search="false" id="bulan2"
+                                                name="bulan2">
+                                                <option></option>
+                                                <option value="1">Januari</option>
+                                                <option value="2" selected>Februari</option>
+                                                <option value="3">Maret</option>
+                                                <option value="4">April</option>
+                                                <option value="5">Mei</option>
+                                                <option value="6">Juni</option>
+                                                <option value="7">Juli</option>
+                                                <option value="8">Agustus</option>
+                                                <option value="9">September</option>
+                                                <option value="10">Oktober</option>
+                                                <option value="11">November</option>
+                                                <option value="12">Desember</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary fw-bold btn-sm me-2"
+                                    data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i
+                                        class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                                <button type="reset"
+                                    class="btn btn-danger btn-active-light-primary fw-bold btn-sm"
+                                    data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i
+                                        class="fa-solid fa-repeat"></i> Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="card-body py-12">
             <div class="table-responsive">
@@ -205,20 +198,20 @@
                     },
                     {
                         data: "nama",
-                        render: function(data, type, row, meta) {
-                            var id = row.id;
-                            var polis = row.kdpolis;
-                            return `<a href="{{ url('keuangan/komisi-overriding/export/`+id+`/`+polis+`') }}">` +
-                                row.nama + `</a>`;
-                        }
+                        // render: function(data, type, row, meta) {
+                        //     var id = row.id;
+                        //     var polis = row.kdpolis;
+                        //     return `<a href="{{ url('keuangan/komisi-overriding/export/`+id+`/`+polis+`') }}">` +
+                        //         row.nama + `</a>`;
+                        // }
                     },
                     {
                         data: "id",
-                        render: function(data, type, row, meta) {
-                            return `` + row.id +
-                                ` <i class="fa-solid fa-trash" style="color:red" id="kodehapus" title="Hapus PK" data-kode="` +
-                                row.id + `"></i>`;
-                        }
+                        // render: function(data, type, row, meta) {
+                        //     return `` + row.id +
+                        //         ` <i class="fa-solid fa-trash" style="color:red" id="kodehapus" title="Hapus PK" data-kode="` +
+                        //         row.id + `"></i>`;
+                        // }
                     },
                     {
                         data: "kdpolis"
@@ -252,12 +245,12 @@
                     },
                     {
                         data: "id",
-                        render: function(data, type, row, meta) {
-                            var polis = row.kdpolis;
-                            return `<button type="button" id="kode" title="Lihat Detail" kdpolis="` +
-                                polis + `" data-kode="` + row.id +
-                                `" class="btn btn-sm btn-light-success"><i class="fa-solid fa-eye"></i> Approval</button>`;
-                        }
+                        // render: function(data, type, row, meta) {
+                        //     var polis = row.kdpolis;
+                        //     return `<button type="button" id="kode" title="Lihat Detail" kdpolis="` +
+                        //         polis + `" data-kode="` + row.id +
+                        //         `" class="btn btn-sm btn-light-success"><i class="fa-solid fa-eye"></i> Approval</button>`;
+                        // }
                     },
                     {
                         data: "ket"

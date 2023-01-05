@@ -207,11 +207,16 @@ class ApprovalKomisiController extends Controller
                 ->leftJoin('etrs.trs_komisi_dtl', 'tkomh_pk', '=', 'tkomd_tkomh_pk')
                 ->leftJoin('epstfix.peserta_all', 'tpprd_pk', '=', 'tkomd_tpprd_pk')
                 ->leftJoin('emst.mst_lokasi', 'mlok_kode', '=', 'tpprd_mlok_kode')
+                // ->leftJoin('eopr.mst_polis', function($join) use ($request) {
+                //     $join->on('mpol_kode', '=', 'tpprd_nomor_polish');
+                //     $join->groupBy('mpol_kode')->orderBy('mpol_mrkn_nama', 'ASC');
+                // })
                 ->leftJoin('eopr.mst_polis', 'mpol_kode', '=', 'tpprd_nomor_polish')
                 ->leftJoin('emst.mst_jenis_nasabah', 'mjns_kode', '=', 'mpol_mjns_kode')
                 ->leftJoin('emst.mst_jaminan', 'mjm_kode', '=', 'mpol_mjm_kode')
                 ->leftJoin('etrs.trs_over_dtl', DB::raw("REPLACE('tkomd_tkomh_pk','K','')"), '=', DB::raw("REPLACE('tovd_tovh_pk','O','')"))
-                ->where('mpol_kode', '!=', '');
+                // ->where('mpol_kode', '!=', '')
+                ;
 
              //    $vtable->whereRaw("month(date(tkomh_crud)) BETWEEN 01 and 01 and year(date(tkomh_crud))='2021'");
                 //$vtable->whereRaw("year(date(tkomh_crud))='".$request->get('tahun')."'");
@@ -228,10 +233,7 @@ class ApprovalKomisiController extends Controller
                }
 
 
-                $data = $vtable
-                ->groupBy('mpol_kode')
-                ->orderBy('mpol_mrkn_nama', 'ASC')
-                ->get();
+                $data = $vtable->orderBy('mpol_mrkn_nama', 'ASC')->groupBy('mpol_kode')->get();
 
             return DataTables::of($data)->addIndexColumn()->make(true);
         //   }
