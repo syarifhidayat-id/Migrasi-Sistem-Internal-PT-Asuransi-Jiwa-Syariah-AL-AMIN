@@ -150,6 +150,87 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
+<<<<<<< HEAD
+            selectSide(
+                'tipe_menu',
+                '{{ url("api/utility/menu/select-tipemenu") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmt_kode,
+                                text: d.wmt_nama
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+                false
+            )
+
+            selectSide(
+                'wmn_tipe',
+                '{{ url("api/utility/menu/select-tipemenu") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmt_kode,
+                                text: d.wmt_nama
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+                false
+            )
+
+            changeSelect(
+                'tipe_menu',
+                'key',
+                '{{ url("api/utility/menu/getTipe") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmn_descp,
+                                text: d.wmn_descp
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+            );
+
+            changeSelect(
+                'wmn_tipe',
+                'wmn_key',
+                '{{ url("api/utility/menu/getTipe") }}',
+                function(data) {
+                    return {
+                        results: $.map(data, function(d) {
+                            return {
+                                id: d.wmn_kode,
+                                text: d.wmn_descp
+                            }
+                        })
+                    };
+                },
+                function(res) {
+                    // setText('msoc_mssp_kode', res.params.data.id);
+                    // setText('msoc_mssp_nama', res.params.data.text);
+                },
+            );
+=======
             selectSide('tipe_menu', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
                 id: d.wmt_kode,
                 text: d.wmt_nama
@@ -169,6 +250,7 @@
                     text: d.wmn_descp
                 }});
             });
+>>>>>>> 49716982dbec0200cc7530313527b4abced78b1b
 
             filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
 

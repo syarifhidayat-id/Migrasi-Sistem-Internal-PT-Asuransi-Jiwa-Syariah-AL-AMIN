@@ -125,6 +125,7 @@ class MenuController extends Controller
         // $menu = Menu::where('wmn_kode', $id)->first();
         $menu = Menu::findOrFail($id);
         // $menu = Menu::findOrFail($id);
+        //$data = DB::table('')->where('', $id)->first();
         return response()->json($menu);
     }
 

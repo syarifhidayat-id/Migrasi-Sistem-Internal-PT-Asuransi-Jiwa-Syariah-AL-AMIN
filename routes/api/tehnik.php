@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Tehnik\EntryPolisController;
 use App\Http\Controllers\tehnik\polis\ApprovalMasterPolisController;
 use App\Http\Controllers\Tehnik\Soc\EntrySocController;
 use App\Http\Controllers\Tehnik\Soc\LihatSocController;
@@ -11,7 +13,7 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
 
     Route::group(['prefix' => '/soc', 'as' => 'soc.'], function() {
 
-        Route::group(['prefix' => '/entry-soc', 'as' => 'entry-soc.'], function() {
+            Route::group(['prefix' => '/entry-soc', 'as' => 'entry-soc.'], function() {
             Route::get('/select-pmgpolis', [EntrySocController::class, 'selectPmgPolis']);
             Route::get('/select-jnsnasabah', [EntrySocController::class, 'selectJnsNasabah']);
             Route::post('/select-segmen', [EntrySocController::class, 'selectSegmen']);
@@ -50,6 +52,7 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
             Route::post('/update-upload-tarif', [UploadTarifController::class, 'updateTarif'])->name('updatetarif');
             Route::post('/upload-uw', [UploadUwController::class, 'store']);
             Route::post('/update-upload-uw', [UploadUwController::class, 'updateUw'])->name('updateuw');
+
         });
 
         Route::group(['prefix' => '/lihat-soc', 'as' => 'lihat-soc.'], function() {
@@ -61,10 +64,14 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
     });
 
     Route::group(['prefix' => '/polis', 'as' => 'polis.'], function() {
-        Route::group(['prefix' => '/approval-master-polis', 'as' => 'approval-master-polis.'], function() {
+            Route::group(['prefix' => '/approval-master-polis', 'as' => 'approval-master-polis.'], function() {
             Route::get('/list', [ApprovalMasterPolisController::class, 'getApprovalMasterPolis']);
             Route::get('/get-kode-soc', [ApprovalMasterPolisController::class, 'getKodeSocApprove']);
         });
+        Route::group(['prefix' => '/entry-master-polis', 'as' => 'entry-master-polis.'], function() {
+            Route::get('/select-soc', [EntryPolisController::class, 'selectSOC']);
+        });
+
     });
 
 });

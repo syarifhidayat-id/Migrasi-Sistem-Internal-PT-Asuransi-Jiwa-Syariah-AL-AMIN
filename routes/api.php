@@ -25,4 +25,3 @@ require __DIR__ . '/api/keuangan.php';
 require __DIR__ . '/api/utility.php';
 require __DIR__ . '/api/tehnik.php';
 require __DIR__ . '/api/legal.php';
-require __DIR__ . '/api/keuangan.php';

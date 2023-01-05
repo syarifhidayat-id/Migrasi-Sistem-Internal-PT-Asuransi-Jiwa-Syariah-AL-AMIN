@@ -1,108 +1,48 @@
 <?php
 
-use App\Http\Controllers\Sdm\DirektoratController;
-use App\Http\Controllers\Sdm\JabatanController;
-use App\Http\Controllers\Sdm\LevelJabatanController;
-use App\Http\Controllers\Sdm\KeahlianKhususController;
-use App\Http\Controllers\Sdm\MasPegawaiController;
-use App\Http\Controllers\Sdm\DivisiController;
-use App\Http\Controllers\Sdm\BagianController;
-use App\Http\Controllers\Sdm\DaftarpegController;
-use App\Http\Controllers\Sdm\CutiController;
 
-use App\Http\Controllers\Sdm\DinasController;
-use App\Http\Controllers\Sdm\KehadiranController;
-use App\Http\Controllers\Sdm\FormTelatCepatController;
+use App\Http\Controllers\Sdm\EntryDirektoratController;
+use App\Http\Controllers\Sdm\EntryJabatanController;
+use App\Http\Controllers\Sdm\EntryLevelController;
+use App\Http\Controllers\Sdm\EntryKeahlianController;
+use App\Http\Controllers\Sdm\PegawaiController;
 
-use App\Http\Controllers\Sdm\FormSakitController;
-use App\Http\Controllers\Sdm\LihatSakitController;
-use App\Http\Controllers\Sdm\PelatihanController;
-use App\Http\Controllers\Sdm\LihatPelatihanController;
-use App\Http\Controllers\Sdm\LemburController;
-
-use App\Http\Controllers\Sdm\LihatTiketLayananController;
-use App\Http\Controllers\Sdm\LihatKeahlianController;
-
-use App\Http\Controllers\Sdm\LihatInventarisController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/sdm', 'as' => 'sdm.'], function () {
+    Route::group(['prefix' => '/pegawai', 'as' => 'pegawai.'], function () {
+        Route::resource('/master-direktorat', EntryDirektoratController::class);
+        Route::get('/lihat-direktorat', [EntryDirektoratController::class, 'tampil'])->name('lihat-direktorat.index');
+
+        Route::resource('/master-jabatan', EntryJabatanController::class);
+        Route::get('/lihat-jabatan', [EntryJabatanController::class, 'tampil'])->name('lihat-jabatan.index');
+
+        Route::resource('/master-level', EntryLevelController::class);
+        Route::get('/lihat-level', [EntryLevelController::class, 'tampil'])->name('lihat-level.index');
+
+        Route::resource('/master-keahlian', EntryKeahlianController::class);
+        Route::get('/lihat-keahlian', [EntryKeahlianController::class, 'tampil'])->name('lihat-keahlian.index');
+
+        Route::resource('/master-pegawai', PegawaiController::class);
+
+    });
 
 
 
 
-  Route::resource('maspeg', MasPegawaiController::class);
-
-
-  Route::resource('dafpeg', DaftarpegController::class);
-
-  Route::resource('appcuti', CutiController::class);
-
-  Route::resource('lihatdinas', DinasController::class);
-  Route::resource('hadir', KehadiranController::class);
-  Route::resource('lhttelat', FormTelatCepatController::class);
-
-  Route::resource('lhtsakit', LihatSakitController::class);
-  Route::resource('pelatihan', PelatihanController::class);
-  Route::resource('lhtpelatihan', LihatPelatihanController::class);
-  Route::resource('lembur', LemburController::class);
-  Route::resource('lhtlembur', LemburController::class);
-  Route::resource('lhtdir', DirektoratController::class);
-  Route::resource('lhttiket', LihatTiketLayananController::class);
-  Route::resource('lhtjab', JabatanController::class);
-  Route::resource('lhtlvljab', LihatLvlJabatanController::class);
-  Route::resource('lhtahli', KeahlianKhususController::class);
-  Route::resource('lhtdiv', DivisiController::class);
-  Route::resource('lhtbag', BagianController::class);
-  Route::resource('lhtinven', LihatInventarisController::class);
-
-  Route::group(['prefix' => '/dirsdm', 'as' => 'dirsdm.', 'middleware' => 'auth'], function () {
-    Route::resource('direktorat', DirektoratController::class);
-    Route::get('ambilData', [DirektoratController::class, 'ambilData'])->name('ambilData');
-  });
-
-  Route::group(['prefix' => '/jabsdm', 'as' => 'jabsdm.', 'middleware' => 'auth'], function () {
-    Route::resource('jabatan', JabatanController::class);
-
-  });
-
-  Route::group(['prefix' => '/lvlsdm', 'as' => 'lvlsdm.', 'middleware' => 'auth'], function () {
-    Route::resource('lvljab', LevelJabatanController::class);
-
-  });
-
-  Route::group(['prefix' => '/ahlsdm', 'as' => 'ahlsdm.', 'middleware' => 'auth'], function () {
-    Route::resource('ahlikus', KeahlianKhususController::class);
-
-  });
-
-  Route::group(['prefix' => '/divsdm', 'as' => 'divsdm.', 'middleware' => 'auth'], function () {
-    Route::resource('divisi', DivisiController::class);
-
-  });
-
-  Route::group(['prefix' => '/bagsdm', 'as' => 'bagsdm.', 'middleware' => 'auth'], function () {
-    Route::resource('bagian', BagianController::class);
-
-  });
-
-  Route::group(['prefix' => '/cutsdm', 'as' => 'cutsdm.', 'middleware' => 'auth'], function () {
-    Route::resource('inpcuti', CutiController::class);
-
-  });
-
-  Route::group(['prefix' => '/dinsdm', 'as' => 'dinsdm.', 'middleware' => 'auth'], function () {
-    Route::resource('inpdinas', DinasController::class);
-
-  });
-
-  Route::group(['prefix' => '/tltsdm', 'as' => 'tltsdm.', 'middleware' => 'auth'], function () {
-    Route::resource('telat', FormTelatCepatController::class);
-
-  });
-
-  Route::group(['prefix' => '/sktsdm', 'as' => 'sktsdm.', 'middleware' => 'auth'], function () {
-    Route::resource('sakit', FormSakitController::class);
-  });
 });
+
+
+// Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
+
+//     Route::resource('/lihat-polis', PolisController::class);
+//     Route::resource('/entry-master-polis', EntryPolisController::class);
+//     // Route::prefix('/menu')->name('menu.')->controller(MenuController::class)->group(function() {
+//     //     Route::get('/getTipe/{id}', 'getTipemenu');
+//     //     Route::get('/edit/{id}', 'edit');
+//     //     Route::get('/keyMenu/{id}', 'keyMenu');
+//     // });
+//     // Route::resource('users', UserController::class);
+//     // Route::resource('permissions', PermissionController::class);
+// });
 
