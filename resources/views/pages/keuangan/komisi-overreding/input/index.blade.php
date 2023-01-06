@@ -254,7 +254,7 @@
                     {
                         data: "nama",
                         render: function(data, type, row, meta) {
-                            return `<div class="badge badge-light-success fw-bolder" id="exportExcel">`+row.nama+`</div>`;
+                            return `<div class="badge badge-light-success fw-bolder" id="exportExcel" data-kode="`+row.kdpolis+`">`+row.nama+`</div>`;
                         }
                     },
                     { data: "kdpolis" },
@@ -441,7 +441,15 @@
             );
 
             tombol('click', 'exportExcel', function() {
-                alert('bisa');
+                var kode = $(this).attr('data-kode');
+                var cab = getText('e_cabalamin');
+                var bln1 = getText('e_bln1');
+                var bln2 = getText('e_bln2');
+                var thn = getText('e_thn');
+                var rms = "kode="+kode+"&cab="+cab+"&bln1="+bln1+"&bln2="+bln2+"&thn="+thn;
+                lodJson('GET', '{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/export-input-komisioverriding") }}' + '?' + rms, function(res) {
+                    console.log(res);
+                });
             });
 
             tombol('click', 'omodTam', function() {
@@ -504,10 +512,6 @@
                 });
             });
         });
-
-        function getExport() {
-            alret('bisa')
-        }
 
         function closeBtnModal() {
             closeModal('modalInputTax');

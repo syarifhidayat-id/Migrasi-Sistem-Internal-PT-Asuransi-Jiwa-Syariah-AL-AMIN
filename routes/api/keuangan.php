@@ -10,6 +10,7 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
 
         Route::group(['prefix' => '/input-komisi-overriding', 'as' => 'input-komisi-overriding.'], function() {
             Route::get('/list-input-komisioverriding', [InputKomisiController::class, 'inputKomisi']);
+            Route::get('/export-input-komisioverriding', [InputKomisiController::class, 'getExport']);
             Route::get('/select-cabalamin', [InputKomisiController::class, 'selectCabAlm']);
         });
 

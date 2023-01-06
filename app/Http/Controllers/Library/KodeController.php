@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Library;
 use App\Http\Controllers\Controller;
 // use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use stdClass;
 
 class KodeController extends Controller
 {
@@ -71,5 +72,30 @@ class KodeController extends Controller
         }
 
         return $nullRequest;
+    }
+
+    public static function array_to_obj($array, &$obj)
+    {
+        foreach ($array as $key => $value)
+        {
+            if (is_array($value))
+            {
+                $obj->$key = new stdClass();
+                KodeController::array_to_obj($value, $obj->$key);
+                // array_to_obj($value, $obj->$key);
+            }
+            else
+            {
+                $obj->$key = $value;
+            }
+        }
+        return $obj;
+    }
+
+    public static function arrayToObject($array)
+    {
+        $object= new stdClass();
+        // return array_to_obj($array,$object);
+        return KodeController::array_to_obj($array,$object);
     }
 }
