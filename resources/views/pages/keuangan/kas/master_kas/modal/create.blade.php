@@ -18,7 +18,9 @@
                         <div class="row mb-5">
                             <input class="form-control" name="e_pk" id="e_pk" data-allow-clear="false"
                                 value="{{ $kode }}" readonly />
+                                
                             <input class="form-control" id="nama_akun" name="nama_akun" readonly />
+                            <input class="form-control" id="tkad_approvkeu1_user" name="tkad_approvkeu1_user" value="{{ Auth::user()->email }}" readonly />
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Jenis Transaksi</label>
@@ -192,7 +194,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-primary btn-sm" id="btn_simpan"><i
+                    <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i
                             class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     {{-- <button class="btn btn-primary btn-sm" onclick="grd_submit()" id="btn_simpan"><i
                             class="fa-solid fa-floppy-disk"></i> Simpan</button> --}}

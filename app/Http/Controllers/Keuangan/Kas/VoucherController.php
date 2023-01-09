@@ -48,7 +48,7 @@ class VoucherController extends Controller
 
         $data['tkav_pk'] = $kode;
 
-        $insert = DB::table('epsm.trs_kas_vcr')->insert($data);
+        $insert = DB::table('epms.trs_kas_vcr')->insert($data);
 
         if ($insert) {
             return response()->json([

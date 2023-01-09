@@ -179,6 +179,32 @@ class MasterKasController extends Controller
 
         return response()->json($data);
     }
+    public function tdna_penerima(Request $request){
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 1000;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('esdm.sdm_karyawan_new')
+        ->select('skar_pk', 'skar_nama')
+        ->orderBy('skar_nama')
+        ->where('skar_pk', '!=', '20208588320008450001');
+        // ->where([
+        //     ['cb.mrkn_kode','<>',''],
+        //     ['cb.mrkn_kantor_pusat','1'],
+        //     ['cb.mrkn_nama','!=',''],
+        //     // ['cb.mrkn_nama','like',"%$search%"],
+        // ]);
+
+        if (!empty($request->q)) {
+            $vtable->where('skar_pk', 'LIKE', "%$request->q%")->orWhere('skar_nama', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
 
 
     public function testInput(Request $request){

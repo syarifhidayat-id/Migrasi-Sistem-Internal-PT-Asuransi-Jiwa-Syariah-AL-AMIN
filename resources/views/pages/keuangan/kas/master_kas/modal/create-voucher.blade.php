@@ -15,7 +15,6 @@
                         data-kt-scroll-dependencies="#modalMenu_header" data-kt-scroll-wrappers="#modalMenu_scroll"
                         data-kt-scroll-offset="300px">
                         <div class="row mb-5">
-                            
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Nomor Voucher</label>
@@ -28,6 +27,8 @@
                                     {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
                                 </div>
                             </div>
+                        </div>
+                        <div class="row mb-5">
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Tgl. Voucher</label>
@@ -80,11 +81,8 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Peruntukan Dana</label>
-                                        <select class="form-select" data-control="select2" name="tkav_ket" id="tkav_ket" type="text"
-                                        data-allow-clear="true" data-dropdown-parent="#modal_voucher" data-placeholder="Peruntukan dana">
-                                        <option></option>
-                                        <option value="belanja bulanan">Belanja Bulanan</option>
-                                    </select>
+                                        <input class="form-control" name="tkav_ket" id="tkav_ket" type="text"
+                                        data-allow-clear="true" data-placeholder="Peruntukan dana"/>
                                         {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
                                 </div>
                             </div>

@@ -50,8 +50,8 @@
                     <div class="col-md-6">
                         <div class="mb-5">
                             <label class="required form-label">Diterima Dari/Penerima Dana</label>
-                            <select class="form-select" id="tdna_penerima" data-control="select2" name="tdna_penerima"
-                                data-placeholder="cari penerima dana" data-allow-clear="true">
+                            <select class="form-select" id="tdna_penerima" name="tdna_penerima"
+                                data-placeholder="cari penerima dana" data-control="select2" data-allow-clear="true">
                                 <option></option>
                             </select>
                             {{-- <input type="text" id="test" /> --}}
@@ -70,7 +70,34 @@
                             <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
                                 <button type="button" class="btn btn-light-primary btn-sm me-3 mt-5"
                                     data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
-                                    title="Transaksi baru" onclick="tombolAct(0)">Transaksi baru</button>
+                                    title="Transaksi baru" id="tamDtl">Transaksi baru</button>
+
+                                    {{-- <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                        <i class="fa-sharp fa-solid fa-filter"></i> Filter
+                                    </button> --}}
+                
+                                    <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
+                                        <div class="px-7 py-5">
+                                            <div class="fs-5 text-dark fw-bolder">Filter Options</div>
+                                        </div>
+                                        <div class="separator border-gray-200"></div>
+                
+                                        <div class="px-7 py-5" data-kt-datatable-table-filter="form">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-10">
+                                                        <label class="form-label fs-6 fw-bold">Kode PK:</label>
+                                                        <input class="form-control" name="kode_new" id="kode_new" data-kt-datatable-table-filter="filter" type="text" placeholder="Kode New" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                
+                                            <div class="d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                                                <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
                             </div>
                             <div class="card-body py-5">
                                 <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
@@ -82,9 +109,9 @@
                                                     class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                                                     <th class="min-w-150px">Keterangan</th>
                                                     <th class="min-w-150px">Debit/Kredit</th>
-                                                    <th class="min-w-150px">Nilai</th>
+                                                    {{-- <th class="min-w-150px">Nilai</th>
                                                     <th class="min-w-150px">Akun</th>
-                                                    <th class="min-w-150px">Nama Akun</th>
+                                                    <th class="min-w-150px">Nama Akun</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -211,6 +238,9 @@
     <script type="text/javascript">
         setTextReadOnly('tkad_tipe_dk', true);
         setTextReadOnly('tkav_nomor', true);
+        setTextReadOnly('tkav_tipe_bayar', true);
+        setTextReadOnly('tkav_ket', true);
+        setText('kode_new', getText('a_pk'));
 
         $(function() {
             $.ajaxSetup({
@@ -219,28 +249,7 @@
                 }
             });
 
-            // selectGrid(
-            //     'msoc_mrkn_nama',
-            //     'GET',
-            //     '{{ url('api/keuangan/kas/kantor-alamin') }}',
-            //     'mlok_pk',
-            //     'mlok_nama',
-            //     [
-            // 		{field:'mlok_pk',title:'Kode',align:'left',width:180},
-            // 		{field:'mlok_nama',title:'Nama',align:'left',width:280},
-            // 	],
-            //     function(i, row) {
-            //         // hidePesan('msoc_mrkn_nama');
-            //         // var kode = row.kode;
-            //         // if (getText('msoc_nomor')=='') {
-            //         //     setText('msoc_mrkn_kode', kode);
-            //         //     bersih(2);
-            //         //     bersih(1);
-            //         // }
-            //     }
-            // );
-
-            selectSide('tkad_jns_realisasi', true, '{{ url('api/keuangan/kas/e_realisasi') }}', function(d) {
+            selectSide('tkad_jns_realisasi', false, '{{ url('api/keuangan/kas/e_realisasi') }}', function(d) {
                     return {
                         text: d.mar_kode + ' - ' + d.mar_nama, // text nama
                         id: d.mar_kode, // kode value
@@ -286,9 +295,16 @@
                 },
             );
 
+            selectSide('tdna_penerima', false, '{{ url('api/keuangan/kas/tdna_penerima') }}', function(d) {
+                return {
+                    text: d.skar_pk + ' - ' + d.skar_nama,
+                    id: d.skar_nama,
+                }
+            });
+
             selectSide('e_akun', false, '{{ url('api/keuangan/kas/e_akun') }}', function(d) {
                     return {
-                        text: d.asakn_kode + ' - ' + d.asakn_keterangan, // text nama
+                        text: d.asakn_keterangan, // text nama
                         id: d.asakn_kode, // kode value
                         nama: d.asakn_keterangan,
                     }
@@ -299,190 +315,35 @@
                 },
             );
 
-            // filterAll('input[type="search"]', 'serverSide_ojk'); //khusus type search inputan
-
-            //     serverSide( //datatable serverside
-            //         "serverSide_kas", //url api/route
-            //         // "serverSide_kas", "{{ url('api/legal/laporan_berkala') }}", //url api/route
-            //         function(a) { // di isi sesuai dengan data yang akan di filter ->
-            //             // d.check_id = getText('check_id'),
-            //             // d.mojk_pk = getText('check_id_mojk'),
-            //             // d.search = $('input[type="search"]').val();
-            //         },
-            //         [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
-            //             {
-            //                 data: 'tkad_keterangan'
-            //             },
-            //             {
-            //                 data: 'mojk_ket_jenis'
-            //             },
-            //             {
-            //                 data: 'mojk_tahun'
-            //             },
-            //             {
-            //                 data: 'mojk_ins_user'
-            //             },
-            //             {
-            //                 data: 'ins_date'
-            //             },
-            //         ],
-            //     );
-            // });
-
-            tombol('click', 'omodTam', function() {
-
-            });
-
-
-            tombol('click', 'btn_simpan', function() {
-                closeModal('modal_rincian_transaksi');
-                // var e_pk = $('#e_pk').val();
-                var e_akun = $('#e_akun').val();
-                var tkad_keterangan = $('#tkad_keterangan').val();
-                var tkad_tipe_dk = $('#tkad_tipe_dk').val();
-                var tkad_mta_pk = $('#tkad_mta_pk').val();
-                var tkad_total = $('#tkad_total').val();
-                var tkad_jns_realisasi = $('#tkad_jns_realisasi').val();
-                var e_kasbon = $('#e_kasbon').val();
-                var nama_akun = $('#nama_akun').val();
-               
-
-                if (tkad_tipe_dk == 'D') {
-                    var tipe_dk = 'Debit';
-                }
-                if (e_pk != "") {
-                    $('#serverSide_kas tbody').append('<tr class="child"><td>' + tkad_keterangan +
-                        '</td><td>' + tipe_dk + '</td><td>' + tkad_total + '</td><td>' + e_akun +
-                        '</td><td>' + nama_akun + '</td></tr>');
-                }
-            });
-
-
-            $('body').on('change', '#jenis_dokumen', function() {
-                var _this = $(this).val();
-                console.log(_this);
-            }).change();
-
-            tombol('click', 'omodTam', function() {
-                $('#modal').modal('show');
-                setHide('btn_reset', false);
-                bsimpan('btn_simpan', 'Simpan');
-                $('#tMod').text('Tambah data');
-                bsimpan('btn_simpan', 'Simpan');
-                clearForm('frxx');
-                clearSelect();
-
-            });
-
-            tombol('click', 'omodEdit', function() {
-                $('#tMod').text('Edit Data');
-                setHide('btn_reset', true);
-                bsimpan('btn_simpan', 'Update');
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/ojk') }}" + "/" + kode + "/edit";
-                $.get(url, function(res) {
-                    // var key = "{{ url('api/legal/get_mojk_jenis') }}";
-                    $('#modal').modal('show');
-                    openModal('modal');
-                    jsonForm('frxx', res);
-
-                });
-            });
-
-
-            $('body').on('click', '#omodDelete', function() {
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ url('legal/ojk') }}" + "/" + kode;
-
-                console.log(kode);
-                Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: "Akan menghapus data menu dengan kode " + kode + " !",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire(
-                            'Terhapus!',
-                            'Anda berhasil menghapus data menu dengan kode ' + kode + ".",
-                            'success'
-                        ).then((result) => {
-                            console.log(kode);
-                            $.ajax({
-                                url: url,
-                                type: "DELETE",
-                                success: function(res) {
-                                    // reset();
-                                    lodTable();
-
-                                    console.log('Success', res);
-                                },
-                                error: function(err) {
-                                    // reset();
-                                    lodTable();
-
-                                    console.log('Error', err);
-                                }
-                            });
-                        })
-                    }
-                })
-            });
-        });
-
-
-        // function grd_submit() {
-
-        // }
-        // function grd_submit() {
-        //     submitForm(
-        //         "frxx_tkad",
-        //         "btn_simpan",
-        //         "POST",
-        //         (resSuccess) => {
-        //             clearForm("frxx_tkad");
-        //             clearSelect();
-        //             lodTable('serverSide_kas');
-        //             bsimpan("btn_simpan", 'Simpan');
-        //             closeMod('#modal_rincian_transaksi');
-        //         },
-        //         (resError) => {
-        //             console.log(resError);
-        //         },
-        //     );
-        // }
-
-        function tombolAct(tipe) {
-            if (tipe == '0') {
-                $('#tMod').text('Rincian Transaksi');
-                openModal('modal_rincian_transaksi');
-                // setHide('btn_reset');
-            }
-        }
-
-
-        //Voucher kas
-        function tombolVcr(tipe) {
-            if (tipe == '0') {
-                url = "{{ url('api/keuangan/kas/tkav_nomor') }}";
-                $.get(url, function(res) {
-                    var tdna_tgl_aju = getText('tdna_tgl_aju');
-                    var tdna_dk = getText('tdna_dk');
-                    // var tdna_dk = getText('tdna_dk');
-                    // var tdna_dk = getText('tdna_dk');
-                    // var tdna_dk = getText('tdna_dk');
-                    $('#tMod_vcr').text('Input Voucher Kas');
-                    openModal('modal_voucher');
-                    setText('tkav_nomor', res);
-                    setText('tkav_tanggal', tdna_tgl_aju);
-                    setText('tkav_tipe_kas', tdna_dk);
-                    
-                });
-            }
-        }
+            filterInput('a_pk', 'serverSide_kas');
+            serverSide(
+                "serverSide_kas",
+                "{{ url('api/keuangan/kas/api_tb_dtl') }}",
+                function(d) {
+                    d.kode_pk = getText('a_pk');
+                },
+                [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
+                    {
+                        data: "DT_RowIndex",
+                        className: "text-center"
+                    },
+                    {
+                        data: 'tkad_keterangan'
+                    },
+                    // {
+                    //     data: 'mojk_ket_jenis'
+                    // },
+                    // {
+                    //     data: 'mojk_tahun'
+                    // },
+                    // {
+                    //     data: 'mojk_ins_user'
+                    // },
+                    // {
+                    //     data: 'ins_date'
+                    // },
+                ]
+            );
 
         submitForm(
             "frxx_vcr",
@@ -491,16 +352,95 @@
             "{{ url('api/keuangan/kas/vcr') }}",
             (resSuccess) => {
                 clearForm("frxx_vcr");
-                clearSelect();
                 // lodTable('serverSide_draft');
                 bsimpan("btn_simpan", 'Simpan');
                 closeModal('modal_voucher');
-                clearForm('frxx_vcr');
             },
             (resError) => {
                 console.log(resError);
             },
         );
+
+
+        submitForm(
+            "frxx_tkad",
+            "btn_simpan",
+            "POST",
+            "{{ url('api/keuangan/kas/dtl') }}",
+            (resSuccess) => {
+                filterInput('a_pk', 'serverSide_kas');
+                lodTable('serverSide_kas');
+                bsimpan("btn_simpan", 'Simpan');
+                closeModal('modal_rincian_transaksi');
+                clearForm("frxx_tkad");
+            },
+            (resError) => {
+                console.log(resError);
+            },
+        );
+
+        tombol('click', 'tamDtl', function() {
+            $('#tMod').text('Rincian Transaksi');
+            openModal('modal_rincian_transaksi');
+            // setHide('btn_reset');
+            // clearForm("frxx_tkad");
+        });
+
+        $('body').on('change', '#jenis_dokumen', function() {
+            var _this = $(this).val();
+            console.log(_this);
+        }).change();
+        });
+
+
+        // function tombolAct(tipe) {
+        //     if (tipe == '0') {
+        //         $('#tMod').text('Rincian Transaksi');
+        //         openModal('modal_rincian_transaksi');
+        //         // setHide('btn_reset');
+        //         // clearForm("frxx_tkad");
+        //     }
+        // }
+
+
+        //Voucher kas
+        function tombolVcr(tipe) {
+            if (tipe == '0') {
+                url = "{{ url('api/keuangan/kas/tkav_nomor') }}";
+                lodJson("GET", url, function(res) {
+                    var tdna_tgl_aju = getText('tdna_tgl_aju');
+                    var tdna_dk = getText('tdna_dk');
+                    var tdna_penerima = getText('tdna_penerima');
+                    var tdna_ket = getText('tdna_ket');
+                    // var tdna_dk = getText('tdna_dk');
+                    // var tdna_dk = getText('tdna_dk');
+                    // var tdna_dk = getText('tdna_dk');
+                    $('#tMod_vcr').text('Input Voucher Kas');
+                    openModal('modal_voucher');
+                    setText('tkav_nomor', res);
+                    setText('tkav_tanggal', tdna_tgl_aju);
+                    setText('tkav_tipe_kas', tdna_dk);
+                    setText('tkav_penerima', tdna_penerima);
+                    setText('tkav_tipe_bayar', '0');
+                    setText('tkav_ket', tdna_ket);
+                });
+
+
+                // $.get(url, function(res) {
+                //     var tdna_tgl_aju = getText('tdna_tgl_aju');
+                //     var tdna_dk = getText('tdna_dk');
+                //     // var tdna_dk = getText('tdna_dk');
+                //     // var tdna_dk = getText('tdna_dk');
+                //     // var tdna_dk = getText('tdna_dk');
+                //     $('#tMod_vcr').text('Input Voucher Kas');
+                //     openModal('modal_voucher');
+                //     setText('tkav_nomor', res);
+                //     setText('tkav_tanggal', tdna_tgl_aju);
+                //     setText('tkav_tipe_kas', tdna_dk);
+
+                // });
+            }
+        }
 
         function closeMod() {
             closeModal('modal_rincian_transaksi');
@@ -509,7 +449,7 @@
 
         function closeModalVcr() {
             closeModal('modal_voucher');
-            clearForm('frxx_vcr');
+            // clearForm('frxx_vcr');
         }
 
         // function jenisFile(jenis1, jenis2) {

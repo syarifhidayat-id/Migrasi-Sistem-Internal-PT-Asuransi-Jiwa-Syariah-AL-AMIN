@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Keuangan\Kas;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Library\KodeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 
@@ -39,9 +41,73 @@ class RincianTransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $validasi = Validator::make(
+            $request->all(),
+            [
+                // 'mpks_mrkn_kode' => 'required',
+                // 'mpks_instansi' => 'required',
+                // 'mpks_nomor' => 'required',
+                // 'mpks_tentang' => 'required',
+                // 'mpks_tgl_mulai' => 'required',
+                // 'mpks_tgl_akhir' => 'required',
+                // 'mpks_pic' => 'required',
+                // 'mpks_pic_hp' => 'required',
+                // 'mpks_pic_email' => 'required||email',
+                // 'mpks_atasan_hp' => 'required',
+                // 'mpks_atasan_email' => 'required||email',
+                // 'mpks_ket' => 'required',
+                // // 'mpks_dokumen' => 'required||mimes:pdf',
+            ],
+            [
+                // 'mpks_mrkn_kode.required' => 'Pemegang Polis tidak boleh kosong!',
+                //     'mpks_instansi.required' => 'Instansi tidak boleh kosong!',
+                //     'mpks_nomor.required' => 'Nomor pks tidak boleh kosong!',
+                //     'mpks_tentang.required' => 'Perihal tidak boleh kosong!',
+                //     'mpks_tgl_mulai.required' => 'Tanggal mulai tidak boleh kosong!',
+                //     'mpks_tgl_akhir.required' => 'Tanggal akhir tidak boleh kosong!',
+                //     'mpks_pic.required' => 'PIC tidak boleh kosong!',
+                //     'mpks_pic_hp.required' => 'No. HP PIC tidak boleh kosong!',
+                //     'mpks_pic_email.required' => 'email PIC tidak boleh kosong!',
+                //     'mpks_pic_email.email' => 'Format email salah!',
+                //     'mpks_atasan_hp.required' => 'No. HP atasan tidak boleh kosong!',
+                //     'mpks_atasan_email.required' => 'Email atasan tidak boleh kosong!',
+                //     'mpks_atasan_email.email' => 'Format email salah!',
+                //     'mpks_ket.required' => 'Keterangan tidak boleh kosong!',
+                //   // 'mpks_dokumen.required' => 'dokumen harus diisi, dan tidak boleh kosong!',
+                //   // 'mpks_dokumen.mimes' => 'dokumen harus diisi dengan format .pdf!',
+            ]
+        );
+        if ($validasi->fails()) {
+            return response()->json([
+                'error' => $validasi->errors()
+            ]);
+        } else {
+            if (empty($request->tkad_pk)) {  
+                $data = $request->all();
+                $kode = KodeController::__getKey(14);
+                // $data = request()->except(['_token']);
+                $data = $request->except(
+                    '_token',
+                    'e_akun',
+                    'e_pk',
+                    'nama_akun',
+                    'e_kasbon',
+                );
 
-        return response()->json($data);
+                $data['tkad_pk']= $kode;
+                $data['tkad_atjh_pk'] = $request->e_pk;
+                // $data['tkad_approvkeul_user'] = $request->user()->email;
+                $data['tkad_approvkeu1_date'] = date('Y-m-d H:i:s');
+
+                $vtable = DB::table('epms.trs_kas_dtl');
+                $vtable->insert($data);
+
+                // return response()->json($data);
+                return response()->json([
+                    'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
+                ]);
+            }
+        }
     }
 
     /**
@@ -87,6 +153,29 @@ class RincianTransaksiController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+
+    public function api_tb_dtl(Request $request)
+    {
+        // $data = DB::table('epms.trs_kas_dtl')
+        // ->select('*')
+        // ->where('tkad_atjh_pk', $request->a_pk)
+        // ->orderBy('tkad_pk', 'DESC')
+        // ->limit(10)
+        // ->get();
+
+
+        $data = DB::table('epms.trs_kas_dtl')
+        ->select('*')
+        ->where('tkad_atjh_pk', $request->kode_pk)
+        ->orderBy('tkad_pk', 'DESC')
+        // ->limit(10)
+        ->get();
+
+        return Datatables::of($data)->addIndexColumn()->make(true);
+
+
     }
 
     public function e_akun(Request $request)
