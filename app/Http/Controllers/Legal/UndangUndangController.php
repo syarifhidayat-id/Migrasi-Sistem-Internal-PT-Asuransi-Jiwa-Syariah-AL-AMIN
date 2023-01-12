@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
@@ -65,7 +65,7 @@ class UndangUndangController extends Controller
         } else {
 
             if ($request->mua_pk == "") {
-                $kode = KodeController::__getKey(14);
+                $kode = Config::__getKey(14);
                 $data = $request->all();
                 $data = request()->except(['_token']);
 

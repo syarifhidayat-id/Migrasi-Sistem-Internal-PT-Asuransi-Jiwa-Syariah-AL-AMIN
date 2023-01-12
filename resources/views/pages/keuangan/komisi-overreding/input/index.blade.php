@@ -231,11 +231,6 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            tombol('keyup', 'x_saldo2', function() {
-                this.value = formatRupiah(this.value);
-            });
-            // formatUang('x_saldo');
-
             selectSide('e_cab', false, '{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/select-cabalamin") }}', function(d) { return {
                 id: d.kode,
                 text: d.nama
@@ -253,7 +248,6 @@
                     x_tahun: d.x_tahun,
                     x_saldo: d.x_saldo
                 }}, function(res) {
-                        // setText('msoc_mssp_kode', res.params.data.id);
                         var data = res.params.data;
                         if(data.status == '0') {
                             setText('x_status', 'Karyawan Al Amin');
@@ -542,6 +536,13 @@
                 bsimpan('btn_simpan', 'Simpan');
                 // lodTable("InpOjkKomOver");
                 closeModal('modalInputTax');
+            });
+
+            submitForm("formUpdateTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.input-komisi-overriding.store') }}", (resSuccess) => {
+                clearForm("formUpdateTax");
+                bsimpan('btn_simpan', 'Simpan');
+                // lodTable("InpOjkKomOver");
+                closeModal('modalUpdateTax');
             });
 
             tombol('click', 'omodDelete', function() {

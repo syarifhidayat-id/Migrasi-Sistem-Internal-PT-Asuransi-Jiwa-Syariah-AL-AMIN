@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\tehnik\Soc;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -63,7 +63,7 @@ class UploadUwController extends Controller
             ]);
         } else {
             $vtable = DB::table('emst.mst_polis_uwtable');
-            $kodeImportUw = KodeController::__getpx($vtable->max('mpuw_nomor'), 14);
+            $kodeImportUw = Config::__getpx($vtable->max('mpuw_nomor'), 14);
             $data = $request->all();
             $data = $request->except('_token');
             if ($request->hasFile('mpuw_file')) {
@@ -96,7 +96,7 @@ class UploadUwController extends Controller
             $row=0;
             for ($row=2; $row <= $rowxls; $row++) {
                 $vtable2 = DB::table('emst.mst_polis_uwtable_dtl');
-                $rows['mrmp_pk'] = KodeController::__getpx($vtable2->max('mrmp_pk'), 18);
+                $rows['mrmp_pk'] = Config::__getpx($vtable2->max('mrmp_pk'), 18);
                 $rows['mrmp_mpuw_nomor'] = $kodeImportUw;
                 $rows['mrmp_tipe_masa'] = $objWorkSheet->getCellByColumnAndRow(1, $row)->getCalculatedValue();
                 $rows['mrmp_masa'] = $objWorkSheet->getCellByColumnAndRow(2, $row)->getCalculatedValue();

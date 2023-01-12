@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Tehnik;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use App\Models\Tehnik\Polis;
 use App\Models\Tehnik\Lokasi;
 use App\Models\Tehnik\Jaminan;

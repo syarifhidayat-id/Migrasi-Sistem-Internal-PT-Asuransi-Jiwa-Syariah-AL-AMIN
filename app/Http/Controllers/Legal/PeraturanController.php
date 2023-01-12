@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Legal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -63,7 +63,7 @@ class PeraturanController extends Controller
         // } else {
 
             if ($request->map_pk == "") {
-                $kode = KodeController::__getKey(14);
+                $kode = Config::__getKey(14);
                 $data = $request->all();
                 $data = request()->except(['_token']);
 

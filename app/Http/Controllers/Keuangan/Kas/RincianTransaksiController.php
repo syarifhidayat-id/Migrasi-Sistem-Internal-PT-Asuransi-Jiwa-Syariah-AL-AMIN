@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -82,9 +82,9 @@ class RincianTransaksiController extends Controller
                 'error' => $validasi->errors()
             ]);
         } else {
-            if (empty($request->tkad_pk)) {  
+            if (empty($request->tkad_pk)) {
                 $data = $request->all();
-                $kode = KodeController::__getKey(14);
+                $kode = Config::__getKey(14);
                 // $data = request()->except(['_token']);
                 $data = $request->except(
                     '_token',
@@ -154,7 +154,7 @@ class RincianTransaksiController extends Controller
     {
         //
     }
-    
+
 
     public function api_tb_dtl(Request $request)
     {
@@ -219,7 +219,7 @@ class RincianTransaksiController extends Controller
         ->limit($rows)
         ->union($union)
         ->get();
- 
+
         return response()->json($data);
         // return $union;
     }

@@ -16,16 +16,16 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <span class="input-group-text">Tahun</span>
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid" id="x_tahun" name="x_tahun" data-control="select2" data-kt-select2="true" data-dropdown-parent="#modalUpdateTax" data-placeholder="Pilih Tahun" data-allow-clear="true" data-hide-search="false">
+                                            <select class="form-select form-select-solid" data-control="select2" id="x_tahun" name="x_tahun" data-dropdown-parent="#modalUpdateTax" data-placeholder="Pilih Tahun" data-allow-clear="true" data-hide-search="false">
                                                 <option></option>
-                                                @for ($thn = date('2007'); $thn <= date('Y'); $thn++)
-                                                    <option value="{{ $thn }}">{{ $thn }}</option>
+                                                @for ($tahun = date('2007'); $tahun <= date('Y'); $tahun++)
+                                                    <option value="{{ $tahun }}">{{ $tahun }}</option>
                                                 @endfor
                                             </select>
                                         </div>
                                         <span class="input-group-text">Nama Pic</span>
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid" data-control="select2" name="cari_tax" id="cari_tax" data-dropdown-parent="#modalUpdateTax" data-placeholder="Pilih data" data-allow-clear="true" data-hide-search="false">
+                                            <select class="form-select form-select-solid" data-control="select2" name="cari_tax" id="cari_tax" data-dropdown-parent="#modalUpdateTax" data-placeholder="Cari pic" data-allow-clear="true" data-hide-search="false">
                                                 <option></option>
                                             </select>
                                         </div>

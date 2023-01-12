@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Utility;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use App\Models\Utility\Menu;
 use App\Models\Utility\WewenangJabatan;
 use Illuminate\Http\Request;

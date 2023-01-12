@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,7 +19,7 @@ class MasterKasController extends Controller
     public function index()
     {
 
-         $kode = KodeController::__getKey(14);
+         $kode = Config::__getKey(14);
          response()->json([
              'kode' => $kode,
         ]);
@@ -94,7 +94,7 @@ class MasterKasController extends Controller
         //
     }
 
-    
+
 
     // public function m_kas(Request $request)
     // {
@@ -208,7 +208,7 @@ class MasterKasController extends Controller
 
 
     public function testInput(Request $request){
-        
+
         $data = $request->all();
 
         return response()->json($data);

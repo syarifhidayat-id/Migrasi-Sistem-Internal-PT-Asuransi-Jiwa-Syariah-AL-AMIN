@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Keuangan\KomisiOverreding;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -79,36 +79,26 @@ class InputKomisiController extends Controller
         }
 
         if ($request->x_kode) {
-            $validasi = Validator::make($request->all(), [
-                'mtx_kode' => 'required|max:16',
-                'mtx_npwp' => 'required|max:20',
-                'mtx_nama' => 'required',
-                'mtx_status' => 'required',
-            ],
-            [
-                'mtx_kode.required'=>'Kode user tidak boleh kosong!',
-                'mtx_kode.max'=>'Kode user maksimal 16 karakter!',
-                'mtx_npwp.required'=>'NPWP tidak boleh kosong!',
-                'mtx_npwp.max'=>'NPWP maksimal 20 karakter!',
-                'mtx_nama.required'=>'Nama user tidak boleh kosong!',
-                'mtx_status.required'=>'Status user tidak boleh kosong!',
+            $vtable = DB::table('emst.mst_saldo_komisi')->where('msalk_mtx_kode', $request->x_kode);
+            $data = $request->all();
+            $data = $request->except(
+                '_token',
+                'x_tahun',
+                'cari_tax',
+                'x_kode',
+                'x_npwp',
+                'x_nama',
+                'x_status',
+                'x_saldo',
+            );
+            $data['msalk_mtx_kode'] = $request->x_kode;
+            $data['msalk_tahun'] = $request->x_tahun;
+            $data['msalk_saldo'] = Config::_str2($request->x_saldo);
+            $vtable->update($data);
+
+            return response()->json([
+                'success' => 'Data berhasil diupdate dengan Kode '.$request->x_kode.' !'
             ]);
-
-            if ($validasi->fails()) {
-                return response()->json([
-                    'error' => $validasi->errors()
-                ]);
-            } else {
-                $vtable = DB::table('emst.mst_tax');
-                $data = $request->all();
-                $data = $request->except('_token');
-
-                $vtable->insert($data);
-
-                return response()->json([
-                    'success' => 'Data berhasil disimpan dengan Kode '.$request->mtx_kode.' !'
-                ]);
-            }
         }
     }
 
@@ -178,7 +168,7 @@ class InputKomisiController extends Controller
         });
 
         if (!empty($request->q)) {
-            $vtable->where('mtx_nama', 'LIKE', "%$request->q%");
+            $vtable->where('mtx_nama', 'LIKE', "%$request->q%")->orWhere('mtx_kode', 'LIKE', "%$request->q%");
         }
 
         $data = $vtable->get();
@@ -383,7 +373,7 @@ class InputKomisiController extends Controller
         ->setKeywords("office 2007 openxml php")
         ->setCategory("Test result file");
 
-        $namafile="_".' DETAIL PESERTA KOMISI & OVERREDING '.KodeController::__getKey(14);
+        $namafile="_".' DETAIL PESERTA KOMISI & OVERREDING '.Config::__getKey(14);
         $namasheet='DATA';
         $dirfile="public/keuangan/kemisi-overriding/input/xls";
 

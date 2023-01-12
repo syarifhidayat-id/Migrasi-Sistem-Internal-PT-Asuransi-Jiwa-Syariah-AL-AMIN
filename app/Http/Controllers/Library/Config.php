@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Library;
 
 use App\Http\Controllers\Controller;
-// use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use stdClass;
 
-class KodeController extends Controller
+class Config extends Controller
 {
     public static function __getPK($vtable, $long)
     {
@@ -91,7 +90,7 @@ class KodeController extends Controller
         {
             if (is_array($value)) {
                 $obj->$key = new stdClass();
-                KodeController::array_to_obj($value, $obj->$key);
+                Config::array_to_obj($value, $obj->$key);
             } else {
                 $obj->$key = $value;
             }
@@ -102,17 +101,30 @@ class KodeController extends Controller
     public static function arrayToObject($array)
     {
         $object= new stdClass();
-        return KodeController::array_to_obj($array,$object);
+        return Config::array_to_obj($array,$object);
     }
 
     public static function arrToObj($array) {
         $objects = new stdClass();
         foreach ($array as $keys => $value) {
             if (is_array($value)) {
-                $value = KodeController::arrToObj($value);
+                $value = Config::arrToObj($value);
             }
             $objects->$keys = $value;
         }
         return $objects;
+    }
+
+    public static function _str($a, $b, $val)
+    {
+        $obj = str_replace($a, $b, $val);
+        return $obj;
+    }
+
+    public static function _str2($nominal)
+    {
+        $val = substr($nominal, 0, -3);
+        $obj = Config::_str(',', '', $val);
+        return $obj;
     }
 }

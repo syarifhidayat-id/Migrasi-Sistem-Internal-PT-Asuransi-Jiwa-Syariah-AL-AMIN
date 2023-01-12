@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sekper;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -63,7 +63,7 @@ class SlidePresentasiController extends Controller
         // } else {
 
             if ($request->mslp_pk == "") {
-                $kode = KodeController::__getKey(14);
+                $kode = Config::__getKey(14);
                 $data = $request->all();
                 $data = request()->except(['_token']);
 
