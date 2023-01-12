@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Library\KodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class MasterKasController extends Controller
 {
@@ -16,7 +18,14 @@ class MasterKasController extends Controller
      */
     public function index()
     {
-        return view('pages.keuangan.kas.master_kas.index');
+
+         $kode = KodeController::__getKey(14);
+         response()->json([
+             'kode' => $kode,
+        ]);
+        // var_dump($kode);
+
+        return view('pages.keuangan.kas.master_kas.index', compact('kode'));
     }
 
     /**
@@ -85,6 +94,8 @@ class MasterKasController extends Controller
         //
     }
 
+    
+
     // public function m_kas(Request $request)
     // {
 
@@ -144,12 +155,12 @@ class MasterKasController extends Controller
         return response()->json($data);
     }
 
-    public function m_karyawan(Request $request){
+    public function e_realisasi(Request $request){
         $page = $request->page ? intval($request->page) : 1;
         $rows = $request->rows ? intval($request->rows) : 1000;
         $offset = ($page - 1) * $rows;
-        $vtable = DB::table('esdm.sdm_karyawan_new')
-        ->select('skar_nip', 'skar_nama');
+        $vtable = DB::table('emst.mst_anggaran_realisasi')
+        ->select('mar_kode', 'mar_nama');
         // ->where([
         //     ['cb.mrkn_kode','<>',''],
         //     ['cb.mrkn_kantor_pusat','1'],
@@ -158,7 +169,7 @@ class MasterKasController extends Controller
         // ]);
 
         if (!empty($request->q)) {
-            $vtable->where('skar_nip', 'LIKE', "%$request->q%")->orWhere('skar_nama', 'LIKE', "%$request->q%");
+            $vtable->where('mar_kode', 'LIKE', "%$request->q%")->orWhere('mar_nama', 'LIKE', "%$request->q%");
         }
 
         $data = $vtable
@@ -168,6 +179,43 @@ class MasterKasController extends Controller
 
         return response()->json($data);
     }
+    public function tdna_penerima(Request $request){
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 1000;
+        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('esdm.sdm_karyawan_new')
+        ->select('skar_pk', 'skar_nama')
+        ->orderBy('skar_nama')
+        ->where('skar_pk', '!=', '20208588320008450001');
+        // ->where([
+        //     ['cb.mrkn_kode','<>',''],
+        //     ['cb.mrkn_kantor_pusat','1'],
+        //     ['cb.mrkn_nama','!=',''],
+        //     // ['cb.mrkn_nama','like',"%$search%"],
+        // ]);
+
+        if (!empty($request->q)) {
+            $vtable->where('skar_pk', 'LIKE', "%$request->q%")->orWhere('skar_nama', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
+
+    public function testInput(Request $request){
+        
+        $data = $request->all();
+
+        return response()->json($data);
+    }
+
+
+    //
 
 
 }

@@ -58,6 +58,17 @@ class KodeController extends Controller
         return $tahunNow.$key;
     }
 
+    public static function __getnx($num)
+    {
+        $char = '0123456789';
+        $charLength = strlen($char);
+        $key = '';
+        for ($i = 0; $i < $length = $num; $i++) {
+            $key .= $char[rand(0, $charLength - 1)];
+        }
+        return $key;
+    }
+
     public static function nullRequests($request)
     {
         // siapkan array kosong untuk menampung request yang null
