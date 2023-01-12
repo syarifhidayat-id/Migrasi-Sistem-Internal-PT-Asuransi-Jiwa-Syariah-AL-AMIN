@@ -150,7 +150,6 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-<<<<<<< HEAD
             selectSide(
                 'tipe_menu',
                 '{{ url("api/utility/menu/select-tipemenu") }}',
@@ -230,27 +229,6 @@
                     // setText('msoc_mssp_nama', res.params.data.text);
                 },
             );
-=======
-            selectSide('tipe_menu', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
-                id: d.wmt_kode,
-                text: d.wmt_nama
-            }}, function(res) {
-                selectSide('key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('tipe_menu'), function(d) { return {
-                    id: d.wmn_descp,
-                    text: d.wmn_descp
-                }});
-            });
-
-            selectSide('wmn_tipe', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
-                id: d.wmt_kode,
-                text: d.wmt_nama
-            }}, function(res) {
-                selectSide('wmn_key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('wmn_tipe'), function(d) { return {
-                    id: d.wmn_descp,
-                    text: d.wmn_descp
-                }});
-            });
->>>>>>> 49716982dbec0200cc7530313527b4abced78b1b
 
             filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
 

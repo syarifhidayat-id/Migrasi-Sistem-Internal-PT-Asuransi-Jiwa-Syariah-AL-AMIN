@@ -74,18 +74,14 @@ class KodeController extends Controller
         return $nullRequest;
     }
 
-    public static function array_to_obj($array, &$obj)
+    public static function array_to_obj($array, $obj)
     {
         foreach ($array as $key => $value)
         {
-            if (is_array($value))
-            {
+            if (is_array($value)) {
                 $obj->$key = new stdClass();
                 KodeController::array_to_obj($value, $obj->$key);
-                // array_to_obj($value, $obj->$key);
-            }
-            else
-            {
+            } else {
                 $obj->$key = $value;
             }
         }
@@ -95,7 +91,17 @@ class KodeController extends Controller
     public static function arrayToObject($array)
     {
         $object= new stdClass();
-        // return array_to_obj($array,$object);
         return KodeController::array_to_obj($array,$object);
+    }
+
+    public static function arrToObj($array) {
+        $objects = new stdClass();
+        foreach ($array as $keys => $value) {
+            if (is_array($value)) {
+                $value = KodeController::arrToObj($value);
+            }
+            $objects->$keys = $value;
+        }
+        return $objects;
     }
 }

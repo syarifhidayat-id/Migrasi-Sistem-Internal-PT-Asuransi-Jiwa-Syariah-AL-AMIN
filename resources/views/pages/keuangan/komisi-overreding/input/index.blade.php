@@ -49,7 +49,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-5">
                                         <label class="form-label fs-6 fw-bold">Cabang Alamin</label>
-                                        <select class="form-select form-select-solid fw-bolder" id="e_cabalamin" name="e_cabalamin" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="true" data-hide-search="false">
+                                        <select class="form-select form-select-solid fw-bolder" id="e_cab" name="e_cab" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="true" data-hide-search="false">
                                             <option></option>
                                         </select>
                                     </div>
@@ -62,7 +62,8 @@
                                                 <select class="form-select form-select-solid fw-bolder" id="e_bln1" name="e_bln1" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 1" data-allow-clear="true" data-hide-search="false">
                                                     <option></option>
                                                     @foreach (range(1,12) as $month)
-                                                        <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
+                                                        {{-- <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option> --}}
+                                                        <option value="{{ $month }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -71,7 +72,8 @@
                                                 <select class="form-select form-select-solid fw-bolder" id="e_bln2" name="e_bln2" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 2" data-allow-clear="true" data-hide-search="false">
                                                     <option></option>
                                                     @foreach (range(1,12) as $month)
-                                                        <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
+                                                        {{-- <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option> --}}
+                                                        <option value="{{ $month }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -209,24 +211,59 @@
     </div>
 
     @include('pages.keuangan.komisi-overreding.input.modal.input')
+    @include('pages.keuangan.komisi-overreding.input.modal.update-saldo')
 </div>
 @endsection
 
 @section('script')
     <script>
-        // setText('e_bln1', '01');
-        // setText('e_bln2', '01');
-        // setText('e_thn', '2019');
+        setText('e_bln1', '1');
+        setText('e_bln2', '1');
+        setText('e_thn', new Date().getFullYear());
+        setText('x_tahun', new Date().getFullYear());
+        setTextReadOnly('x_kode', true);
+        setTextReadOnly('x_npwp', true);
+        setTextReadOnly('x_nama', true);
+        setTextReadOnly('x_status', true);
 
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            selectSide('e_cabalamin', false, '{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/select-cabalamin") }}', function(d) { return {
+            tombol('keyup', 'x_saldo2', function() {
+                this.value = formatRupiah(this.value);
+            });
+            // formatUang('x_saldo');
+
+            selectSide('e_cab', false, '{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/select-cabalamin") }}', function(d) { return {
                 id: d.kode,
                 text: d.nama
             }});
+
+            tombol('change', 'x_tahun', function() {
+                var tahun = $(this).val();
+                selectSide('cari_tax', false, '{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/cari-tax") }}' + '?e_tahun=' + tahun, function(d) { return {
+                    id: d.x_kode,
+                    text: d.x_kode+' - '+d.x_nama,
+                    x_kode: d.x_kode,
+                    x_nama: d.x_nama,
+                    x_npwp: d.x_npwp,
+                    status: d.x_status,
+                    x_tahun: d.x_tahun,
+                    x_saldo: d.x_saldo
+                }}, function(res) {
+                        // setText('msoc_mssp_kode', res.params.data.id);
+                        var data = res.params.data;
+                        if(data.status == '0') {
+                            setText('x_status', 'Karyawan Al Amin');
+                        } else if (data.status == '1') {
+                            setText('x_status', 'Non Karyawan Al Amin');
+                        }
+                        jsonForm('formUpdateTax', res.params.data);
+                        console.log(res.params.data);
+                });
+            });
 
             filterAll('input[type="search"]', 'InpOjkKomOver'); //khusus type search inputan
 
@@ -234,7 +271,7 @@
                 "InpOjkKomOver",
                 "{{ url('api/keuangan/komisi-overriding/input-komisi-overriding/list-input-komisioverriding') }}", //url api/route
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
-                    d.e_cabalamin = getText('e_cabalamin'),
+                    d.e_cab = getText('e_cab'),
                     d.e_bln1 = getText('e_bln1'),
                     d.e_bln2 = getText('e_bln2'),
                     d.e_thn = getText('e_thn'),
@@ -254,7 +291,17 @@
                     {
                         data: "nama",
                         render: function(data, type, row, meta) {
-                            return `<div class="badge badge-light-success fw-bolder" id="exportExcel" data-kode="`+row.kdpolis+`">`+row.nama+`</div>`;
+                            var kode = row.kdpolis;
+                            var cab = getText('e_cab');
+                            var bln1 = getText('e_bln1');
+                            var bln2 = getText('e_bln2');
+                            var thn = getText('e_thn');
+                            var rms = "kode="+kode+"&e_cab="+cab+"&e_bln1="+bln1+"&e_bln2="+bln2+"&e_thn="+thn;
+                            if (cab == "") {
+                                return `<a disable><div class="badge badge-light-success fw-bolder">`+row.nama+`</div></a>`;
+                            } else {
+                                return `<a href="{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/export-input?") }}`+rms+`"><div class="badge badge-light-success fw-bolder">`+row.nama+`</div></a>`;
+                            }
                         }
                     },
                     { data: "kdpolis" },
@@ -440,18 +487,6 @@
                 },
             );
 
-            tombol('click', 'exportExcel', function() {
-                var kode = $(this).attr('data-kode');
-                var cab = getText('e_cabalamin');
-                var bln1 = getText('e_bln1');
-                var bln2 = getText('e_bln2');
-                var thn = getText('e_thn');
-                var rms = "kode="+kode+"&cab="+cab+"&bln1="+bln1+"&bln2="+bln2+"&thn="+thn;
-                lodJson('GET', '{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/export-input-komisioverriding") }}' + '?' + rms, function(res) {
-                    console.log(res);
-                });
-            });
-
             tombol('click', 'omodTam', function() {
                 openModal('modalInputTax');
                 titleAction('tModInputTax', 'Entry User Tax');
@@ -461,43 +496,51 @@
             });
 
             tombol('click', 'omodEdit', function() {
-                titleAction('tModInputTax', 'Pic Tax Update Saldo');
-                bsimpan('btn_simpan', 'Update');
-                // $('#wmn_key').val(null).trigger('change');
-                setHide('btn_reset', true);
-
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
-                $.get(url, function(data) {
-                    openModal('modalInputTax');
-                    var tipe = "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe;
-                    var key = "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key;
-                    jsonForm('formInputTax', data);
-                    $.get(tipe, function(res) {
-                        if ($('#wmn_tipe').find("option[value='" + res.wmt_kode + "']").length) {
-                            $('#wmn_tipe').val(res.wmt_kode).trigger('change');
-                        } else {
-                            selectEdit('wmn_tipe', res.wmt_kode, res.wmt_nama);
-                        }
-                    });
-                    if (data.wmn_key == "MAIN") {
-                        selectEdit('wmn_key', 'MAIN', 'MAIN');
-                    } else {
-                        $.get(key, function(res) {
-                            if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']").length) {
-                                $('#wmn_key').val(res.wmn_kode).trigger('change');
-                            } else {
-                                selectEdit('wmn_key', res.wmn_kode, res.wmn_descp);
-                            }
-                        });
-                    }
-                });
+                openModal('modalUpdateTax');
+                titleAction('titleMod', 'Pic Tax Update Saldo');
+                clearForm("formUpdateTax");
+                bsimpan('btn_simpan', 'Simpan');
+                setHide('btn_reset', false);
             });
+
+            // tombol('click', 'omodEdit', function() {
+            //     var kode = $(this).attr('data-resouce'),
+            //         url = "{{ route('utility.menu.index') }}" + "/" + kode + "/edit";
+            //     lodJson("GET", "")
+            //     $.get(url, function(data) {
+            //         openModal('modalInputTax');
+            //         titleAction('tModInputTax', 'Pic Tax Update Saldo');
+            //         bsimpan('btn_simpan', 'Update');
+            //         setHide('btn_reset', true);
+
+            //         var tipe = "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe;
+            //         var key = "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key;
+            //         jsonForm('formInputTax', data);
+            //         $.get(tipe, function(res) {
+            //             if ($('#wmn_tipe').find("option[value='" + res.wmt_kode + "']").length) {
+            //                 $('#wmn_tipe').val(res.wmt_kode).trigger('change');
+            //             } else {
+            //                 selectEdit('wmn_tipe', res.wmt_kode, res.wmt_nama);
+            //             }
+            //         });
+            //         if (data.wmn_key == "MAIN") {
+            //             selectEdit('wmn_key', 'MAIN', 'MAIN');
+            //         } else {
+            //             $.get(key, function(res) {
+            //                 if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']").length) {
+            //                     $('#wmn_key').val(res.wmn_kode).trigger('change');
+            //                 } else {
+            //                     selectEdit('wmn_key', res.wmn_kode, res.wmn_descp);
+            //                 }
+            //             });
+            //         }
+            //     });
+            // });
 
             submitForm("formInputTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.input-komisi-overriding.store') }}", (resSuccess) => {
                 clearForm("formInputTax");
                 bsimpan('btn_simpan', 'Simpan');
-                lodTable("InpOjkKomOver");
+                // lodTable("InpOjkKomOver");
                 closeModal('modalInputTax');
             });
 
@@ -513,9 +556,29 @@
             });
         });
 
+        function formatRupiah(angka, prefix) {
+            let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+
         function closeBtnModal() {
             closeModal('modalInputTax');
             clearForm("formInputTax");
+        };
+        function closeBtnUpdate() {
+            closeModal('modalUpdateTax');
+            clearForm("formUpdateTax");
         };
 
         hidePesan('mtx_kode');

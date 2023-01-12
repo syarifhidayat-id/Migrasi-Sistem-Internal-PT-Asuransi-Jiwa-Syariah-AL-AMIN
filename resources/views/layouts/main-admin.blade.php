@@ -381,6 +381,7 @@
     <script src="{{ asset('assets/plugins/custom/pdf-view/pdf.min.js') }}"></script>
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
     <script src="{{ asset('dist/js/jquery-config.min.js') }}"></script>
+    <script src="{{ asset('dist/js/jquery-attr-num.min.js') }}"></script>
     <script src="{{ asset('dist/js/jquery.capitalize.js') }}"></script>
 
     <script>

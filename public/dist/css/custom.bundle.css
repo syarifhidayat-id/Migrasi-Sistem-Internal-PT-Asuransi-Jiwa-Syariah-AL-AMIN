@@ -48,3 +48,7 @@ form span .selection .select2-selection .readonly_sel {
     /* background-color: rgba(255, 204, 138, 0.514); */
     background-color: #ffcc8a83;
 }
+
+form [data-type="rupiah"] {
+    text-align: right;
+}
