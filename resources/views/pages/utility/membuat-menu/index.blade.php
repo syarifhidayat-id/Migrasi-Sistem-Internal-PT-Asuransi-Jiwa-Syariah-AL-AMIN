@@ -150,85 +150,25 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            selectSide(
-                'tipe_menu',
-                '{{ url("api/utility/menu/select-tipemenu") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.wmt_kode,
-                                text: d.wmt_nama
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-                },
-                false
-            )
+            selectSide('tipe_menu', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
+                id: d.wmt_kode,
+                text: d.wmt_nama
+            }}, function(res) {
+                selectSide('key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('tipe_menu'), function(d) { return {
+                    id: d.wmn_descp,
+                    text: d.wmn_descp
+                }});
+            });
 
-            selectSide(
-                'wmn_tipe',
-                '{{ url("api/utility/menu/select-tipemenu") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.wmt_kode,
-                                text: d.wmt_nama
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-                },
-                false
-            )
-
-            changeSelect(
-                'tipe_menu',
-                'key',
-                '{{ url("api/utility/menu/getTipe") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.wmn_descp,
-                                text: d.wmn_descp
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-                },
-            );
-
-            changeSelect(
-                'wmn_tipe',
-                'wmn_key',
-                '{{ url("api/utility/menu/getTipe") }}',
-                function(data) {
-                    return {
-                        results: $.map(data, function(d) {
-                            return {
-                                id: d.wmn_kode,
-                                text: d.wmn_descp
-                            }
-                        })
-                    };
-                },
-                function(res) {
-                    // setText('msoc_mssp_kode', res.params.data.id);
-                    // setText('msoc_mssp_nama', res.params.data.text);
-                },
-            );
+            selectSide('wmn_tipe', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
+                id: d.wmt_kode,
+                text: d.wmt_nama
+            }}, function(res) {
+                selectSide('wmn_key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('wmn_tipe'), function(d) { return {
+                    id: d.wmn_descp,
+                    text: d.wmn_descp
+                }});
+            });
 
             filterAll('input[type="search"]', 'dataMenu'); //khusus type search inputan
 
