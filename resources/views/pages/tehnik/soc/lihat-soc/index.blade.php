@@ -271,18 +271,15 @@
                     "Data dengan kode berikut " + kode + " akan di approve!",
                     (result) => {
                         if (result.isConfirmed) {
-                            post(
-                                "{{ url('api/tehnik/soc/lihat-soc/update-status-approval') }}" + "/" + kode + "/" + val,
-                                function(data) {
-                                    // console.log(data);
-                                    message(
-                                        'success',
-                                        'Data berhasil di approve dengan kode ' + kode + ' !',
-                                    );
-                                    setCheck(this, true);
-                                    lodTable('datalistSoc');
-                                },
-                            );
+                            getPost("{{ url('api/tehnik/soc/lihat-soc/update-status-approval') }}" + "/" + kode + "/" + val, '', function(data) {
+                                // console.log(data);
+                                message(
+                                    'success',
+                                    'Data berhasil di approve dengan kode ' + kode + ' !',
+                                );
+                                setCheck(this, true);
+                                lodTable('datalistSoc');
+                            });
                         } else {
                             setCheck(this, false);
                         }

@@ -310,29 +310,6 @@ class InputKomisiController extends Controller
             return DataTables::of($data)
             ->addIndexColumn()
             ->filter (function ($instance) use ($request) {
-                // if (!empty($request->get('e_cabalamin'))) {
-                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                //         return Str::contains($row['tpprd_mlok_kode'], $request->get('e_cabalamin')) ? true : false;
-                //     });
-                // }
-                // if (!empty($request->get('e_bln1')) && !empty($request->get('e_bln2')) && !empty($request->get('e_thn'))) {
-                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                //         return Str::contains(date('m', strtotime($row['tpprd_insert_fix'])), $request->get('e_bln1')) ? true : false;
-                //     });
-                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                //         return Str::contains(date('m', strtotime($row['tpprd_insert_fix'])), $request->get('e_bln2')) ? true : false;
-                //     });
-                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                //         return Str::contains(date('Y', strtotime($row['tpprd_insert_fix'])), $request->get('e_thn')) ? true : false;
-                //     });
-                // }
-                // if ($request->get('check_2') == "1") {
-                //     if (!empty($request->get('wmn_descp'))) {
-                //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                //             return Str::contains($row['wmn_descp'], $request->get('wmn_descp')) ? true : false;
-                //         });
-                //     }
-                // }
                 if (!empty($request->get('search'))) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                         if (Str::contains(Str::lower($row['nama']), Str::lower($request->get('search')))){
@@ -574,6 +551,6 @@ class InputKomisiController extends Controller
 
     public function postPjKomisi(Request $request)
     {
-        # code...
+        return dd($request->all());
     }
 }

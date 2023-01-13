@@ -121,7 +121,7 @@
                         <div class="separator border-gray-200"></div>
                         <div class="px-7 py-5">
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter" if><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                                <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter" if><i class="fa-sharp fa-solid fa-eye"></i> Tampilkan</button>
                                 <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
                             </div>
                         </div>
@@ -266,7 +266,7 @@
 
             filterAll('input[type="search"]', 'InpOjkKomOver'); //khusus type search inputan
 
-            serverSide( //datatable serverside
+            serverSides( //datatable serverside
                 "InpOjkKomOver",
                 "{{ url('api/keuangan/komisi-overriding/input-komisi-overriding/lod-input-komisioverriding') }}", //url api/route
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
@@ -387,7 +387,11 @@
                         data: null,
                         className: "text-center",
                         render: function(data, type, row, meta) {
-                            return `<button type="button" class="btn btn-primary btn-sm xproses" id="xproses`+row.DT_RowIndex+`" name="xproses`+row.DT_RowIndex+`" onclick="proses_pst('`+row.kdpolis+`', 0)">Proses</button>`;
+                            var bln1 = getText('e_bln1');
+                            var bln2 = getText('e_bln2');
+                            var thn = getText('e_thn');
+                            var cab = getText('e_cab');
+                            return `<button type="button" class="btn btn-primary btn-sm xproses" id="xproses`+row.DT_RowIndex+`" name="xproses`+row.DT_RowIndex+`" onclick="proses_pst(`+row.DT_RowIndex+`, '`+row.kdpolis+`', `+row.tpst+`, '`+row.tup+`', '`+row.tkomisi+`', `+row.toverreding+`, `+bln1+`, `+bln2+`, `+thn+`, `+cab+`, 1)">Proses</button>`;
                         }
                     },
                     { data: "ket" },
@@ -470,7 +474,7 @@
                         {field:"npwp",title:"NPWP",width:200},
                         {field:"nama",title:"NAMA",align:"left",width:280},
                         {field:"ket",title:"STATUS",align:"left",width:120},
-					    {field:"mtx_saldo",title:"SALDO",align:"left",width:100},
+                        {field:"mtx_saldo",title:"SALDO",align:"left",width:100},
                     ], function(i, row) {
                         setText(xsaldo2, row.mtx_saldo);
                     });
@@ -521,33 +525,10 @@
         });
 
         function proses_pst(i,kdpolis,tpst,tup,tkom,tover,bln1,bln2,thn,cab,tipe){
-            var ck   ="#chx"+i;
-            var vpic1  =getCombo("#xpic1"+i);
-            var vsaldo1  =getValue("#xsaldo1"+i);
-
-            var vpic1a  =getCombo("#xpic1a"+i);
-            var vsaldo1a  =getValue("#xsaldo1a"+i);
-
-            var vpic1b  =getCombo("#xpic1b"+i);
-            var vsaldo1b  =getValue("#xsaldo1b"+i);
-
-            var vpic2  =getCombo("#xpic2"+i);
-            var vsaldo2  =getValue("#xsaldo2"+i);
-
-            var vpic2a  =getCombo("#xpic2a"+i);
-            var vsaldo2a  =getValue("#xsaldo2a"+i);
-
-            var vproses="#xproses"+i;
-
-            var  vv={ res : ''};
-            var url="ww.post/p_pjkomisi.php?kode="+kdpolis+"&bln1="+bln1+"&bln2="+bln2+"&thn="+thn+"&pst="+tpst+"&up="+tup+"&tkom="+tkom+"&tover="+tover+"&saldo1="+vsaldo1+"&pic1="+vpic1+"&pic1a="+vpic1a+"&pic1b="+vpic1b+"&saldo2="+vsaldo2+"&pic2="+vpic2+"&pic2a="+vpic2a+"&cab="+cab+"&tipe="+tipe;
-            $.getJSON(url,vv, function(data){
-            if (data)
-            {
-                notif("Berhasil Diproses ");
-                del_id("r"+i);
-                form_submit('#frmrpt','');
-            }
+            var url='{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/post-pjkomisi") }}';
+            var rms = kdpolis+"&bln1="+bln1+"&bln2="+bln2+"&thn="+thn+"&pst="+tpst+"&up="+tup+"&tkom="+tkom+"&tover="+tover+"&saldo1="+vsaldo1+"&pic1="+vpic1+"&pic1a="+vpic1a+"&pic1b="+vpic1b+"&saldo2="+vsaldo2+"&pic2="+vpic2+"&pic2a="+vpic2a+"&cab="+cab+"&tipe="+tipe;
+            getJson(url + rms, '', function(data) {
+                console.log(data);
             });
         }
 
