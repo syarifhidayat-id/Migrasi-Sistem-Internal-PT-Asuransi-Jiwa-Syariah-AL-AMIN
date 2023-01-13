@@ -18,7 +18,7 @@
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="form-select form-select-solid" data-control="select2" id="x_tahun" name="x_tahun" data-dropdown-parent="#modalUpdateTax" data-placeholder="Pilih Tahun" data-allow-clear="true" data-hide-search="false">
                                                 <option></option>
-                                                @for ($tahun = date('2007'); $tahun <= date('Y'); $tahun++)
+                                                @for ($tahun; $tahun <= date('Y'); $tahun++)
                                                     <option value="{{ $tahun }}">{{ $tahun }}</option>
                                                 @endfor
                                             </select>
@@ -66,17 +66,15 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Total Komisi Bruto</label>
-                                    <input type="text" class="form-control form-control-solid" name="x_saldo" id="x_saldo" placeholder="Total komisi bruto" data-type="rupiah" />
+                                    <input type="text" class="form-control form-control-solid" name="x_saldo" id="x_saldo" placeholder="ex. 250,078.00" data-type="rupiah" />
                                     <span class="text-danger error-text x_saldo_err"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
-                    <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i class="fa-solid fa-trash"></i> Bersih</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="closeBtnUpdate()"><i class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>

@@ -115,6 +115,12 @@ class Config extends Controller
         return $objects;
     }
 
+    public static function curdate()
+    {
+        $date = date('Y-m-d H:i:s');
+        return $date;
+    }
+
     public static function _str($a, $b, $val)
     {
         $obj = str_replace($a, $b, $val);

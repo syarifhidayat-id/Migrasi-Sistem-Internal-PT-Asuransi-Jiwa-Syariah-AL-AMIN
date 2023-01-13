@@ -11,10 +11,12 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
     Route::group(['prefix' => '/komisi-overriding', 'as' => 'komisi-overriding.'], function() {
 
         Route::group(['prefix' => '/input-komisi-overriding', 'as' => 'input-komisi-overriding.'], function() {
-            Route::get('/list-input-komisioverriding', [InputKomisiController::class, 'inputKomisi']);
+            Route::get('/lod-input-komisioverriding', [InputKomisiController::class, 'lodInputKomisi']);
             Route::get('/cari-tax', [InputKomisiController::class, 'cariTax']);
+            Route::get('/lod-user-tax', [InputKomisiController::class, 'userTax']);
             Route::get('/export-input', [InputKomisiController::class, 'exportInput']);
             Route::get('/select-cabalamin', [InputKomisiController::class, 'selectCabAlm']);
+            Route::post('/post-pjkomisi', [InputKomisiController::class, 'postPjKomisi']);
         });
 
         Route::group(['prefix' => '/approval-komisi-overriding', 'as' => 'approval-komisi-overriding.'], function() {
@@ -28,7 +30,7 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
         Route::resource('dtl', RincianTransaksiController::class);
         Route::get('api_tb_dtl', [RincianTransaksiController::class, 'api_tb_dtl']);
 
-        
+
         Route::get('kantor-alamin', [MasterKasController::class, 'kantor_alamin']);
         Route::get('s_karyawan', [MasterKasController::class, 'm_karyawan']);
         Route::get('e_realisasi', [MasterKasController::class, 'e_realisasi']);

@@ -49,7 +49,7 @@
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
-                    <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i class="fa-solid fa-trash"></i> Bersih</button>
+                    <button type="button" class="btn btn-warning btn-sm" onclick="clearForm('formInputTax')"><i class="fa-solid fa-trash"></i> Bersih</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="closeBtnModal()"><i class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>
