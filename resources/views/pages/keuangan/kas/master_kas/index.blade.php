@@ -18,6 +18,9 @@
             <div class="card-body py-10">
                 <div class="row">
                     <input class="form-control" type="text" data-allow-clear="false" id="a_pk" value="{{ $kode }}" />
+                    <input class="form-control" id="tdna_user_ins" name="tdna_user_ins"
+                                        value="{{ Auth::user()->email }}" readonly />
+                    {{-- <input class="form-control" id="tdna_akun_d" name="tdna_akun_d"  readonly /> --}}
                     <div class="col-md-6">
                         <div class="mb-5">
                             <label class="required form-label">Kantor Al Amin</label>
@@ -246,10 +249,11 @@
 
 @section('script')
     <script type="text/javascript">
-        // setHide('a_pk', true);
-        // setHide('tkad_atjh_pk', true);
-        // setHide('tkad_pk', true);
-        // setHide('nama_akun', true);
+        setHide('a_pk', true);
+        setHide('tkad_atjh_pk', true);
+        setHide('tkad_pk', true);
+        setHide('nama_akun', true);
+        setHide('tdna_user_ins', true);
         setHide('tkad_approvkeu1_user', true);
         setHide('tkav_nomor', true);
         setHide('tkav_tdna_pk', true);
@@ -425,7 +429,7 @@
                 (resSuccess) => {
                     bsimpan('btn_simpan', 'Simpan')
                     // clearForm("frxx_m_kas");
-                    window.location.reload();
+                    reload();
                     
                 },
                 (resError) => {
@@ -495,30 +499,7 @@
                     setText('tkav_ket', tdna_ket);
                 });
             });
-
-
         });
-
-        //Voucher kas
-        // function tombolVcr(tipe) {
-        //     if (tipe == '0') {
-        //         url = "{{ url('api/keuangan/kas/tkav_nomor') }}";
-        //         lodJson("GET", url, function(res) {
-        //             var tdna_tgl_aju = getText('tdna_tgl_aju');
-        //             var tdna_dk = getText('tdna_dk');
-        //             var tdna_penerima = getText('tdna_penerima');
-        //             var tdna_ket = getText('tdna_ket');
-        //             $('#tMod_vcr').text('Input Voucher Kas');
-        //             openModal('modal_voucher');
-        //             setText('tkav_nomor', res);
-        //             setText('tkav_tanggal', tdna_tgl_aju);
-        //             setText('tkav_tipe_kas', tdna_dk);
-        //             setText('tkav_penerima', tdna_penerima);
-        //             setText('tkav_tipe_bayar', '0');
-        //             setText('tkav_ket', tdna_ket);
-        //         });
-        //     }
-        // }
 
         function closeMod() {
             closeModal('modal_rincian_transaksi');

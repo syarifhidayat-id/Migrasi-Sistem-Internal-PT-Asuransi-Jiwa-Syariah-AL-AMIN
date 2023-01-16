@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -82,9 +82,9 @@ class RincianTransaksiController extends Controller
                 'error' => $validasi->errors()
             ]);
         } else {
-            if (empty($request->tkad_pk)) {  
+            if (empty($request->tkad_pk)) {
                 $data = $request->all();
-                $kode = KodeController::__getKey(14);
+                $kode = Config::__getKey(14);
                 // $data = request()->except(['_token']);
                 $data = $request->except(
                     '_token',
@@ -96,6 +96,7 @@ class RincianTransaksiController extends Controller
 
                 $data['tkad_pk']= $kode;
                 $data['tkad_askn_kode'] = $request->e_akun;
+                $data['tkad_total'] = Config::_str2($request->tkad_total, 'N');
                 // $data['tkad_atjh_pk'] = $request->e_pk;
                 // $data['tkad_approvkeul_user'] = $request->user()->email;
                 $data['tkad_approvkeu1_date'] = date('Y-m-d H:i:s');
@@ -186,7 +187,7 @@ class RincianTransaksiController extends Controller
     //     'success' => 'Data berhasil dihapus dengan Kode ' . $id . '!'
     // ]);
     }
-    
+
 
     public function api_tb_dtl(Request $request)
     {
@@ -200,7 +201,7 @@ class RincianTransaksiController extends Controller
 
         $data = DB::table('epms.trs_kas_dtl')
         ->select('*', 
-        DB::raw('CASE WHEN tkad_tipe_dk = "D" THEN "Debit" WHEN tkad_tipe_dk = "K" THEN "Kredit" END as tipe_dk')
+        DB::raw('CASE WHEN tkad_tipe_dk = "D" THEN "Debit" WHEN tkad_tipe_dk = "K" THEN "Kredit" END as tipe_dk, FORMAT(tkad_total, 2) tkad_total')
         // DB::raw(number_format((float)'tkad_total','2') )
         )
         ->where('tkad_atjh_pk', $request->kode_pk)
@@ -254,7 +255,7 @@ class RincianTransaksiController extends Controller
         ->limit($rows)
         ->union($union)
         ->get();
- 
+
         return response()->json($data);
         // return $union;
     }

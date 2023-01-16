@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Library;
 
 use App\Http\Controllers\Controller;
-// use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use stdClass;
 
-class KodeController extends Controller
+class Config extends Controller
 {
     public static function __getPK($vtable, $long)
     {
@@ -82,5 +82,62 @@ class KodeController extends Controller
         }
 
         return $nullRequest;
+    }
+
+    public static function array_to_obj($array, $obj)
+    {
+        foreach ($array as $key => $value)
+        {
+            if (is_array($value)) {
+                $obj->$key = new stdClass();
+                Config::array_to_obj($value, $obj->$key);
+            } else {
+                $obj->$key = $value;
+            }
+        }
+        return $obj;
+    }
+
+    public static function arrayToObject($array)
+    {
+        $object= new stdClass();
+        return Config::array_to_obj($array,$object);
+    }
+
+    public static function arrToObj($array) {
+        $objects = new stdClass();
+        foreach ($array as $keys => $value) {
+            if (is_array($value)) {
+                $value = Config::arrToObj($value);
+            }
+            $objects->$keys = $value;
+        }
+        return $objects;
+    }
+
+    public static function curdate()
+    {
+        $date = date('Y-m-d H:i:s');
+        return $date;
+    }
+
+    public static function _str($a, $b, $val)
+    {
+        $obj = str_replace($a, $b, $val);
+        return $obj;
+    }
+
+    public static function _str2($nominal, $param)
+    {
+        if ($param=="O") {
+            $val = $nominal;
+            $str = Config::_str([',', '.'], '', $val);
+        }
+        if ($param=="N") {
+            $val = substr($nominal, 0, -3);
+            $str = Config::_str(',', '', $val);
+        }
+        $obj = $str;
+        return $obj;
     }
 }

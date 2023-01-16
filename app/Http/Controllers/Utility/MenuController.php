@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Utility;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use App\Models\Utility\Menu;
 use App\Models\Utility\WewenangJabatan;
 use Facade\FlareClient\Http\Response;
@@ -67,7 +67,7 @@ class MenuController extends Controller
         } else {
 
             if (empty($request->wmn_kode)) {
-                $kode = KodeController::__getKey(14);
+                $kode = Config::__getKey(14);
                 $vtable = DB::table('web_menu');
 
                 if (empty($request->wmn_url)) {
@@ -125,6 +125,7 @@ class MenuController extends Controller
         // $menu = Menu::where('wmn_kode', $id)->first();
         $menu = Menu::findOrFail($id);
         // $menu = Menu::findOrFail($id);
+        //$data = DB::table('')->where('', $id)->first();
         return response()->json($menu);
     }
 

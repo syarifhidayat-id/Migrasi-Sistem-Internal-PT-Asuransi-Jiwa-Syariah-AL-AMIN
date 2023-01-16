@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
@@ -18,7 +18,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        
+
     }
 
     /**
@@ -40,9 +40,9 @@ class VoucherController extends Controller
     public function store(Request $request)
     {
         // $data = $request->all();
-        // return $data;        
+        // return $data;
 
-        $kode = KodeController::__getKey(14);
+        $kode = Config::__getKey(14);
         $data = $request->all();
         $data = request()->except(['_token']);
 
@@ -109,12 +109,12 @@ class VoucherController extends Controller
 
 
     public function get_vcr_kode() {
-        $kode = KodeController::__getnx(4);
+        $kode = Config::__getnx(4);
         $tahun = date('ym');
         // $bulan = date('m');
         // $noUrut =  rand(1000, 5999);
         $kode_vcr = $tahun .$kode;
-        
+
         return 'VCR.'.$kode_vcr;
 
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Legal;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -64,7 +64,7 @@ class OjkController extends Controller
         // } else {
 
             if ($request->mojk_pk == "") {
-                $kode = KodeController::__getKey(14);
+                $kode = Config::__getKey(14);
                 $data = $request->all();
                 $data = request()->except(['_token']);
 

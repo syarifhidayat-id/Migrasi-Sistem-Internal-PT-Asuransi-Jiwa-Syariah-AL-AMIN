@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Legal\Pks;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -97,7 +97,7 @@ class PksController extends Controller
             ]);
         } else {
             if (empty($request->mpks_pk)) {
-                $kode = KodeController::__getKey(14);
+                $kode = Config::__getKey(14);
                 $data = $request->all();
                 $data = $request->except('_token', 'cari_pk', 'eds');
                 // $data = request()->except(['_token']);
@@ -177,7 +177,7 @@ class PksController extends Controller
                 }
 
                 if ($request->eds == "2") {
-                    $kode_add = KodeController::__getKey(14);
+                    $kode_add = Config::__getKey(14);
                     $data = $request->all();
                     $data = $request->except('cari_pk', 'mpks_pk', 'eds', '_token');
                     $data['mpks_pk'] = $kode_add;
@@ -190,7 +190,7 @@ class PksController extends Controller
                     ]);
                 }
                 if ($request->eds == "3") {
-                    // $kode_add = KodeController::__getKey(14);
+                    // $kode_add = Config::__getKey(14);
                     $vtable = DB::table('eopr.mst_pks')->where('mpks_pk', $request->mpks_pk);
                     $data = $request->all();
                     $data = $request->except('cari_pk', 'eds', '_token');

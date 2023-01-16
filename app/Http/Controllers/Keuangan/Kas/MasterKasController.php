@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\KodeController;
+use App\Http\Controllers\Library\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +21,7 @@ class MasterKasController extends Controller
     public function index()
     {
 
-         $kode = KodeController::__getKey(14);
+         $kode = Config::__getKey(14);
          response()->json([
              'kode' => $kode,
         ]);
@@ -79,6 +79,8 @@ class MasterKasController extends Controller
                 'serverSide_kas_length',
             );
             $data['tdna_pk'] = $kode;
+            // $data['tkad_user_ins'] = $request->user()->email;
+            $data['tdna_date_ins'] = date('Y-m-d H:i:s');
 
             if ($request->hasFile('tdna_bukti')) {
                 $dokumen = $request->file('tdna_bukti');
@@ -94,11 +96,13 @@ class MasterKasController extends Controller
                 $data['tdna_sts_buku'] = '1';
             }
 
-            $vtable = DB::table('epms.trs_dana_aju')->insert($data);
+            // $vtable = DB::table('epms.trs_dana_aju')->insert($data);
 
-            return response()->json([
-                'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
-            ]);
+            // return response()->json([
+            //     'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
+            // ]);
+
+            return $data;
         }
     }
 
@@ -147,7 +151,7 @@ class MasterKasController extends Controller
         //
     }
 
-    
+
 
     // public function m_kas(Request $request)
     // {
@@ -261,7 +265,7 @@ class MasterKasController extends Controller
 
 
     public function testInput(Request $request){
-        
+
         $data = $request->all();
 
         return response()->json($data);

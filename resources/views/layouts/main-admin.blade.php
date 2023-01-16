@@ -375,12 +375,12 @@
     {{-- <script src="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/datatables-serverside.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatables.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/global/formjs/formToJson.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/pdf-view/pdf.min.js') }}"></script>
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
     <script src="{{ asset('dist/js/jquery-config.min.js') }}"></script>
+    <script src="{{ asset('dist/js/jquery-attr-num.min.js') }}"></script>
     <script src="{{ asset('dist/js/jquery.capitalize.js') }}"></script>
 
     <script>

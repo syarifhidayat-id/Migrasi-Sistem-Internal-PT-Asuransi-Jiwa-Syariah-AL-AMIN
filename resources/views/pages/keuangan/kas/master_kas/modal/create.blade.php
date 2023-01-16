@@ -157,7 +157,7 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Nilai</label>
-                                    <input class="form-control" name="tkad_total" id="tkad_total" type="text"
+                                    <input class="form-control" data-type="rupiah" name="tkad_total" id="tkad_total" type="text"
                                         data-allow-clear="true" data-dropdown-parent="#modal_rincian_transaksi"
                                         placeholder="Masukan nilai" />
                                     {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
