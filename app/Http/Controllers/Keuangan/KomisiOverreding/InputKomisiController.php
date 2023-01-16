@@ -96,7 +96,7 @@ class InputKomisiController extends Controller
             );
             $data['msalk_mtx_kode'] = $request->x_kode;
             $data['msalk_tahun'] = $request->x_tahun;
-            $data['msalk_saldo'] = Config::_str2($request->x_saldo);
+            $data['msalk_saldo'] = Config::_str2($request->x_saldo, 'N');
             $vtable->update($data);
 
             return response()->json([
@@ -551,6 +551,58 @@ class InputKomisiController extends Controller
 
     public function postPjKomisi(Request $request)
     {
-        return dd($request->all());
+        if ($request->pic1==$request->pic1a) {
+            return response()->json([
+                'error' => 'PIC Pajak Komisi 1 dan 2 tidak boleh sama!'
+            ]);
+        } else if ($request->pic1==$request->pic1b) {
+            return response()->json([
+                'error' => 'PIC Pajak Komisi 1 dan 3 tidak boleh sama!'
+            ]);
+        } else if ($request->pic1a!=="" OR $request->pic1b !=="") {
+            if ($request->pic1a==$request->pic1b) {
+                return response()->json([
+                    'error' => 'PIC Pajak Komisi 2 dan 3 tidak boleh sama!'
+                ]);
+            }
+        } else if ($request->pic2a!=="" && $request->pic2 !=="") {
+            if ($request->pic2==$request->pic2a) {
+                return response()->json([
+                    'error' => 'PIC Pajak Overreding 1 dan 2 tidak boleh sama!'
+                ]);
+            }
+        } else {
+            // $kode_polis= $request['kode'];
+            // $pst=$request['pst'];
+            // $up= strval(Config::_str2($request['up'],'N'));
+            // $bln1=$request['bln1'];
+            // $bln2=$request['bln2'];
+            // $thn=$request['thn'];
+            // $pic1 =  $request['pic1']; //pic pajak komisi
+            // $kom =  strval(Config::_str2($request['tkom'],'N')); //nilai komisi
+
+
+            // $pic2 =  $request['pic2']; //pic pajak overreding
+            // $over =  strval(Config::_str2($request['tover'],'N')); //nilai overreding
+            // $user=__getUser();
+
+            $data = $request->all();
+            // $data['kode'] = $kode_polis;
+            // $data['pst'] = $pst;
+            // $data['up'] = $up;
+            // $data['bln1'] = $bln1;
+            // $data['bln2'] = $bln2;
+            // $data['thn'] = $thn;
+            // $data['pic1'] = $pic1;
+            // $data['kom'] = $kom;
+            // $data['pic2'] = $pic2;
+            // $data['over'] = $over;
+            $data['saldo1'] = Config::_str2($request->saldo1, 'O');
+            $data['saldo2'] = Config::_str2($request->saldo2, 'O');
+
+            return  response()->json([
+                'success' => $data
+            ]);
+        }
     }
 }

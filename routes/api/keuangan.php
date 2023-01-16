@@ -16,7 +16,7 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('/lod-user-tax', [InputKomisiController::class, 'userTax']);
             Route::get('/export-input', [InputKomisiController::class, 'exportInput']);
             Route::get('/select-cabalamin', [InputKomisiController::class, 'selectCabAlm']);
-            Route::post('/post-pjkomisi', [InputKomisiController::class, 'postPjKomisi']);
+            Route::get('/post-pjkomisi', [InputKomisiController::class, 'postPjKomisi']);
         });
 
         Route::group(['prefix' => '/approval-komisi-overriding', 'as' => 'approval-komisi-overriding.'], function() {

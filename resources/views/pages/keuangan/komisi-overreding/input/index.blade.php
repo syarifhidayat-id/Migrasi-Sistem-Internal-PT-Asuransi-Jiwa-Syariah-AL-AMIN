@@ -161,8 +161,8 @@
     </div>
 
     <div class="card-body py-10">
-        <form id="frxx_pjkomisi" name="frxx_pjkomisi" class="form-mixs" method="post" enctype="multipart/form-data">
-            <div class="table-responsive">
+        <div class="table-responsive">
+            <form id="frxx_pjkomisi" name="frxx_pjkomisi" class="form-table" method="post" enctype="multipart/form-data">
                 <table class="table table-rounded table-striped border align-middle gy-5 gs-5" data-kt-menu="true" tabindex="-1" id="InpOjkKomOver">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
@@ -208,8 +208,8 @@
                         </tr>
                     </tfoot>
                 </table>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
     @include('pages.keuangan.komisi-overreding.input.modal.input')
@@ -444,15 +444,24 @@
                     $(api.column(12).footer()).html(totOver);
                 },
                 function (api) {
-                    var xpic1 = $('.xpic1').attr('id');
+                    var pickom = $('.xpic1').attr('id');
                     var xsaldo1 = $('.xsaldo1').attr('id');
-                    var xpic1a = $('.xpic1a').attr('id');
+
+                    var pickom1a = $('.xpic1a').attr('id');
                     var xsaldo1a = $('.xsaldo1a').attr('id');
-                    var xpic2 = $('.xpic2').attr('id');
+
+                    var pickom1b = $('.xpic1b').attr('id');
+                    var xsaldo1b = $('.xsaldo1b').attr('id');
+
+                    var picover = $('.xpic2').attr('id');
                     var xsaldo2 = $('.xsaldo2').attr('id');
+
+                    var picover2a = $('.xpic2a').attr('id');
+                    var xsaldo2a = $('.xsaldo2a').attr('id');
+
                     var xproses = $('.xproses').attr('id');
-                    // xpic1
-                    selectGrids('#'+xpic1,'GET','{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/lod-user-tax") }}','kode','nama',[
+                    // pickom
+                    selectGrids('#'+pickom,'GET','{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/lod-user-tax") }}','kode','nama',[
                         {field:"npwp",title:"NPWP",width:200},
                         {field:"nama",title:"NAMA",align:"left",width:280},
                         {field:"ket",title:"STATUS",align:"left",width:120},
@@ -460,8 +469,8 @@
                         setText(xsaldo1, row.mtx_saldo);
                     });
                     setTextReadOnly(xsaldo1, true);
-                    // xpic1a
-                    selectGrids('#'+xpic1a,'GET','{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/lod-user-tax") }}','kode','nama',[
+                    // pickom1a
+                    selectGrids('#'+pickom1a,'GET','{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/lod-user-tax") }}','kode','nama',[
                         {field:"npwp",title:"NPWP",width:200},
                         {field:"nama",title:"NAMA",align:"left",width:280},
                         {field:"ket",title:"STATUS",align:"left",width:120},
@@ -469,8 +478,8 @@
                         setText(xsaldo1a, row.mtx_saldo);
                     });
                     setTextReadOnly(xsaldo1a, true);
-                    // xpic2
-                    selectGrids('#'+xpic2,'GET','{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/lod-user-tax") }}','kode','nama',[
+                    // picover
+                    selectGrids('#'+picover,'GET','{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/lod-user-tax") }}','kode','nama',[
                         {field:"npwp",title:"NPWP",width:200},
                         {field:"nama",title:"NAMA",align:"left",width:280},
                         {field:"ket",title:"STATUS",align:"left",width:120},
@@ -525,10 +534,35 @@
         });
 
         function proses_pst(i,kdpolis,tpst,tup,tkom,tover,bln1,bln2,thn,cab,tipe){
+            var ck = "#chx"+i;
+            var vpic1 = getText("xpic1"+i);
+            var vsaldo1 = getText("xsaldo1"+i);
+
+            var vpic1a = getText("xpic1a"+i);
+            var vsaldo1a = getText("xsaldo1a"+i);
+
+            var vpic1b = getText("xpic1b"+i);
+            var vsaldo1b = getText("xsaldo1b"+i);
+
+            var vpic2 = getText("xpic2"+i);
+            var vsaldo2 = getText("xsaldo2"+i);
+
+            var vpic2a = getText("xpic2a"+i);
+            var vsaldo2a = getText("xsaldo2a"+i);
+
+		    var vproses="xproses"+i;
+
+            var vv={ res : ''};
             var url='{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/post-pjkomisi") }}';
-            var rms = kdpolis+"&bln1="+bln1+"&bln2="+bln2+"&thn="+thn+"&pst="+tpst+"&up="+tup+"&tkom="+tkom+"&tover="+tover+"&saldo1="+vsaldo1+"&pic1="+vpic1+"&pic1a="+vpic1a+"&pic1b="+vpic1b+"&saldo2="+vsaldo2+"&pic2="+vpic2+"&pic2a="+vpic2a+"&cab="+cab+"&tipe="+tipe;
-            getJson(url + rms, '', function(data) {
-                console.log(data);
+            var rms = "?kode="+kdpolis+"&bln1="+bln1+"&bln2="+bln2+"&thn="+thn+"&pst="+tpst+"&up="+tup+"&tkom="+tkom+"&tover="+tover+"&saldo1="+vsaldo1+"&pic1="+vpic1+"&pic1a="+vpic1a+"&pic1b="+vpic1b+"&saldo2="+vsaldo2+"&pic2="+vpic2+"&pic2a="+vpic2a+"&cab="+cab+"&tipe="+tipe;
+
+            getJson(url+rms, vv, function(data) {
+                if (data.error) {
+                    pesan(data.error);
+                    clearForm("frxx_pjkomisi");
+                } else if (data.success) {
+                    console.log(data.success);
+                }
             });
         }
 

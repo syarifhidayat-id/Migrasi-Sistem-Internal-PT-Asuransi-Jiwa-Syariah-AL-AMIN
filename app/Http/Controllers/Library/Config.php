@@ -127,10 +127,17 @@ class Config extends Controller
         return $obj;
     }
 
-    public static function _str2($nominal)
+    public static function _str2($nominal, $param)
     {
-        $val = substr($nominal, 0, -3);
-        $obj = Config::_str(',', '', $val);
+        if ($param=="O") {
+            $val = $nominal;
+            $str = Config::_str([',', '.'], '', $val);
+        }
+        if ($param=="N") {
+            $val = substr($nominal, 0, -3);
+            $str = Config::_str(',', '', $val);
+        }
+        $obj = $str;
         return $obj;
     }
 }
