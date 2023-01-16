@@ -118,4 +118,12 @@ class VoucherController extends Controller
         return 'VCR.'.$kode_vcr;
 
     }
+
+    public function get_tkad_akun($id) {
+        $data = DB::table('epms.trs_kas_dtl')->select('tkad_askn_kode')
+        ->where('tkad_atjh_pk', $id)
+        ->first();
+
+        return response()->json($data);
+    }
 }

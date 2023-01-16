@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Library\KodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 
@@ -46,7 +48,58 @@ class MasterKasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validasi = Validator::make(
+            $request->all(),
+            [
+
+                'tdna_kode_vcr' => 'required',
+                // 'mpojk_tentang' => 'required',
+                // 'mpojk_jenis' => 'required',
+                // 'mpojk_dokumen' => 'mimes:pdf',
+            ],
+            [
+                'tdna_kode_vcr.required' => 'Voucher Induk Tidak Boleh Kosong!',
+                // 'mpojk_tentang.required' => 'Tidak boleh kosong!',
+                // 'mpojk_jenis.required' => 'Tidak boleh kosong!',
+                // 'mpojk_dokumen.mimes' => 'File harus format pdf!',
+            ]
+        );
+
+        if ($validasi->fails()) {
+            return response()->json([
+                'error' => $validasi->errors()
+            ]);
+        } else {
+            $data = $request->all(); 
+            $kode = $request->kode_new;
+            $data = $request->except(
+                '_token',
+                'kode_new',
+                'serverSide_kas_length',
+            );
+            $data['tdna_pk'] = $kode;
+
+            if ($request->hasFile('tdna_bukti')) {
+                $dokumen = $request->file('tdna_bukti');
+                $dir = 'public/keuangan/kas/master-kas';
+                $fileOri = $dokumen->getClientOriginalName();
+                $nameBukti = $kode . '_danaju_' . $fileOri;
+                $path = Storage::putFileAs($dir, $dokumen, $nameBukti);
+                $data['tdna_bukti'] = $nameBukti;
+            }
+            
+            // $vtable = DB::table('epms.trs_dana_aju')->select('*')->get();
+            if ($request->tdna_aprov_admin == '1' && $request->tdna_aprov_kacab == '1' && $request->tdna_aprov_kapms == '1' && $request->tdna_aprov_korwil == '1' && $request->tdna_aprov_ho == '1') {
+                $data['tdna_sts_buku'] = '1';
+            }
+
+            $vtable = DB::table('epms.trs_dana_aju')->insert($data);
+
+            return response()->json([
+                'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
+            ]);
+        }
     }
 
     /**

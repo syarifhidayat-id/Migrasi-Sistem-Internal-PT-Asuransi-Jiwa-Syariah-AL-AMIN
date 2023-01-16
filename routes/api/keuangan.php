@@ -18,16 +18,21 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
     });
 
     Route::group(['prefix' => '/kas', 'as' => 'kas.'], function () {
+        Route::resource('master-kas', MasterKasController::class);
         Route::resource('vcr', VoucherController::class);
+        Route::get('tkav_nomor', [VoucherController::class, 'get_vcr_kode']);
+        Route::get('vcr/get_tkad_akun/{id}', [VoucherController::class, 'get_tkad_akun']);
+        
         Route::resource('dtl', RincianTransaksiController::class);
         Route::get('api_tb_dtl', [RincianTransaksiController::class, 'api_tb_dtl']);
-
+        Route::get('e_akun', [RincianTransaksiController::class, 'e_akun']);
+        Route::get('api_edit_dtl/{id}/edit', [RincianTransaksiController::class, 'api_edit_dtl']);
+        Route::get('edit_akun/{id}', [RincianTransaksiController::class, 'edit_akun']);
+        Route::delete('delete/{id}', [RincianTransaksiController::class, 'destroy']);
         
         Route::get('kantor-alamin', [MasterKasController::class, 'kantor_alamin']);
         Route::get('s_karyawan', [MasterKasController::class, 'm_karyawan']);
         Route::get('e_realisasi', [MasterKasController::class, 'e_realisasi']);
-        Route::get('e_akun', [RincianTransaksiController::class, 'e_akun']);
-        Route::get('tkav_nomor', [VoucherController::class, 'get_vcr_kode']);
         Route::get('tdna_penerima', [MasterKasController::class, 'tdna_penerima']);
 
     });
