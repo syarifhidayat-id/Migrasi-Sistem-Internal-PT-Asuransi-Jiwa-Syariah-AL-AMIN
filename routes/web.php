@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/maintenance', [DashboardController::class, 'maintenance'])->name('maintenance');
 
+    // require __DIR__ . '/api.php';
     // require __DIR__ . '/web/sdm.php';
     require __DIR__ . '/web/legal.php';
     require __DIR__ . '/web/keuangan.php';

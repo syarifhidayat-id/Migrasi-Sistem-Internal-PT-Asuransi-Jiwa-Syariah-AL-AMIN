@@ -5,6 +5,7 @@ use App\Http\Controllers\Keuangan\Kas\MasterKasController;
 use App\Http\Controllers\Keuangan\Kas\RincianTransaksiController;
 use App\Http\Controllers\Keuangan\Kas\VoucherController;
 use App\Http\Controllers\Keuangan\KomisiOverreding\InputKomisiController;
+use App\Http\Controllers\Library\LodController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
@@ -16,7 +17,8 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('/lod-user-tax', [InputKomisiController::class, 'userTax']);
             Route::get('/export-input', [InputKomisiController::class, 'exportInput']);
             Route::get('/select-cabalamin', [InputKomisiController::class, 'selectCabAlm']);
-            Route::get('/post-pjkomisi', [InputKomisiController::class, 'postPjKomisi']);
+            // Route::get('/post-pjkomisi', [InputKomisiController::class, 'postPjKomisi']);
+            // Route::get('/lod_pmg_polis', [LodController::class, 'lod_pmg_polis']);
         });
 
         Route::group(['prefix' => '/approval-komisi-overriding', 'as' => 'approval-komisi-overriding.'], function() {

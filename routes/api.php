@@ -16,8 +16,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+// Route::group(['middleware' => ['auth:api']], function (Request $request) {
+// Route::middleware(['auth:sanctum'])->group(function () {
     return $request->user();
 });
+
+// Route::middleware('auth:api')->group( function () {
+
+// });
 
 Route::get('/reload-captcha', [LoginController::class, 'reloadCaptha']);
 

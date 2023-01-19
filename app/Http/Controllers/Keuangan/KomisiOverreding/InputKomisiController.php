@@ -96,7 +96,7 @@ class InputKomisiController extends Controller
             );
             $data['msalk_mtx_kode'] = $request->x_kode;
             $data['msalk_tahun'] = $request->x_tahun;
-            $data['msalk_saldo'] = Config::_str2($request->x_saldo, 'N');
+            $data['msalk_saldo'] = Config::__str2($request->x_saldo, 'N');
             $vtable->update($data);
 
             return response()->json([
@@ -245,8 +245,11 @@ class InputKomisiController extends Controller
     public function lodInputKomisi(Request $request)
     {
         if ($request->ajax()) {
+            set_time_limit(10000000);
+
             $vtable = DB::table('epstfix.peserta_all')
             ->select(DB::raw("
+            count(*) tot,
             mpol_kode kdpolis,
             mpol_mrkn_kode kode,
             mpol_mrkn_nama nama,
@@ -261,9 +264,12 @@ class InputKomisiController extends Controller
             tpprd_extra_persen,
             tpprd_insert_fix,
             tpprd_mlok_kode"))
-            ->leftJoin('eopr.mst_polis', function($join) {
-                $join->on('mpol_kode', '=', 'tpprd_nomor_polish')
-                ->orderBy('mpol_mrkn_nama', 'ASC')
+            ->leftJoin('eopr.mst_polis', function($join) use ($request) {
+                $join->on('mpol_kode', '=', 'tpprd_nomor_polish');
+                if ($request['c_pmgpolis']=='1' && $request['c_pmgpolis']!=='0') {
+                    $join->where('mpol_mrkn_kode', '=', $request['e_pmgpolis']);
+                }
+                $join->orderBy('mpol_mrkn_nama', 'ASC')
                 ->groupBy('mpol_kode');
             })
             ->leftJoin('emst.mst_jenis_nasabah', 'mjns_kode', '=', 'mpol_mjns_kode')
@@ -273,8 +279,11 @@ class InputKomisiController extends Controller
                 $join->on('mlok_kode', '=', 'tpprd_mlok_kode')
                 ->orderBy('mlok_nama', 'ASC');
             })
-            ->leftJoin('emst.mst_rekanan as cb', function($join) {
+            ->leftJoin('emst.mst_rekanan as cb', function($join) use ($request) {
                 $join->on('cb.mrkn_kode', '=', 'tpprd_mrkn_kode');
+                if ($request['c_cbpmgpolis']=='1' && $request['c_pmgpolis']!=='0') {
+                    $join->where('cb.mrkn_kode', '=', $request['e_cbpmgpolis']);
+                }
             })
             ->leftJoin('emst.mst_rekanan as ps', function($join) {
                 $join->on(DB::raw("IF(IFNULL(cb.mrkn_mrkn_kode_induk,'')='' OR cb.mrkn_mrkn_kode_induk='-', cb.mrkn_kode,cb.mrkn_mrkn_kode_induk)"), '=', 'ps.mrkn_kode');
@@ -552,57 +561,1225 @@ class InputKomisiController extends Controller
     public function postPjKomisi(Request $request)
     {
         if ($request->pic1==$request->pic1a) {
-            return response()->json([
+            return Config::json([
                 'error' => 'PIC Pajak Komisi 1 dan 2 tidak boleh sama!'
             ]);
-        } else if ($request->pic1==$request->pic1b) {
-            return response()->json([
+        } else if ($request->pic1==$request->pic2) {
+            return Config::json([
                 'error' => 'PIC Pajak Komisi 1 dan 3 tidak boleh sama!'
             ]);
-        } else if ($request->pic1a!=="" OR $request->pic1b !=="") {
-            if ($request->pic1a==$request->pic1b) {
-                return response()->json([
-                    'error' => 'PIC Pajak Komisi 2 dan 3 tidak boleh sama!'
-                ]);
-            }
-        } else if ($request->pic2a!=="" && $request->pic2 !=="") {
-            if ($request->pic2==$request->pic2a) {
-                return response()->json([
-                    'error' => 'PIC Pajak Overreding 1 dan 2 tidak boleh sama!'
-                ]);
-            }
+        } else if ($request->pic1a==$request->pic2) {
+            return Config::json([
+                'error' => 'PIC Pajak Komisi 2 dan 3 tidak boleh sama!'
+            ]);
         } else {
-            // $kode_polis= $request['kode'];
-            // $pst=$request['pst'];
-            // $up= strval(Config::_str2($request['up'],'N'));
-            // $bln1=$request['bln1'];
-            // $bln2=$request['bln2'];
-            // $thn=$request['thn'];
-            // $pic1 =  $request['pic1']; //pic pajak komisi
-            // $kom =  strval(Config::_str2($request['tkom'],'N')); //nilai komisi
+            $kode_polis = $request['kode'];
+            $pst = $request['pst'];
+            $up = strval(Config::__str2($request['up'],'N'));
+            $bln1 = $request['bln1'];
+            $bln2 = $request['bln2'];
+            $thn = $request['thn'];
+            $pic1 = $request['pic1']; //pic pajak komisi
+            $pic1a = $request['pic1a'];
+            $kom = strval(Config::__str2($request['tkom'],'N')); //nilai komisi
+            $cab = $request['cab'];
 
-
-            // $pic2 =  $request['pic2']; //pic pajak overreding
-            // $over =  strval(Config::_str2($request['tover'],'N')); //nilai overreding
-            // $user=__getUser();
+            $pic2 = $request['pic2']; //pic pajak overreding
+            $over = strval(Config::__str2($request['tover'],'N')); //nilai overreding
+            $user = Config::__getUser();
+            $saldo1 = strval(Config::__str2($request['saldo1'],'O'));
+            $saldo2 = strval(Config::__str2($request['saldo2'],'O'));
 
             $data = $request->all();
-            // $data['kode'] = $kode_polis;
-            // $data['pst'] = $pst;
-            // $data['up'] = $up;
-            // $data['bln1'] = $bln1;
-            // $data['bln2'] = $bln2;
-            // $data['thn'] = $thn;
-            // $data['pic1'] = $pic1;
-            // $data['kom'] = $kom;
-            // $data['pic2'] = $pic2;
-            // $data['over'] = $over;
-            $data['saldo1'] = Config::_str2($request->saldo1, 'O');
-            $data['saldo2'] = Config::_str2($request->saldo2, 'O');
+            $data['kode'] = $kode_polis;
+            $data['pst'] = $pst;
+            $data['up'] = $up;
+            $data['bln1'] = $bln1;
+            $data['bln2'] = $bln2;
+            $data['thn'] = $thn;
+            $data['pic1'] = $pic1;
+            $data['kom'] = $kom;
+            $data['pic2'] = $pic2;
+            $data['over'] = $over;
+            $data['saldo1'] = $saldo1;
+            $data['saldo2'] = $saldo2;
+            $data['cabang'] = $cab;
+            // $data['user'] = ;
 
             return  response()->json([
                 'success' => $data
             ]);
+
+        //     $cek = DB::select("SELECT COUNT(*) t,
+        //     sum(tpprd_up) tup,
+        //     mpol_mrkn_kode kd_rekan,
+        //     IFNULL(mpol_mkom_persen,0) kompolis
+        //     FROM epstfix.peserta_all
+        //     LEFT JOIN eopr.mst_polis ON mpol_kode=tpprd_nomor_polish,
+        //     emst.mst_rekanan cb
+        //     LEFT JOIN emst.mst_rekanan ps ON IF(IFNULL(cb.mrkn_mrkn_kode_induk,'')='' OR cb.mrkn_mrkn_kode_induk='-' ,cb.mrkn_kode,cb.mrkn_mrkn_kode_induk) =ps.mrkn_kode
+        //     WHERE mpol_kode='".$kode_polis."' AND tpprd_mrkn_kode=cb.mrkn_kode
+        //     AND month(date(tpprd_insert_fix)) between '".$bln1."' and '".$bln2."'
+        //     AND year(date(tpprd_insert_fix))='".$thn."'
+        //     AND (tpprd_total_bayar_dtl-tpprd_premi_bayar)>-0.1
+        //     AND IFNULL(tpprd_komisi_persen,0)>0 AND IFNULL(tpprd_tax_persen,0)<1 and tpprd_mlok_kode!=01
+        //     AND tpprd_status_klaim!=1 AND tpprd_status_refund!=1
+        //     AND tpprd_mlok_kode='".$cab."'
+        //     AND tpprd_status_batal!=1 AND tpprd_status_bayar=1
+        //     AND tpprd_status=1");
+
+        //     $rcek= Config::__dbRow($cek);
+
+        //     if ($rcek['kompolis']<1) {
+        //         return Config::json([
+        //             'error' => 'Komisi Pada Polis No l !'
+        //         ]);
+        //     }
+        //     if ($rcek['t']!=$pst) {
+        //         return Config::json([
+        //             'error' => 'Total Peserta berbeda Cek: '.$rcek['t'].' Sedangkan tabel: '.$pst
+        //         ]);
+        //     }
+
+        //     $pkx = Config::__getKey(14);
+
+        //     if ($rcek['t']==$pst && strval($rcek['tup'])==strval($up)) {
+        //         if ($pic1!='') {
+        //             $cek1 = DB::select("SELECT mtx_status sts, IFNULL(mtx_npwp,'') npwp,
+        //             IFNULL(msalk_saldo,0) saldo,if(mtx_status=1,120000000,60000000) xlimit
+        //             FROM emst.`mst_tax`
+        //             LEFT JOIN emst.mst_saldo_komisi ON mtx_kode=msalk_mtx_kode AND msalk_tahun=YEAR(CURDATE())
+        //             WHERE 1=1 AND mtx_kode='".$pic1."'");
+        //             $r1 = Config::__dbRow($cek1);
+        //         }
+        //         if ($pic1a!='') {
+        //             $cek2 = DB::select("SELECT mtx_status sts, IFNULL(mtx_npwp,'') npwp,
+        //             IFNULL(msalk_saldo,0) saldo,if(mtx_status=1,120000000,60000000) xlimit
+        //             FROM emst.`mst_tax`
+        //             LEFT JOIN emst.mst_saldo_komisi ON mtx_kode=msalk_mtx_kode AND msalk_tahun=YEAR(CURDATE())
+        //             WHERE 1=1 AND mtx_kode='".$pic1a."'");
+        //             $r2 = Config::__dbRow($cek2);
+        //         }
+        //         if ($pic2!='') {
+        //             $cek3 = DB::select("SELECT mtx_status sts, IFNULL(mtx_npwp,'') npwp,
+        //             IFNULL(msalk_saldo,0) saldo,if(mtx_status=1,120000000,60000000) xlimit
+        //             FROM emst.`mst_tax`
+        //             LEFT JOIN emst.mst_saldo_komisi ON mtx_kode=msalk_mtx_kode AND msalk_tahun=YEAR(CURDATE())
+        //             WHERE 1=1 AND mtx_kode='".$pic2."'");
+        //             $r3 = Config::__dbRow($cek3);
+        //         }
+
+	    //         //---KONDISI KOMISI 1---//
+        //         if ($pic1!='' || $pic1a=='' || $pic2=='') {
+        //             $tax1 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
+        //             WHERE (".$r1['saldo']."+".$kom.")>=mpt_nilai1
+        //             AND mpt_nilai2>=(".$r1['saldo']."+".$kom.")
+        //             LIMIT 1");
+        //             $rtax1 = Config::__dbRow($tax1);
+
+        //             $pajak1 = $rtax1['mpt_persen'];
+
+        //             if ($r1['npwp']!='') {
+        //                 if ($r1['sts']==1) {
+        //                     $tax1 = (50/100)*($rtax1['mpt_persen']/100);
+        //                 } else {
+        //                     $tax1 = ($rtax1['mpt_persen']/100);
+        //                 }
+        //             } else {
+        //                 if ($r1['sts']==1) {
+        //                     $tax1 = (50/100)*($rtax1['mpt_persen']/100)*(120/100);
+        //                 } else {
+        //                     $tax1 = ($rtax1['mpt_persen']/100)*(120/100);
+        //                 }
+        //             }
+
+        //             $cek = DB::select("select count(*) t from etrs.trs_komisi_hdr where tkomh_nosurat='".$kode_polis."' and tkomh_pst='".$rcek['t']."'
+        //             and tkomh_up='".$rcek['tup']."' and tkomh_penerima='".$pic1."'");
+        //             $rcek = Config::__dbRow($cek);
+
+        //             if ($rcek['t']<1) {
+        //                 $cmdh1 = DB::select("INSERT IGNORE INTO etrs.trs_komisi_hdr
+        //                 SELECT
+        //                 '".$pkx."K' tkomh_pk,
+        //                 '".$kode_polis."' tkomh_nosurat,
+        //                 curdate() tkomh_tanggal,
+        //                 '".$rcek['t']."'  tkomh_pst,
+        //                 '".$rcek['tup']."'  tkomh_up,
+        //                 0  tkomh_komisi,
+        //                 0  tkomh_tax,
+        //                 0  tkomh_komisinett,
+        //                 0  tkomh_bayar,
+        //                 '' tkomh_bayar_tgl,
+        //                 '' tkomh_mgro_pk,
+        //                 '".$pic1."' tkomh_penerima,
+        //                 0 tkomh_indexfolder,
+        //                 '' tkomh_buktibayar,
+        //                 NOW() tkomh_crud,
+        //                 0  tkomh_sts1,
+        //                 '' tkomh_sts1_date,
+        //                 '' tkomh_sts1_user,
+        //                 0  tkomh_sts2,
+        //                 '' tkomh_sts2_date,
+        //                 '' tkomh_sts2_user,
+        //                 0  tkomh_sts3,
+        //                 '' tkomh_sts3_date,
+        //                 '' tkomh_sts3_user");
+
+        //                 Config::__dbRow($cmdh1);
+
+        //                 $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
+        //                 (`tkomd_pk`,
+        //                 `tkomd_tkomh_pk`,
+        //                 `tkomd_tpprd_pk`,
+        //                 `tkomd_up`,
+        //                 `tkomd_komisi_persen`,
+        //                 `tkomd_komisi`,
+        //                 `tkomd_tax_user`,
+        //                 `tkomd_tax_userstatus`,
+        //                 `tkomd_tax_userpersen`,
+        //                 `tkomd_tax_persen`,
+        //                 `tkomd_tax`,
+        //                 `tkomd_tipe`,
+        //                 `tkomd_ins_date`,
+        //                 `tkomd_ins_user`,
+        //                 `tkomd_bayar`,
+        //                 `tkomd_tglbayar`,
+        //                 `tkomd_userbayar`,
+        //                 `tkomd_prosesbayar`,
+        //                 `tkomd_mlok_kode`,
+        //                 `tkomd_mrkn_kode_induk`,
+        //                 `tkomd_mpol_kode`)
+        //                SELECT
+        //                CONCAT('".$pkx."_',tpprd_pk) tkomd_pk,
+        //                '".$pkx."K' tkomd_tkomh_pk,
+        //                tpprd_pk tkomd_tpprd_pk,
+        //                tpprd_up tkomd_up,
+        //                tpprd_komisi_persen tkomd_komisi_persen,
+        //                epstfix.`F_GET_RUMUSPRODUKSI`(
+        //                 'KOMISI'	,			   		`tpprd_pk`  ,
+        //                 `tpprd_nomor_polish` ,   		`tpprd_jatuhtempo` ,
+        //                 `tpprd_umur` ,		   		`tpprd_umur2` ,
+        //                 `tpprd_tanggal_lahir` ,  		`tpprd_tanggal_lahir2` ,
+        //                 `tpprd_tanggal_awal` ,   		`tpprd_tanggal_akhir` ,
+        //                 `tpprd_masa_tahun` ,	   		`tpprd_masa_bulan` ,
+        //                 `tpprd_up` ,			   		`tpprd_tarif_persen` ,
+        //                 `tpprd_tarif` ,		   		`tpprd_admin` ,
+        //                 `tpprd_admin_persen` ,   		`tpprd_disc` ,
+        //                 `tpprd_disc_persen` ,	   		`tpprd_disc_ajukan`  ,
+        //                 `tpprd_discpolis`  ,	   		`tpprd_discpolis_persen` ,
+        //                 `tpprd_disc_lain_persen`,		`tpprd_disc_lain` ,
+        //                 `tpprd_biaya_medis` ,    		`tpprd_extra` ,
+        //                 `tpprd_extra_persen` ,  		`tpprd_em_persen_reas` ,
+        //                 `tpprd_premi_reas` ,	  		`tpprd_up_baru` ,
+        //                 `tpprd_premi` ,		  		`tpprd_premi_co` ,
+        //                 `tpprd_premi_bayar`,	  		`tpprd_share` ,
+        //                 `tpprd_up_persen` ,	  		`tpprd_ujroh_persen` ,
+        //                 `tpprd_ujroh` ,		  		`tpprd_komisi_persen` ,
+        //                 `tpprd_komisi` ,		  		`tpprd_status_usertax_persen` ,
+        //                 `tpprd_status_usertax`, 		`tpprd_tax_persen` ,
+        //                 `tpprd_tax` ,			  		`tpprd_komisi_bayar` ,
+        //                 `tpprd_manajemenfee_persen`,  `tpprd_manajemenfee` ,
+        //                 `tpprd_overidding_persen` ,   `tpprd_overidding` ,
+        //                 `tpprd_referal` ,			    `tpprd_referal_persen` ,
+        //                 `tpprd_maintenance` , 	    `tpprd_maintenance_persen` ,
+        //                 `tpprd_handlingfee_persen` ,  `tpprd_handlingfee` ,
+        //                 `tpprd_disc_ujroh` , 		    `tpprd_refund_premi` ,
+        //                 `tpprd_tanggal_bayar` , 	    `tpprd_total_bayar_dtl` ,
+        //                 `tpprd_total_bayar` , 	    `tpprd_status_bayar` ,
+        //                 `tpprd_jenis_bayar` , 	    `tpprd_tarif_nonlife` ,
+        //                 `tpprd_premi_nonlife` ,  	    `tpprd_tarif_persen_nonlife` ,
+        //                 `tpprd_umur_polis` , 	  	    `tpprd_status_bayar_lain` ,
+        //                 `tpprd_tanggal_bayar_lain` ,  `tpprd_total_bayar_lain` ,
+        //                 `tpprd_total_bayar_disc` ,    `tpprd_tanggal_bayar_disc` ,
+        //                 `tpprd_em_status`,		    `tpprd_em_tanggal` ,
+        //                 `tpprd_reas_premilife` ,	    `tpprd_reas_preminonlife` ,
+        //                 `tpprd_reas_ujrohreas` ,	    `tpprd_reas_tabbaru` ,
+        //                 `tpprd_share_reindo` ,	    `tpprd_share_nasre` ,
+        //                 `tpprd_share_alamin` ,	    `tpprd_tabaru_life` ,
+        //                 `tpprd_uangkuliah_semester`  ,`tpprd_uangkuliah_tunggal` ,
+        //                 `tpprd_tahun_kuliah`,		    `tpprd_masa_kuliah` ,
+        //                 `tpprd_ajufee` ,			    `tpprd_ajufee_persen` ,
+        //                 `tpprd_total_refund` ,	    `tpprd_selisih_premi` ,
+        //                 mpol_mjns_kode,			  	 mpol_mjm_kode,
+        //                 '') as tkomd_komisi,
+        //                '".$pic1."' tkomd_tax_user,
+        //                '".$r1['sts']."' tkomd_tax_userstatus,
+        //                if('".$r1['sts']."'=1,50,0) tkomd_tax_userpersen,
+        //                ".$pajak1." tkomd_tax_persen,
+        //                epstfix.`F_GET_RUMUSPRODUKSI`(
+        //                 'KOMISI'	,			   		`tpprd_pk`  ,
+        //                 `tpprd_nomor_polish` ,   		`tpprd_jatuhtempo` ,
+        //                 `tpprd_umur` ,		   		`tpprd_umur2` ,
+        //                 `tpprd_tanggal_lahir` ,  		`tpprd_tanggal_lahir2` ,
+        //                 `tpprd_tanggal_awal` ,   		`tpprd_tanggal_akhir` ,
+        //                 `tpprd_masa_tahun` ,	   		`tpprd_masa_bulan` ,
+        //                 `tpprd_up` ,			   		`tpprd_tarif_persen` ,
+        //                 `tpprd_tarif` ,		   		`tpprd_admin` ,
+        //                 `tpprd_admin_persen` ,   		`tpprd_disc` ,
+        //                 `tpprd_disc_persen` ,	   		`tpprd_disc_ajukan`  ,
+        //                 `tpprd_discpolis`  ,	   		`tpprd_discpolis_persen` ,
+        //                 `tpprd_disc_lain_persen`,		`tpprd_disc_lain` ,
+        //                 `tpprd_biaya_medis` ,    		`tpprd_extra` ,
+        //                 `tpprd_extra_persen` ,  		`tpprd_em_persen_reas` ,
+        //                 `tpprd_premi_reas` ,	  		`tpprd_up_baru` ,
+        //                 `tpprd_premi` ,		  		`tpprd_premi_co` ,
+        //                 `tpprd_premi_bayar`,	  		`tpprd_share` ,
+        //                 `tpprd_up_persen` ,	  		`tpprd_ujroh_persen` ,
+        //                 `tpprd_ujroh` ,		  		`tpprd_komisi_persen` ,
+        //                 `tpprd_komisi` ,		  		`tpprd_status_usertax_persen` ,
+        //                 `tpprd_status_usertax`, 		`tpprd_tax_persen` ,
+        //                 `tpprd_tax` ,			  		`tpprd_komisi_bayar` ,
+        //                 `tpprd_manajemenfee_persen`,  `tpprd_manajemenfee` ,
+        //                 `tpprd_overidding_persen` ,   `tpprd_overidding` ,
+        //                 `tpprd_referal` ,			    `tpprd_referal_persen` ,
+        //                 `tpprd_maintenance` , 	    `tpprd_maintenance_persen` ,
+        //                 `tpprd_handlingfee_persen` ,  `tpprd_handlingfee` ,
+        //                 `tpprd_disc_ujroh` , 		    `tpprd_refund_premi` ,
+        //                 `tpprd_tanggal_bayar` , 	    `tpprd_total_bayar_dtl` ,
+        //                 `tpprd_total_bayar` , 	    `tpprd_status_bayar` ,
+        //                 `tpprd_jenis_bayar` , 	    `tpprd_tarif_nonlife` ,
+        //                 `tpprd_premi_nonlife` ,  	    `tpprd_tarif_persen_nonlife` ,
+        //                 `tpprd_umur_polis` , 	  	    `tpprd_status_bayar_lain` ,
+        //                 `tpprd_tanggal_bayar_lain` ,  `tpprd_total_bayar_lain` ,
+        //                 `tpprd_total_bayar_disc` ,    `tpprd_tanggal_bayar_disc` ,
+        //                 `tpprd_em_status`,		    `tpprd_em_tanggal` ,
+        //                 `tpprd_reas_premilife` ,	    `tpprd_reas_preminonlife` ,
+        //                 `tpprd_reas_ujrohreas` ,	    `tpprd_reas_tabbaru` ,
+        //                 `tpprd_share_reindo` ,	    `tpprd_share_nasre` ,
+        //                 `tpprd_share_alamin` ,	    `tpprd_tabaru_life` ,
+        //                 `tpprd_uangkuliah_semester`  ,`tpprd_uangkuliah_tunggal` ,
+        //                 `tpprd_tahun_kuliah`,		    `tpprd_masa_kuliah` ,
+        //                 `tpprd_ajufee` ,			    `tpprd_ajufee_persen` ,
+        //                 `tpprd_total_refund` ,	    `tpprd_selisih_premi` ,
+        //                 mpol_mjns_kode,			  	 mpol_mjm_kode,
+        //                 '')*".$tax1." as tkomd_tax,
+        //                 1 tkomd_tipe,
+        //                 now() tkomd_ins_date,
+        //                 '".$user."' tkomd_ins_user,
+        //                 0 tkomd_bayar,
+        //                 '1881-01-01' tkomd_tglbayar,
+        //                 '' tkomd_userbayar,
+        //                 '' tkomd_prosesbayar,tpprd_mlok_kode  `tkomd_mlok_kode`,mpol_mrkn_kode `tkomd_mrkn_kode_induk`, mpol_kode `tkomd_mpol_kode`
+        //                FROM epstfix.peserta_all
+        //                LEFT JOIN eopr.mst_polis ON mpol_kode=tpprd_nomor_polish
+        //                WHERE mpol_kode='".$kode_polis."' AND month(date(tpprd_insert_fix)) between '".$bln1."' and '".$bln2."'
+        //                AND year(date(tpprd_insert_fix))='".$thn."' #AND tpprd_total_bayar_dtl>=tpprd_premi_bayar
+        //                AND (tpprd_total_bayar_dtl-tpprd_premi_bayar)>-0.1
+        //                AND IFNULL(mpol_mkom_persen,0)>0 AND IFNULL(tpprd_tax_persen,0)<1 and tpprd_mlok_kode!='01'
+        //                AND if(mpol_mrkn_kode='R17000246',tpprd_mlok_kode='".$cab."',ifnull(tpprd_pk,'')!='')
+        //                AND tpprd_status_klaim!=1 AND tpprd_status_refund!=1
+        //                AND tpprd_status_batal!=1 AND tpprd_status_bayar='1' AND tpprd_status='1'
+        //                GROUP BY tpprd_pk LIMIT 100000");
+
+        //                Config::__dbAll($cmd);
+        //             }
+        //         }
+        //         //---END KONDISI KOMISI 1---//
+
+        //         //---KONDISI KOMISI 2---//
+        //         if ($pic1!='' || $pic1a!='' || $pic2!=='') {
+        //             $sel1 = $r1['xlimit']-$r1['saldo'];
+
+        //             $tax1 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
+        //             WHERE ".$sel1."+".$r1['saldo'].">=mpt_nilai1 AND mpt_nilai2>=".$sel1."+".$r1['saldo']."
+        //             LIMIT 1");
+        //             $rtax1 = Config::__dbRow($tax1);
+
+        //             $pajak1 = $rtax1['mpt_persen'];
+
+        //             if ($r1['npwp']!='') {
+        //                 if ($r1['sts']==1) {
+        //                     $tax1 = (50/100)*($rtax1['mpt_persen']/100);
+        //                 } else {
+        //                     $tax1 = ($rtax1['mpt_persen']/100);
+        //                 }
+        //             } else {
+        //                 if ($r1['sts']==1) {
+        //                     $tax1 = (50/100)*($rtax1['mpt_persen']/100)*(120/100);
+        //                 } else {
+        //                     $tax1 = ($rtax1['mpt_persen']/100)*(120/100);
+        //                 }
+        //             }
+
+        //             $cmdh = DB::select("INSERT IGNORE INTO etrs.`trs_komisi_hdr`
+        //             SELECT
+        //             '".$pkx."K' `tkomh_pk`,
+        //             '' `tkomh_nosurat`,
+        //             '' `tkomh_tanggal`,
+        //             0  `tkomh_pst`,
+        //             0  `tkomh_up`,
+        //             0  `tkomh_komisi`,
+        //             0 `tkomh_tax`,
+        //             0 `tkomh_komisinett`,
+        //             0 `tkomh_bayar`,
+        //             '' `tkomh_bayar_tgl`,
+        //             '' `tkomh_mgro_pk`,
+        //             '' `tkomh_penerima`,
+        //             0 tkomh_indexfolder,
+        //             '' tkomh_buktibayar,
+        //             NOW() `tkomh_crud`,
+        //             0  `tkomh_sts1`,
+        //             '' `tkomh_sts1_date`,
+        //             '' `tkomh_sts1_user`,
+        //             0  `tkomh_sts2`,
+        //             '' `tkomh_sts2_date`,
+        //             '' `tkomh_sts2_user`,
+        //             0  `tkomh_sts3`,
+        //             '' `tkomh_sts3_date`,
+        //             '' `tkomh_sts3_user`");
+
+        //             Config::__dbRow($cmdh);
+
+        //             $cmdx1 = DB::select("SELECT
+        //             tpprd_pk,
+        //             tpprd_up,
+        //             tpprd_komisi_persen,
+        //             epstfix.`F_GET_RUMUSPRODUKSI`(
+        //             'KOMISI'	,			   		`tpprd_pk`  ,
+        //             `tpprd_nomor_polish` ,   		`tpprd_jatuhtempo` ,
+        //             `tpprd_umur` ,		   		`tpprd_umur2` ,
+        //             `tpprd_tanggal_lahir` ,  		`tpprd_tanggal_lahir2` ,
+        //             `tpprd_tanggal_awal` ,   		`tpprd_tanggal_akhir` ,
+        //             `tpprd_masa_tahun` ,	   		`tpprd_masa_bulan` ,
+        //             `tpprd_up` ,			   		`tpprd_tarif_persen` ,
+        //             `tpprd_tarif` ,		   		`tpprd_admin` ,
+        //             `tpprd_admin_persen` ,   		`tpprd_disc` ,
+        //             `tpprd_disc_persen` ,	   		`tpprd_disc_ajukan`  ,
+        //             `tpprd_discpolis`  ,	   		`tpprd_discpolis_persen` ,
+        //             `tpprd_disc_lain_persen`,		`tpprd_disc_lain` ,
+        //             `tpprd_biaya_medis` ,    		`tpprd_extra` ,
+        //             `tpprd_extra_persen` ,  		`tpprd_em_persen_reas` ,
+        //             `tpprd_premi_reas` ,	  		`tpprd_up_baru` ,
+        //             `tpprd_premi` ,		  		`tpprd_premi_co` ,
+        //             `tpprd_premi_bayar`,	  		`tpprd_share` ,
+        //             `tpprd_up_persen` ,	  		`tpprd_ujroh_persen` ,
+        //             `tpprd_ujroh` ,		  		`tpprd_komisi_persen` ,
+        //             `tpprd_komisi` ,		  		`tpprd_status_usertax_persen` ,
+        //             `tpprd_status_usertax`, 		`tpprd_tax_persen` ,
+        //             `tpprd_tax` ,			  		`tpprd_komisi_bayar` ,
+        //             `tpprd_manajemenfee_persen`,  `tpprd_manajemenfee` ,
+        //             `tpprd_overidding_persen` ,   `tpprd_overidding` ,
+        //             `tpprd_referal` ,			    `tpprd_referal_persen` ,
+        //             `tpprd_maintenance` , 	    `tpprd_maintenance_persen` ,
+        //             `tpprd_handlingfee_persen` ,  `tpprd_handlingfee` ,
+        //             `tpprd_disc_ujroh` , 		    `tpprd_refund_premi` ,
+        //             `tpprd_tanggal_bayar` , 	    `tpprd_total_bayar_dtl` ,
+        //             `tpprd_total_bayar` , 	    `tpprd_status_bayar` ,
+        //             `tpprd_jenis_bayar` , 	    `tpprd_tarif_nonlife` ,
+        //             `tpprd_premi_nonlife` ,  	    `tpprd_tarif_persen_nonlife` ,
+        //             `tpprd_umur_polis` , 	  	    `tpprd_status_bayar_lain` ,
+        //             `tpprd_tanggal_bayar_lain` ,  `tpprd_total_bayar_lain` ,
+        //             `tpprd_total_bayar_disc` ,    `tpprd_tanggal_bayar_disc` ,
+        //             `tpprd_em_status`,		    `tpprd_em_tanggal` ,
+        //             `tpprd_reas_premilife` ,	    `tpprd_reas_preminonlife` ,
+        //             `tpprd_reas_ujrohreas` ,	    `tpprd_reas_tabbaru` ,
+        //             `tpprd_share_reindo` ,	    `tpprd_share_nasre` ,
+        //             `tpprd_share_alamin` ,	    `tpprd_tabaru_life` ,
+        //             `tpprd_uangkuliah_semester`  ,`tpprd_uangkuliah_tunggal` ,
+        //             `tpprd_tahun_kuliah`,		    `tpprd_masa_kuliah` ,
+        //             `tpprd_ajufee` ,			    `tpprd_ajufee_persen` ,
+        //             `tpprd_total_refund` ,	    `tpprd_selisih_premi` ,
+        //             mpol_mjns_kode,			  	 mpol_mjm_kode,
+        //             '') komisi
+        //             FROM epstfix.peserta_all
+        //             LEFT JOIN eopr.mst_polis ON mpol_kode=tpprd_nomor_polish
+        //             WHERE mpol_kode='".$kode_polis."' AND month(date(tpprd_insert_fix)) between '".$bln1."' and '".$bln2."'
+        //             AND year(date(tpprd_insert_fix))='".$thn."' #AND tpprd_total_bayar_dtl>=tpprd_premi_bayar
+        //             AND (tpprd_total_bayar_dtl-tpprd_premi_bayar)>-0.1
+        //             AND IFNULL(mpol_mkom_persen,0)>0 AND IFNULL(tpprd_tax_persen,0)<1 and tpprd_mlok_kode!='01'
+        //             AND if(mpol_mrkn_kode='R17000246',tpprd_mlok_kode='".$cab."',ifnull(tpprd_pk,'')!='')
+        //             AND tpprd_status_klaim!=1 AND tpprd_status_refund!=1
+        //             AND tpprd_status_batal!=1 AND tpprd_status_bayar='1'
+        //             AND tpprd_status='1'
+        //             GROUP BY tpprd_pk LIMIT 100000");
+
+        //             $resx1 = Config::__dbAll($cmdx1);
+
+        //             for ($i=0; $i < count($resx1); $i++) {
+        //                 $ceklimit = DB::select("SELECT (`tkomh_komisi`+".$resx1[$i]['komisi'].") t
+        //                 FROM etrs.`trs_komisi_hdr` WHERE `tkomh_pk`='".$pkx."K' LIMIT 1");
+        //                 $r = Config::__dbRow($ceklimit);
+
+        //                 if ($r['t']<=$sel1) {
+        //                     $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
+        //                     (`tkomd_pk`,
+        //                     `tkomd_tkomh_pk`,
+        //                     `tkomd_tpprd_pk`,
+        //                     `tkomd_up`,
+        //                     `tkomd_komisi_persen`,
+        //                     `tkomd_komisi`,
+        //                     `tkomd_tax_user`,
+        //                     `tkomd_tax_userstatus`,
+        //                     `tkomd_tax_userpersen`,
+        //                     `tkomd_tax_persen`,
+        //                     `tkomd_tax`,
+        //                     `tkomd_tipe`,
+        //                     `tkomd_ins_date`,
+        //                     `tkomd_ins_user`,
+        //                     `tkomd_bayar`,
+        //                     `tkomd_tglbayar`,
+        //                     `tkomd_userbayar`,
+        //                     `tkomd_prosesbayar`,
+        //                     `tkomd_mlok_kode`,
+        //                     `tkomd_mrkn_kode_induk`,
+        //                     `tkomd_mpol_kode`)
+
+        //                     SELECT
+        //                       CONCAT('".$pkx."_','".$resx1[$i]['tpprd_pk']."') tkomd_pk,
+        //                       '".$pkx."K' tkomd_tkomh_pk,
+        //                       '".$resx1[$i]['tpprd_pk']."' tkomd_tpprd_pk,
+        //                       '".$resx1[$i]['tpprd_up']."' tkomd_up,
+        //                       '".$resx1[$i]['tpprd_komisi_persen']."' tkomd_komisi_persen,
+        //                       '".$resx1[$i]['komisi']."' as tkomd_komisi,
+        //                       '".$pic1."' tkomd_tax_user,
+        //                       '".$r1['sts']."' tkomd_tax_userstatus,
+        //                       if('".$r1['sts']."'=1,50,0) tkomd_tax_userpersen,
+        //                       ".$pajak1." tkomd_tax_persen,
+        //                       '".$resx1[$i]['komisi']."'*".$tax1." as tkomd_tax,
+        //                       1 tkomd_tipe,
+        //                       now() tkomd_ins_date,
+        //                       '".$user."' tkomd_ins_user,
+        //                       0 tkomd_bayar,
+        //                       '1881-01-01' tkomd_tglbayar,
+        //                       '' tkomd_userbayar,
+        //                       '' tkomd_prosesbayar,
+        //                       '' tkomd_mlok_kode,
+        //                       '' tkomd_mrkn_kode_induk,
+        //                       '' tkomd_mpol_kode");
+
+        //                       Config::__dbRow($cmd);
+        //                 } else {
+        //                     $i==count($resx1);
+        //                 }
+        //             }
+
+        //             $sel2 = $r2['saldo']+($kom-$sel1);
+        //             $tax2 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
+        //             WHERE ".$sel2.">=mpt_nilai1 AND mpt_nilai2>=".$sel2." LIMIT 1");
+        //             $rtax2 = Config::__dbRow($tax2);
+
+        //             $pajak2 = $rtax2['mpt_persen'];
+
+        //             if ($r2['npwp']!='') {
+        //                 if ($r2['sts']==1) {
+        //                     $tax2 = (50/100)*($rtax2['mpt_persen']/100);
+        //                 } else {
+        //                     $tax2 = ($rtax2['mpt_persen']/100);
+        //                 }
+        //             } else {
+        //                 if ($r2['sts']==1) {
+        //                     $tax2 = (50/100)*($rtax2['mpt_persen']/100)*(120/100);
+        //                 } else {
+        //                     $tax2 = ($rtax2['mpt_persen']/100)*(120/100);
+        //                 }
+        //             }
+
+        //             $cmdx1a = DB::select("SELECT
+        //             tpprd_pk,
+        //             tpprd_up,
+        //             tpprd_komisi_persen,
+        //             epstfix.`F_GET_RUMUSPRODUKSI`(
+        //             'KOMISI'	,			   		`tpprd_pk`  ,
+        //             `tpprd_nomor_polish` ,   		`tpprd_jatuhtempo` ,
+        //             `tpprd_umur` ,		   		`tpprd_umur2` ,
+        //             `tpprd_tanggal_lahir` ,  		`tpprd_tanggal_lahir2` ,
+        //             `tpprd_tanggal_awal` ,   		`tpprd_tanggal_akhir` ,
+        //             `tpprd_masa_tahun` ,	   		`tpprd_masa_bulan` ,
+        //             `tpprd_up` ,			   		`tpprd_tarif_persen` ,
+        //             `tpprd_tarif` ,		   		`tpprd_admin` ,
+        //             `tpprd_admin_persen` ,   		`tpprd_disc` ,
+        //             `tpprd_disc_persen` ,	   		`tpprd_disc_ajukan`  ,
+        //             `tpprd_discpolis`  ,	   		`tpprd_discpolis_persen` ,
+        //             `tpprd_disc_lain_persen`,		`tpprd_disc_lain` ,
+        //             `tpprd_biaya_medis` ,    		`tpprd_extra` ,
+        //             `tpprd_extra_persen` ,  		`tpprd_em_persen_reas` ,
+        //             `tpprd_premi_reas` ,	  		`tpprd_up_baru` ,
+        //             `tpprd_premi` ,		  		`tpprd_premi_co` ,
+        //             `tpprd_premi_bayar`,	  		`tpprd_share` ,
+        //             `tpprd_up_persen` ,	  		`tpprd_ujroh_persen` ,
+        //             `tpprd_ujroh` ,		  		`tpprd_komisi_persen` ,
+        //             `tpprd_komisi` ,		  		`tpprd_status_usertax_persen` ,
+        //             `tpprd_status_usertax`, 		`tpprd_tax_persen` ,
+        //             `tpprd_tax` ,			  		`tpprd_komisi_bayar` ,
+        //             `tpprd_manajemenfee_persen`,  `tpprd_manajemenfee` ,
+        //             `tpprd_overidding_persen` ,   `tpprd_overidding` ,
+        //             `tpprd_referal` ,			    `tpprd_referal_persen` ,
+        //             `tpprd_maintenance` , 	    `tpprd_maintenance_persen` ,
+        //             `tpprd_handlingfee_persen` ,  `tpprd_handlingfee` ,
+        //             `tpprd_disc_ujroh` , 		    `tpprd_refund_premi` ,
+        //             `tpprd_tanggal_bayar` , 	    `tpprd_total_bayar_dtl` ,
+        //             `tpprd_total_bayar` , 	    `tpprd_status_bayar` ,
+        //             `tpprd_jenis_bayar` , 	    `tpprd_tarif_nonlife` ,
+        //             `tpprd_premi_nonlife` ,  	    `tpprd_tarif_persen_nonlife` ,
+        //             `tpprd_umur_polis` , 	  	    `tpprd_status_bayar_lain` ,
+        //             `tpprd_tanggal_bayar_lain` ,  `tpprd_total_bayar_lain` ,
+        //             `tpprd_total_bayar_disc` ,    `tpprd_tanggal_bayar_disc` ,
+        //             `tpprd_em_status`,		    `tpprd_em_tanggal` ,
+        //             `tpprd_reas_premilife` ,	    `tpprd_reas_preminonlife` ,
+        //             `tpprd_reas_ujrohreas` ,	    `tpprd_reas_tabbaru` ,
+        //             `tpprd_share_reindo` ,	    `tpprd_share_nasre` ,
+        //             `tpprd_share_alamin` ,	    `tpprd_tabaru_life` ,
+        //             `tpprd_uangkuliah_semester`  ,`tpprd_uangkuliah_tunggal` ,
+        //             `tpprd_tahun_kuliah`,		    `tpprd_masa_kuliah` ,
+        //             `tpprd_ajufee` ,			    `tpprd_ajufee_persen` ,
+        //             `tpprd_total_refund` ,	    `tpprd_selisih_premi` ,
+        //             mpol_mjns_kode,			  	 mpol_mjm_kode,
+        //             '') komisi
+        //             FROM epstfix.peserta_all
+        //             LEFT JOIN eopr.mst_polis ON mpol_kode=tpprd_nomor_polish
+        //             WHERE mpol_kode='".$kode_polis."' AND month(date(tpprd_insert_fix)) between '".$bln1."' and '".$bln2."'
+        //             AND year(date(tpprd_insert_fix))='".$thn."' #AND tpprd_total_bayar_dtl>=tpprd_premi_bayar
+        //             AND (tpprd_total_bayar_dtl-tpprd_premi_bayar)>-0.1
+        //             AND IFNULL(mpol_mkom_persen,0)>0 AND IFNULL(tpprd_tax_persen,0)<1 and tpprd_mlok_kode!='01'
+        //             AND tpprd_status_klaim!=1 AND tpprd_status_refund!=1
+        //             AND if(mpol_mrkn_kode='R17000246',tpprd_mlok_kode='".$cab."',ifnull(tpprd_pk,'')!='')
+        //             AND tpprd_status_batal!=1 AND tpprd_status_bayar='1'
+        //             AND tpprd_status='1'
+        //             AND tpprd_pk not in (select tkomd_tpprd_pk FROM etrs.trs_komisi_dtl WHERE tkomd_tkomh_pk='".$pkx."K' )
+        //             GROUP BY tpprd_pk LIMIT 100000");
+        //             $resx1a = Config::__dbAll($cmdx1a);
+
+        //             for ($i=0; $i < count($resx1a); $i++) {
+        //                 $ceklimit = DB::select("SELECT `tkomh_komisi` t FROM etrs.`trs_komisi_hdr`
+        //                 WHERE `tkomh_pk`='".$pkx."K' LIMIT 1");
+        //                 $r =Config::__dbRow($ceklimit);
+
+        //                 if ($r['t']<=($kom-$sel1)) {
+        //                     $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
+        //                     (`tkomd_pk`,
+        //                     `tkomd_tkomh_pk`,
+        //                     `tkomd_tpprd_pk`,
+        //                     `tkomd_up`,
+        //                     `tkomd_komisi_persen`,
+        //                     `tkomd_komisi`,
+        //                     `tkomd_tax_user`,
+        //                     `tkomd_tax_userstatus`,
+        //                     `tkomd_tax_userpersen`,
+        //                     `tkomd_tax_persen`,
+        //                     `tkomd_tax`,
+        //                     `tkomd_tipe`,
+        //                     `tkomd_ins_date`,
+        //                     `tkomd_ins_user`,
+        //                     `tkomd_bayar`,
+        //                     `tkomd_tglbayar`,
+        //                     `tkomd_userbayar`,
+        //                     `tkomd_prosesbayar`,
+        //                     `tkomd_mlok_kode`,
+        //                     `tkomd_mrkn_kode_induk`,
+        //                     `tkomd_mpol_kode`)
+        //                     SELECT
+        //                       CONCAT('".$pkx."_','".$resx1a[$i]['tpprd_pk']."') tkomd_pk,
+        //                       '".$pkx."K' tkomd_tkomh_pk,
+        //                       '".$resx1a[$i]['tpprd_pk']."' tkomd_tpprd_pk,
+        //                       '".$resx1a[$i]['tpprd_up']."' tkomd_up,
+        //                       '".$resx1a[$i]['tpprd_komisi_persen']."' tkomd_komisi_persen,
+        //                       '".$resx1a[$i]['komisi']."' as tkomd_komisi,
+        //                       '".$pic1a."' tkomd_tax_user,
+        //                       '".$r2['sts']."' tkomd_tax_userstatus,
+        //                       if('".$r2['sts']."'=1,50,0) tkomd_tax_userpersen,
+        //                       ".$pajak2." tkomd_tax_persen,
+        //                       '".$resx1a[$i]['komisi']."'*".$tax2." as tkomd_tax,
+        //                       1 tkomd_tipe,
+        //                       now() tkomd_ins_date,
+        //                       '".$user."' tkomd_ins_user,
+        //                       0 tkomd_bayar,
+        //                       '1881-01-01' tkomd_tglbayar,
+        //                       '' tkomd_userbayar,
+        //                       '' tkomd_prosesbayar,'','',''");
+
+        //                       Config::__dbRow($cmd);
+        //                 } else {
+        //                     $i==count($resx1);
+        //                 }
+        //             }
+
+        //             $sel2 = $r2['saldo']+($kom-$sel1);
+        //             $tax2 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
+        //             WHERE ".$sel2.">=mpt_nilai1 AND mpt_nilai2>=".$sel2." LIMIT 1");
+        //             $rtax2 = Config::__dbRow($tax2);
+
+        //             $pajak2 = $rtax2['mpt_persen'];
+
+        //             if ($r2['npwp']!='') {
+        //                 if ($r2['sts']==1) {
+        //                     $tax2 = (50/100)*($rtax2['mpt_persen']/100);
+        //                 } else {
+        //                     $tax2 = ($rtax2['mpt_persen']/100);
+        //                 }
+        //             } else {
+        //                 if ($r2['sts']==1) {
+        //                     $tax2 = (50/100)*($rtax2['mpt_persen']/100)*(120/100);
+        //                 } else {
+        //                     $tax2 = ($rtax2['mpt_persen']/100)*(120/100);
+        //                 }
+        //             }
+
+        //             $cmdxx = DB::select("SELECT
+        //             tpprd_pk,
+        //             tpprd_up,
+        //             tpprd_komisi_persen,
+        //             epstfix.`F_GET_RUMUSPRODUKSI`(
+        //             'KOMISI'	,			   		`tpprd_pk`  ,
+        //             `tpprd_nomor_polish` ,   		`tpprd_jatuhtempo` ,
+        //             `tpprd_umur` ,		   		`tpprd_umur2` ,
+        //             `tpprd_tanggal_lahir` ,  		`tpprd_tanggal_lahir2` ,
+        //             `tpprd_tanggal_awal` ,   		`tpprd_tanggal_akhir` ,
+        //             `tpprd_masa_tahun` ,	   		`tpprd_masa_bulan` ,
+        //             `tpprd_up` ,			   		`tpprd_tarif_persen` ,
+        //             `tpprd_tarif` ,		   		`tpprd_admin` ,
+        //             `tpprd_admin_persen` ,   		`tpprd_disc` ,
+        //             `tpprd_disc_persen` ,	   		`tpprd_disc_ajukan`  ,
+        //             `tpprd_discpolis`  ,	   		`tpprd_discpolis_persen` ,
+        //             `tpprd_disc_lain_persen`,		`tpprd_disc_lain` ,
+        //             `tpprd_biaya_medis` ,    		`tpprd_extra` ,
+        //             `tpprd_extra_persen` ,  		`tpprd_em_persen_reas` ,
+        //             `tpprd_premi_reas` ,	  		`tpprd_up_baru` ,
+        //             `tpprd_premi` ,		  		`tpprd_premi_co` ,
+        //             `tpprd_premi_bayar`,	  		`tpprd_share` ,
+        //             `tpprd_up_persen` ,	  		`tpprd_ujroh_persen` ,
+        //             `tpprd_ujroh` ,		  		`tpprd_komisi_persen` ,
+        //             `tpprd_komisi` ,		  		`tpprd_status_usertax_persen` ,
+        //             `tpprd_status_usertax`, 		`tpprd_tax_persen` ,
+        //             `tpprd_tax` ,			  		`tpprd_komisi_bayar` ,
+        //             `tpprd_manajemenfee_persen`,  `tpprd_manajemenfee` ,
+        //             `tpprd_overidding_persen` ,   `tpprd_overidding` ,
+        //             `tpprd_referal` ,			    `tpprd_referal_persen` ,
+        //             `tpprd_maintenance` , 	    `tpprd_maintenance_persen` ,
+        //             `tpprd_handlingfee_persen` ,  `tpprd_handlingfee` ,
+        //             `tpprd_disc_ujroh` , 		    `tpprd_refund_premi` ,
+        //             `tpprd_tanggal_bayar` , 	    `tpprd_total_bayar_dtl` ,
+        //             `tpprd_total_bayar` , 	    `tpprd_status_bayar` ,
+        //             `tpprd_jenis_bayar` , 	    `tpprd_tarif_nonlife` ,
+        //             `tpprd_premi_nonlife` ,  	    `tpprd_tarif_persen_nonlife` ,
+        //             `tpprd_umur_polis` , 	  	    `tpprd_status_bayar_lain` ,
+        //             `tpprd_tanggal_bayar_lain` ,  `tpprd_total_bayar_lain` ,
+        //             `tpprd_total_bayar_disc` ,    `tpprd_tanggal_bayar_disc` ,
+        //             `tpprd_em_status`,		    `tpprd_em_tanggal` ,
+        //             `tpprd_reas_premilife` ,	    `tpprd_reas_preminonlife` ,
+        //             `tpprd_reas_ujrohreas` ,	    `tpprd_reas_tabbaru` ,
+        //             `tpprd_share_reindo` ,	    `tpprd_share_nasre` ,
+        //             `tpprd_share_alamin` ,	    `tpprd_tabaru_life` ,
+        //             `tpprd_uangkuliah_semester`  ,`tpprd_uangkuliah_tunggal` ,
+        //             `tpprd_tahun_kuliah`,		    `tpprd_masa_kuliah` ,
+        //             `tpprd_ajufee` ,			    `tpprd_ajufee_persen` ,
+        //             `tpprd_total_refund` ,	    `tpprd_selisih_premi` ,
+        //             mpol_mjns_kode,			  	 mpol_mjm_kode,
+        //             '') as komisi
+        //             FROM epstfix.peserta_all
+        //             LEFT JOIN eopr.mst_polis ON mpol_kode=tpprd_nomor_polish
+        //             WHERE mpol_kode='".$kode_polis."' AND month(date(tpprd_insert_fix)) between '".$bln1."' and '".$bln2."'
+        //             AND year(date(tpprd_insert_fix))='".$thn."' #AND tpprd_total_bayar_dtl>=tpprd_premi_bayar
+        //             AND (tpprd_total_bayar_dtl-tpprd_premi_bayar)>-0.1
+        //             AND IFNULL(mpol_mkom_persen,0)>0 AND IFNULL(tpprd_tax_persen,0)<1 and tpprd_mlok_kode!='01'
+        //             AND if(mpol_mrkn_kode='R17000246',tpprd_mlok_kode='".$cab."',ifnull(tpprd_pk,'')!='')
+        //             AND tpprd_status_klaim!=1 AND tpprd_status_refund!=1
+        //             AND tpprd_status_batal!=1 AND tpprd_status_bayar='1'
+        //             AND tpprd_status='1'
+        //             AND tpprd_pk not in (select tkomd_tpprd_pk FROM etrs.trs_komisi_dtl WHERE tkomd_tkomh_pk='".$pkx."K' )
+        //             GROUP BY tpprd_pk LIMIT 100000");
+
+        //             $resx1a = Config::__dbAll($cmdxx);
+
+        //             for ($i=0; $i < count($resx1a); $i++) {
+        //                 $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
+        //                 (`tkomd_pk`,
+        //                  `tkomd_tkomh_pk`,
+        //                  `tkomd_tpprd_pk`,
+        //                  `tkomd_up`,
+        //                  `tkomd_komisi_persen`,
+        //                  `tkomd_komisi`,
+        //                  `tkomd_tax_user`,
+        //                  `tkomd_tax_userstatus`,
+        //                  `tkomd_tax_userpersen`,
+        //                  `tkomd_tax_persen`,
+        //                  `tkomd_tax`,
+        //                  `tkomd_tipe`,
+        //                  `tkomd_ins_date`,
+        //                  `tkomd_ins_user`,
+        //                  `tkomd_bayar`,
+        //                  `tkomd_tglbayar`,
+        //                  `tkomd_userbayar`,
+        //                  `tkomd_prosesbayar`,
+        //                  `tkomd_mlok_kode`,
+        //                  `tkomd_mrkn_kode_induk`,
+        //                  `tkomd_mpol_kode`)
+        //                 SELECT
+        //                   CONCAT('".$pkx."_','".$resx1a[$i]['tpprd_pk']."') tkomd_pk,
+        //                   '".$pkx."K' tkomd_tkomh_pk,
+        //                   '".$resx1a[$i]['tpprd_pk']."' tkomd_tpprd_pk,
+        //                   '".$resx1a[$i]['tpprd_up']."' tkomd_up,
+        //                   '".$resx1a[$i]['tpprd_komisi_persen']."' tkomd_komisi_persen,
+        //                   '".$resx1a[$i]['komisi']."' as tkomd_komisi,
+        //                   '".$pic1a."' tkomd_tax_user,
+        //                   '".$r2['sts']."' tkomd_tax_userstatus,
+        //                   if('".$r2['sts']."'=1,50,0) tkomd_tax_userpersen,
+        //                   ".$pajak2." tkomd_tax_persen,
+        //                   '".$resx1a[$i]['komisi']."'*".$tax2." as tkomd_tax,
+        //                   1 tkomd_tipe,
+        //                   now() tkomd_ins_date,
+        //                   '".$user."' tkomd_ins_user,
+        //                   0 tkomd_bayar,
+        //                   '1881-01-01' tkomd_tglbayar,
+        //                   '' tkomd_userbayar,
+        //                   '' tkomd_prosesbayar,'','',''");
+
+        //                 Config::__dbRow($cmd);
+        //             }
+
+        //         }
+        //         //---END KONDISI KOMISI 2---//
+
+        //         //---KONDISI KOMISI 3---//
+        //         if ($pic1!='' || $pic1a!='' || $pic2!='') {
+        //             $sel1 = $r1['xlimit']-$r1['saldo'];
+
+        //             $tax1 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
+        //             WHERE ".$sel1."+".$r1['saldo'].">=mpt_nilai1 AND mpt_nilai2>=".$sel1."+".$r1['saldo']."
+        //             LIMIT 1");
+        //             $rtax1 = Config::__dbRow($tax1);
+
+        //             $pajak1 = $rtax1['mpt_persen'];
+
+        //             if ($r1['npwp']!='') {
+        //                 if ($r1['sts']==1) {
+        //                     $tax1 = (50/100)*($rtax1['mpt_persen']/100);
+        //                 } else {
+        //                     $tax1 = ($rtax1['mpt_persen']/100);
+        //                 }
+        //             } else {
+        //                 if ($r1['sts']==1) {
+        //                     $tax1 = (50/100)*($rtax1['mpt_persen']/100)*(120/100);
+        //                 } else {
+        //                     $tax1 = ($rtax1['mpt_persen']/100);
+        //                 }
+        //             }
+
+        //             $cmdh = DB::select("INSERT IGNORE INTO etrs.`trs_komisi_hdr`
+        //             SELECT
+        //             '".$pkx."K' `tkomh_pk`,
+        //             '' `tkomh_nosurat`,
+        //             '' `tkomh_tanggal`,
+        //             0  `tkomh_pst`,
+        //             0  `tkomh_up`,
+        //             0  `tkomh_komisi`,
+        //             0 `tkomh_tax`,
+        //             0 `tkomh_komisinett`,
+        //             0 `tkomh_bayar`,
+        //             '' `tkomh_bayar_tgl`,
+        //             '' `tkomh_mgro_pk`,
+        //             '' `tkomh_penerima`,
+        //             0 tkomh_indexfolder,
+        //             '' tkomh_buktibayar,
+        //             NOW() `tkomh_crud`,
+        //             0  `tkomh_sts1`,
+        //             '' `tkomh_sts1_date`,
+        //             '' `tkomh_sts1_user`,
+        //             0  `tkomh_sts2`,
+        //             '' `tkomh_sts2_date`,
+        //             '' `tkomh_sts2_user`,
+        //             0  `tkomh_sts3`,
+        //             '' `tkomh_sts3_date`,
+        //             '' `tkomh_sts3_user`");
+
+        //             Config::__dbRow($cmdh);
+
+        //             $cmdx1 = DB::select("SELECT
+        //             tpprd_pk,
+        //             tpprd_up,
+        //             tpprd_komisi_persen,
+        //             epstfix.`F_GET_RUMUSPRODUKSI`(
+        //             'KOMISI'	,			   		`tpprd_pk`  ,
+        //             `tpprd_nomor_polish` ,   		`tpprd_jatuhtempo` ,
+        //             `tpprd_umur` ,		   		`tpprd_umur2` ,
+        //             `tpprd_tanggal_lahir` ,  		`tpprd_tanggal_lahir2` ,
+        //             `tpprd_tanggal_awal` ,   		`tpprd_tanggal_akhir` ,
+        //             `tpprd_masa_tahun` ,	   		`tpprd_masa_bulan` ,
+        //             `tpprd_up` ,			   		`tpprd_tarif_persen` ,
+        //             `tpprd_tarif` ,		   		`tpprd_admin` ,
+        //             `tpprd_admin_persen` ,   		`tpprd_disc` ,
+        //             `tpprd_disc_persen` ,	   		`tpprd_disc_ajukan`  ,
+        //             `tpprd_discpolis`  ,	   		`tpprd_discpolis_persen` ,
+        //             `tpprd_disc_lain_persen`,		`tpprd_disc_lain` ,
+        //             `tpprd_biaya_medis` ,    		`tpprd_extra` ,
+        //             `tpprd_extra_persen` ,  		`tpprd_em_persen_reas` ,
+        //             `tpprd_premi_reas` ,	  		`tpprd_up_baru` ,
+        //             `tpprd_premi` ,		  		`tpprd_premi_co` ,
+        //             `tpprd_premi_bayar`,	  		`tpprd_share` ,
+        //             `tpprd_up_persen` ,	  		`tpprd_ujroh_persen` ,
+        //             `tpprd_ujroh` ,		  		`tpprd_komisi_persen` ,
+        //             `tpprd_komisi` ,		  		`tpprd_status_usertax_persen` ,
+        //             `tpprd_status_usertax`, 		`tpprd_tax_persen` ,
+        //             `tpprd_tax` ,			  		`tpprd_komisi_bayar` ,
+        //             `tpprd_manajemenfee_persen`,  `tpprd_manajemenfee` ,
+        //             `tpprd_overidding_persen` ,   `tpprd_overidding` ,
+        //             `tpprd_referal` ,			    `tpprd_referal_persen` ,
+        //             `tpprd_maintenance` , 	    `tpprd_maintenance_persen` ,
+        //             `tpprd_handlingfee_persen` ,  `tpprd_handlingfee` ,
+        //             `tpprd_disc_ujroh` , 		    `tpprd_refund_premi` ,
+        //             `tpprd_tanggal_bayar` , 	    `tpprd_total_bayar_dtl` ,
+        //             `tpprd_total_bayar` , 	    `tpprd_status_bayar` ,
+        //             `tpprd_jenis_bayar` , 	    `tpprd_tarif_nonlife` ,
+        //             `tpprd_premi_nonlife` ,  	    `tpprd_tarif_persen_nonlife` ,
+        //             `tpprd_umur_polis` , 	  	    `tpprd_status_bayar_lain` ,
+        //             `tpprd_tanggal_bayar_lain` ,  `tpprd_total_bayar_lain` ,
+        //             `tpprd_total_bayar_disc` ,    `tpprd_tanggal_bayar_disc` ,
+        //             `tpprd_em_status`,		    `tpprd_em_tanggal` ,
+        //             `tpprd_reas_premilife` ,	    `tpprd_reas_preminonlife` ,
+        //             `tpprd_reas_ujrohreas` ,	    `tpprd_reas_tabbaru` ,
+        //             `tpprd_share_reindo` ,	    `tpprd_share_nasre` ,
+        //             `tpprd_share_alamin` ,	    `tpprd_tabaru_life` ,
+        //             `tpprd_uangkuliah_semester`  ,`tpprd_uangkuliah_tunggal` ,
+        //             `tpprd_tahun_kuliah`,		    `tpprd_masa_kuliah` ,
+        //             `tpprd_ajufee` ,			    `tpprd_ajufee_persen` ,
+        //             `tpprd_total_refund` ,	    `tpprd_selisih_premi` ,
+        //             mpol_mjns_kode,			  	 mpol_mjm_kode,
+        //             '') komisi
+        //             FROM epstfix.peserta_all
+        //             LEFT JOIN eopr.mst_polis ON mpol_kode=tpprd_nomor_polish
+        //             WHERE mpol_kode='".$kode_polis."' AND month(date(tpprd_insert_fix)) between '".$bln1."' and '".$bln2."'
+        //             AND year(date(tpprd_insert_fix))='".$thn."' #AND tpprd_total_bayar_dtl>=tpprd_premi_bayar
+        //             AND (tpprd_total_bayar_dtl-tpprd_premi_bayar)>-0.1
+        //             AND IFNULL(mpol_mkom_persen,0)>0 AND IFNULL(tpprd_tax_persen,0)<1 and tpprd_mlok_kode!='01'
+        //             AND if(mpol_mrkn_kode='R17000246',tpprd_mlok_kode='".$cab."',ifnull(tpprd_pk,'')!='')
+        //             AND tpprd_status_klaim!=1 AND tpprd_status_refund!=1
+        //             AND tpprd_status_batal!=1 AND tpprd_status_bayar='1'
+        //             AND tpprd_status='1'
+        //             GROUP BY tpprd_pk LIMIT 100000");
+        //             $resx1 = Config::__dbAll($cmdx1);
+
+        //             for ($i=0; $i < count($resx1); $i++) {
+
+        //                 $ceklimit = DB::select("SELECT `tkomh_komisi` t FROM etrs.`trs_komisi_hdr`
+        //                 WHERE `tkomh_pk`='".$pkx."K' LIMIT 1");
+        //                 $r = Config::__dbRow($ceklimit);
+
+        //                 if ($r['t']<=$sel1) {
+        //                     $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
+        //                     (`tkomd_pk`,
+        //                     `tkomd_tkomh_pk`,
+        //                     `tkomd_tpprd_pk`,
+        //                     `tkomd_up`,
+        //                     `tkomd_komisi_persen`,
+        //                     `tkomd_komisi`,
+        //                     `tkomd_tax_user`,
+        //                     `tkomd_tax_userstatus`,
+        //                     `tkomd_tax_userpersen`,
+        //                     `tkomd_tax_persen`,
+        //                     `tkomd_tax`,
+        //                     `tkomd_tipe`,
+        //                     `tkomd_ins_date`,
+        //                     `tkomd_ins_user`,
+        //                     `tkomd_bayar`,
+        //                     `tkomd_tglbayar`,
+        //                     `tkomd_userbayar`,
+        //                     `tkomd_prosesbayar`,
+        //                     `tkomd_mlok_kode`,
+        //                     `tkomd_mrkn_kode_induk`,
+        //                     `tkomd_mpol_kode`)
+        //                     SELECT
+        //                       CONCAT('".$pkx."_','".$resx1[$i]['tpprd_pk']."') tkomd_pk,
+        //                       '".$pkx."K' tkomd_tkomh_pk,
+        //                       '".$resx1[$i]['tpprd_pk']."' tkomd_tpprd_pk,
+        //                       '".$resx1[$i]['tpprd_up']."' tkomd_up,
+        //                       '".$resx1[$i]['tpprd_komisi_persen']."' tkomd_komisi_persen,
+        //                       '".$resx1[$i]['komisi']."' as tkomd_komisi,
+        //                       '".$pic1."' tkomd_tax_user,
+        //                       '".$r1['sts']."' tkomd_tax_userstatus,
+        //                       if('".$r1['sts']."'=1,50,0) tkomd_tax_userpersen,
+        //                       ".$pajak1." tkomd_tax_persen,
+        //                       '".$resx1[$i]['komisi']."'*".$tax1." as tkomd_tax,
+        //                       1 tkomd_tipe,
+        //                       now() tkomd_ins_date,
+        //                       '".$user."' tkomd_ins_user,
+        //                       0 tkomd_bayar,
+        //                       '1881-01-01' tkomd_tglbayar,
+        //                       '' tkomd_userbayar,
+        //                       '' tkomd_prosesbayar,,'','',''");
+
+        //                     Config::__dbRow($cmd);
+        //                 } else {
+        //                     $i==count($resx1);
+        //                 }
+        //             }
+
+        //             $sel2 = $r2['saldo']+($kom-$sel1);
+        //             $tax2 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
+        //             WHERE ".$sel2.">=mpt_nilai1 AND mpt_nilai2>=".$sel2." LIMIT 1");
+        //             $rtax2 = Config::__dbRow($tax2);
+
+        //             $pajak2 = $rtax2['mpt_persen'];
+
+        //             if ($r2['npwp']!='') {
+        //                 if ($r2['sts']==1) {
+        //                     $tax2 = (50/100)*($rtax2['mpt_persen']/100);
+        //                 } else {
+        //                     $tax2 = ($rtax2['mpt_persen']/100);
+        //                 }
+        //             } else {
+        //                 if ($r2['sts']==1) {
+        //                     $tax2 = (50/100)*($rtax2['mpt_persen']/100)*(120/100);
+        //                 } else {
+        //                     $tax2 = ($rtax2['mpt_persen']/100)*(120/100);
+        //                 }
+        //             }
+
+        //             $cmdx1a = DB::select("SELECT
+        //             tpprd_pk,
+        //             tpprd_up,
+        //             tpprd_komisi_persen,
+        //             epstfix.`F_GET_RUMUSPRODUKSI`(
+        //             'KOMISI'	,			   		`tpprd_pk`  ,
+        //             `tpprd_nomor_polish` ,   		`tpprd_jatuhtempo` ,
+        //             `tpprd_umur` ,		   		`tpprd_umur2` ,
+        //             `tpprd_tanggal_lahir` ,  		`tpprd_tanggal_lahir2` ,
+        //             `tpprd_tanggal_awal` ,   		`tpprd_tanggal_akhir` ,
+        //             `tpprd_masa_tahun` ,	   		`tpprd_masa_bulan` ,
+        //             `tpprd_up` ,			   		`tpprd_tarif_persen` ,
+        //             `tpprd_tarif` ,		   		`tpprd_admin` ,
+        //             `tpprd_admin_persen` ,   		`tpprd_disc` ,
+        //             `tpprd_disc_persen` ,	   		`tpprd_disc_ajukan`  ,
+        //             `tpprd_discpolis`  ,	   		`tpprd_discpolis_persen` ,
+        //             `tpprd_disc_lain_persen`,		`tpprd_disc_lain` ,
+        //             `tpprd_biaya_medis` ,    		`tpprd_extra` ,
+        //             `tpprd_extra_persen` ,  		`tpprd_em_persen_reas` ,
+        //             `tpprd_premi_reas` ,	  		`tpprd_up_baru` ,
+        //             `tpprd_premi` ,		  		`tpprd_premi_co` ,
+        //             `tpprd_premi_bayar`,	  		`tpprd_share` ,
+        //             `tpprd_up_persen` ,	  		`tpprd_ujroh_persen` ,
+        //             `tpprd_ujroh` ,		  		`tpprd_komisi_persen` ,
+        //             `tpprd_komisi` ,		  		`tpprd_status_usertax_persen` ,
+        //             `tpprd_status_usertax`, 		`tpprd_tax_persen` ,
+        //             `tpprd_tax` ,			  		`tpprd_komisi_bayar` ,
+        //             `tpprd_manajemenfee_persen`,  `tpprd_manajemenfee` ,
+        //             `tpprd_overidding_persen` ,   `tpprd_overidding` ,
+        //             `tpprd_referal` ,			    `tpprd_referal_persen` ,
+        //             `tpprd_maintenance` , 	    `tpprd_maintenance_persen` ,
+        //             `tpprd_handlingfee_persen` ,  `tpprd_handlingfee` ,
+        //             `tpprd_disc_ujroh` , 		    `tpprd_refund_premi` ,
+        //             `tpprd_tanggal_bayar` , 	    `tpprd_total_bayar_dtl` ,
+        //             `tpprd_total_bayar` , 	    `tpprd_status_bayar` ,
+        //             `tpprd_jenis_bayar` , 	    `tpprd_tarif_nonlife` ,
+        //             `tpprd_premi_nonlife` ,  	    `tpprd_tarif_persen_nonlife` ,
+        //             `tpprd_umur_polis` , 	  	    `tpprd_status_bayar_lain` ,
+        //             `tpprd_tanggal_bayar_lain` ,  `tpprd_total_bayar_lain` ,
+        //             `tpprd_total_bayar_disc` ,    `tpprd_tanggal_bayar_disc` ,
+        //             `tpprd_em_status`,		    `tpprd_em_tanggal` ,
+        //             `tpprd_reas_premilife` ,	    `tpprd_reas_preminonlife` ,
+        //             `tpprd_reas_ujrohreas` ,	    `tpprd_reas_tabbaru` ,
+        //             `tpprd_share_reindo` ,	    `tpprd_share_nasre` ,
+        //             `tpprd_share_alamin` ,	    `tpprd_tabaru_life` ,
+        //             `tpprd_uangkuliah_semester`  ,`tpprd_uangkuliah_tunggal` ,
+        //             `tpprd_tahun_kuliah`,		    `tpprd_masa_kuliah` ,
+        //             `tpprd_ajufee` ,			    `tpprd_ajufee_persen` ,
+        //             `tpprd_total_refund` ,	    `tpprd_selisih_premi` ,
+        //             mpol_mjns_kode,			  	 mpol_mjm_kode,
+        //             '') komisi
+        //             FROM epstfix.peserta_all
+        //             LEFT JOIN eopr.mst_polis ON mpol_kode=tpprd_nomor_polish
+        //             WHERE mpol_kode='".$kode_polis."' AND month(date(tpprd_insert_fix)) between '".$bln1."' and '".$bln2."'
+        //             AND year(date(tpprd_insert_fix))='".$thn."' #AND tpprd_total_bayar_dtl>=tpprd_premi_bayar
+        //             AND (tpprd_total_bayar_dtl-tpprd_premi_bayar)>-0.1
+        //             AND IFNULL(mpol_mkom_persen,0)>0 AND IFNULL(tpprd_tax_persen,0)<1 and tpprd_mlok_kode!='01'
+        //             AND tpprd_status_klaim!=1 AND tpprd_status_refund!=1
+        //             AND if(mpol_mrkn_kode='R17000246',tpprd_mlok_kode='".$cab."',ifnull(tpprd_pk,'')!='')
+        //             AND tpprd_status_batal!=1 AND tpprd_status_bayar='1'
+        //             AND tpprd_status='1'
+        //             AND tpprd_pk not in (select tkomd_tpprd_pk FROM etrs.trs_komisi_dtl WHERE tkomd_tkomh_pk='".$pkx."K' )
+        //             GROUP BY tpprd_pk LIMIT 100000");
+
+        //             $resx1a = Config::__dbAll($cmdx1a);
+
+        //             for ($i=0; $i < count($resx1a); $i++) {
+
+        //                 $ceklimit = DB::select("SELECT `tkomh_komisi` t FROM etrs.`trs_komisi_hdr`
+        //                 WHERE `tkomh_pk`='".$pkx."K' LIMIT 1");
+        //                 $r = Config::__dbRow($ceklimit);
+
+        //                 if ($r['t']<=($kom-$sel1)) {
+        //                     $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
+        //                     (`tkomd_pk`,
+        //                     `tkomd_tkomh_pk`,
+        //                     `tkomd_tpprd_pk`,
+        //                     `tkomd_up`,
+        //                     `tkomd_komisi_persen`,
+        //                     `tkomd_komisi`,
+        //                     `tkomd_tax_user`,
+        //                     `tkomd_tax_userstatus`,
+        //                     `tkomd_tax_userpersen`,
+        //                     `tkomd_tax_persen`,
+        //                     `tkomd_tax`,
+        //                     `tkomd_tipe`,
+        //                     `tkomd_ins_date`,
+        //                     `tkomd_ins_user`,
+        //                     `tkomd_bayar`,
+        //                     `tkomd_tglbayar`,
+        //                     `tkomd_userbayar`,
+        //                     `tkomd_prosesbayar`,
+        //                     `tkomd_mlok_kode`,
+        //                     `tkomd_mrkn_kode_induk`,
+        //                     `tkomd_mpol_kode`)
+        //                     SELECT
+        //                       CONCAT('".$pkx."_','".$resx1a[$i]['tpprd_pk']."') tkomd_pk,
+        //                       '".$pkx."K' tkomd_tkomh_pk,
+        //                       '".$resx1a[$i]['tpprd_pk']."' tkomd_tpprd_pk,
+        //                       '".$resx1a[$i]['tpprd_up']."' tkomd_up,
+        //                       '".$resx1a[$i]['tpprd_komisi_persen']."' tkomd_komisi_persen,
+        //                       '".$resx1a[$i]['komisi']."' as tkomd_komisi,
+        //                       '".$pic1a."' tkomd_tax_user,
+        //                       '".$r2['sts']."' tkomd_tax_userstatus,
+        //                       if('".$r2['sts']."'=1,50,0) tkomd_tax_userpersen,
+        //                       ".$pajak2." tkomd_tax_persen,
+        //                       '".$resx1a[$i]['komisi']."'*".$tax2." as tkomd_tax,
+        //                       1 tkomd_tipe,
+        //                       now() tkomd_ins_date,
+        //                       '".$user."' tkomd_ins_user,
+        //                       0 tkomd_bayar,
+        //                       '1881-01-01' tkomd_tglbayar,
+        //                       '' tkomd_userbayar,
+        //                       '' tkomd_prosesbayar,'','',''");
+        //                     Config::__dbRow($cmd);
+        //                 } else {
+        //                     $i==count($resx1);
+        //                 }
+        //             }
+
+        //             $sel3 = $r3['saldo']+($kom-$sel1-$sel2);
+        //             $tax3 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
+        //             WHERE ".$sel3.">=mpt_nilai1 AND mpt_nilai2>=".$sel3." LIMIT 1");
+        //             $rtax3 = Config::__dbRow($tax3);
+
+        //             $pajak3 = $rtax3['mpt_persen'];
+
+        //             if ($r3['npwp']!='') {
+        //                 if ($r['sts']==1) {
+        //                     $tax3 = (50/100)*($rtax3['mpt_persen']/100);
+        //                 } else {
+        //                     $rax3 = ($rtax3['mpt_persen']/100);
+        //                 }
+        //             } else {
+        //                 if ($r3['sts']==1) {
+        //                     $tax3 = (50/100)*($rtax3['mpt_persen']/100)*(120/100);
+        //                 } else {
+        //                     $tax3 = ($rtax3['mpt_persen']/100)*(120/100);
+        //                 }
+        //             }
+
+        //             $cmdb = DB::select("SELECT
+        //             tpprd_pk,
+        //             tpprd_up,
+        //             tpprd_komisi_persen,
+        //             epstfix.`F_GET_RUMUSPRODUKSI`(
+        //             'KOMISI'	,			   		`tpprd_pk`  ,
+        //             `tpprd_nomor_polish` ,   		`tpprd_jatuhtempo` ,
+        //             `tpprd_umur` ,		   		`tpprd_umur2` ,
+        //             `tpprd_tanggal_lahir` ,  		`tpprd_tanggal_lahir2` ,
+        //             `tpprd_tanggal_awal` ,   		`tpprd_tanggal_akhir` ,
+        //             `tpprd_masa_tahun` ,	   		`tpprd_masa_bulan` ,
+        //             `tpprd_up` ,			   		`tpprd_tarif_persen` ,
+        //             `tpprd_tarif` ,		   		`tpprd_admin` ,
+        //             `tpprd_admin_persen` ,   		`tpprd_disc` ,
+        //             `tpprd_disc_persen` ,	   		`tpprd_disc_ajukan`  ,
+        //             `tpprd_discpolis`  ,	   		`tpprd_discpolis_persen` ,
+        //             `tpprd_disc_lain_persen`,		`tpprd_disc_lain` ,
+        //             `tpprd_biaya_medis` ,    		`tpprd_extra` ,
+        //             `tpprd_extra_persen` ,  		`tpprd_em_persen_reas` ,
+        //             `tpprd_premi_reas` ,	  		`tpprd_up_baru` ,
+        //             `tpprd_premi` ,		  		`tpprd_premi_co` ,
+        //             `tpprd_premi_bayar`,	  		`tpprd_share` ,
+        //             `tpprd_up_persen` ,	  		`tpprd_ujroh_persen` ,
+        //             `tpprd_ujroh` ,		  		`tpprd_komisi_persen` ,
+        //             `tpprd_komisi` ,		  		`tpprd_status_usertax_persen` ,
+        //             `tpprd_status_usertax`, 		`tpprd_tax_persen` ,
+        //             `tpprd_tax` ,			  		`tpprd_komisi_bayar` ,
+        //             `tpprd_manajemenfee_persen`,  `tpprd_manajemenfee` ,
+        //             `tpprd_overidding_persen` ,   `tpprd_overidding` ,
+        //             `tpprd_referal` ,			    `tpprd_referal_persen` ,
+        //             `tpprd_maintenance` , 	    `tpprd_maintenance_persen` ,
+        //             `tpprd_handlingfee_persen` ,  `tpprd_handlingfee` ,
+        //             `tpprd_disc_ujroh` , 		    `tpprd_refund_premi` ,
+        //             `tpprd_tanggal_bayar` , 	    `tpprd_total_bayar_dtl` ,
+        //             `tpprd_total_bayar` , 	    `tpprd_status_bayar` ,
+        //             `tpprd_jenis_bayar` , 	    `tpprd_tarif_nonlife` ,
+        //             `tpprd_premi_nonlife` ,  	    `tpprd_tarif_persen_nonlife` ,
+        //             `tpprd_umur_polis` , 	  	    `tpprd_status_bayar_lain` ,
+        //             `tpprd_tanggal_bayar_lain` ,  `tpprd_total_bayar_lain` ,
+        //             `tpprd_total_bayar_disc` ,    `tpprd_tanggal_bayar_disc` ,
+        //             `tpprd_em_status`,		    `tpprd_em_tanggal` ,
+        //             `tpprd_reas_premilife` ,	    `tpprd_reas_preminonlife` ,
+        //             `tpprd_reas_ujrohreas` ,	    `tpprd_reas_tabbaru` ,
+        //             `tpprd_share_reindo` ,	    `tpprd_share_nasre` ,
+        //             `tpprd_share_alamin` ,	    `tpprd_tabaru_life` ,
+        //             `tpprd_uangkuliah_semester`  ,`tpprd_uangkuliah_tunggal` ,
+        //             `tpprd_tahun_kuliah`,		    `tpprd_masa_kuliah` ,
+        //             `tpprd_ajufee` ,			    `tpprd_ajufee_persen` ,
+        //             `tpprd_total_refund` ,	    `tpprd_selisih_premi` ,
+        //             mpol_mjns_kode,			  	 mpol_mjm_kode,
+        //             '') as komisi
+        //             FROM epstfix.peserta_all
+        //             LEFT JOIN eopr.mst_polis ON mpol_kode=tpprd_nomor_polish
+        //             WHERE mpol_kode='".$kode_polis."' AND month(date(tpprd_insert_fix)) between '".$bln1."' and '".$bln2."'
+        //             AND year(date(tpprd_insert_fix))='".$thn."' #AND tpprd_total_bayar_dtl>=tpprd_premi_bayar
+        //             AND (tpprd_total_bayar_dtl-tpprd_premi_bayar)>-0.1
+        //             AND IFNULL(mpol_mkom_persen,0)>0 AND IFNULL(tpprd_tax_persen,0)<1 and tpprd_mlok_kode!='01'
+        //             AND tpprd_status_klaim!=1 AND tpprd_status_refund!=1
+        //             AND if(mpol_mrkn_kode='R17000246',tpprd_mlok_kode='".$cab."',ifnull(tpprd_pk,'')!='')
+        //             AND tpprd_status_batal!=1 AND tpprd_status_bayar='1'
+        //             AND tpprd_status='1'
+        //             AND tpprd_pk not in (select tkomd_tpprd_pk FROM etrs.trs_komisi_dtl WHERE tkomd_tkomh_pk='".$pkx."K' )
+        //             GROUP BY tpprd_pk LIMIT 100000");
+        //             $resx1b = Config::__dbAll($cmdb);
+
+        //             for ($i=0; $i < count($resx1b); $i++) {
+
+        //                 $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
+        //                 (`tkomd_pk`,
+        //                 `tkomd_tkomh_pk`,
+        //                 `tkomd_tpprd_pk`,
+        //                 `tkomd_up`,
+        //                 `tkomd_komisi_persen`,
+        //                 `tkomd_komisi`,
+        //                 `tkomd_tax_user`,
+        //                 `tkomd_tax_userstatus`,
+        //                 `tkomd_tax_userpersen`,
+        //                 `tkomd_tax_persen`,
+        //                 `tkomd_tax`,
+        //                 `tkomd_tipe`,
+        //                 `tkomd_ins_date`,
+        //                 `tkomd_ins_user`,
+        //                 `tkomd_bayar`,
+        //                 `tkomd_tglbayar`,
+        //                 `tkomd_userbayar`,
+        //                 `tkomd_prosesbayar`,
+        //                 `tkomd_mlok_kode`,
+        //                 `tkomd_mrkn_kode_induk`,
+        //                 `tkomd_mpol_kode`)
+        //                SELECT
+        //                  CONCAT('".$pkx."_','".$resx1b[$i]['tpprd_pk']."') tkomd_pk,
+        //                  '".$pkx."K' tkomd_tkomh_pk,
+        //                  '".$resx1b[$i]['tpprd_pk']."' tkomd_tpprd_pk,
+        //                  '".$resx1b[$i]['tpprd_up']."' tkomd_up,
+        //                  '".$resx1b[$i]['tpprd_komisi_persen']."' tkomd_komisi_persen,
+        //                  '".$resx1b[$i]['komisi']."' as tkomd_komisi,
+        //                  '".$pic2."' tkomd_tax_user,
+        //                  '".$r3['sts']."' tkomd_tax_userstatus,
+        //                  if('".$r3['sts']."'=1,50,0) tkomd_tax_userpersen,
+        //                  ".$pajak3." tkomd_tax_persen,
+        //                  '".$resx1b[$i]['komisi']."'*".$tax3." as tkomd_tax,
+        //                  1 tkomd_tipe,
+        //                  now() tkomd_ins_date,
+        //                  '".$user."' tkomd_ins_user,
+        //                  0 tkomd_bayar,
+        //                  '1881-01-01' tkomd_tglbayar,
+        //                  '' tkomd_userbayar,
+        //                  '' tkomd_prosesbayar,
+        //                  '' tkomd_mlok_kode,
+        //                  '' tkomd_mrkn_kode_induk,
+        //                  '' tkomd_mpol_kode");
+        //                 Config::__dbRow($cmd);
+        //             }
+        //         }
+	    //         //---END KONDISI KOMISI 3---//
+        //     }
         }
     }
 }

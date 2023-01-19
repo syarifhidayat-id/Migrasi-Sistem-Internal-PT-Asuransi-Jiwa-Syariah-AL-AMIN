@@ -8,6 +8,7 @@ use stdClass;
 
 class Config extends Controller
 {
+
     public static function __getPK($vtable, $long)
     {
         $tahunNow = date('ymd');
@@ -68,6 +69,16 @@ class Config extends Controller
         return $key;
     }
 
+    public static function __getUser()
+    {
+        return auth()->user()->email;
+    }
+
+    public static function __getGlobalValue($field)
+    {
+        return auth()->user()->$field;
+    }
+
     public static function nullRequests($request)
     {
         // siapkan array kosong untuk menampung request yang null
@@ -121,23 +132,38 @@ class Config extends Controller
         return $date;
     }
 
-    public static function _str($a, $b, $val)
+    public static function __str($a, $b, $val)
     {
         $obj = str_replace($a, $b, $val);
         return $obj;
     }
 
-    public static function _str2($nominal, $param)
+    public static function __str2($nominal, $param)
     {
         if ($param=="O") {
             $val = $nominal;
-            $str = Config::_str([',', '.'], '', $val);
+            $str = Config::__str([',', '.'], '', $val);
         }
         if ($param=="N") {
             $val = substr($nominal, 0, -3);
-            $str = Config::_str(',', '', $val);
+            $str = Config::__str(',', '', $val);
         }
         $obj = $str;
         return $obj;
+    }
+
+    public static function __dbRow($array)
+    {
+        return json_decode(json_encode($array[0]), true);
+    }
+
+    public static function __dbAll($array)
+    {
+        return json_decode(json_encode($array), true);
+    }
+
+    public static function json($res)
+    {
+        return response()->json($res);
     }
 }

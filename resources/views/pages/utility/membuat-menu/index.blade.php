@@ -153,8 +153,10 @@
             selectSide('tipe_menu', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
                 id: d.wmt_kode,
                 text: d.wmt_nama
-            }}, function(res) {
-                selectSide('key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('tipe_menu'), function(d) { return {
+            }}, function(e) {
+                var data = e.params.data.id;
+                selectSide('key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + data, function(d) { return {
+                // selectSide('key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('tipe_menu'), function(d) { return {
                     id: d.wmn_descp,
                     text: d.wmn_descp
                 }});
@@ -163,8 +165,11 @@
             selectSide('wmn_tipe', false, '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
                 id: d.wmt_kode,
                 text: d.wmt_nama
-            }}, function(res) {
-                selectSide('wmn_key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('wmn_tipe'), function(d) { return {
+            }}, function(e) {
+                var data = e.params.data.id;
+                // console.log(data);
+                selectSide('wmn_key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + data, function(d) { return {
+                // selectSide('wmn_key', false, '{{ url("api/utility/menu/select-menu") }}' + '?tipe=' + getText('wmn_tipe'), function(d) { return {
                     id: d.wmn_descp,
                     text: d.wmn_descp
                 }});

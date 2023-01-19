@@ -228,15 +228,22 @@
         setTextReadOnly('x_nama', true);
         setTextReadOnly('x_status', true);
 
-        console.log(nowDate());
-        console.log(nowYear());
-
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
             selectSide('e_cab', false, '{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/select-cabalamin") }}', function(d) { return {
+                id: d.kode,
+                text: d.nama
+            }});
+
+            selectSide('e_pmgpolis', false, '{{ url("keuangan/komisi-overriding/input-komisi-overriding/lod_pmg_polis") }}', function(d) { return {
+                id: d.kode,
+                text: d.nama
+            }});
+
+            selectSide('e_cbpmgpolis', false, '{{ url("keuangan/komisi-overriding/input-komisi-overriding/lod_pmg_polis") }}', function(d) { return {
                 id: d.kode,
                 text: d.nama
             }});
@@ -252,16 +259,21 @@
                     status: d.x_status,
                     x_tahun: d.x_tahun,
                     x_saldo: d.x_saldo
-                }}, function(res) {
-                        var data = res.params.data;
+                }}, function(e) {
+                        var data = e.params.data;
                         if(data.status == '0') {
                             setText('x_status', 'Karyawan Al Amin');
                         } else if (data.status == '1') {
                             setText('x_status', 'Non Karyawan Al Amin');
                         }
-                        jsonForm('formUpdateTax', res.params.data);
-                        console.log(res.params.data);
+                        jsonForm('formUpdateTax', data);
+                        console.log(data);
                 });
+            });
+
+            tombol('change', 'c_pmgpolis',  function() {
+                var _this = $(this).val();
+                console.log(_this);
             });
 
             filterAll('input[type="search"]', 'InpOjkKomOver'); //khusus type search inputan
@@ -274,9 +286,10 @@
                     d.e_bln1 = getText('e_bln1'),
                     d.e_bln2 = getText('e_bln2'),
                     d.e_thn = getText('e_thn'),
-                    // d.check_2 = getText('check_2'),
-                    // d.wmn_tipe = getText('tipe_menu'),
-                    // d.wmn_descp = getText('key'),
+                    d.c_pmgpolis = getText('c_pmgpolis'),
+                    d.e_pmgpolis = getText('e_pmgpolis'),
+                    d.c_cbpmgpolis = getText('c_cbpmgpolis'),
+                    d.e_cbpmgpolis = getText('e_cbpmgpolis'),
                     d.search = $('input[type="search"]').val()
                 },
                 [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
@@ -553,15 +566,17 @@
 		    var vproses="xproses"+i;
 
             var vv={ res : ''};
-            var url='{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/post-pjkomisi") }}';
+            var url='{{ url("keuangan/komisi-overriding/input-komisi-overriding/post-pjkomisi") }}';
             var rms = "?kode="+kdpolis+"&bln1="+bln1+"&bln2="+bln2+"&thn="+thn+"&pst="+tpst+"&up="+tup+"&tkom="+tkom+"&tover="+tover+"&saldo1="+vsaldo1+"&pic1="+vpic1+"&pic1a="+vpic1a+"&pic1b="+vpic1b+"&saldo2="+vsaldo2+"&pic2="+vpic2+"&pic2a="+vpic2a+"&cab="+cab+"&tipe="+tipe;
 
             getJson(url+rms, vv, function(data) {
                 if (data.error) {
-                    pesan(data.error);
-                    clearForm("frxx_pjkomisi");
-                } else if (data.success) {
+                    pesan('error', data.error);
+                    // clearForm("frxx_pjkomisi");
+                } else {
+                    // pesan('success', data.success);
                     console.log(data.success);
+                    clearForm("frxx_pjkomisi");
                 }
             });
         }
