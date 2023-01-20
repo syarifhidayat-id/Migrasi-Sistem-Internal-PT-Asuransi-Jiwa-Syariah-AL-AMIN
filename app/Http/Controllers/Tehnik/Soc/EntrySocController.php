@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Tehnik\Soc;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Config;
+use App\Http\Controllers\Library\Lib;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -127,7 +127,7 @@ class EntrySocController extends Controller
                 $vtable = DB::table('eopr.mst_soc');
                 $kdAwal = $request->msoc_mjns_kode . '.' . $request->msoc_mpid_kode;
                 $kdAkhir = $request->msoc_mft_kode . '.' . $request->msoc_mjm_kode . '.' . $request->msoc_mpras_kode . '.' . $request->msoc_jns_perusahaan;
-                $kode = Config::__getNo($kdAwal, $vtable->max('msoc_kode'), 4);
+                $kode = Lib::__getNo($kdAwal, $vtable->max('msoc_kode'), 4);
                 $data = $request->all();
                 $data = $request->except(
                     '_token',

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Utility;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Config;
+use App\Http\Controllers\Library\Lib;
 use App\Models\User;
 use App\Models\Utility\DaftarUser;
 use Illuminate\Http\Request;
@@ -76,7 +76,7 @@ class DaftarUserController extends Controller
             ]);
         } else {
             if (empty($request->id)) {
-                $kode = Config::__getKey(4);
+                $kode = Lib::__getKey(4);
                 $data = $request->all();
                 if ($request->hasFile('img_bukti')) {
                     $img_bukti = $request->file('img_bukti');
@@ -217,7 +217,7 @@ class DaftarUserController extends Controller
         $data->delete();
 
         return response()->json([
-            'success' => 'Data berhasil dihapus dengan Kode '.$data->id.'!'
+            'success' => 'Data berhasil dihapus dengan Kode '.$id.'!'
         ]);
     }
 

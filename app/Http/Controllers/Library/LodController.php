@@ -31,12 +31,12 @@ class LodController extends Controller
         if (!empty($e_value)) {
             $tambah .= $tambah . "and (cb.mrkn_kode like '%$e_value%' or cb.mrkn_nama like '%$e_value%')";
         }
-        $rekan = Config::__getGlobalValue('mrkn_kode_induk');
+        $rekan = Lib::__getGlobalValue('mrkn_kode_induk');
         if (!empty($rekan)) {
-            $rekan = Config::__getGlobalValue('mrkn_kode_induk');
+            $rekan = Lib::__getGlobalValue('mrkn_kode_induk');
         }
-        $nasabah = str_replace(",", "','", Config::__getGlobalValue('mjns_kode'));
-        $menutipe = Config::__getGlobalValue('menu_tipe');
+        $nasabah = str_replace(",", "','", Lib::__getGlobalValue('mjns_kode'));
+        $menutipe = Lib::__getGlobalValue('menu_tipe');
         if ($menutipe=="REKAN") {
             $tambah .= "and (cb.mrkn_kode='".$rekan."'  or  cb.mrkn_mrkn_kode_induk='".$rekan."')";
             if (trim($rekan)=="") $tambah .= "and 1=0";
@@ -48,8 +48,8 @@ class LodController extends Controller
         WHERE $vkey<>'' $tambah
         LIMIT $offset,$rows");
 
-        $res = Config::__dbAll($cmd);
+        $res = Lib::__dbAll($cmd);
 
-        return Config::json($res);
+        return Lib::json($res);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Tehnik\Soc;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Config;
+use App\Http\Controllers\Library\Lib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -65,7 +65,7 @@ class UploadTarifController extends Controller
             ]);
         } else {
             $vtable = DB::table('emst.mst_tarif');
-            $kodeImportTarif = Config::__getpx($vtable->max('mth_nomor'), 14);
+            $kodeImportTarif = Lib::__getpx($vtable->max('mth_nomor'), 14);
             $data = $request->all();
             $data = $request->except(
                 '_token',
@@ -101,7 +101,7 @@ class UploadTarifController extends Controller
             $row=0;
             for ($row=2; $row <= $rowxls; $row++) {
                 $vtable2 = DB::table('emst.mst_tarif_usia_jwaktu');
-                $rows['mstuj_pk'] = Config::__getpx($vtable2->max('mstuj_pk'), 18);
+                $rows['mstuj_pk'] = Lib::__getpx($vtable2->max('mstuj_pk'), 18);
                 $rows['mstuj_mth_pk'] = $kodeImportTarif;
                 for ($col1=0; $col1 <= $tinggiCol; $col1++) {
                     $value = $objWorkSheet->getCellByColumnAndRow($col1+1, $row)->getValue();
