@@ -234,8 +234,9 @@ class MenuController extends Controller
 
     public function datamenu(Request $request)
     {
-        if ($request->ajax()) {
+        // if ($request->ajax()) {
             $data = DB::table('web_menu')->select(DB::raw("wmn_kode, wmn_icon, wmn_descp, wmn_tipe, wmn_url_n, wmn_url_o_n"))->get();
+            // return Lib::json($data);
             return Datatables::of($data)
             ->addIndexColumn()
             ->filter (function ($instance) use ($request) {
@@ -266,6 +267,6 @@ class MenuController extends Controller
                 }
             })
             ->make(true);
-        }
+        // }
     }
 }

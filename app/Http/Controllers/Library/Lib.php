@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Library;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class Lib extends Controller
 {
@@ -75,5 +77,15 @@ class Lib extends Controller
     public static function json($res)
     {
         return eval(base64_decode('CiByZXR1cm4gcmVzcG9uc2UoKS0+anNvbigkcmVzKTsg'));
+    }
+
+    public static function valid($req, $required, $message)
+    {
+        return eval(base64_decode('CiByZXR1cm4gVmFsaWRhdG9yOjptYWtlKCRyZXEsICRyZXF1aXJlZCwgJG1lc3NhZ2UpOyA='));
+    }
+
+    public static function upfile($loc, $id, $namefile)
+    {
+        return eval(base64_decode('CiByZXR1cm4gU3RvcmFnZTo6cHV0RmlsZUFzKCRsb2MsICRpZCwgJG5hbWVmaWxlKTsg'));
     }
 }

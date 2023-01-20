@@ -49,7 +49,7 @@ class InputKomisiController extends Controller
     public function store(Request $request)
     {
         if ($request->mtx_kode) {
-            $validasi = Validator::make($request->all(), [
+            $validasi = Lib::valid($request->all(), [
                 'mtx_kode' => 'required|max:16',
                 'mtx_npwp' => 'required|max:20',
                 'mtx_nama' => 'required',
@@ -63,6 +63,20 @@ class InputKomisiController extends Controller
                 'mtx_nama.required'=>'Nama user tidak boleh kosong!',
                 'mtx_status.required'=>'Status user tidak boleh kosong!',
             ]);
+            // Validator::make($request->all(), [
+            //     'mtx_kode' => 'required|max:16',
+            //     'mtx_npwp' => 'required|max:20',
+            //     'mtx_nama' => 'required',
+            //     'mtx_status' => 'required',
+            // ],
+            // [
+            //     'mtx_kode.required'=>'Kode user tidak boleh kosong!',
+            //     'mtx_kode.max'=>'Kode user maksimal 16 karakter!',
+            //     'mtx_npwp.required'=>'NPWP tidak boleh kosong!',
+            //     'mtx_npwp.max'=>'NPWP maksimal 20 karakter!',
+            //     'mtx_nama.required'=>'Nama user tidak boleh kosong!',
+            //     'mtx_status.required'=>'Status user tidak boleh kosong!',
+            // ]);
 
             if ($validasi->fails()) {
                 return response()->json([

@@ -5,6 +5,7 @@ use App\Http\Controllers\Keuangan\Kas\MasterKasController;
 use App\Http\Controllers\Keuangan\Kas\RincianTransaksiController;
 use App\Http\Controllers\Keuangan\Kas\VoucherController;
 use App\Http\Controllers\Keuangan\KomisiOverreding\InputKomisiController;
+use App\Http\Controllers\Keuangan\LampiranJurnalPembayaran\LampiranKlaimController;
 use App\Http\Controllers\Library\LodController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,12 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('/list-komisi', [ApprovalKomisiController::class, 'listKomisi']);
         });
 
+    });
+
+    Route::group(['prefix' => '/lampiran-jurnal-pembayaran', 'as' => 'lampiran-jurnal-pembayaran.'], function() {
+        Route::group(['prefix' => '/lampiran-klaim', 'as' => 'lampiran-klaim.'], function() {
+            Route::get('/table-lampiran-klaim', [LampiranKlaimController::class, 'lodLampiranKlaim']);
+        });
     });
 
     Route::group(['prefix' => '/kas', 'as' => 'kas.'], function () {

@@ -158,17 +158,17 @@ class EntrySocController extends Controller
                     $dir = 'public/tehnik/soc/doc';
                     $fileOri = $msoc_dok->getClientOriginalName();
                     $namaFile = $kode . '.' . $kdAkhir . '-DokumenSoc-' . $fileOri;
-                    $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
+                    $path = Lib::upfile($dir, $msoc_dok, $namaFile);
                     $data['msoc_dok'] = $namaFile;
                 }
 
                 $data['msoc_endos'] = $request->endors;
                 $data['msoc_endors'] = $request->endors;
                 $data['msoc_approve'] = '0';
-                $data['msoc_ins_date'] = date('Y-m-d H:i:s');
-                $data['msoc_ins_user'] = Auth::user()->email;
-                $data['msoc_upd_date'] = date('Y-m-d H:i:s');
-                $data['msoc_upd_user'] = Auth::user()->email;
+                $data['msoc_ins_date'] = Lib::now();
+                $data['msoc_ins_user'] = Lib::__getUser();
+                $data['msoc_upd_date'] = Lib::now();
+                $data['msoc_upd_user'] = Lib::__getUser();
 
                 // return $data;
                 $vtable->insert($data);
@@ -202,17 +202,17 @@ class EntrySocController extends Controller
                         $dir = 'public/tehnik/soc/doc';
                         $fileOri = $msoc_dok->getClientOriginalName();
                         $namaFile = $request->msoc_kode . '-DokumenSoc-' . $fileOri;
-                        $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
+                        $path = Lib::upfile($dir, $msoc_dok, $namaFile);
                         $data['msoc_dok'] = $namaFile;
                     }
                     $data['msoc_endos'] = $request->endors;
                     $data['msoc_endors'] = $request->endors;
                     $data['msoc_approve'] = 0;
                     // $data['msoc_status'] = 0;
-                    $data['msoc_ins_date'] = date('Y-m-d H:i:s');
-                    $data['msoc_ins_user'] = Auth::user()->email;
-                    $data['msoc_upd_date'] = date('Y-m-d H:i:s');
-                    $data['msoc_upd_user'] = Auth::user()->email;
+                    $data['msoc_ins_date'] = Lib::now();
+                    $data['msoc_ins_user'] = Lib::__getUser();
+                    $data['msoc_upd_date'] = Lib::now();
+                    $data['msoc_upd_user'] = Lib::__getUser();
 
                     $vtable->update($data);
 
@@ -255,7 +255,7 @@ class EntrySocController extends Controller
                         $dir = 'public/tehnik/soc/doc';
                         $fileOri = $msoc_dok->getClientOriginalName();
                         $namaFile = $kodepoliseds . '-DokumenSoc-' . $fileOri;
-                        $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
+                        $path = Lib::upfile($dir, $msoc_dok, $namaFile);
                         $data['msoc_dok'] = $namaFile;
                     }
                     $data['msoc_kode'] = $kodepoliseds;
@@ -266,10 +266,10 @@ class EntrySocController extends Controller
                     $data['msoc_endos'] = $request->endors;
                     $data['msoc_endors'] = $request->endors;
                     $data['msoc_approve'] = 0;
-                    $data['msoc_ins_date'] = date('Y-m-d H:i:s');
-                    $data['msoc_ins_user'] = Auth::user()->email;
-                    $data['msoc_upd_date'] = date('Y-m-d H:i:s');
-                    $data['msoc_upd_user'] = Auth::user()->email;
+                    $data['msoc_ins_date'] = Lib::now();
+                    $data['msoc_ins_user'] = Lib::__getUser();
+                    $data['msoc_upd_date'] = Lib::now();
+                    $data['msoc_upd_user'] = Lib::__getUser();
 
                     $vtable->insert($data);
 
@@ -302,16 +302,16 @@ class EntrySocController extends Controller
                         $dir = 'public/tehnik/soc/doc';
                         $fileOri = $msoc_dok->getClientOriginalName();
                         $namaFile = $request->msoc_kode . '-DokumenSoc-' . $fileOri;
-                        $path = Storage::putFileAs($dir, $msoc_dok, $namaFile);
+                        $path = Lib::upfile($dir, $msoc_dok, $namaFile);
                         $data['msoc_dok'] = $namaFile;
                     }
                     $data['msoc_endos'] = $request->endors;
                     $data['msoc_endors'] = $request->endors;
                     $data['msoc_approve'] = 0;
-                    $data['msoc_ins_date'] = date('Y-m-d H:i:s');
-                    $data['msoc_ins_user'] = Auth::user()->email;
-                    $data['msoc_upd_date'] = date('Y-m-d H:i:s');
-                    $data['msoc_upd_user'] = Auth::user()->email;
+                    $data['msoc_ins_date'] = Lib::now();
+                    $data['msoc_ins_user'] = Lib::__getUser();
+                    $data['msoc_upd_date'] = Lib::now();
+                    $data['msoc_upd_user'] = Lib::__getUser();
 
                     $vtable->update($data);
 
