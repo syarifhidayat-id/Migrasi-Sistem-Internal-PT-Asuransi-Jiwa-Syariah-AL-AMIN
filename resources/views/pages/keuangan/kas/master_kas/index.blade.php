@@ -154,13 +154,12 @@
                         <div class="mb-5">
                             <label class="required form-label">Nomor Voucher</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="tdna_kode_vcr" name="tdna_kode_vcr"
-                                    data-allow-clear="true" placeholder="input voucher" readonly />
+                                <input type="text" class="form-control" id="tdna_kode_vcr" name="tdna_kode_vcr" placeholder="input voucher" />
                                 <button type="button" class="btn btn-success" id="mod_input_vcr">Input VCR</button>
                                 <button type="button" class="btn btn-primary" id="btn_lihat_vcr"><i
                                         class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
-                                        <span class="text-danger error-text tdna_kode_vcr_err"></span>
-                            </div>
+                                    </div>
+                                    <span class="text-danger error-text tdna_kode_vcr_err"></span>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -244,6 +243,7 @@
         @include('pages.keuangan.kas.master_kas.modal.create')
         @include('pages.keuangan.kas.master_kas.modal.create-voucher')
         @include('pages.keuangan.kas.master_kas.modal.view')
+        @include('pages.keuangan.kas.master_kas.modal.view-pdf')
     </div>
 @endsection
 
@@ -255,9 +255,9 @@
         setHide('nama_akun', true);
         setHide('tdna_user_ins', true);
         setHide('tkad_approvkeu1_user', true);
-        setHide('tkav_nomor', true);
+        // setHide('tkav_nomor', true);
         setHide('tkav_tdna_pk', true);
-        // setHide('tkav_akun', true);
+        setHide('tkav_akun', true);
         setTextReadOnly('tdna_kode_vcr', true);
         setTextReadOnly('tkad_tipe_dk', true);
         setTextReadOnly('tkav_nomor', true);
@@ -303,9 +303,6 @@
                         text: d.mlok_pk + ' - ' + d.mlok_nama, // text nama
                         id: d.mlok_pk, // kode value
                     }
-                },
-                function(res) {
-
                 },
             );
 
@@ -467,10 +464,20 @@
                 openModal('modal_rincian_transaksi');
             });
 
-            $('body').on('change', '#jenis_dokumen', function() {
-                var _this = $(this).val();
-                console.log(_this);
-            }).change();
+            tombol('click','btn_lihat_vcr', function() {
+                // var nomor_vcr = getText('tdna_kode_vcr');
+                // setText('tMod_vcr_view', nomor_vcr);
+                // titleAction('tMod_vcr_test', nomor_vcr);
+                // openModal('modal-view-pdf');
+                // console.log(nomor_vcr);
+                // var url = '{{ url("api/keuangan/kas/show-pdf") }}';
+                // $('#view_pdf_show').attr('src', url);
+            });
+
+            // $('body').on('change', '#jenis_dokumen', function() {
+            //     var _this = $(this).val();
+            //     console.log(_this);
+            // }).change();
 
 
             tombol('click', 'mod_input_vcr', function() {

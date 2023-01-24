@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Keuangan\Kas\ApprovController;
 use App\Http\Controllers\Keuangan\Komisi\ApprovalKomisiController;
 use App\Http\Controllers\Keuangan\Kas\MasterKasController;
 use App\Http\Controllers\Keuangan\Kas\RincianTransaksiController;
@@ -42,6 +43,14 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
         Route::get('s_karyawan', [MasterKasController::class, 'm_karyawan']);
         Route::get('e_realisasi', [MasterKasController::class, 'e_realisasi']);
         Route::get('tdna_penerima', [MasterKasController::class, 'tdna_penerima']);
+
+        Route::get('api_dtl_approv', [ApprovController::class, 'api_dtl_approv']);
+        Route::get('selectCabangAlamin', [ApprovController::class, 'selectCabang']);
+        Route::get('getCabangAlamin/{id}', [ApprovController::class, 'getCabang']);
+        Route::get('api_approv/{id}', [ApprovController::class, 'api_approv']);
+        Route::post('approv', [ApprovController::class, 'approv']);
+        // Route::get('show-pdf', [MasterKasController::class, 'pdf_vcr']);
+
 
     });
 
