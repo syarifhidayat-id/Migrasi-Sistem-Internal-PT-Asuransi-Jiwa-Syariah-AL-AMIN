@@ -121,9 +121,9 @@ class ApprovController extends Controller
     public function api_dtl_approv(Request $request)
     {
 
-        $page = $request->page ? intval($request->page) : 1;
-        $rows = $request->rows ? intval($request->rows) : 500;
-        $offset = ($page - 1) * $rows;
+        // $page = $request->page ? intval($request->page) : 1;
+        // $rows = $request->rows ? intval($request->rows) : 50000;
+        // $offset = ($page - 1) * $rows;
 
         $data = DB::table('epms.trs_dana_aju')->leftJoin('emst.mst_lokasi', 'mlok_pk', '=', 'tdna_mlok_kode')
             ->select(
@@ -140,9 +140,23 @@ class ApprovController extends Controller
             FORMAT(tdna_total, 2) tdna_total')
             )
             ->orderBy('tdna_date_ins', 'desc')
-            ->limit($rows)
-            ->offset($offset)
+            ->limit(10000)
             ->get();
+        // $cmd = DB::select("
+        // SELECT
+        // tdna_pk,  DATE_FORMAT(tdna_tgl_aju,'%d-%m-%Y') tdna_tgl_aju, mlok_nama tdna_mlok_kode,  tdna_tipe,  tdna_penerima,tdna_akun_d, 
+        // tdna_total  tdna_total,
+        // tdna_kode_vcr,   LEFT(tdna_ket,85) tdna_ket,  
+        // IF(tdna_aprov_admin=1,   'SETUJU',IF(tdna_aprov_admin=2,'TOLAK','-')) tdna_aprov_admin,
+        // IF(tdna_aprov_kacab=1, 'SETUJU',IF(tdna_aprov_kacab=2,'TOLAK','-')) tdna_aprov_kacab,
+        // IF(tdna_aprov_kapms=1, 'SETUJU',IF(tdna_aprov_kapms=2,'TOLAK','-')) tdna_aprov_kapms,
+        // IF(tdna_aprov_korwil=1,'SETUJU',IF(tdna_aprov_korwil=2,'TOLAK','-')) tdna_aprov_korwil,
+        // IF(tdna_aprov_ho=1,    'SETUJU',IF(tdna_aprov_ho=2 ,   'TOLAK','-')) tdna_aprov_ho,
+        // IF(tdna_sts_buku=1,    'SUDAH',IF(tdna_sts_buku=0,   'BELUM','-')) tdna_sts_buku,
+        // IF(tdna_sts_jurnal=1,  'SUDAH',IF(tdna_sts_jurnal=0 ,'BELUM','-')) tdna_sts_jurnal,tdna_sts_jurnal tdna_sts_jurnalx
+        // FROM epms.trs_dana_aju,  emst.`mst_lokasi` 
+        // WHERE mlok_kode=tdna_mlok_kode 
+        // LIMIT 50");
 
         return DataTables::of($data)
             ->addIndexColumn()
@@ -321,5 +335,13 @@ class ApprovController extends Controller
 
 
         return $data;
+    }
+
+    public function upload ($id) {
+        $data = DB::table('epms.trs_dana_aju')
+        ->where('tdna_pk', $id)
+        ->first();
+
+        return response()->json($data);
     }
 }

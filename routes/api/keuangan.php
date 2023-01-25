@@ -48,7 +48,7 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
         Route::get('selectCabangAlamin', [ApprovController::class, 'selectCabang']);
         Route::get('getCabangAlamin/{id}', [ApprovController::class, 'getCabang']);
         Route::get('api_approv/{id}', [ApprovController::class, 'api_approv']);
-        Route::post('approv', [ApprovController::class, 'approv']);
+        Route::get('upload/{id}', [ApprovController::class, 'upload']);
         // Route::get('show-pdf', [MasterKasController::class, 'pdf_vcr']);
 
 

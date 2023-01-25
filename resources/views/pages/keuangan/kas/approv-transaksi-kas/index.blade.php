@@ -205,6 +205,7 @@
             </div>
         </div>
         
+        @include('pages.keuangan.kas.approv-transaksi-kas.modal.upload')
         @include('pages.keuangan.kas.approv-transaksi-kas.modal.approv')
         @include('pages.keuangan.kas.approv-transaksi-kas.modal.view')
         <div class="card-body py-10">
@@ -240,7 +241,7 @@
 @section('script')
     <script type="text/javascript">
         setHide('btn_reset', true);
-        setHide('tdna_pk', true);
+        
         
         setTextReadOnly('mlok_nama', true);
         setTextReadOnly('tdna_tgl_aju', true);
@@ -352,7 +353,7 @@
                         orderable: false,
                         className: 'text-center',
                         render: function(data, type, row) {
-                            return `<button type="button" id="btn_upload" class="btn btn-light-success"> Upload </button>`
+                            return `<button type="button" id="btn_upload" data-resource="`+ row.tdna_pk +`" class="btn btn-light-success"> Upload </button>`
                         }
                     },
                     {
@@ -401,10 +402,21 @@
                 var kode = $(this).attr('data-resource');
                 lodJson("GET", "{{ url('api/keuangan/kas/api_approv') }}" + "/" + kode, function (data) {
                 openModal('modal_approv');
+                setHide('tdna_pk', true);
                 titleAction('tMod_approv', 'Approval Dana Kas');
                 bsimpan('btn_simpan', 'Simpan');
                 jsonForm('frxx_approv', data);
             });
+        });
+        tombol('click', 'btn_upload', function() {
+            var kode = $(this).attr('data-resource');
+            lodJson("GET", "{{ url('api/keuangan/kas/upload') }}" + "/" + kode, function (data) {
+            openModal('modal_upload');
+            setTextReadOnly('tdna_pk', true);
+            titleAction('tMod', 'Upload Bukti KAS');
+            bsimpan('btn_simpan', 'Simpan');
+            jsonForm('frxx_upload', data);
+        });
         });
 
         submitForm(
@@ -428,6 +440,10 @@
         function close_approv() {
             closeModal('modal_approv');
             clearForm('frxx_approv');
+        }
+        function close_upload() {
+            closeModal('modal_upload');
+            clearForm('frxx_upload');
         }
     </script>
 @endsection
