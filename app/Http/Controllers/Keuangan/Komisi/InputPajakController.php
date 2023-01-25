@@ -1,21 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Keuangan\KomisiOverreding;
+namespace App\Http\Controllers\Keuangan\Komisi;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Library\Lib;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-class InputKomisiController extends Controller
+class InputPajakController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,7 +21,7 @@ class InputKomisiController extends Controller
      */
     public function index()
     {
-        return view('pages.keuangan.komisi-overreding.input.index', [
+        return view('pages.keuangan.komisi-overreding.input-pajak.index', [
             'year' => date('2007'),
             'tahun' => date('2007'),
         ]);

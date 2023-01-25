@@ -4,7 +4,8 @@ use App\Http\Controllers\Keuangan\Komisi\ApprovalKomisiController;
 use App\Http\Controllers\Keuangan\Kas\MasterKasController;
 use App\Http\Controllers\Keuangan\Kas\RincianTransaksiController;
 use App\Http\Controllers\Keuangan\Kas\VoucherController;
-use App\Http\Controllers\Keuangan\KomisiOverreding\InputKomisiController;
+use App\Http\Controllers\Keuangan\Komisi\InputBayarController;
+use App\Http\Controllers\Keuangan\Komisi\InputPajakController;
 use App\Http\Controllers\Keuangan\LampiranJurnalPembayaran\LampiranKlaimController;
 use App\Http\Controllers\Library\LodController;
 use Illuminate\Support\Facades\Route;
@@ -12,13 +13,19 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
     Route::group(['prefix' => '/komisi-overriding', 'as' => 'komisi-overriding.'], function() {
 
-        Route::group(['prefix' => '/input-komisi-overriding', 'as' => 'input-komisi-overriding.'], function() {
-            Route::get('/lod-input-komisioverriding', [InputKomisiController::class, 'lodInputKomisi']);
-            Route::get('/cari-tax', [InputKomisiController::class, 'cariTax']);
-            Route::get('/lod-user-tax', [InputKomisiController::class, 'userTax']);
-            Route::get('/export-input', [InputKomisiController::class, 'exportInput']);
-            Route::get('/select-cabalamin', [InputKomisiController::class, 'selectCabAlm']);
-            // Route::get('/post-pjkomisi', [InputKomisiController::class, 'postPjKomisi']);
+        Route::group(['prefix' => '/input-pajak-overriding', 'as' => 'input-pajak-overriding.'], function() {
+            Route::get('/lod-input-komisioverriding', [InputPajakController::class, 'lodInputKomisi']);
+            Route::get('/cari-tax', [InputPajakController::class, 'cariTax']);
+            Route::get('/lod-user-tax', [InputPajakController::class, 'userTax']);
+            Route::get('/export-input', [InputPajakController::class, 'exportInput']);
+            Route::get('/select-cabalamin', [InputPajakController::class, 'selectCabAlm']);
+            // Route::get('/post-pjkomisi', [InputPajakController::class, 'postPjKomisi']);
+            // Route::get('/lod_pmg_polis', [LodController::class, 'lod_pmg_polis']);
+        });
+
+        Route::group(['prefix' => 'input-bayar-overriding', 'as' => 'input-bayar-overriding.'], function() {
+            Route::resource('/', InputBayarController::class);
+            // Route::get('/post-pjkomisi', [InputBayarController::class, 'postPjKomisi']);
             // Route::get('/lod_pmg_polis', [LodController::class, 'lod_pmg_polis']);
         });
 
