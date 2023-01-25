@@ -37,6 +37,7 @@ class User extends Authenticatable
         // 'password',
         'password_n',
         'remember_token',
+        // 'api_token',
     ];
 
     /**

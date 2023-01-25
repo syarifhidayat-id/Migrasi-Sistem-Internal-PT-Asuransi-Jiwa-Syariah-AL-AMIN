@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sekper;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Config;
+use App\Http\Controllers\Library\Lib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -66,7 +66,7 @@ class SuratKeluarController extends Controller
 
         if ($request->tsin_pk == "") {
 
-            $kode = Config::__getKey(14);
+            $kode = Lib::__getKey(14);
             $data = $request->all();
             $data = request()->except(['_token']);
 
@@ -349,7 +349,7 @@ class SuratKeluarController extends Controller
 
     public function store_bd(Request $request)
     {
-        $kode = Config::__getKey(14);
+        $kode = Lib::__getKey(14);
             $data = $request->all();
             $data = request()->except(['_token']);
 

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Library\Lib;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
-use App\Http\Controllers\Library\Config;
 
 class ApprovController extends Controller
 {
@@ -117,46 +118,73 @@ class ApprovController extends Controller
         return response()->download(public_path($filename));
     }
 
+    public function lodDoc(Request $request)
+    {
+        $url = public_path('storage/keuangan/kas/master-kas/'.$request['doc']);
+        if (Storage::exists($url)) {
+            return response()->json(['success' => 'Success']);
+        } else {
+            return response()->json(['error' => 'Error']);
+        }
+        // return response()->json(['error' => $url]);
+    }
+
 
     public function api_dtl_approv(Request $request)
     {
-
+        $tambah="";
         // $page = $request->page ? intval($request->page) : 1;
         // $rows = $request->rows ? intval($request->rows) : 50000;
         // $offset = ($page - 1) * $rows;
 
-        $data = DB::table('epms.trs_dana_aju')->leftJoin('emst.mst_lokasi', 'mlok_pk', '=', 'tdna_mlok_kode')
-            ->select(
-                '*',
-                DB::raw("@no:=@no+1 AS DT_RowIndex"),
-                // DB::raw('DATE_FORMAT(tdna_tgl_aju, "%d-%m-%Y") as date_aju'),
-                // DB::raw('CASE 
-                // WHEN tdna_mlok_kode = mlok_pk THEN mlok_nama END as cabang_alamin'),
-                DB::raw('CASE WHEN tdna_aprov_admin = "1" THEN "Setuju" WHEN tdna_aprov_admin = "0" THEN "Belum Approv" END as admin,
-            CASE WHEN tdna_aprov_kacab = "1" THEN "Setuju" WHEN tdna_aprov_kacab = "0" THEN "Belum Approv" END as kepala_cabang,
-            CASE WHEN tdna_aprov_kapms = "1" THEN "Setuju" WHEN tdna_aprov_kapms = "0" THEN "Belum Approv" END as kadiv_wakadiv,
-            CASE WHEN tdna_aprov_korwil = "1" THEN "Setuju" WHEN tdna_aprov_korwil = "0" THEN "Belum Approv" END as korwil,
-            CASE WHEN tdna_aprov_ho = "1" THEN "Setuju" WHEN tdna_aprov_ho = "0" THEN "Belum Approv" END as keuangan,
-            FORMAT(tdna_total, 2) tdna_total')
-            )
-            ->orderBy('tdna_date_ins', 'desc')
-            ->limit(10000)
-            ->get();
-        // $cmd = DB::select("
-        // SELECT
-        // tdna_pk,  DATE_FORMAT(tdna_tgl_aju,'%d-%m-%Y') tdna_tgl_aju, mlok_nama tdna_mlok_kode,  tdna_tipe,  tdna_penerima,tdna_akun_d, 
-        // tdna_total  tdna_total,
-        // tdna_kode_vcr,   LEFT(tdna_ket,85) tdna_ket,  
-        // IF(tdna_aprov_admin=1,   'SETUJU',IF(tdna_aprov_admin=2,'TOLAK','-')) tdna_aprov_admin,
-        // IF(tdna_aprov_kacab=1, 'SETUJU',IF(tdna_aprov_kacab=2,'TOLAK','-')) tdna_aprov_kacab,
-        // IF(tdna_aprov_kapms=1, 'SETUJU',IF(tdna_aprov_kapms=2,'TOLAK','-')) tdna_aprov_kapms,
-        // IF(tdna_aprov_korwil=1,'SETUJU',IF(tdna_aprov_korwil=2,'TOLAK','-')) tdna_aprov_korwil,
-        // IF(tdna_aprov_ho=1,    'SETUJU',IF(tdna_aprov_ho=2 ,   'TOLAK','-')) tdna_aprov_ho,
-        // IF(tdna_sts_buku=1,    'SUDAH',IF(tdna_sts_buku=0,   'BELUM','-')) tdna_sts_buku,
-        // IF(tdna_sts_jurnal=1,  'SUDAH',IF(tdna_sts_jurnal=0 ,'BELUM','-')) tdna_sts_jurnal,tdna_sts_jurnal tdna_sts_jurnalx
-        // FROM epms.trs_dana_aju,  emst.`mst_lokasi` 
-        // WHERE mlok_kode=tdna_mlok_kode 
-        // LIMIT 50");
+        // $data = DB::table('epms.trs_dana_aju')->leftJoin('emst.mst_lokasi', 'mlok_pk', '=', 'tdna_mlok_kode')
+        //     ->select(
+        //         '*',
+        //         DB::raw("@no:=@no+1 AS DT_RowIndex"),
+        //         // DB::raw('DATE_FORMAT(tdna_tgl_aju, "%d-%m-%Y") as date_aju'),
+        //         // DB::raw('CASE 
+        //         // WHEN tdna_mlok_kode = mlok_pk THEN mlok_nama END as cabang_alamin'),
+        //         DB::raw('CASE WHEN tdna_aprov_admin = "1" THEN "Setuju" WHEN tdna_aprov_admin = "0" THEN "Belum Approv" END as admin,
+        //     CASE WHEN tdna_aprov_kacab = "1" THEN "Setuju" WHEN tdna_aprov_kacab = "0" THEN "Belum Approv" END as kepala_cabang,
+        //     CASE WHEN tdna_aprov_kapms = "1" THEN "Setuju" WHEN tdna_aprov_kapms = "0" THEN "Belum Approv" END as kadiv_wakadiv,
+        //     CASE WHEN tdna_aprov_korwil = "1" THEN "Setuju" WHEN tdna_aprov_korwil = "0" THEN "Belum Approv" END as korwil,
+        //     CASE WHEN tdna_aprov_ho = "1" THEN "Setuju" WHEN tdna_aprov_ho = "0" THEN "Belum Approv" END as keuangan,
+        //     FORMAT(tdna_total, 2) tdna_total')
+        //     )
+        //     ->orderBy('tdna_date_ins', 'desc')
+        //     ->limit(10000)
+        //     ->get();
+        if (!empty($request['search']))
+        {
+            $tambah = $tambah." and tdna_pk= '".$request['search']."' ";
+        }
+
+        if (isset($request['e_baris']))
+        {
+            $baris = $request['e_baris'];
+        } else {
+            $baris = '50';
+        }
+
+        $cmd = DB::select("
+        SELECT
+        tdna_pk, DATE_FORMAT(tdna_tgl_aju,'%d-%m-%Y') tdna_tgl_aju, mlok_nama tdna_mlok_kode,  tdna_tipe,  tdna_penerima,tdna_akun_d, 
+        tdna_total  tdna_total,
+        tdna_kode_vcr,   LEFT(tdna_ket,85) tdna_ket,
+        tdna_bukti, 
+        IF(tdna_aprov_admin=1,   'SETUJU',IF(tdna_aprov_admin=2,'TOLAK','-')) tdna_aprov_admin,
+        IF(tdna_aprov_kacab=1, 'SETUJU',IF(tdna_aprov_kacab=2,'TOLAK','-')) tdna_aprov_kacab,
+        IF(tdna_aprov_kapms=1, 'SETUJU',IF(tdna_aprov_kapms=2,'TOLAK','-')) tdna_aprov_kapms,
+        IF(tdna_aprov_korwil=1,'SETUJU',IF(tdna_aprov_korwil=2,'TOLAK','-')) tdna_aprov_korwil,
+        IF(tdna_aprov_ho=1,    'SETUJU',IF(tdna_aprov_ho=2 ,   'TOLAK','-')) tdna_aprov_ho,
+        IF(tdna_sts_buku=1,    'SUDAH',IF(tdna_sts_buku=0,   'BELUM','-')) tdna_sts_buku,
+        IF(tdna_sts_jurnal=1,  'SUDAH',IF(tdna_sts_jurnal=0 ,'BELUM','-')) tdna_sts_jurnal,tdna_sts_jurnal tdna_sts_jurnalx
+        FROM epms.trs_dana_aju,  emst.`mst_lokasi` 
+        WHERE mlok_kode=tdna_mlok_kode
+        ".$tambah." 
+        ORDER BY tdna_date_ins DESC
+        LIMIT ".$baris."");
+        $data = Lib::__dbAll($cmd);
 
         return DataTables::of($data)
             ->addIndexColumn()
@@ -217,19 +245,19 @@ class ApprovController extends Controller
                         });
                     }
                 }
-                if (!empty($request->get('search'))) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if (Str::contains(Str::lower($row['tdna_ket']), Str::lower($request->get('search')))) {
-                            return true;
-                        }
+                // if (!empty($request->get('search'))) {
+                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //         if (Str::contains(Str::lower($row['tdna_pk']), Str::lower($request->get('search')))) {
+                //             return true;
+                //         }
 
-                        //else if (Str::contains(Str::lower($row['mua_ins_user']), Str::lower($request->get('search')))) {
-                        //     return true;
-                        // }
+                //         //else if (Str::contains(Str::lower($row['mua_ins_user']), Str::lower($request->get('search')))) {
+                //         //     return true;
+                //         // }
 
-                        return false;
-                    });
-                }
+                //         return false;
+                //     });
+                // }
             })
             ->make(true);
     }
@@ -309,7 +337,7 @@ class ApprovController extends Controller
 
         );
 
-        $data['tdna_total'] = Config::_str2($request->tdna_total, 'N');
+        $data['tdna_total'] = Lib::__str2($request->tdna_total, 'N');
 
 
         if ($level_jabatan->sjab_level == "STF" && $level_jabatan->sjab_sdir_kode == "OPS") {

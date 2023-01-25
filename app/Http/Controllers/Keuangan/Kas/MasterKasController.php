@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Config;
-use Elibyy\TCPDF\Facades\TCPDF;
+use App\Http\Controllers\Library\Lib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -24,7 +23,7 @@ class MasterKasController extends Controller
     public function index()
     {
 
-         $kode = Config::__getKey(14);
+         $kode = Lib::__getKey(14);
          response()->json([
              'kode' => $kode,
         ]);

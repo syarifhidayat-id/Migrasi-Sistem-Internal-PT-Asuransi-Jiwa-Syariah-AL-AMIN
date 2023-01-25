@@ -1352,11 +1352,11 @@
                         }
 
                         if (tipe=='1' && aksess=='0') {
-                            pesan('Maaf Anda Tidak Punya Hak Akses');
+                            pesan('info', 'Maaf Anda Tidak Punya Hak Akses');
                             clear_f();
                         } else {
                             if (getText('msoc_kode')!="" && tipe=="0") {
-                                pesan('Data sudah pernah di input dengan nomor: '+getText('msoc_kode'));
+                                pesan('info', 'Data sudah pernah di input dengan nomor: '+getText('msoc_kode'));
                                 clear_f();
                             } else {
                                 tanya();
@@ -1489,9 +1489,9 @@
             if (getText('msoc_mfee_persen')==0) {
                 setTextReadOnly('msoc_mfee_persen', true);
                 setTextReadOnly('msoc_mdr_kode', false);
-                pesan('Silakan Isi Discount Rate Jika anda yakin kontribusi dibayarkan Nett');
+                pesan('info', 'Silakan Isi Discount Rate Jika anda yakin kontribusi dibayarkan Nett');
             } else {
-                pesan('Apakah Anda Yakin kontribusi dibayarkan Gross?? ');
+                pesan('info', 'Apakah Anda Yakin kontribusi dibayarkan Gross?? ');
             }
         }
 
@@ -1500,9 +1500,9 @@
             if (getText('msoc_mdr_kode')==0) {
                 setTextReadOnly('msoc_mdr_kode', true);
                 setTextReadOnly('msoc_mfee_persen', false);
-                pesan('Silakan Isi Fee Base Jika anda yakin kontribusi dibayarkan Gross');
+                pesan('info', 'Silakan Isi Fee Base Jika anda yakin kontribusi dibayarkan Gross');
             } else {
-                pesan('Apakah Anda Yakin kontribusi dibayarkan Nett?? ');
+                pesan('info', 'Apakah Anda Yakin kontribusi dibayarkan Nett?? ');
             }
         }
 

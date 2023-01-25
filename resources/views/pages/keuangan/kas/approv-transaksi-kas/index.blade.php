@@ -28,13 +28,36 @@
                         <div class="separator border-gray-200"></div>
     
                         <div class="px-7 py-5" data-kt-datatable-table-filter="form">
+                            <div class="row mb-10">
+                                <div class="col-md-6">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Berdasarkan Keyboard</label>
+                                        <input type="search" data-kt-datatable-table-filter="search" name="seacrh" id="seacrh" class="form-control form-control-solid" placeholder="Cari All" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Jumlah Baris yang Tampil</label>
+                                        <select class="form-select form-select-solid fw-bolder" id="e_baris" name="e_baris" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="true" data-hide-search="false">
+                                            <option value="100" selected>100</option>
+                                            <option value="250">250</option>
+                                            <option value="500">500</option>
+                                            <option value="750">750</option>
+                                            <option value="1000">1000</option>
+                                            <option value="2500">2500</option>
+                                            <option value="5000">5000</option>
+                                            <option value="10000">10000</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                {{-- <div class="col-md-12">
                                     <div class="mb-10">
                                         <label class="form-label fs-6 fw-bold">Berdasarkan Keyboard</label>
                                         <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control form-control-solid" placeholder="Cari data!" />
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-6">
                                     <div class="mb-5">
                                         <label class="form-label fs-6 fw-bold">Cabang Al-amin</label>
@@ -275,6 +298,7 @@
                 "serverSide_approv_kas",
                 "{{ url('api/keuangan/kas/api_dtl_approv') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
+                    d.e_baris = getText('e_baris'),
                     d.check_cab_alamin = getText('check_cab_alamin'),
                     d.mlok_pk = getText('cab_alamin'),
                     
@@ -319,7 +343,7 @@
                     //     }
                     // },
                     {
-                        data: 'mlok_nama'
+                        data: 'tdna_mlok_kode'
                     },
                     {
                         data: 'tdna_tgl_aju'
@@ -353,7 +377,7 @@
                         orderable: false,
                         className: 'text-center',
                         render: function(data, type, row) {
-                            return `<button type="button" id="btn_upload" data-resource="`+ row.tdna_pk +`" class="btn btn-light-success"> Upload </button>`
+                            return `<button type="button" onclick="uploadPolis('`+row.tdna_pk+`','`+row.tdna_bukti+`')" class="btn btn-light-success"> Upload </button>`;
                         }
                     },
                     {
@@ -373,19 +397,19 @@
                         }
                     },
                     {
-                        data: 'admin'
+                        data: 'tdna_aprov_admin'
                     },
                     {
-                        data: 'kepala_cabang'
+                        data: 'tdna_aprov_kacab'
                     },
                     {
-                        data: 'kadiv_wakadiv'
+                        data: 'tdna_aprov_kapms'
                     },
                     {
-                        data: 'korwil'
+                        data: 'tdna_aprov_korwil'
                     },
                     {
-                        data: 'keuangan'
+                        data: 'tdna_aprov_ho'
                     },
                     {
                         data: null,
@@ -408,16 +432,6 @@
                 jsonForm('frxx_approv', data);
             });
         });
-        tombol('click', 'btn_upload', function() {
-            var kode = $(this).attr('data-resource');
-            lodJson("GET", "{{ url('api/keuangan/kas/upload') }}" + "/" + kode, function (data) {
-            openModal('modal_upload');
-            setTextReadOnly('tdna_pk', true);
-            titleAction('tMod', 'Upload Bukti KAS');
-            bsimpan('btn_simpan', 'Simpan');
-            jsonForm('frxx_upload', data);
-        });
-        });
 
         submitForm(
             "frxx_approv",
@@ -436,6 +450,24 @@
                 },
         )
     });
+
+    function uploadPolis(kode, doc) {
+        // var url = "{{ url('storage/keuangan/kas/master-kas') }}" + "/" + doc;
+        // console.log(doc)
+        lodJson('GET', '{{ url("api/keuangan/kas/lod-doc-approv") }}' + '?doc=' + doc, function(res) {
+            console.log(res);
+        });
+        // if (doc=="" || doc==null || doc = file_exists(public_path(url))) {
+        //     titleAction('tMod', 'Lihat');
+        //     openModal('modal_upload');
+        //     setText('tdna_pk', kode);
+        // } else {
+        //     titleAction('tModView', 'Lihat');
+        //     openModal('modalView');
+        //     $('#view_pdf').attr('src', url);
+        // }
+        console.log(kode,doc);
+    }
 
         function close_approv() {
             closeModal('modal_approv');

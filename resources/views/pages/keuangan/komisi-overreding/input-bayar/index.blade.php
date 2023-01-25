@@ -1,7 +1,7 @@
 @extends('layouts.main-admin')
 
 @section('title')
-    Input Pajak Komisi & Overreding
+    Input Bayar Komisi & Overreding
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
 
     <div class="card-header">
         <div class="card-title">
-            <h3>List Pajak Komisi & Overreding</h3>
+            <h3>Daftar Pemegang Polis Belum Bayar Komisi</h3>
         </div>
 
         <div class="card-toolbar">
@@ -39,13 +39,30 @@
 
                     <div data-kt-datatable-table-filter="form">
                         <div class="px-7 py-5">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-10">
+                            <div class="row mb-10">
+                                <div class="col-md-6">
+                                    <div class="mb-5">
                                         <label class="form-label fs-6 fw-bold">Berdasarkan Keyboard</label>
                                         <input type="search" data-kt-datatable-table-filter="search" name="seacrh" id="seacrh" class="form-control form-control-solid" placeholder="Cari All" />
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Jumlah Baris yang Tampil</label>
+                                        <select class="form-select form-select-solid fw-bolder" id="e_baris" name="e_baris" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="true" data-hide-search="false">
+                                            <option value="100" selected>100</option>
+                                            <option value="250">250</option>
+                                            <option value="500">500</option>
+                                            <option value="750">750</option>
+                                            <option value="1000">1000</option>
+                                            <option value="2500">2500</option>
+                                            <option value="5000">5000</option>
+                                            <option value="10000">10000</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-5">
                                         <label class="form-label fs-6 fw-bold">Cabang Alamin</label>
@@ -54,7 +71,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                {{-- <div class="col-md-12">
                                     <div class="mb-5">
                                         <label class="form-label fs-6 fw-bold">Periode Proses Inkaso</label>
                                         <div class="input-group input-group-solid flex-nowrap">
@@ -62,7 +79,6 @@
                                                 <select class="form-select form-select-solid fw-bolder" id="e_bln1" name="e_bln1" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 1" data-allow-clear="true" data-hide-search="false">
                                                     <option></option>
                                                     @foreach (range(1,12) as $month)
-                                                        {{-- <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option> --}}
                                                         <option value="{{ $month }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
                                                     @endforeach
                                                 </select>
@@ -72,7 +88,6 @@
                                                 <select class="form-select form-select-solid fw-bolder" id="e_bln2" name="e_bln2" data-control="select2" data-kt-select2="true" data-placeholder="Pilih Bulan 2" data-allow-clear="true" data-hide-search="false">
                                                     <option></option>
                                                     @foreach (range(1,12) as $month)
-                                                        {{-- <option value="{{ date('m', strtotime(date('Y').'-'.$month)) }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option> --}}
                                                         <option value="{{ $month }}">{{ date('F', strtotime(date('Y').'-'.$month)) }}</option>
                                                     @endforeach
                                                 </select>
@@ -88,7 +103,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-6">
                                     <div class="mb-5">
                                         <label class="form-label fs-6 fw-bold">Pemegang Polis</label>
@@ -163,57 +178,31 @@
     <div class="card-body py-10">
         <div class="table-responsive">
             <form id="frxx_pjkomisi" name="frxx_pjkomisi" class="form-table" method="post" enctype="multipart/form-data">
-                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" data-kt-menu="true" tabindex="-1" id="InpOjkKomOver">
+                <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="lampiranKlaim">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
-                            <th class="min-w-50px">No.</th>
-                            <th class="min-w-200px">Pemegang Polis</th>
-                            <th class="min-w-150px">Kode Polis</th>
-                            <th class="min-w-125px">Peserta</th>
-                            <th class="min-w-200px">Uang Pertanggungan</th>
-                            <th class="min-w-200px">Kontribusi Tagih</th>
-                            <th class="min-w-200px">Kontribusi Bayar</th>
-                            <th class="min-w-120px">Komisi</th>
-                            <th class="min-w-450px">Pic Pajak Komisi 1</th>
-                            <th class="min-w-200px">Komisi Bruto 1</th>
-                            <th class="min-w-450px">Pic Pajak Komisi 2</th>
-                            <th class="min-w-200px">Komisi Bruto 2</th>
-                            <th class="min-w-120px">Overreding</th>
-                            <th class="min-w-450px">Pic Pajak Overreding 1</th>
-                            <th class="min-w-200px">Komisi Bruto 1</th>
-                            <th class="min-w-150px">Proses Data</th>
-                            <th class="min-w-350px">Keterangan</th>
-                            <th class="min-w-150px">Cab. Alamin</th>
+                            <th class="min-w-50px" rowspan="2">No.</th>
+                            <th class="min-w-350px" rowspan="2">Pemegang Polis</th>
+                            <th class="min-w-125px" rowspan="2">Nama Peserta</th>
+                            <th class="min-w-200px" rowspan="2">Jumlah Klaim</th>
+                            <th class="min-w-150px" rowspan="2">Resiko</th>
+                            <th colspan="4">Keputusan klaim</th>
+                            <th class="min-w-125px" rowspan="2">Pilih</th>
+                        </tr>
+                        <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
+                            <td class="min-w-125px">Staff</td>
+                            <td class="min-w-125px">Spv</td>
+                            <td class="min-w-125px">Kabag</td>
+                            <td class="min-w-125px">Kadiv</td>
                         </tr>
                     </thead>
                     <tbody></tbody>
-                    <tfoot>
-                        <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 align-middle" align="right">
-                            <th colspan="3"></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
                 </table>
             </form>
         </div>
     </div>
 
-    @include('pages.keuangan.komisi-overreding.input.modal.input')
-    @include('pages.keuangan.komisi-overreding.input.modal.update-saldo')
+
 </div>
 @endsection
 
@@ -228,15 +217,22 @@
         setTextReadOnly('x_nama', true);
         setTextReadOnly('x_status', true);
 
-        console.log(nowDate());
-        console.log(nowYear());
-
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
             selectSide('e_cab', false, '{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/select-cabalamin") }}', function(d) { return {
+                id: d.kode,
+                text: d.nama
+            }});
+
+            selectSide('e_pmgpolis', false, '{{ url("keuangan/komisi-overriding/input-komisi-overriding/lod_pmg_polis") }}', function(d) { return {
+                id: d.kode,
+                text: d.nama
+            }});
+
+            selectSide('e_cbpmgpolis', false, '{{ url("keuangan/komisi-overriding/input-komisi-overriding/lod_pmg_polis") }}', function(d) { return {
                 id: d.kode,
                 text: d.nama
             }});
@@ -252,31 +248,37 @@
                     status: d.x_status,
                     x_tahun: d.x_tahun,
                     x_saldo: d.x_saldo
-                }}, function(res) {
-                        var data = res.params.data;
+                }}, function(e) {
+                        var data = e.params.data;
                         if(data.status == '0') {
                             setText('x_status', 'Karyawan Al Amin');
                         } else if (data.status == '1') {
                             setText('x_status', 'Non Karyawan Al Amin');
                         }
-                        jsonForm('formUpdateTax', res.params.data);
-                        console.log(res.params.data);
+                        jsonForm('formUpdateTax', data);
+                        console.log(data);
                 });
             });
 
-            filterAll('input[type="search"]', 'InpOjkKomOver'); //khusus type search inputan
+            tombol('change', 'c_pmgpolis',  function() {
+                var _this = $(this).val();
+                console.log(_this);
+            });
 
-            serverSides( //datatable serverside
-                "InpOjkKomOver",
-                "{{ url('api/keuangan/komisi-overriding/input-komisi-overriding/lod-input-komisioverriding') }}", //url api/route
+            filterAll('input[type="search"]', 'lampiranKlaim'); //khusus type search inputan
+
+            serverSide( //datatable serverside
+                "lampiranKlaim",
+                "{{ url('api/keuangan/lampiran-jurnal-pembayaran/lampiran-klaim/table-lampiran-klaim') }}", //url api/route
                 function(d) {    // di isi sesuai dengan data yang akan di filter ->
-                    d.e_cab = getText('e_cab'),
-                    d.e_bln1 = getText('e_bln1'),
-                    d.e_bln2 = getText('e_bln2'),
-                    d.e_thn = getText('e_thn'),
-                    // d.check_2 = getText('check_2'),
-                    // d.wmn_tipe = getText('tipe_menu'),
-                    // d.wmn_descp = getText('key'),
+                    d.e_baris = getText('e_baris'),
+                    // d.e_bln1 = getText('e_bln1'),
+                    // d.e_bln2 = getText('e_bln2'),
+                    // d.e_thn = getText('e_thn'),
+                    // d.c_pmgpolis = getText('c_pmgpolis'),
+                    // d.e_pmgpolis = getText('e_pmgpolis'),
+                    // d.c_cbpmgpolis = getText('c_cbpmgpolis'),
+                    // d.e_cbpmgpolis = getText('e_cbpmgpolis'),
                     d.search = $('input[type="search"]').val()
                 },
                 [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
@@ -287,208 +289,17 @@
                             return row.DT_RowIndex+`.`;
                         }
                     },
-                    {
-                        data: "nama",
-                        render: function(data, type, row, meta) {
-                            var kode = row.kdpolis;
-                            var cab = getText('e_cab');
-                            var bln1 = getText('e_bln1');
-                            var bln2 = getText('e_bln2');
-                            var thn = getText('e_thn');
-                            var rms = "kode="+kode+"&e_cab="+cab+"&e_bln1="+bln1+"&e_bln2="+bln2+"&e_thn="+thn;
-                            if (cab == "") {
-                                return `<a disable><div class="badge badge-light-success fw-bolder">`+row.nama+`</div></a>`;
-                            } else {
-                                return `<a href="{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/export-input?") }}`+rms+`"><div class="badge badge-light-success fw-bolder">`+row.nama+`</div></a>`;
-                            }
-                        }
-                    },
-                    { data: "kdpolis" },
-                    { data: "tpst", className: "text-center" },
-                    {
-                        data: "tup",
-                        className: "dt-body-right",
-                        render: function(data, type, row, meta) {
-                            return formatNum(row.tup, 2);
-                        }
-                    },
-                    {
-                        data: "ttagih",
-                        className: "dt-body-right",
-                        render: function(data, type, row, meta) {
-                            return formatNum(row.ttagih, 2);
-                        }
-                    },
-                    {
-                        data: "tbyr",
-                        className: "dt-body-right",
-                        render: function(data, type, row, meta) {
-                            return formatNum(row.tbyr, 2);
-                        }
-                    },
-                    {
-                        data: "tkomisi",
-                        className: "dt-body-right",
-                        render: function(data, type, row, meta) {
-                            return formatNum(row.tkomisi, 2);
-                        }
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function (data, type, row) {
-                            return `<input type="text" class="easyui-textbox selectGrid xpic1" id="xpic1`+row.DT_RowIndex+`" name="xpic1`+row.DT_RowIndex+`" data-options="prompt:'Pic pajak komisi 1'" style="width: 100%; height: 38px;" />`;
-                        },
-                    },
-                    {
-                        data: null,
-                        className: "text-center",
-                        render: function(data, type, row, meta) {
-                            return `<input type="text" class="form-control form-control-solid xsaldo1" id="xsaldo1`+row.DT_RowIndex+`" name="xsaldo1`+row.DT_RowIndex+`" data-type="rupiah" placeholder="Komisi bruto 1" />`;
-                        }
-                    },
-                    {
-                        data: null,
-                        className: "text-center",
-                        render: function(data, type, row, meta) {
-                            return `<input type="text" class="easyui-textbox selectGrid xpic1a" id="xpic1a`+row.DT_RowIndex+`" name="xpic1a`+row.DT_RowIndex+`" data-options="prompt:'Pic pajak komisi 2'" style="width: 100%; height: 38px;" />`;
-                        }
-                    },
-                    {
-                        data: null,
-                        className: "text-center",
-                        render: function(data, type, row, meta) {
-                            return `<input type="text" class="form-control form-control-solid xsaldo1a" id="xsaldo1a`+row.DT_RowIndex+`" name="xsaldo1a`+row.DT_RowIndex+`" data-type="rupiah" placeholder="Komisi bruto 2" />`;
-                        }
-                    },
-                    {
-                        data: "toverreding",
-                        className: "dt-body-right",
-                        render: function(data, type, row, meta) {
-                            return formatNum(row.toverreding, 2);
-                        }
-                    },
-                    {
-                        data: null,
-                        className: "text-center",
-                        render: function(data, type, row, meta) {
-                            return `<input type="text" class="easyui-textbox selectGrid xpic2" id="xpic2`+row.DT_RowIndex+`" name="xpic2`+row.DT_RowIndex+`" data-options="prompt:'Pic pajak overreding 1'" style="width: 100%; height: 38px;" />`;
-                        }
-                    },
-                    {
-                        data: null,
-                        className: "text-center",
-                        render: function(data, type, row, meta) {
-                            return `<input type="text" class="form-control form-control-solid xsaldo2" id="xsaldo2`+row.DT_RowIndex+`" name="xsaldo2`+row.DT_RowIndex+`" data-type="rupiah" placeholder="Komisi bruto 1" />`;
-                        }
-                    },
-                    {
-                        data: null,
-                        className: "text-center",
-                        render: function(data, type, row, meta) {
-                            var bln1 = getText('e_bln1');
-                            var bln2 = getText('e_bln2');
-                            var thn = getText('e_thn');
-                            var cab = getText('e_cab');
-                            return `<button type="button" class="btn btn-primary btn-sm xproses" id="xproses`+row.DT_RowIndex+`" name="xproses`+row.DT_RowIndex+`" onclick="proses_pst(`+row.DT_RowIndex+`, '`+row.kdpolis+`', `+row.tpst+`, '`+row.tup+`', '`+row.tkomisi+`', `+row.toverreding+`, `+bln1+`, `+bln2+`, `+thn+`, `+cab+`, 1)">Proses</button>`;
-                        }
-                    },
-                    { data: "ket" },
-                    { data: "cabang" },
+                    { data: "e_nmrekan" },
+                    { data: "tpprd_nama" },
+                    { data: "tpprd_klaim_netto", className: "dt-body-right" },
+                    { data: "e_resikoklm", className: "text-center" },
+                    { data: "klm_putusan01" },
+                    { data: "klm_putusan02" },
+                    { data: "klm_putusan1" },
+                    { data: "klm_putusan2" },
+                    { data: "klm_putusan3" },
                 ],
-                function(row, data, start, end, display) {
-                    var api = this.api(), data;
-                    var intVal = function(i) {
-                        return typeof i === 'string' ?
-                            i.replace(/[\$,]/g, '')*1 :
-                            typeof i === 'number' ?
-                                i : 0;
-                    };
-
-                    var totPst = api.column(3).data().reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                    var totUangPert = api.column(4).data().reduce(function(a, b) {
-                        var tot = intVal(a) + intVal(b);
-                        return formatNum(tot, 2);
-                    }, 0);
-
-                    var totKonTagih = api.column(5).data().reduce(function(a, b) {
-                        var tot = intVal(a) + intVal(b);
-                        return formatNum(tot, 2);
-                    }, 0);
-
-                    var totKonByr = api.column(6).data().reduce(function(a, b) {
-                        var tot = intVal(a) + intVal(b);
-                        return formatNum(tot, 2);
-                    }, 0);
-
-                    var totKomisi = api.column(7).data().reduce(function(a, b) {
-                        var tot = intVal(a) + intVal(b);
-                        return formatNum(tot, 2);
-                    }, 0);
-
-                    var totOver = api.column(12).data().reduce(function(a, b) {
-                        var tot = intVal(a) + intVal(b);
-                        return formatNum(tot, 2);
-                    }, 0);
-
-                    $(api.column(0).footer()).html('TOTAL');
-                    $(api.column(3).footer()).html(totPst);
-                    $(api.column(4).footer()).html(totUangPert);
-                    $(api.column(5).footer()).html(totKonTagih);
-                    $(api.column(6).footer()).html(totKonByr);
-                    $(api.column(7).footer()).html(totKomisi);
-                    $(api.column(12).footer()).html(totOver);
-                },
-                function (api) {
-                    var pickom = $('.xpic1').attr('id');
-                    var xsaldo1 = $('.xsaldo1').attr('id');
-
-                    var pickom1a = $('.xpic1a').attr('id');
-                    var xsaldo1a = $('.xsaldo1a').attr('id');
-
-                    var pickom1b = $('.xpic1b').attr('id');
-                    var xsaldo1b = $('.xsaldo1b').attr('id');
-
-                    var picover = $('.xpic2').attr('id');
-                    var xsaldo2 = $('.xsaldo2').attr('id');
-
-                    var picover2a = $('.xpic2a').attr('id');
-                    var xsaldo2a = $('.xsaldo2a').attr('id');
-
-                    var xproses = $('.xproses').attr('id');
-                    // pickom
-                    selectGrids('#'+pickom,'GET','{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/lod-user-tax") }}','kode','nama',[
-                        {field:"npwp",title:"NPWP",width:200},
-                        {field:"nama",title:"NAMA",align:"left",width:280},
-                        {field:"ket",title:"STATUS",align:"left",width:120},
-                    ], function(i, row) {
-                        setText(xsaldo1, row.mtx_saldo);
-                    });
-                    setTextReadOnly(xsaldo1, true);
-                    // pickom1a
-                    selectGrids('#'+pickom1a,'GET','{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/lod-user-tax") }}','kode','nama',[
-                        {field:"npwp",title:"NPWP",width:200},
-                        {field:"nama",title:"NAMA",align:"left",width:280},
-                        {field:"ket",title:"STATUS",align:"left",width:120},
-                    ], function(i, row) {
-                        setText(xsaldo1a, row.mtx_saldo);
-                    });
-                    setTextReadOnly(xsaldo1a, true);
-                    // picover
-                    selectGrids('#'+picover,'GET','{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/lod-user-tax") }}','kode','nama',[
-                        {field:"npwp",title:"NPWP",width:200},
-                        {field:"nama",title:"NAMA",align:"left",width:280},
-                        {field:"ket",title:"STATUS",align:"left",width:120},
-                        {field:"mtx_saldo",title:"SALDO",align:"left",width:100},
-                    ], function(i, row) {
-                        setText(xsaldo2, row.mtx_saldo);
-                    });
-                    setTextReadOnly(xsaldo2, true);
-                },
+                [100, 250, 500, 750, 1000, 2500, 5000, 10000],
             );
 
             tombol('click', 'omodTam', function() {
@@ -507,17 +318,17 @@
                 setHide('btn_reset', false);
             });
 
-            submitForm("formInputTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.input-komisi-overriding.store') }}", (resSuccess) => {
+            submitForm("formInputTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.input-bayar-overriding.store') }}", (resSuccess) => {
                 clearForm("formInputTax");
                 bsimpan('btn_simpan', 'Simpan');
-                // lodTable("InpOjkKomOver");
+                // lodTable("lampiranKlaim");
                 closeModal('modalInputTax');
             });
 
-            submitForm("formUpdateTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.input-komisi-overriding.store') }}", (resSuccess) => {
+            submitForm("formUpdateTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.input-bayar-overriding.store') }}", (resSuccess) => {
                 clearForm("formUpdateTax");
                 bsimpan('btn_simpan', 'Simpan');
-                // lodTable("InpOjkKomOver");
+                // lodTable("lampiranKlaim");
                 closeModal('modalUpdateTax');
             });
 
@@ -525,7 +336,7 @@
                 var kode = $(this).attr('data-resouce'),
                     url = "{{ route('utility.menu.store') }}" + "/" + kode;
                 submitDelete(kode, url, function(resSuccess) {
-                    lodTable("InpOjkKomOver");
+                    lodTable("lampiranKlaim");
                     console.log(resSuccess);
                 }, function(resError) {
                     console.log(resError);
@@ -553,15 +364,17 @@
 		    var vproses="xproses"+i;
 
             var vv={ res : ''};
-            var url='{{ url("api/keuangan/komisi-overriding/input-komisi-overriding/post-pjkomisi") }}';
+            var url='{{ url("keuangan/komisi-overriding/input-komisi-overriding/post-pjkomisi") }}';
             var rms = "?kode="+kdpolis+"&bln1="+bln1+"&bln2="+bln2+"&thn="+thn+"&pst="+tpst+"&up="+tup+"&tkom="+tkom+"&tover="+tover+"&saldo1="+vsaldo1+"&pic1="+vpic1+"&pic1a="+vpic1a+"&pic1b="+vpic1b+"&saldo2="+vsaldo2+"&pic2="+vpic2+"&pic2a="+vpic2a+"&cab="+cab+"&tipe="+tipe;
 
             getJson(url+rms, vv, function(data) {
                 if (data.error) {
-                    pesan(data.error);
-                    clearForm("frxx_pjkomisi");
-                } else if (data.success) {
+                    pesan('error', data.error);
+                    // clearForm("frxx_pjkomisi");
+                } else {
+                    // pesan('success', data.success);
                     console.log(data.success);
+                    clearForm("frxx_pjkomisi");
                 }
             });
         }

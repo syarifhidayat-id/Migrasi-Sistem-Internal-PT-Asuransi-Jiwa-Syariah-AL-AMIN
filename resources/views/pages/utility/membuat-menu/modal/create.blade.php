@@ -19,7 +19,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Menu Tipe</label>
-                                    <select class="form-select form-select-solid required_sel" name="wmn_tipe" id="wmn_tipe" data-dropdown-parent="#modalMenu" data-placeholder="Pilih tipe menu" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" name="wmn_tipe" id="wmn_tipe" data-dropdown-parent="#modalMenu" data-placeholder="Pilih tipe menu" data-allow-clear="true">
                                         <option></option>
                                     </select>
                                     <span class="text-danger error-text wmn_tipe_err"></span>
@@ -42,7 +42,7 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Menu Main</label>
-                                    <select class="form-select form-select-solid required_sel" name="wmn_key" id="wmn_key" data-dropdown-parent="#modalMenu" data-placeholder="ex. MAIN" data-allow-clear="true">
+                                    <select class="form-select form-select-solid" name="wmn_key" id="wmn_key" data-dropdown-parent="#modalMenu" data-placeholder="ex. MAIN" data-allow-clear="true">
                                         {{-- <option></option> --}}
                                     </select>
                                     <span class="text-danger error-text wmn_key_err"></span><br>
@@ -64,7 +64,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Nama Menu</label>
-                                    <input type="text" class="form-control form-control-solid required_sel" name="wmn_descp" id="wmn_descp" placeholder="ex. Sekper"/>
+                                    <input type="text" class="form-control form-control-solid" name="wmn_descp" id="wmn_descp" placeholder="ex. Sekper"/>
                                     <span class="text-danger error-text wmn_descp_err"></span>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">URL Menu</label>
-                                    <input type="text" class="form-control form-control-solid required_sel" name="wmn_url_o_n" id="wmn_url_o_n" placeholder="ex. utility/menu"/>
+                                    <input type="text" class="form-control form-control-solid" name="wmn_url_o_n" id="wmn_url_o_n" placeholder="ex. utility/menu"/>
                                     <span class="text-danger error-text wmn_url_o_n_err"></span><br>
                                     <label class="required form-label">jika main, ex. utility/*</label>
                                 </div>
@@ -98,7 +98,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="required form-label">Menu Urut</label>
-                                    <input type="number" class="form-control form-control-solid required_sel" name="wmn_urut" id="wmn_urut" placeholder="Urutan Menu"/>
+                                    <input type="number" class="form-control form-control-solid" name="wmn_urut" id="wmn_urut" placeholder="Urutan Menu"/>
                                     <span class="text-danger error-text wmn_urut_err"></span>
                                 </div>
                             </div>

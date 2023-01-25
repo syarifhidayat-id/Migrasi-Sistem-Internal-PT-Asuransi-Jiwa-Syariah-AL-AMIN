@@ -8,7 +8,7 @@ use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Legal\Pks;
-use App\Http\Controllers\Library\Config;
+use App\Http\Controllers\Library\Lib;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -45,7 +45,7 @@ class DraftController extends Controller
     public function store(Request $request)
     {
         if ($request->mdp_pk == "") {
-            $kode = Config::__getKey(14);
+            $kode = Lib::__getKey(14);
             $data = $request->all();
             $data = request()->except(['_token']);
 

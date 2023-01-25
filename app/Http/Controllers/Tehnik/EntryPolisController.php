@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Tehnik;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Config;
+use App\Http\Controllers\Library\Lib;
 use App\Models\Tehnik\Polis;
 use App\Models\Tehnik\Ojk;
 use App\Models\Tehnik\Lini;
@@ -205,8 +205,8 @@ class EntryPolisController extends Controller
 
         if ($request->mpol_kode == "") {
             $vTable = DB::table('eopr.mst_polis');
-            $kode = Config::__getPK($vTable->max('mpol_kode'), 14);
-            // $kode = Config::__getKey(14);
+            $kode = Lib::__getPK($vTable->max('mpol_kode'), 14);
+            // $kode = Lib::__getKey(14);
             $data = $request->all();
             $data = $request->except('_token');
 

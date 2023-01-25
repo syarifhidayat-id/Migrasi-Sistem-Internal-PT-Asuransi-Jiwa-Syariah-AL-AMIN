@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Utility;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Config;
+use App\Http\Controllers\Library\Lib;
 use App\Models\Utility\Menu;
 use App\Models\Utility\WewenangJabatan;
 use Facade\FlareClient\Http\Response;
@@ -67,7 +67,7 @@ class MenuController extends Controller
         } else {
 
             if (empty($request->wmn_kode)) {
-                $kode = Config::__getKey(14);
+                $kode = Lib::__getKey(14);
                 $vtable = DB::table('web_menu');
 
                 if (empty($request->wmn_url)) {
@@ -234,8 +234,9 @@ class MenuController extends Controller
 
     public function datamenu(Request $request)
     {
-        if ($request->ajax()) {
+        // if ($request->ajax()) {
             $data = DB::table('web_menu')->select(DB::raw("wmn_kode, wmn_icon, wmn_descp, wmn_tipe, wmn_url_n, wmn_url_o_n"))->get();
+            // return Lib::json($data);
             return Datatables::of($data)
             ->addIndexColumn()
             ->filter (function ($instance) use ($request) {
@@ -266,6 +267,6 @@ class MenuController extends Controller
                 }
             })
             ->make(true);
-        }
+        // }
     }
 }
