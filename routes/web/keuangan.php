@@ -39,6 +39,7 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
 
         Route::resource('approv-transaksi-kas', ApprovController::class);
         Route::post('approv', [ApprovController::class, 'approv']);
+        Route::post('upload', [ApprovController::class, 'upload']);
         
     });
 

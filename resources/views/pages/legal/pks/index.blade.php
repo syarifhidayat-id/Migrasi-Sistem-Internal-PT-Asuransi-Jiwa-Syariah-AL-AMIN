@@ -161,10 +161,10 @@
         </div>
 
         @include('pages.legal.pks.modal.create')
-                @include('pages.legal.pks.modal.view')
-                @include('pages.legal.pks.modal.pdf')
-                @include('pages.legal.pks.modal.addendum')
-                @include('pages.legal.pks.modal.batal')
+        @include('pages.legal.pks.modal.view')
+        @include('pages.legal.pks.modal.pdf')
+        @include('pages.legal.pks.modal.addendum')
+        @include('pages.legal.pks.modal.batal')
     </div>
 @endsection
 

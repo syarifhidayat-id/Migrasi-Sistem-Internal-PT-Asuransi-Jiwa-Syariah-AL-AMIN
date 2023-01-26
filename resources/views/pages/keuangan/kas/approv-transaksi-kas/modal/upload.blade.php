@@ -20,7 +20,7 @@
                             {{-- <input type="text" id="tdna_pk" name="tdna_pk"> --}}
                                 <div class="mb-5">
                                     <label class="form-label">Key</label>
-                                    <input class="form-control" name="tdna_pk" id="tdna_pk" type="text"
+                                    <input class="form-control" name="pk" id="pk" type="text"
                                         data-allow-clear="true" />
                                     {{-- <span class="text-danger error-text mpks_mrkn_kode_err"></span> --}}
                                 </div>

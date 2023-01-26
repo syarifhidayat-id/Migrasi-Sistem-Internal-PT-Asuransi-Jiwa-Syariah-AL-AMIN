@@ -20,8 +20,15 @@ class ApprovController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        // $data = $this->api_dtl_approv($request);
+        // $res = Lib::__dbAll($data);
+        // $row = $res['original']['data'];
+        // for ($i=0; $i < count($row); $i++) { 
+            
+        //     return $row[$i]['tdna_bukti'];
+        // }
         return view('pages.keuangan.kas.approv-transaksi-kas.index');
     }
 
@@ -120,15 +127,14 @@ class ApprovController extends Controller
 
     public function lodDoc(Request $request)
     {
-        $url = public_path('storage/keuangan/kas/master-kas/'.$request['doc']);
-        if (Storage::exists($url)) {
+        // $url = public_path('storage/keuangan/kas/master-kas/'.$request['doc']);
+        $filePath = 'storage/keuangan/kas/master-kas/'.$request['doc'];
+        if (file_exists($filePath)) {
             return response()->json(['success' => 'Success']);
         } else {
             return response()->json(['error' => 'Error']);
         }
-        // return response()->json(['error' => $url]);
     }
-
 
     public function api_dtl_approv(Request $request)
     {
@@ -162,6 +168,7 @@ class ApprovController extends Controller
         if (isset($request['e_baris']))
         {
             $baris = $request['e_baris'];
+            // $baris = '10';
         } else {
             $baris = '50';
         }
@@ -171,7 +178,7 @@ class ApprovController extends Controller
         tdna_pk, DATE_FORMAT(tdna_tgl_aju,'%d-%m-%Y') tdna_tgl_aju, mlok_nama tdna_mlok_kode,  tdna_tipe,  tdna_penerima,tdna_akun_d, 
         tdna_total  tdna_total,
         tdna_kode_vcr,   LEFT(tdna_ket,85) tdna_ket,
-        tdna_bukti, 
+        tdna_bukti,
         IF(tdna_aprov_admin=1,   'SETUJU',IF(tdna_aprov_admin=2,'TOLAK','-')) tdna_aprov_admin,
         IF(tdna_aprov_kacab=1, 'SETUJU',IF(tdna_aprov_kacab=2,'TOLAK','-')) tdna_aprov_kacab,
         IF(tdna_aprov_kapms=1, 'SETUJU',IF(tdna_aprov_kapms=2,'TOLAK','-')) tdna_aprov_kapms,
@@ -185,80 +192,79 @@ class ApprovController extends Controller
         ORDER BY tdna_date_ins DESC
         LIMIT ".$baris."");
         $data = Lib::__dbAll($cmd);
-
         return DataTables::of($data)
             ->addIndexColumn()
-            ->filter(function ($instance) use ($request) {
-                if ($request->get('check_cab_alamin') == "1") {
-                    if (!empty($request->get('mlok_pk'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['mlok_pk'], $request->get('mlok_pk')) ? true : false;
-                        });
-                    }
-                }
-                if ($request->get('check_buku_besar') == "1") {
-                    if (!empty($request->get('tdna_sts_buku'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_sts_buku'], $request->get('tdna_sts_buku')) ? true : false;
-                        });
-                    }
-                }
-                if ($request->get('check_jurnal') == "1") {
-                    if (!empty($request->get('tdna_sts_jurnal'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_sts_jurnal'], $request->get('tdna_sts_jurnal')) ? true : false;
-                        });
-                    }
-                }
-                if ($request->get('check_admin') == "1") {
-                    if (!empty($request->get('tdna_aprov_admin'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_aprov_admin'], $request->get('tdna_aprov_admin')) ? true : false;
-                        });
-                    }
-                }
-                if ($request->get('check_pincab') == "1") {
-                    if (!empty($request->get('tdna_aprov_kacab'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_aprov_kacab'], $request->get('tdna_aprov_kacab')) ? true : false;
-                        });
-                    }
-                }
-                if ($request->get('check_keu') == "1") {
-                    if (!empty($request->get('tdna_aprov_ho'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_aprov_ho'], $request->get('tdna_aprov_ho')) ? true : false;
-                        });
-                    }
-                }
-                if ($request->get('check_kadiv') == "1") {
-                    if (!empty($request->get('tdna_aprov_kapms'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_aprov_kapms'], $request->get('tdna_aprov_kapms')) ? true : false;
-                        });
-                    }
-                }
-                if ($request->get('check_korwil') == "1") {
-                    if (!empty($request->get('tdna_aprov_korwil'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_aprov_korwil'], $request->get('tdna_aprov_korwil')) ? true : false;
-                        });
-                    }
-                }
-                // if (!empty($request->get('search'))) {
-                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                //         if (Str::contains(Str::lower($row['tdna_pk']), Str::lower($request->get('search')))) {
-                //             return true;
-                //         }
+            // ->filter(function ($instance) use ($request) {
+            //     if ($request->get('check_cab_alamin') == "1") {
+            //         if (!empty($request->get('mlok_pk'))) {
+            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //                 return Str::contains($row['mlok_pk'], $request->get('mlok_pk')) ? true : false;
+            //             });
+            //         }
+            //     }
+            //     if ($request->get('check_buku_besar') == "1") {
+            //         if (!empty($request->get('tdna_sts_buku'))) {
+            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //                 return Str::contains($row['tdna_sts_buku'], $request->get('tdna_sts_buku')) ? true : false;
+            //             });
+            //         }
+            //     }
+            //     if ($request->get('check_jurnal') == "1") {
+            //         if (!empty($request->get('tdna_sts_jurnal'))) {
+            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //                 return Str::contains($row['tdna_sts_jurnal'], $request->get('tdna_sts_jurnal')) ? true : false;
+            //             });
+            //         }
+            //     }
+            //     if ($request->get('check_admin') == "1") {
+            //         if (!empty($request->get('tdna_aprov_admin'))) {
+            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //                 return Str::contains($row['tdna_aprov_admin'], $request->get('tdna_aprov_admin')) ? true : false;
+            //             });
+            //         }
+            //     }
+            //     if ($request->get('check_pincab') == "1") {
+            //         if (!empty($request->get('tdna_aprov_kacab'))) {
+            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //                 return Str::contains($row['tdna_aprov_kacab'], $request->get('tdna_aprov_kacab')) ? true : false;
+            //             });
+            //         }
+            //     }
+            //     if ($request->get('check_keu') == "1") {
+            //         if (!empty($request->get('tdna_aprov_ho'))) {
+            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //                 return Str::contains($row['tdna_aprov_ho'], $request->get('tdna_aprov_ho')) ? true : false;
+            //             });
+            //         }
+            //     }
+            //     if ($request->get('check_kadiv') == "1") {
+            //         if (!empty($request->get('tdna_aprov_kapms'))) {
+            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //                 return Str::contains($row['tdna_aprov_kapms'], $request->get('tdna_aprov_kapms')) ? true : false;
+            //             });
+            //         }
+            //     }
+            //     if ($request->get('check_korwil') == "1") {
+            //         if (!empty($request->get('tdna_aprov_korwil'))) {
+            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //                 return Str::contains($row['tdna_aprov_korwil'], $request->get('tdna_aprov_korwil')) ? true : false;
+            //             });
+            //         }
+            //     }
+            //     // if (!empty($request->get('search'))) {
+            //     //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+            //     //         if (Str::contains(Str::lower($row['tdna_pk']), Str::lower($request->get('search')))) {
+            //     //             return true;
+            //     //         }
 
-                //         //else if (Str::contains(Str::lower($row['mua_ins_user']), Str::lower($request->get('search')))) {
-                //         //     return true;
-                //         // }
+            //     //         //else if (Str::contains(Str::lower($row['mua_ins_user']), Str::lower($request->get('search')))) {
+            //     //         //     return true;
+            //     //         // }
 
-                //         return false;
-                //     });
-                // }
-            })
+            //     //         return false;
+            //     //     });
+            //     // }
+            // })
             ->make(true);
     }
 
@@ -365,10 +371,26 @@ class ApprovController extends Controller
         return $data;
     }
 
-    public function upload ($id) {
-        $data = DB::table('epms.trs_dana_aju')
-        ->where('tdna_pk', $id)
-        ->first();
+    public function upload (Request $request) {
+        $data = $request->all();
+        $kode = $request->pk;
+        $data = $request->except(
+            '_token',
+            'pk',
+            // 'serverSide_kas_length',
+        );
+
+        if ($request->hasFile('tdna_bukti')) {
+            $dokumen = $request->file('tdna_bukti');
+            $dir = 'public/keuangan/kas/master-kas';
+            $fileOri = $dokumen->getClientOriginalName();
+            $nameBukti = $kode . '_danaju_' . $fileOri;
+            $path = Storage::putFileAs($dir, $dokumen, $nameBukti);
+            $data['tdna_bukti'] = $nameBukti;
+        }
+
+        $vtable = DB::table('epms.trs_dana_aju')->where('tdna_pk', $kode);
+        $vtable->update($data);
 
         return response()->json($data);
     }

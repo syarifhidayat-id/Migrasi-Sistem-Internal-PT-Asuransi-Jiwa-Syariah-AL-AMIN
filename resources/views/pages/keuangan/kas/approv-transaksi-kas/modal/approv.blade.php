@@ -17,7 +17,7 @@
                         data-kt-scroll-offset="300px">
                         <div class="row mb-5">
                             <div class="col-md-6 mb-5">
-                            <input type="text" id="tdna_pk" name="tdna_pk">
+                            <input type="hidden" id="tdna_pk" name="tdna_pk">
                                 <div class="mb-5">
                                     <label class="form-label">Kantor Al-Amin</label>
                                     <input class="form-control" name="mlok_nama" id="mlok_nama" type="text"

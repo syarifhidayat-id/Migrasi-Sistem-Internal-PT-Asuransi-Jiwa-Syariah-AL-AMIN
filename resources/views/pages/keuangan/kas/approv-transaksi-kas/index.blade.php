@@ -38,7 +38,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-5">
                                         <label class="form-label fs-6 fw-bold">Jumlah Baris yang Tampil</label>
-                                        <select class="form-select form-select-solid fw-bolder" id="e_baris" name="e_baris" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="true" data-hide-search="false">
+                                        <select class="form-select form-select-solid fw-bolder" id="e_baris" name="e_baris" data-control="select2" data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="false" data-hide-search="false">
                                             <option value="100" selected>100</option>
                                             <option value="250">250</option>
                                             <option value="500">500</option>
@@ -193,7 +193,7 @@
     
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
-                                <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
+                                <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat" id="btn_resetFilter"></i> Reset</button>
                             </div>
                         </div>
                     </div>
@@ -243,9 +243,9 @@
                             <th class="min-w-250px">Peruntukan Dana</th>
                             <th class="min-w-150px">Nilai</th>
                             <th class="min-w-100px">Voucher</th>
-                            <th class="min-w-100px">Upload Bukti</th>
-                            <th class="min-w-100px">Bukti</th>
-                            <th class="min-w-100px">Lihat</th>
+                            <th class="min-w-100px">Bukti Kas</th>
+                            {{-- <th class="min-w-100px">Bukti</th>
+                            <th class="min-w-100px">Lihat</th> --}}
                             <th class="min-w-100px">Admin</th>
                             <th class="min-w-100px">Kepala Cabang</th>
                             <th class="min-w-100px">Kadiv/Wakadiv</th>
@@ -271,7 +271,12 @@
         setTextReadOnly('tdna_ket', true);
         setTextReadOnly('tdna_penerima', true);
         setTextReadOnly('tdna_total', true);
-
+        tombol('change', 'e_baris', function() {
+            var _this = $(this).val();
+            if (_this=="" || _this==null) {
+                setText('e_baris', '100');
+            }
+        });
 
 
         $(function() {
@@ -377,25 +382,35 @@
                         orderable: false,
                         className: 'text-center',
                         render: function(data, type, row) {
-                            return `<button type="button" onclick="uploadPolis('`+row.tdna_pk+`','`+row.tdna_bukti+`')" class="btn btn-light-success"> Upload </button>`;
+                                return `<button type="button" id="btn_upload" onclick="uploadPolis('`+row.tdna_pk+`','`+row.tdna_bukti+`')" class="btn btn-light-success">Lihat</button>`
                         }
                     },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            return `Bukti Kas`
-                        }
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            return `<button type="button" id="btn_lihat_bukti" class="btn btn-light-success"> Proses </button>`
-                        }
-                    },
+                    // {
+                    //     data: null,
+                    //     orderable: false,
+                    //     className: 'text-center',
+                    //     render: function(data, type, row) {
+                    //         var doc = row.tdna_bukti;
+                    //         return `<button type="button" onclick="uploadPolis('`+row.tdna_pk+`','`+row.tdna_bukti+`')" class="btn btn-light-success">
+                    //         @if(file_exists(public_path().'/storage/keuangan/kas/master-kas/'.`+row.tdna_bukti+` )) Lihat @else Upload @endif </button>`;
+                    //     }
+                    // },
+                    // {
+                    //     data: null,
+                    //     orderable: false,
+                    //     className: 'text-center',
+                    //     render: function(data, type, row) {
+                    //         return `Bukti Kas`
+                    //     }
+                    // },
+                    // {
+                    //     data: null,
+                    //     orderable: false,
+                    //     className: 'text-center',
+                    //     render: function(data, type, row) {
+                    //         return `<button type="button" id="btn_lihat_bukti" class="btn btn-light-success"> Proses </button>`
+                    //     }
+                    // },
                     {
                         data: 'tdna_aprov_admin'
                     },
@@ -426,7 +441,6 @@
                 var kode = $(this).attr('data-resource');
                 lodJson("GET", "{{ url('api/keuangan/kas/api_approv') }}" + "/" + kode, function (data) {
                 openModal('modal_approv');
-                setHide('tdna_pk', true);
                 titleAction('tMod_approv', 'Approval Dana Kas');
                 bsimpan('btn_simpan', 'Simpan');
                 jsonForm('frxx_approv', data);
@@ -448,25 +462,65 @@
                 (resError) => {
                     console.log(resError);
                 },
+        );
+
+        submitForm(
+            "frxx_upload",
+            "btn_simpan",
+            "POST",
+                "{{ url('keuangan/kas/upload') }}",
+                (resSuccess) => {
+                    // filterInput('a_pk', 'serverSide_kas');
+                    lodTable('serverSide_approv_kas');
+                    bsimpan("btn_simpan", 'Simpan');
+                    closeModal('modal_upload');
+                    clearForm("frxx_upload");
+                },
+                (resError) => {
+                    console.log(resError);
+                },
         )
     });
 
     function uploadPolis(kode, doc) {
-        // var url = "{{ url('storage/keuangan/kas/master-kas') }}" + "/" + doc;
+        var url = "{{ url('storage/keuangan/kas/master-kas') }}" + "/" + doc;
         // console.log(doc)
         lodJson('GET', '{{ url("api/keuangan/kas/lod-doc-approv") }}' + '?doc=' + doc, function(res) {
-            console.log(res);
+            if (res.success) {
+                titleAction('tModView', 'Lihat');
+                openModal('modalView');
+                $('#view_pdf').attr('src', url);
+            }
+            if (res.error) {
+                messageValid('<b>Tidak ada bukti</b> <br> Bukti belum di upload, upload sekarang?', function(res) {
+                    if (res.isConfirmed) {
+                        titleAction('tMod', 'Lihat');
+                        openModal('modal_upload');
+                        setText('pk', kode);
+                    }
+                });
+                // Swal.fire({
+                //     title: 'Tidak ada bukti',
+                //     text: "Bukti belum di upload",
+                //     icon: 'info',
+                //     showCancelButton: true,
+                //     confirmButtonColor: '#3085d6',
+                //     cancelButtonColor: '#d33',
+                //     confirmButtonText: 'Upload Bukti'
+                //     }).then((result) => {
+                //     if (result.isConfirmed) {
+                //         // Swal.fire(
+                //         // 'Deleted!',
+                //         // 'Your file has been deleted.',
+                //         // 'success'
+                //         // )
+                //         titleAction('tMod', 'Lihat');
+                //         openModal('modal_upload');
+                //         setText('tdna_pk', kode);
+                //     }
+                //     })
+            }
         });
-        // if (doc=="" || doc==null || doc = file_exists(public_path(url))) {
-        //     titleAction('tMod', 'Lihat');
-        //     openModal('modal_upload');
-        //     setText('tdna_pk', kode);
-        // } else {
-        //     titleAction('tModView', 'Lihat');
-        //     openModal('modalView');
-        //     $('#view_pdf').attr('src', url);
-        // }
-        console.log(kode,doc);
     }
 
         function close_approv() {
