@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Library;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -62,6 +63,11 @@ class Lib extends Controller
     public static function __str2($value, $param)
     {
         return eval(base64_decode('CiBnb3RvIE9jV3J3OyBSS1JxMTogaWYgKCRwYXJhbSA9PSAiXHg0ZVx4NGYiKSB7ICRzdHIgPSBzdHJfcmVwbGFjZShhcnJheSgiXHgyYyIsICJcNTYiKSwgJycsICR2YWx1ZSk7IH0gZ290byBrOXo2Rzsgazl6Nkc6IGlmICgkcGFyYW0gPT0gIlx4NDQiKSB7ICRzdHIgPSBkYXRlKCJceDU5XHgyZFwxNTVcNTVcMTQ0Iiwgc3RydG90aW1lKCR2YWx1ZSkpOyB9IGdvdG8gdjRUSjY7IHdqcHRMOiByZXR1cm4gJHN0cjsgZ290byBiSDRhODsgT2NXcnc6IGlmICgkcGFyYW0gPT0gIlx4NGUiKSB7ICRzdHIgPSBzdHJfcmVwbGFjZSgiXDU0IiwgJycsIHN1YnN0cigkdmFsdWUsIDAsIC0zKSk7IH0gZ290byBSS1JxMTsgdjRUSjY6IGlmICgkcGFyYW0gPT0gIlx4NDRceDU0IikgeyAkc3RyID0gZGF0ZSgiXHg1OVw1NVwxNTVcNTVcMTQ0XDQwXDExMFw3Mlx4NjlcNzJcMTYzIiwgc3RydG90aW1lKCR2YWx1ZSkpOyB9IGdvdG8gd2pwdEw7IGJINGE4OiA='));
+    }
+
+    public static function __select($array)
+    {
+        return eval(base64_decode('CiByZXR1cm4gREI6OnNlbGVjdCgkYXJyYXkpOyA='));
     }
 
     public static function __dbRow($array)

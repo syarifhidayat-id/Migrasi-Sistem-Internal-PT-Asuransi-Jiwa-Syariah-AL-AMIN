@@ -19,8 +19,9 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
         });
         Route::group(['prefix' => 'input-bayar-overriding', 'as' => 'input-bayar-overriding.'], function() {
             Route::resource('/', InputBayarController::class);
+            Route::get('/lod_pmg_polis', [LodController::class, 'lod_pmg_polis']);
+            Route::get('/lod_byr_pjkomisi', [InputBayarController::class, 'lod_byr_pjkomisi']);
             // Route::get('/post-pjkomisi', [InputBayarController::class, 'postPjKomisi']);
-            // Route::get('/lod_pmg_polis', [LodController::class, 'lod_pmg_polis']);
         });
         Route::resource('/approval-komisi-overriding', ApprovalKomisiController::class);
         Route::get('export/{pk}/{mpol}', [ApprovalKomisiController::class, 'export']);

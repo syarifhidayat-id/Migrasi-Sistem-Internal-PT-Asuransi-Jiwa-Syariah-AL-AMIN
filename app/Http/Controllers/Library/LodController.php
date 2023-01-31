@@ -8,6 +8,29 @@ use Illuminate\Support\Facades\DB;
 
 class LodController extends Controller
 {
+    public function lod_cabalamin(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('emst.mst_lokasi');
+        $vField = DB::raw("mlok_kode kode,mlok_nama nama");
+
+        $vtable->select($vField)->where('mlok_kode', '<>', '');
+
+        if (!empty($request->q)) {
+            $vtable->where('mlok_kode', 'LIKE', "%$request->q%")->orWhere('mlok_nama', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+        ->offset($offset)
+        ->limit($rows)
+        ->get();
+
+        return response()->json($data);
+    }
+
     public function lod_pmg_polis(Request $request)
     {
         $page = $request->page ? intval($request->page) : 1;

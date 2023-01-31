@@ -18,13 +18,15 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('/cari-tax', [InputPajakController::class, 'cariTax']);
             Route::get('/lod-user-tax', [InputPajakController::class, 'userTax']);
             Route::get('/export-input', [InputPajakController::class, 'exportInput']);
-            Route::get('/select-cabalamin', [InputPajakController::class, 'selectCabAlm']);
+            Route::get('/lod_cabalamin', [LodController::class, 'lod_cabalamin']);
             // Route::get('/post-pjkomisi', [InputPajakController::class, 'postPjKomisi']);
             // Route::get('/lod_pmg_polis', [LodController::class, 'lod_pmg_polis']);
         });
 
         Route::group(['prefix' => 'input-bayar-overriding', 'as' => 'input-bayar-overriding.'], function() {
             Route::resource('/', InputBayarController::class);
+            Route::get('/lod-input-bayar', [InputBayarController::class, 'lodInputBayar']);
+            Route::get('/lod_cabalamin', [LodController::class, 'lod_cabalamin']);
             // Route::get('/post-pjkomisi', [InputBayarController::class, 'postPjKomisi']);
             // Route::get('/lod_pmg_polis', [LodController::class, 'lod_pmg_polis']);
         });
