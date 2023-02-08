@@ -55,12 +55,12 @@ class Load extends Controller
         if (!empty($e_value)) {
             $tambah .= $tambah . "and (cb.mrkn_kode like '%$e_value%' or cb.mrkn_nama like '%$e_value%')";
         }
-        $rekan = __getGlobalValue('mrkn_kode_induk');
+        $rekan = __getGlbVal('mrkn_kode_induk');
         if (!empty($rekan)) {
-            $rekan = __getGlobalValue('mrkn_kode_induk');
+            $rekan = __getGlbVal('mrkn_kode_induk');
         }
-        $nasabah = str_replace(",", "','", __getGlobalValue('mjns_kode'));
-        $menutipe = __getGlobalValue('menu_tipe');
+        $nasabah = str_replace(",", "','", __getGlbVal('mjns_kode'));
+        $menutipe = __getGlbVal('menu_tipe');
         if ($menutipe=="REKAN") {
             $tambah .= "and (cb.mrkn_kode='".$rekan."'  or  cb.mrkn_mrkn_kode_induk='".$rekan."')";
             if (trim($rekan)=="") $tambah .= "and 1=0";
@@ -209,8 +209,8 @@ class Load extends Controller
         if (!empty($e_value)) {
             $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
         }
-        $rekan = __getGlobalValue('mrkn_kode_induk');
-        $nasabah = str_replace(",", "','", __getGlobalValue('mjns_kode'));
+        $rekan = __getGlbVal('mrkn_kode_induk');
+        $nasabah = str_replace(",", "','", __getGlbVal('mjns_kode'));
         if (!empty($nasabah)) {
             $tambah = "and mpol_mjns_kode IN ('".$nasabah."')";
         }

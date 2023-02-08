@@ -34,7 +34,7 @@ function __getUser()
     return eval(base64_decode('CiByZXR1cm4gQXV0aDo6dXNlcigpLT5lbWFpbDsg'));
 }
 
-function __getGlobalValue($field)
+function __getGlbVal($field)
 {
     return eval(base64_decode('CiByZXR1cm4gQXV0aDo6dXNlcigpLT57JGZpZWxkfTsg'));
 }
