@@ -172,11 +172,18 @@ class ApprovController extends Controller
         } else {
             $baris = '50';
         }
+        
+        if ($request->get('check_cab_alamin') == "1") {
+            if (!empty($request['mlok_kode'])) {
+                $tambah = $tambah."and mlok_kode = '".$request['mlok_kode']."'";
+            }
+        }
 
         $cmd = DB::select("
         SELECT
-        tdna_pk, DATE_FORMAT(tdna_tgl_aju,'%d-%m-%Y') tdna_tgl_aju, mlok_nama tdna_mlok_kode,  tdna_tipe,  tdna_penerima,tdna_akun_d, 
-        tdna_total  tdna_total,
+        tdna_pk, DATE_FORMAT(tdna_tgl_aju,'%d-%m-%Y') tdna_tgl_aju, mlok_nama tdna_mlok_kode,  tdna_tipe,  tdna_penerima,tdna_akun_d, mlok_kode,
+        
+        FORMAT(tdna_total, 2) tdna_total,
         tdna_kode_vcr,   LEFT(tdna_ket,85) tdna_ket,
         tdna_bukti,
         IF(tdna_aprov_admin=1,   'SETUJU',IF(tdna_aprov_admin=2,'TOLAK','-')) tdna_aprov_admin,
@@ -194,77 +201,77 @@ class ApprovController extends Controller
         $data = Lib::__dbAll($cmd);
         return DataTables::of($data)
             ->addIndexColumn()
-            // ->filter(function ($instance) use ($request) {
-            //     if ($request->get('check_cab_alamin') == "1") {
-            //         if (!empty($request->get('mlok_pk'))) {
-            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //                 return Str::contains($row['mlok_pk'], $request->get('mlok_pk')) ? true : false;
-            //             });
-            //         }
-            //     }
-            //     if ($request->get('check_buku_besar') == "1") {
-            //         if (!empty($request->get('tdna_sts_buku'))) {
-            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //                 return Str::contains($row['tdna_sts_buku'], $request->get('tdna_sts_buku')) ? true : false;
-            //             });
-            //         }
-            //     }
-            //     if ($request->get('check_jurnal') == "1") {
-            //         if (!empty($request->get('tdna_sts_jurnal'))) {
-            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //                 return Str::contains($row['tdna_sts_jurnal'], $request->get('tdna_sts_jurnal')) ? true : false;
-            //             });
-            //         }
-            //     }
-            //     if ($request->get('check_admin') == "1") {
-            //         if (!empty($request->get('tdna_aprov_admin'))) {
-            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //                 return Str::contains($row['tdna_aprov_admin'], $request->get('tdna_aprov_admin')) ? true : false;
-            //             });
-            //         }
-            //     }
-            //     if ($request->get('check_pincab') == "1") {
-            //         if (!empty($request->get('tdna_aprov_kacab'))) {
-            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //                 return Str::contains($row['tdna_aprov_kacab'], $request->get('tdna_aprov_kacab')) ? true : false;
-            //             });
-            //         }
-            //     }
-            //     if ($request->get('check_keu') == "1") {
-            //         if (!empty($request->get('tdna_aprov_ho'))) {
-            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //                 return Str::contains($row['tdna_aprov_ho'], $request->get('tdna_aprov_ho')) ? true : false;
-            //             });
-            //         }
-            //     }
-            //     if ($request->get('check_kadiv') == "1") {
-            //         if (!empty($request->get('tdna_aprov_kapms'))) {
-            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //                 return Str::contains($row['tdna_aprov_kapms'], $request->get('tdna_aprov_kapms')) ? true : false;
-            //             });
-            //         }
-            //     }
-            //     if ($request->get('check_korwil') == "1") {
-            //         if (!empty($request->get('tdna_aprov_korwil'))) {
-            //             $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //                 return Str::contains($row['tdna_aprov_korwil'], $request->get('tdna_aprov_korwil')) ? true : false;
-            //             });
-            //         }
-            //     }
-            //     // if (!empty($request->get('search'))) {
-            //     //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-            //     //         if (Str::contains(Str::lower($row['tdna_pk']), Str::lower($request->get('search')))) {
-            //     //             return true;
-            //     //         }
+            ->filter(function ($instance) use ($request) {
+                // if ($request->get('check_cab_alamin') == "1") {
+                //     if (!empty($request->get('mlok_kode'))) {
+                //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //             return Str::contains($row['mlok_kode'], $request->get('mlok_kode')) ? true : false;
+                //         });
+                //     }
+                // }
+                if ($request->get('check_buku_besar') == "1") {
+                    if (!empty($request->get('tdna_sts_buku'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['tdna_sts_buku'], $request->get('tdna_sts_buku')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_jurnal') == "1") {
+                    if (!empty($request->get('tdna_sts_jurnal'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['tdna_sts_jurnal'], $request->get('tdna_sts_jurnal')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_admin') == "1") {
+                    if (!empty($request->get('tdna_aprov_admin'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['tdna_aprov_admin'], $request->get('tdna_aprov_admin')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_pincab') == "1") {
+                    if (!empty($request->get('tdna_aprov_kacab'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['tdna_aprov_kacab'], $request->get('tdna_aprov_kacab')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_keu') == "1") {
+                    if (!empty($request->get('tdna_aprov_ho'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['tdna_aprov_ho'], $request->get('tdna_aprov_ho')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_kadiv') == "1") {
+                    if (!empty($request->get('tdna_aprov_kapms'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['tdna_aprov_kapms'], $request->get('tdna_aprov_kapms')) ? true : false;
+                        });
+                    }
+                }
+                if ($request->get('check_korwil') == "1") {
+                    if (!empty($request->get('tdna_aprov_korwil'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['tdna_aprov_korwil'], $request->get('tdna_aprov_korwil')) ? true : false;
+                        });
+                    }
+                }
+                // if (!empty($request->get('search'))) {
+                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                //         if (Str::contains(Str::lower($row['tdna_pk']), Str::lower($request->get('search')))) {
+                //             return true;
+                //         }
 
-            //     //         //else if (Str::contains(Str::lower($row['mua_ins_user']), Str::lower($request->get('search')))) {
-            //     //         //     return true;
-            //     //         // }
+                //         //else if (Str::contains(Str::lower($row['mua_ins_user']), Str::lower($request->get('search')))) {
+                //         //     return true;
+                //         // }
 
-            //     //         return false;
-            //     //     });
-            //     // }
-            // })
+                //         return false;
+                //     });
+                // }
+            })
             ->make(true);
     }
 
@@ -276,7 +283,7 @@ class ApprovController extends Controller
         $offset = ($page - 1) * $rows;
 
         $vtable = DB::table('emst.mst_lokasi')
-            ->select('mlok_pk', 'mlok_nama');
+            ->select('mlok_kode', 'mlok_nama');
 
         if (!empty($request->q)) {
             $vtable->where('mlok_nama', 'LIKE', "%$request->q%");
@@ -284,6 +291,7 @@ class ApprovController extends Controller
 
         $data = $vtable
             ->groupBy('mlok_nama')
+            ->orderBy('mlok_kode')
             ->offset($offset)
             ->limit($rows)
             ->get();

@@ -297,7 +297,7 @@ class LaporanBerkalaContoller extends Controller
             }
             if (!empty($request->get('search'))) {
                 $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                    if (Str::contains(Str::lower($row['mojk_pk']), Str::lower($request->get('search')))){
+                    if (Str::contains(Str::lower($row['mojk_ket_jenis']), Str::lower($request->get('search')))){
                         return true;
                     }
 

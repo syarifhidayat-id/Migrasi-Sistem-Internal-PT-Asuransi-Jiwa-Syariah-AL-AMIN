@@ -15,25 +15,21 @@
                         data-kt-scroll-dependencies="#modalMenu_header" data-kt-scroll-wrappers="#modalMenu_scroll"
                         data-kt-scroll-offset="300px">
                         <div class="row mb-5">
-
                             <input class="form-control" name="mojk_pk" id="mojk_pk" type="hidden"
                                 data-allow-clear="false" readonly />
                                 <div class="col-md-6 mb-5">
                                     <label class="form-label">Jenis Dokumen</label>
                                     <select class="form-select" data-dropdown-parent="#modal" id="mojk_jenis"
-                                        name="mojk_jenis" data-placeholder="Pilih jenis dokumen" data-allow-clear="true">
+                                        name="mojk_jenis" data-placeholder="Pilih pemegang polis" data-allow-clear="true">
                                         <option></option>
                                     </select>
-                                    {{-- <span class="text-danger error-text mpks_mrkn_kode_err"></span> --}}
+                                    <span class="text-danger error-text mojk_jenis_err"></span>
                                 </div>
                             <div class="col-md-6 mb-5">
-                                <div class="mb-5">
                                     <label class="required form-label">Keterangan Dokumen</label>
                                     <input class="form-control" name="mojk_ket_jenis" id="mojk_ket_jenis" type="text"
                                         data-allow-clear="true" placeholder="Masukan ket jenis" />
                                     {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
-
-                                </div>
                             </div>
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">

@@ -3,12 +3,7 @@
         <div class="modal-content">
             <div class="modal-header" id="modalMenu_header">
                 <h2 class="fw-bolder" id="tMod"></h2>
-
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_closeCreate">
-                    <span class="svg-icon svg-icon-1">
-                        <i class="fa-sharp fa-solid fa-xmark"></i>
-                    </span>
-                </div>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeMod()"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
             <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
@@ -104,7 +99,7 @@
                             class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
                             class="fa-solid fa-trash"></i> Hapus</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="btn_tutup"><i
+                    <button type="button" class="btn btn-danger btn-sm" id="btn_tutup" onclick="closeMod()"><i
                             class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>

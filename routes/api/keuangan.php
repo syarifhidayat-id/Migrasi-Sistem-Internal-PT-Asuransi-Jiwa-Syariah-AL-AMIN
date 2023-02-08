@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Keuangan\Kas\ApprovController;
+use App\Http\Controllers\Keuangan\Kas\ApprovKasAnggaranController;
+use App\Http\Controllers\Keuangan\Kas\BukuBesarController;
 use App\Http\Controllers\Keuangan\Komisi\ApprovalKomisiController;
 use App\Http\Controllers\Keuangan\Kas\MasterKasController;
 use App\Http\Controllers\Keuangan\Kas\RincianTransaksiController;
@@ -68,6 +70,20 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
         // Route::get('show-pdf', [MasterKasController::class, 'pdf_vcr']);
 
         Route::get('/lod-doc-approv', [ApprovController::class, 'lodDoc']);
+
+        Route::group(['prefix' => '/buku-besar-kas', 'as' => 'buku-besar-kas.'], function () {
+            Route::get('api-kantor-cabang', [BukuBesarController::class, 'kantor_cabang']);
+            Route::get('lod_akunkascab', [BukuBesarController::class, 'lod_akunkascab']);
+            Route::get('/lod_bukber', [BukuBesarController::class, 'lod_bukber']);
+            Route::get('getjurnalkasfull', [BukuBesarController::class, 'getjurnalkasfull']);
+            Route::get('i_jurkas', [BukuBesarController::class, 'i_jurkas']);
+        });
+        Route::group(['prefix' => '/approv-kas-anggaran', 'as' => 'approv-kas-anggaran.'], function () {
+            Route::get('cabang_alamin', [ApprovKasAnggaranController::class, 'selectCabang']);
+            Route::get('api_dtl_approv_kas', [ApprovKasAnggaranController::class, 'api_dtl_approv_kas']);
+        });
+
+
 
 
     });

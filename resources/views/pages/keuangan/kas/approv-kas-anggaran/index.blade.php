@@ -1,7 +1,7 @@
 @extends('layouts.main-admin')
 
 @section('title')
-    Approv/upload Transaksi KAS
+   Approval Kas Anggaran
 @endsection
 
 @section('content')
@@ -227,11 +227,14 @@
                 </div>
             </div>
         </div>
-
+        
+        @include('pages.keuangan.kas.approv-transaksi-kas.modal.upload')
+        @include('pages.keuangan.kas.approv-transaksi-kas.modal.approv')
+        @include('pages.keuangan.kas.approv-transaksi-kas.modal.view')
         <div class="card-body py-10">
             <div class="table-responsive">
                 <table class="table table-rounded table-striped border cell-border align-middle gy-5 gs-5"
-                    id="serverSide_approv_kas">
+                    id="serverSide_approv_kas_anggaran">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                             <th class="min-w-50px">No.</th>
@@ -256,10 +259,6 @@
             </div>
         </div>
     </div>
-        
-@include('pages.keuangan.kas.approv-transaksi-kas.modal.upload')
-@include('pages.keuangan.kas.approv-transaksi-kas.modal.approv')
-@include('pages.keuangan.kas.approv-transaksi-kas.modal.view')
 @endsection
 
 @section('script')
@@ -288,7 +287,7 @@
             });
 
             // SELECT FILTER
-            selectSide('cab_alamin', false, '{{ url('api/keuangan/kas/selectCabangAlamin') }}', function(d) {
+            selectSide('cab_alamin', false, '{{ url('api/keuangan/kas/approv-kas-anggaran/cabang_alamin') }}', function(d) {
                 return {
                     id: d.mlok_kode,
                     text: d.mlok_nama
@@ -298,11 +297,11 @@
                 // setText('msoc_mssp_nama', res.params.data.text);
             });
 
-            filterAll('input[type="search"]', 'serverSide_approv_kas'); //khusus type search inputan
+            filterAll('input[type="search"]', 'serverSide_approv_kas_anggaran'); //khusus type search inputan
 
             serverSide( //datatable serverside
-                "serverSide_approv_kas",
-                "{{ url('api/keuangan/kas/api_dtl_approv') }}", //url api/route
+                "serverSide_approv_kas_anggaran",
+                "{{ url('api/keuangan/kas/approv-kas-anggaran/api_dtl_approv_kas') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.e_baris = getText('e_baris'),
                     d.check_cab_alamin = getText('check_cab_alamin'),

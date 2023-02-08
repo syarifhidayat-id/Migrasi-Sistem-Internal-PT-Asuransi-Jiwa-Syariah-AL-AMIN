@@ -14,22 +14,12 @@
         </div>
 
         <div class="card-header border-0 pt-6">
-            <div class="card-title">
-                <div class="d-flex align-items-center position-relative my-1">
-                    <div class="input-group input-group-solid">
-                        <input type="search" data-kt-datatable-table-filter="search" id="seacrh" class="form-control" placeholder="Cari pks" />
-                        <button type="submit" class="btn btn-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
-                    </div>
-                </div>
-            </div>
-
             <div class="card-toolbar">
                 <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
-
-                    <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                        <i class="fa-sharp fa-solid fa-filter"></i> Filter
+                    <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click"
+                        data-kt-menu-placement="bottom-start">
+                        <i class="fa-sharp fa-solid fa-filter"></i> Filter Pencarian
                     </button>
-
                     <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
                         <div class="px-7 py-5">
                             <div class="fs-5 text-dark fw-bolder">Filter Options</div>
@@ -37,15 +27,26 @@
                         <div class="separator border-gray-200"></div>
 
                         <div class="px-7 py-5" data-kt-datatable-table-filter="form">
-                            <div class="row">
+                            <div class="row mb-10">
+                                <div class="col-md-6">
+                                    <div class="mb-5">
+                                        <label class="form-label fs-6 fw-bold">Berdasarkan Keyboard</label>
+                                        <input type="search" data-kt-datatable-table-filter="search" name="seacrh"
+                                            id="seacrh" class="form-control form-control-solid" placeholder="Cari All" />
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="mb-10">
                                         <label class="form-label fs-6 fw-bold">ID Draft:</label>
                                         <div class="d-flex flex-stack">
                                             <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" id="check_id" name="check_id" type="checkbox" data-checkbox="check_id" />
+                                                <input class="form-check-input" id="check_id" name="check_id"
+                                                    type="checkbox" data-checkbox="check_id" />
                                             </label>
-                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih ID draft" data-allow-clear="true" data-kt-datatable-table-filter="check_id_draft" data-hide-search="false" id="check_id_draft">
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true"
+                                                data-placeholder="Pilih ID draft" data-allow-clear="true"
+                                                data-kt-datatable-table-filter="check_id_draft" data-hide-search="false"
+                                                id="check_id_draft">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -56,9 +57,13 @@
                                         <label class="form-label fs-6 fw-bold">Tentang:</label>
                                         <div class="d-flex flex-stack">
                                             <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" id="check_tentang" name="check_tentang" type="checkbox" data-checkbox="check_tentang" />
+                                                <input class="form-check-input" id="check_tentang" name="check_tentang"
+                                                    type="checkbox" data-checkbox="check_tentang" />
                                             </label>
-                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih tentang" data-allow-clear="true" data-kt-datatable-table-filter="check_mdp_tentang" data-hide-search="false" id="check_mdp_tentang">
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true"
+                                                data-placeholder="Pilih tentang" data-allow-clear="true"
+                                                data-kt-datatable-table-filter="check_mdp_tentang" data-hide-search="false"
+                                                id="check_mdp_tentang">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -69,9 +74,13 @@
                                         <label class="form-label fs-6 fw-bold">Segmen Pasar:</label>
                                         <div class="d-flex flex-stack">
                                             <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" id="check_segmen" name="check_segmen" type="checkbox" data-checkbox="check_segmen" />
+                                                <input class="form-check-input" id="check_segmen" name="check_segmen"
+                                                    type="checkbox" data-checkbox="check_segmen" />
                                             </label>
-                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih segmen pasar" data-allow-clear="true" data-kt-datatable-table-filter="check_segmen_pasar" data-hide-search="false" id="check_segmen_pasar">
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true"
+                                                data-placeholder="Pilih segmen pasar" data-allow-clear="true"
+                                                data-kt-datatable-table-filter="check_segmen_pasar" data-hide-search="false"
+                                                id="check_segmen_pasar">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -82,9 +91,13 @@
                                         <label class="form-label fs-6 fw-bold">Periode Input:</label>
                                         <div class="d-flex flex-stack">
                                             <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" id="check_periode" name="check_periode" type="checkbox" data-checkbox="check_periode" />
+                                                <input class="form-check-input" id="check_periode" name="check_periode"
+                                                    type="checkbox" data-checkbox="check_periode" />
                                             </label>
-                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Pilih periode input" data-allow-clear="true" data-kt-datatable-table-filter="check_periode_input" data-hide-search="false" id="check_periode_input">
+                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true"
+                                                data-placeholder="Pilih periode input" data-allow-clear="true"
+                                                data-kt-datatable-table-filter="check_periode_input"
+                                                data-hide-search="false" id="check_periode_input">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -93,8 +106,12 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
-                                <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
+                                <button type="submit" class="btn btn-primary fw-bold btn-sm me-2"
+                                    data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i
+                                        class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                                <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm"
+                                    data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i
+                                        class="fa-solid fa-repeat"></i> Reset</button>
                             </div>
                         </div>
                     </div>
@@ -143,7 +160,7 @@
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                             <th>No.</th>
                             <th>Nomor</th>
-                            <th class="min-w-250px">Tentang</th>
+                            <th>Tentang</th>
                             <th>User Input</th>
                             <th>Tanggal Input</th>
                         </tr>
@@ -165,7 +182,8 @@
             });
 
             //SELECT FORM DRAFT PKS
-            selectSide('mdp_mssp_kode', false, '{{ url("api/legal/pks/mssp") }}', function(d) { return {
+            selectSide('mdp_mssp_kode', false, '{{ url('api/legal/pks/mssp') }}', function(d) {
+                    return {
                         text: d.mssp_nama, // text nama
                         id: d.mssp_kode // kode value
                     };
@@ -177,34 +195,39 @@
                 },
             );
 
-
             //SELECT FILTER DRAFT PKS
-            selectSide('check_id_draft', false, '{{ url("api/legal/pks/selectId") }}', function(d) { return {
-                id: d.mdp_pk,
-                text: d.mdp_pk
-            }}, function(res) {
+            selectSide('check_id_draft', false, '{{ url('api/legal/pks/selectId') }}', function(d) {
+                return {
+                    id: d.mdp_pk,
+                    text: d.mdp_pk
+                }
+            }, function(res) {
                 // setText('msoc_mssp_kode', res.params.data.id);
                 // setText('msoc_mssp_nama', res.params.data.text);
             });
 
-            selectSide('check_mdp_tentang', false, '{{ url("api/legal/pks/selectTentang") }}', function(d) { return {
-                id: d.mdp_tentang,
-                text: d.mdp_tentang
-            }}, function(res) {
+            selectSide('check_mdp_tentang', false, '{{ url('api/legal/pks/selectTentang') }}', function(d) {
+                return {
+                    id: d.mdp_tentang,
+                    text: d.mdp_tentang
+                }
+            }, function(res) {
                 // setText('msoc_mssp_kode', res.params.data.id);
                 // setText('msoc_mssp_nama', res.params.data.text);
             });
 
-            selectSide('check_segmen_pasar', false, '{{ url("api/legal/pks/selectSegmen") }}', function(d) { return {
-                id: d.mssp_kode,
-                text: d.mssp_nama
-            }}, function(res) {
+            selectSide('check_segmen_pasar', false, '{{ url('api/legal/pks/selectSegmen') }}', function(d) {
+                return {
+                    id: d.mssp_kode,
+                    text: d.mssp_nama
+                }
+            }, function(res) {
                 // setText('msoc_mssp_kode', res.params.data.id);
                 // setText('msoc_mssp_nama', res.params.data.text);
             });
 
             filterAll('input[type="search"]', 'serverSide_draft');
-            serverSide( "serverSide_draft", "{{ url('api/legal/draft_pks') }}", //url api/route
+            serverSide("serverSide_draft", "{{ url('api/legal/draft_pks') }}", //url api/route
                 function(d) { // di isi sesuai dengan data yang akan di filter ->
                     d.check_id = getText('check_id');
                     d.mdp_pk = getText('check_id_draft');
@@ -246,38 +269,28 @@
                 ],
             );
 
-
-
-            $('body').on('click', '#omodTam', function() {
-                $('#modalDraftPks').modal('show');
-                bsimpan('btn_simpan', 'Simpan');
-                $('#judul').text('Form Upload Draft PKS');
-                bsimpan('btn_simpan', 'Simpan');
-            });
-
-                submitForm(
-                    "frxx_draft",
-                    "btn_simpan",
-                    "POST",
-                    "{{ route('legal.pks.draft.store') }}",
-                    (resSuccess) => {
-                        clearForm("frxx_draft");
-                        clearSelect();
-                        lodTable('serverSide_draft');
-                        bsimpan("btn_simpan", 'Simpan');
-                        closeModal('modalDraftPks');
-                    },
-                    (resError) => {
-                        console.log(resError);
-                    },
-                );
+            submitForm(
+                "frxx_draft",
+                "btn_simpan",
+                "POST",
+                "{{ route('legal.pks.draft.store') }}",
+                (resSuccess) => {
+                    clearForm("frxx_draft");
+                    clearSelect();
+                    lodTable('serverSide_draft');
+                    bsimpan("btn_simpan", 'Simpan');
+                    closeModal('modalDraftPks');
+                },
+                (resError) => {
+                    console.log(resError);
+                },
+            );
         });
 
         function tombolAct(tipe) {
             clearForm('frxx_draft');
             clearSelect();
             // setHide('mpks_pk', true);
-
             if (tipe == "0") {
                 setHide('btnReset', false);
                 // setHide('hideField', true);
@@ -299,9 +312,6 @@
                     $('#frxx_draft').formToJson(res);
                     $.get(key, function(data) {
                         selectEdit('mdp_mssp_kode', data.mssp_kode, data.mssp_nama);
-                        //     // var op = new Option(data.mrkn_nama, data.mrkn_kode, true, true);
-                        //     // $('#mpks_mrkn_kode').append(op).trigger('change');
-                        //     // console.log(data);
                     });
                 });
             }

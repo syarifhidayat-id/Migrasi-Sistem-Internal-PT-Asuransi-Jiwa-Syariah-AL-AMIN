@@ -7,7 +7,7 @@
                 <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeModal('modalView')"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <Object id="pdf" type="application/pdf" width="100%" height="500"></Object>
+                <embed id="view_pdf" src="" type="application/pdf" width="100%" height="500">
             </div>
            
                 <div class="modal-footer justify-content-center">
