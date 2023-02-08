@@ -326,7 +326,7 @@ class Load extends Controller
         // $res = __dbRow($cmd);
 
         // return __json($res);
-        $user['jabatan'] = __getGlobalValue('menu_tipe');
+        $user['jabatan'] = __now();
 
         return __json($user);
     }
