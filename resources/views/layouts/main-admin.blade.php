@@ -47,6 +47,7 @@
     <link href="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+    {{-- <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" /> --}}
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('vendor/fontawesome-6.2.0/css/all.min.css') }}" rel="stylesheet" type="text/css" />
@@ -371,6 +372,7 @@
     {{-- <script src="{{ asset('assets/plugins/custom/jquery/jquery.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/custom/jquery/jquery.easyui.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/datatables-serverside.min.js') }}"></script>
@@ -379,7 +381,6 @@
     <script src="{{ asset('assets/plugins/custom/pdf-view/pdf.min.js') }}"></script>
     <script src="{{ asset('dist/js/preloader.js') }}"></script>
     <script src="{{ asset('dist/js/jquery-config.min.js') }}"></script>
-    <script src="{{ asset('dist/js/jquery.format.min.js') }}"></script>
     <script src="{{ asset('dist/js/jquery-attr-num.min.js') }}"></script>
     <script src="{{ asset('dist/js/jquery.capitalize.js') }}"></script>
 

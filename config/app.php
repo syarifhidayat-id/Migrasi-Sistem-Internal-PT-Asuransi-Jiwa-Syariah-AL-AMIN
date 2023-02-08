@@ -167,6 +167,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
+        // App\Providers\AppServiceProvider::class,
         // 'Mews\Captcha\CaptchaServiceProvider',
 
         /*

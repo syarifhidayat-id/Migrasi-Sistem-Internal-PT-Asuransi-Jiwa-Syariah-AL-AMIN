@@ -2,12 +2,6 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\Utility\MenuController;
-use App\Models\User;
-use App\Models\Utility\Menu;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // require_once base_path().'/app/Http/Controllers/Library/Lib.php';
         // View::composer('*', function ($view) {
         //     if (auth()->check()) {
         //         $view->with([

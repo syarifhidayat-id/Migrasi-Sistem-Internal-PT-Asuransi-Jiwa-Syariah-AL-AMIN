@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\Tehnik\EntryPolisController;
 use App\Http\Controllers\tehnik\polis\ApprovalMasterPolisController;
 use App\Http\Controllers\Tehnik\Soc\EntrySocController;
 use App\Http\Controllers\Tehnik\Soc\LihatSocController;
 use App\Http\Controllers\Tehnik\Soc\UploadTarifController;
 use App\Http\Controllers\tehnik\Soc\UploadUwController;
+use App\Http\Controllers\wwLoad\Load;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
@@ -64,12 +63,12 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
     });
 
     Route::group(['prefix' => '/polis', 'as' => 'polis.'], function() {
-            Route::group(['prefix' => '/approval-master-polis', 'as' => 'approval-master-polis.'], function() {
+        Route::group(['prefix' => '/approval-master-polis', 'as' => 'approval-master-polis.'], function() {
             Route::get('/list', [ApprovalMasterPolisController::class, 'getApprovalMasterPolis']);
             Route::get('/get-kode-soc', [ApprovalMasterPolisController::class, 'getKodeSocApprove']);
         });
         Route::group(['prefix' => '/entry-master-polis', 'as' => 'entry-master-polis.'], function() {
-            Route::get('/select-soc', [EntryPolisController::class, 'selectSOC']);
+            Route::get('/lod_soc', [Load::class, 'lod_soc']);
         });
 
     });

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Tehnik\Soc;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Lib;
+use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

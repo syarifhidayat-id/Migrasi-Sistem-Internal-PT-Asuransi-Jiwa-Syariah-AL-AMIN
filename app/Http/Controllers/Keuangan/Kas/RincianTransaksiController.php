@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Library\Lib;
+use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;

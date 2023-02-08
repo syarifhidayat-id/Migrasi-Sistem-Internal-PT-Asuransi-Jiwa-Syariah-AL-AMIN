@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sdm;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Lib;
+use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;

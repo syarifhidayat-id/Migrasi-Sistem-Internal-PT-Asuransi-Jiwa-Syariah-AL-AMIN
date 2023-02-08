@@ -202,6 +202,11 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
+            var xrp = $('.xrp').attr('id');
+            // alert(xrp);
+            // $('#'+xrp).number(true);
+            // formatNominal(xrp);
+
             selectSide('e_cab', false, '{{ url("api/keuangan/komisi-overriding/input-bayar-overriding/lod_cabalamin") }}', function(d) { return {
                 id: d.kode,
                 text: d.nama
@@ -328,46 +333,12 @@
                 ],
             );
 
-            tombol('click', 'omodTam', function() {
-                openModal('modalInputTax');
-                titleAction('tModInputTax', 'Entry User Tax');
-                clearForm("formInputTax");
-                bsimpan('btn_simpan', 'Simpan');
-                setHide('btn_reset', false);
-            });
-
-            tombol('click', 'omodEdit', function() {
-                openModal('modalUpdateTax');
-                titleAction('titleMod', 'Pic Tax Update Saldo');
-                clearForm("formUpdateTax");
-                bsimpan('btn_simpan', 'Simpan');
-                setHide('btn_reset', false);
-            });
-
-            submitForm("formInputTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.input-bayar-overriding.store') }}", (resSuccess) => {
-                clearForm("formInputTax");
-                bsimpan('btn_simpan', 'Simpan');
-                // lodTable("inputByr");
-                closeModal('modalInputTax');
-            });
-
-            submitForm("formUpdateTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.input-bayar-overriding.store') }}", (resSuccess) => {
-                clearForm("formUpdateTax");
-                bsimpan('btn_simpan', 'Simpan');
-                // lodTable("inputByr");
-                closeModal('modalUpdateTax');
-            });
-
-            tombol('click', 'omodDelete', function() {
-                var kode = $(this).attr('data-resouce'),
-                    url = "{{ route('utility.menu.store') }}" + "/" + kode;
-                submitDelete(kode, url, function(resSuccess) {
-                    lodTable("inputByr");
-                    console.log(resSuccess);
-                }, function(resError) {
-                    console.log(resError);
-                });
-            });
+            // submitForm("formUpdateTax", "btn_simpan", "POST", "{{ route('keuangan.komisi-overriding.input-bayar-overriding.store') }}", (resSuccess) => {
+            //     clearForm("formUpdateTax");
+            //     bsimpan('btn_simpan', 'Simpan');
+            //     // lodTable("inputByr");
+            //     closeModal('modalUpdateTax');
+            // });
         });
 
         function aprovPst(kode,idx,tgl)
@@ -377,7 +348,11 @@
             var xtgl = getText(tgl);
             openModal('modalPilihJab');
             titleAction('titleMod', 'Pembayaran Komisi/Overriding');
-            buka_jabatan('?vlain='+xrp+'&polis='+kode+'&vtgl='+xtgl);
+            if (idx!=="" || idx!==null && tgl!=="" || tgl!==null) {
+                buka_jabatan('?vlain='+xrp+'&polis='+kode+'&vtgl='+xtgl);
+            } else {
+                buka_jabatan('?vlain=&polis=&vtgl=');
+            }
             // console.log(vlain, vtgl, xrows);
         }
 
@@ -425,7 +400,7 @@
         }
 
         function closeJabPil() {
-            clearForm('frxx_bjkomisi');
+            // clearForm('frxx_bjkomisi');
             closeModal('modalPilihJab');
             lodTable('inputByr');
         }

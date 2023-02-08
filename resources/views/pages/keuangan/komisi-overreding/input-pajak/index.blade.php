@@ -228,6 +228,7 @@
         setTextReadOnly('x_npwp', true);
         setTextReadOnly('x_nama', true);
         setTextReadOnly('x_status', true);
+        formatNominal('x_saldo');
 
         $(function () {
             $.ajaxSetup({

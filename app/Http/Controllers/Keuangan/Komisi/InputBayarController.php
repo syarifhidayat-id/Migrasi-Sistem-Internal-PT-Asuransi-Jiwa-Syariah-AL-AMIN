@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Keuangan\Komisi;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Lib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Str;
 
 class InputBayarController extends Controller
 {
@@ -137,10 +135,10 @@ class InputBayarController extends Controller
         GROUP BY mpol_kode
         ORDER BY mpol_mrkn_nama ASC
         LIMIT ".$jumbar."");
-        $res = Lib::__dbAll($cmd);
+        $res = __dbAll($cmd);
 
         return DataTables::of($res)->addIndexColumn()->make(true);
-        // return Lib::json($res);
+        // return __json($res);
     }
 
     public function lod_byr_pjkomisi(Request $request)
@@ -172,16 +170,16 @@ class InputBayarController extends Controller
         if(!empty($request['vtgl'])) {
             $tglbayar=$request['vtgl'];
         } else {
-            $tglbayar = Lib::now();
+            $tglbayar = __now();
         }
 
-        $sql = Lib::__dbRow(Lib::__select("
+        $sql = __dbRow(__select("
         SELECT count(*) AS jumrow FROM etrs.trs_komisi_hdr,etrs.trs_komisi_dtl
         LEFT JOIN etrs.trs_over_dtl ON tovd_tpprd_pk=tkomd_tpprd_pk
         WHERE tkomh_pk=tkomd_tkomh_pk ".$tambah." "));
         $jumrow= $sql['jumrow'];
 
-        $cmd = Lib::__select("
+        $cmd = __select("
         SELECT *,
             IF(bayar<0,0, IF(".$jumrow."<=1,jumBayar,bayar) ) terbayar,
             IF( sisapaid >=0,1,IF( bayar < 0,'0', IF( sisapaid <-1000, 2, '1'))) stsbyr
@@ -258,7 +256,7 @@ class InputBayarController extends Controller
         ) AS tmaster
         GROUP BY 1
         LIMIT 100000000");
-        $res = Lib::__dbAll($cmd);
+        $res = __dbAll($cmd);
 
         return DataTables::of($res)->addIndexColumn()->make(true);
         // return $res;

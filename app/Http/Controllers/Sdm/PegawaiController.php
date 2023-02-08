@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sdm;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Lib;
+use App\Http\Controllers\wwLib\Lib;
 use App\Models\Sdm\Direktorat;
 use App\Models\Sdm\Pegawai;
 use Illuminate\Http\Request;
