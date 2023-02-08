@@ -16,13 +16,16 @@
                         data-kt-scroll-dependencies="#modalMenu_header" data-kt-scroll-wrappers="#modalMenu_scroll"
                         data-kt-scroll-offset="300px">
                         <div class="row mb-5">
-                            <input class="form-control" name="e_pk" id="e_pk" data-allow-clear="false"
-                                value="{{ $kode }}" readonly />
-                                
-                            <input class="form-control" id="nama_akun" name="nama_akun" readonly />
-                            <input class="form-control" id="tkad_approvkeu1_user" name="tkad_approvkeu1_user" value="{{ Auth::user()->email }}" readonly />
+
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
+                                    <input class="form-control" name="tkad_atjh_pk" id="tkad_atjh_pk" data-allow-clear="false"
+                                        value="{{ $kode }}" readonly />
+                                    <input class="form-control" name="tkad_pk" id="tkad_pk" type="text" readonly />
+
+                                    <input class="form-control" id="nama_akun" name="nama_akun" readonly />
+                                    <input class="form-control" id="tkad_approvkeu1_user" name="tkad_approvkeu1_user"
+                                        value="{{ Auth::user()->email }}" readonly />
                                     <label class="required form-label">Jenis Transaksi</label>
                                     <select class="form-select" data-control="select2" name="e_akun" id="e_akun"
                                         type="text" data-allow-clear="true" data-placeholder="pilih jenis transaksi!"
@@ -39,10 +42,9 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Peruntukan Dana</label>
-                                    <select class="form-select" name="tkad_keterangan" data-control="select2"
-                                        id="tkad_keterangan" type="text"
-                                        data-dropdown-parent="#modal_rincian_transaksi" data-allow-clear="true"
-                                        data-placeholder="Pilih peruntukan dana">
+                                    <select class="form-select" name="tkad_keterangan" id="tkad_keterangan"
+                                        type="text" data-dropdown-parent="#modal_rincian_transaksi"
+                                        data-allow-clear="true" data-placeholder="Pilih peruntukan dana">
                                         <option></option>
                                         <option value='belanja bulanan'>belanja bulanan</option>
                                         <option value='biaya admin'>biaya admin</option>
@@ -103,8 +105,6 @@
                                         <option value='pengisian petty cash'>pengisian petty cash</option>
                                         <option value='pengisian saldo bank'>pengisian saldo bank</option>
                                     </select>
-                                    </span></td>
-                                    </select>
                                     {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
 
                                 </div>
@@ -113,7 +113,7 @@
                                 <div class="mb-5">
                                     <label class="required form-label">Tipe Dana</label>
                                     <input class="form-control" name="tkad_tipe_dk" id="tkad_tipe_dk" type="text"
-                                        data-allow-clear="true" placeholder="Tipe dana" value="D"/>
+                                        data-allow-clear="true" placeholder="Tipe dana" value="D" />
                                     {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
                                 </div>
                             </div>
@@ -157,7 +157,7 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="required form-label">Nilai</label>
-                                    <input class="form-control" name="tkad_total" id="tkad_total" type="text"
+                                    <input class="form-control" data-type="rupiah" name="tkad_total" id="tkad_total" type="text"
                                         data-allow-clear="true" data-dropdown-parent="#modal_rincian_transaksi"
                                         placeholder="Masukan nilai" />
                                     {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
@@ -168,10 +168,9 @@
                                 <div class="mb-5">
                                     <label class="required form-label">Jenis Realisasi</label>
                                     <div class="input-group">
-                                        <select class="form-select" data-control="select2"
-                                            data-dropdown-parent="#modal_rincian_transaksi" name="tkad_jns_realisasi"
-                                            id="tkad_jns_realisasi" type="text" data-allow-clear="true"
-                                            data-placeholder="Jenis realisasi">
+                                        <select class="form-select" data-dropdown-parent="#modal_rincian_transaksi"
+                                            name="tkad_jns_realisasi" id="tkad_jns_realisasi" type="text"
+                                            data-allow-clear="true" data-placeholder="Jenis realisasi">
                                             <option></option>
                                         </select>
                                         {{-- <div class="input-group-append">

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Keuangan\Kas\ApprovController;
+use App\Http\Controllers\Keuangan\Kas\ApprovKasAnggaranController;
+use App\Http\Controllers\Keuangan\Kas\BukuBesarController;
 use App\Http\Controllers\Keuangan\Komisi\ApprovalKomisiController;
 use App\Http\Controllers\Keuangan\Komisi\InputPajakController;
 use App\Http\Controllers\Keuangan\Komisi\InputBayarController;
@@ -37,6 +40,16 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
         Route::resource('master-kas', MasterKasController::class);
         Route::resource('rincian-transaksi', RincianTransaksiController::class);
 
+        Route::resource('approv-transaksi-kas', ApprovController::class);
+        Route::post('approv', [ApprovController::class, 'approv']);
+        Route::post('upload', [ApprovController::class, 'upload']);
+        Route::resource('buku-besar-kas', BukuBesarController::class);
+        Route::resource('approv-kas-anggaran', ApprovKasAnggaranController::class);
+
+        Route::group(['prefix' => '/buku-besar-kas', 'as' => 'buku-besar-kas.'], function () {
+            Route::get('/api-kantor-cabang', [BukuBesarController::class, 'kantor_cabang']);
+            Route::get('/lod_bukber', [BukuBesarController::class, 'lod_bukber']);
+        });
     });
 
 });

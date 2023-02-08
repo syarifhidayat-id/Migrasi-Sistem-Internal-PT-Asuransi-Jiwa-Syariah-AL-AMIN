@@ -3,12 +3,7 @@
         <div class="modal-content">
             <div class="modal-header" id="modalMenu_header">
                 <h2 class="fw-bolder" id="tMod"></h2>
-
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" id="btn_closeCreate">
-                    <span class="svg-icon svg-icon-1">
-                        <i class="fa-sharp fa-solid fa-xmark"></i>
-                    </span>
-                </div>
+                <button type="button" class="btn btn-icon btn-sm btn-active-light-primary" onclick="closeModLap()"><i class="fa-sharp fa-solid fa-xmark"></i></button>
             </div>
 
             <form id="frxx" name="frxx" method="post" enctype="multipart/form-data">
@@ -49,10 +44,9 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-5">
+                            <div class="col-md-6 mb-5">
                                     <label class="required form-label">Unit Kerja PJ Laporan</label>
-                                    <select class="form-select" data-dropdown-parent="#modal" id="mlapbkl_unit"
+                                    <select class="form-select" data-control="select2" data-dropdown-parent="#modal" id="mlapbkl_unit"
                                         name="mlapbkl_unit" data-placeholder="Pilih unit kerja pj laporan"
                                         data-allow-clear="true" required>
                                         <option value='01' selected>TEHNIK</option>
@@ -76,12 +70,9 @@
                                         <option value='21'>KOMISARIS</option>
                                         <option value='22'>KOMITE</option>
                                         <option value='BIS'>BISNIS</option>
-                                    </select></td>
-
                                     </select>
                                     {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
 
-                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-5">
@@ -212,7 +203,7 @@
                             class="fa-solid fa-floppy-disk"></i> Simpan</button>
                     <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
                             class="fa-solid fa-trash"></i> Hapus</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="btn_tutup"><i
+                    <button type="button" class="btn btn-danger btn-sm"  onclick="closeModLap()"><i
                             class="fa-solid fa-xmark"></i> Tutup</button>
                 </div>
             </form>

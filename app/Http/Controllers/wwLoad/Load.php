@@ -271,63 +271,60 @@ class Load extends Controller
 
     public function get_nopolis(Request $request)
     {
-        // $tambah = "";
-        // $msoc = $request['msoc'];
-        // $cek = substr($msoc, 0, 4);
-        // $cek2 = substr($msoc, 0, 5);
+        $tambah = "";
+        $msoc = $request['msoc'];
+        $cek = substr($msoc, 0, 4);
+        $cek2 = substr($msoc, 0, 5);
 
-        // $resjns = __dbRow(__select("SELECT msoc_mjns_kode mjns FROM eopr.mst_soc WHERE msoc_kode='".$msoc."'"));
+        $resjns = __dbRow(__select("SELECT msoc_mjns_kode mjns FROM eopr.mst_soc WHERE msoc_kode='".$msoc."'"));
 
-        // if ($cek=='EDS.') {
-        //     $msoc = substr($msoc, 4, 2);
-        // }
-        // if ($cek2=='EDS1.' || $cek2=='EDS2.' || $cek2=='EDS3.') {
-        //     $msoc = substr($msoc, 5, 2);
-        // }
-        // if (isset($request['pmgpolis'])) {
-        //     if (!empty($request['pmgpolis'])) {
-        //         $tambah.=" and mpli_mrkn_kode='".$request['pmgpolis']."'";
-        //     }
-        // }
-        // if (isset($request['nopolis'])) {
-        //     if (!empty($request['nopolis'])) {
-        //         $tambah.=" and mpli_nomor='".$request['nopolis']."'";
-        //     }
-        // }
-        // if (isset($request['mekanisme'])) {
-        //     if (!empty($request['mekanisme'])) {
-        //         $tambah.=" and mpol_mekanisme='".$request['mekanisme']."'";
-        //     }
-        // }
-        // if (isset($request['jns_bayar'])) {
-        //     if (!empty($request['jns_bayar'])) {
-        //         $tambah.=" and mpol_jenis_bayar='".str_replace(".","",$request['jns_bayar'])."'";
-        //     }
-        // }
-        // if (isset($request['mrkn_nama'])) {
-        //     if (!empty($request['mrkn_nama']) && empty($request['pmgpolis']) ) {
-        //         $tambah.=" and mpli_mrkn_nama='".$request['mrkn_nama']."' ";
-        //     }
-        // }
+        if ($cek=='EDS.') {
+            $msoc = substr($msoc, 4, 2);
+        }
+        if ($cek2=='EDS1.' || $cek2=='EDS2.' || $cek2=='EDS3.') {
+            $msoc = substr($msoc, 5, 2);
+        }
+        if (isset($request['pmgpolis'])) {
+            if (!empty($request['pmgpolis'])) {
+                $tambah.=" and mpli_mrkn_kode='".$request['pmgpolis']."'";
+            }
+        }
+        if (isset($request['nopolis'])) {
+            if (!empty($request['nopolis'])) {
+                $tambah.=" and mpli_nomor='".$request['nopolis']."'";
+            }
+        }
+        if (isset($request['mekanisme'])) {
+            if (!empty($request['mekanisme'])) {
+                $tambah.=" and mpol_mekanisme='".$request['mekanisme']."'";
+            }
+        }
+        if (isset($request['jns_bayar'])) {
+            if (!empty($request['jns_bayar'])) {
+                $tambah.=" and mpol_jenis_bayar='".str_replace(".","",$request['jns_bayar'])."'";
+            }
+        }
+        if (isset($request['mrkn_nama'])) {
+            if (!empty($request['mrkn_nama']) && empty($request['pmgpolis']) ) {
+                $tambah.=" and mpli_mrkn_nama='".$request['mrkn_nama']."' ";
+            }
+        }
 
-        // $cmd = __select("
-        // SELECT
-        // mpli_nomor mpol_nomor,
-        // mpli_nomor mpol_nomor_cetak,
-        // mpli_mrkn_kode,
-        // mpli_mrkn_nama,
-        // mpli_mpras_kode
-        // FROM eopr.mst_polis_induk
-        // LEFT JOIN eopr.mst_polis ON mpol_nomor=mpli_nomor
-        // LEFT JOIN emst.mst_rekanan rkn on mrkn_kode=mpli_mrkn_kode
-        // WHERE 1=1 AND mpli_mjns_kode='".$resjns['mjns']."' and mpli_status_endos in (0,1,2)
-        // $tambah");
+        $cmd = __select("
+        SELECT
+        mpli_nomor mpol_nomor,
+        mpli_nomor mpol_nomor_cetak,
+        mpli_mrkn_kode,
+        mpli_mrkn_nama,
+        mpli_mpras_kode
+        FROM eopr.mst_polis_induk
+        LEFT JOIN eopr.mst_polis ON mpol_nomor=mpli_nomor
+        LEFT JOIN emst.mst_rekanan rkn on mrkn_kode=mpli_mrkn_kode
+        WHERE 1=1 AND mpli_mjns_kode='".$resjns['mjns']."' and mpli_status_endos in (0,1,2)
+        $tambah");
 
-        // $res = __dbRow($cmd);
+        $res = __dbRow($cmd);
 
-        // return __json($res);
-        $user['jabatan'] = __now();
-
-        return __json($user);
+        return __json($res);
     }
 }

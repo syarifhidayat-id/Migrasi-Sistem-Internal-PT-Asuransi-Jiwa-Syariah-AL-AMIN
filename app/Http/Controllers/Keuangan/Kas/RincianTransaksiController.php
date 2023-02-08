@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 use App\Http\Controllers\wwLib\Lib;
+=======
+use App\Http\Controllers\Library\Lib;
+use App\Http\Controllers\Library\Config;
+>>>>>>> 89db418d574760ab55ec2520d0e5f7f7b129bb34
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -89,13 +94,15 @@ class RincianTransaksiController extends Controller
                 $data = $request->except(
                     '_token',
                     'e_akun',
-                    'e_pk',
+                    // 'tkad_atjh_pk',
                     'nama_akun',
                     'e_kasbon',
                 );
 
                 $data['tkad_pk']= $kode;
-                $data['tkad_atjh_pk'] = $request->e_pk;
+                $data['tkad_askn_kode'] = $request->e_akun;
+                // $data['tkad_total'] = Lib::_str2($request->tkad_total, 'N');
+                // $data['tkad_atjh_pk'] = $request->e_pk;
                 // $data['tkad_approvkeul_user'] = $request->user()->email;
                 $data['tkad_approvkeu1_date'] = date('Y-m-d H:i:s');
 
@@ -105,6 +112,27 @@ class RincianTransaksiController extends Controller
                 // return response()->json($data);
                 return response()->json([
                     'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
+                ]);
+            }else{
+                $data = $request->all();
+
+                // $data = request()->except(['_token']);
+
+                $data = $request->except(
+                    '_token',
+                    'e_akun',
+                    // 'e_pk',
+                    'nama_akun',
+                    'e_kasbon',
+                );
+
+                $data['tkad_askn_kode'] = $request->e_akun;
+                // $data['tkad_atjh_pk'] = $request->e_pk;
+                
+                $vtable = DB::table('epms.trs_kas_dtl')->where('tkad_atjh_pk', $request->tkad_atjh_pk);
+                $vtable->update($data);
+               return response()->json([
+                    'success' => 'Data dengan Kode ' . $request->tkad_pk . ' berhasil di ubah!'
                 ]);
             }
         }
@@ -152,7 +180,17 @@ class RincianTransaksiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = DB::table('epms.trs_kas_dtl')->where('tkad_pk', $id)->delete();
+        return response()->json([
+            'success' => 'data dengan nomor pk '.$id. ' berhasil di hapus!'
+        ]);
+
+    //     $delete = DB::table('emst.mst_ojk')
+    //     ->where('mojk_pk', '=', $id)
+    //     ->delete();
+    // return response()->json([
+    //     'success' => 'Data berhasil dihapus dengan Kode ' . $id . '!'
+    // ]);
     }
 
 
@@ -167,7 +205,10 @@ class RincianTransaksiController extends Controller
 
 
         $data = DB::table('epms.trs_kas_dtl')
-        ->select('*')
+        ->select('*', 
+        DB::raw('CASE WHEN tkad_tipe_dk = "D" THEN "Debit" WHEN tkad_tipe_dk = "K" THEN "Kredit" END as tipe_dk, FORMAT(tkad_total, 2) tkad_total')
+        // DB::raw(number_format((float)'tkad_total','2') )
+        )
         ->where('tkad_atjh_pk', $request->kode_pk)
         ->orderBy('tkad_pk', 'DESC')
         // ->limit(10)
@@ -223,4 +264,23 @@ class RincianTransaksiController extends Controller
         return response()->json($data);
         // return $union;
     }
+
+    public function api_edit_dtl ($id) {
+        $data = DB::table('epms.trs_kas_dtl')
+        ->select('*')
+        ->where('tkad_pk', $id)
+        ->first();
+
+        return response()->json($data);
+    }
+
+    public function edit_akun ($id) {
+        $data = DB::table('eacc.ams_sub_akun')
+            ->select('asakn_kode', 'asakn_keterangan')
+            ->where('asakn_kode', $id)
+            // ->where('mssp_nama', 'like', "%$search%")
+            ->first();
+        return response()->json($data);
+    }
+
 }

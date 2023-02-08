@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="modal-body" id="modal-body">
-                <Object id="pdf" type="application/pdf" width="100%" height="500"></Object>
+                <embed id="view_pdf" src="" type="application/pdf" width="100%" height="500">
             </div>
            
                 <div class="modal-footer justify-content-center">

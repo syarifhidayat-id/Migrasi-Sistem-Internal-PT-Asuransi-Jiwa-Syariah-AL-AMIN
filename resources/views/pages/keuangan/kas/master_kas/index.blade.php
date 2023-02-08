@@ -17,7 +17,10 @@
             @csrf
             <div class="card-body py-10">
                 <div class="row">
-                    <input class="form-control" type="text" id="a_pk" value="{{ $kode }}" />
+                    <input class="form-control" type="text" data-allow-clear="false" id="a_pk" value="{{ $kode }}" />
+                    <input class="form-control" id="tdna_user_ins" name="tdna_user_ins"
+                                        value="{{ Auth::user()->email }}" readonly />
+                    {{-- <input class="form-control" id="tdna_akun_d" name="tdna_akun_d"  readonly /> --}}
                     <div class="col-md-6">
                         <div class="mb-5">
                             <label class="required form-label">Kantor Al Amin</label>
@@ -72,32 +75,39 @@
                                     data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
                                     title="Transaksi baru" id="tamDtl">Transaksi baru</button>
 
-                                    {{-- <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                {{-- <button type="button" class="btn btn-light-primary me-3 btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                         <i class="fa-sharp fa-solid fa-filter"></i> Filter
                                     </button> --}}
-                
-                                    <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
-                                        <div class="px-7 py-5">
-                                            <div class="fs-5 text-dark fw-bolder">Filter Options</div>
-                                        </div>
-                                        <div class="separator border-gray-200"></div>
-                
-                                        <div class="px-7 py-5" data-kt-datatable-table-filter="form">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="mb-10">
-                                                        <label class="form-label fs-6 fw-bold">Kode PK:</label>
-                                                        <input class="form-control" name="kode_new" id="kode_new" data-kt-datatable-table-filter="filter" type="text" placeholder="Kode New" />
-                                                    </div>
+
+                                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-800px" data-kt-menu="true">
+                                    <div class="px-7 py-5">
+                                        <div class="fs-5 text-dark fw-bolder">Filter Options</div>
+                                    </div>
+                                    <div class="separator border-gray-200"></div>
+
+                                    <div class="px-7 py-5" data-kt-datatable-table-filter="form">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-10">
+                                                    <label class="form-label fs-6 fw-bold">Kode PK:</label>
+                                                    <input class="form-control" name="kode_new" id="kode_new"
+                                                        data-kt-datatable-table-filter="filter" data-allow-clear="true" type="text"
+                                                        placeholder="Kode New" />
                                                 </div>
                                             </div>
-                
-                                            <div class="d-flex justify-content-end">
-                                                <button type="submit" class="btn btn-primary fw-bold btn-sm me-2" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
-                                                <button type="reset" class="btn btn-danger btn-active-light-primary fw-bold btn-sm" data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i class="fa-solid fa-repeat"></i> Reset</button>
-                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-primary fw-bold btn-sm me-2"
+                                                data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i
+                                                    class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
+                                            <button type="reset"
+                                                class="btn btn-danger btn-active-light-primary fw-bold btn-sm"
+                                                data-kt-menu-dismiss="true" data-kt-datatable-table-filter="reset"><i
+                                                    class="fa-solid fa-repeat"></i> Reset</button>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                             <div class="card-body py-5">
                                 <div class="d-flex justify-content-end" data-kt-datatable-table-toolbar="base">
@@ -107,11 +117,13 @@
                                             <thead>
                                                 <tr
                                                     class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
+                                                    <th class="min-w-150px">No</th>
                                                     <th class="min-w-150px">Keterangan</th>
                                                     <th class="min-w-150px">Debit/Kredit</th>
-                                                    {{-- <th class="min-w-150px">Nilai</th>
+                                                    <th class="min-w-150px">Nilai</th>
                                                     <th class="min-w-150px">Akun</th>
-                                                    <th class="min-w-150px">Nama Akun</th> --}}
+                                                    <th class="min-w-150px">Nama Akun</th>
+                                                    <th>Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -142,12 +154,12 @@
                         <div class="mb-5">
                             <label class="required form-label">Nomor Voucher</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="tdna_kode_vcr" name="tdna_kode_vcr"
-                                    data-allow-clear="true" placeholder="input voucher" readonly />
-                                <button type="button" class="btn btn-success" onclick="tombolVcr(0)">Input VCR</button>
+                                <input type="text" class="form-control" id="tdna_kode_vcr" name="tdna_kode_vcr" placeholder="input voucher" />
+                                <button type="button" class="btn btn-success" id="mod_input_vcr">Input VCR</button>
                                 <button type="button" class="btn btn-primary" id="btn_lihat_vcr"><i
                                         class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
-                            </div>
+                                    </div>
+                                    <span class="text-danger error-text tdna_kode_vcr_err"></span>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -231,16 +243,29 @@
         @include('pages.keuangan.kas.master_kas.modal.create')
         @include('pages.keuangan.kas.master_kas.modal.create-voucher')
         @include('pages.keuangan.kas.master_kas.modal.view')
+        @include('pages.keuangan.kas.master_kas.modal.view-pdf')
     </div>
 @endsection
 
 @section('script')
     <script type="text/javascript">
+        setHide('a_pk', true);
+        setHide('tkad_atjh_pk', true);
+        setHide('tkad_pk', true);
+        setHide('nama_akun', true);
+        setHide('tdna_user_ins', true);
+        setHide('tkad_approvkeu1_user', true);
+        // setHide('tkav_nomor', true);
+        setHide('tkav_tdna_pk', true);
+        setHide('tkav_akun', true);
+        setTextReadOnly('tdna_kode_vcr', true);
         setTextReadOnly('tkad_tipe_dk', true);
         setTextReadOnly('tkav_nomor', true);
         setTextReadOnly('tkav_tipe_bayar', true);
         setTextReadOnly('tkav_ket', true);
         setText('kode_new', getText('a_pk'));
+        selectOpTag('tkad_keterangan');
+
 
         $(function() {
             $.ajaxSetup({
@@ -249,7 +274,7 @@
                 }
             });
 
-            selectSide('tkad_jns_realisasi', false, '{{ url('api/keuangan/kas/e_realisasi') }}', function(d) {
+            selectSideTag('tkad_jns_realisasi', false, '{{ url('api/keuangan/kas/e_realisasi') }}', function(d) {
                     return {
                         text: d.mar_kode + ' - ' + d.mar_nama, // text nama
                         id: d.mar_kode, // kode value
@@ -278,20 +303,6 @@
                         text: d.mlok_pk + ' - ' + d.mlok_nama, // text nama
                         id: d.mlok_pk, // kode value
                     }
-                },
-                function(res) {
-                    // alert(res.params.data.id);
-                    // var key = '{{ url('api/legal/pks/get_all_pks') }}' + '/' + res.params.data.id;
-                    // $.get(key, function(a) {
-                    //     $('#frxx_add').formToJson(a);
-                    //     if (a.mpks_mrkn_kode !== "") {
-                    //         var mrkn = "{{ url('api/legal/pks/get_edit_polis') }}" + "/" + a.mpks_mrkn_kode;
-                    //         $.get(mrkn, function(b) {
-                    //             selectEdit('mpks_mrkn_kode_test', b.mrkn_kode, b.mrkn_nama);
-
-                    //         });
-                    //     }
-                    // });
                 },
             );
 
@@ -323,6 +334,7 @@
                     d.kode_pk = getText('a_pk');
                 },
                 [ //fillable body table name, sesuaikan dengan field yang terdapat pada tr thead
+
                     {
                         data: "DT_RowIndex",
                         className: "text-center"
@@ -330,93 +342,162 @@
                     {
                         data: 'tkad_keterangan'
                     },
-                    // {
-                    //     data: 'mojk_ket_jenis'
-                    // },
-                    // {
-                    //     data: 'mojk_tahun'
-                    // },
-                    // {
-                    //     data: 'mojk_ins_user'
-                    // },
-                    // {
-                    //     data: 'ins_date'
-                    // },
+                    {
+                        data: 'tipe_dk'
+                    },
+                    {
+                        data: 'tkad_total'
+                    },
+                    {
+                        data: 'tkad_askn_kode'
+                    },
+                    {
+                        data: 'tkad_keterangan'
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return `
+                                <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Aksi
+                                    <span class="svg-icon svg-icon-5 m-0">
+                                        <i class="fa-sharp fa-solid fa-chevron-down"></i>
+                                    </span>
+                                </a>
+                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
+                                    <div class="menu-item px-3">
+                                        <a href="#" id="mod_edit_dtl" class="menu-link px-3" data-resouce="` + row
+                                .tkad_pk + `">Edit</a>
+                                    </div>
+                                    <div class="menu-item px-3">
+                                        <a href="#" id="mod_delete_dtl" class="menu-link px-3" data-resouce="` + row
+                                .tkad_pk + `">Delete</a>
+                                    </div>
+                                </div>
+                            `;
+                        },
+                    },
                 ]
             );
 
-        submitForm(
-            "frxx_vcr",
-            "btn_simpan",
-            "POST",
-            "{{ url('api/keuangan/kas/vcr') }}",
-            (resSuccess) => {
-                clearForm("frxx_vcr");
-                // lodTable('serverSide_draft');
-                bsimpan("btn_simpan", 'Simpan');
-                closeModal('modal_voucher');
-            },
-            (resError) => {
-                console.log(resError);
-            },
-        );
 
 
-        submitForm(
-            "frxx_tkad",
-            "btn_simpan",
-            "POST",
-            "{{ url('api/keuangan/kas/dtl') }}",
-            (resSuccess) => {
-                filterInput('a_pk', 'serverSide_kas');
-                lodTable('serverSide_kas');
-                bsimpan("btn_simpan", 'Simpan');
-                closeModal('modal_rincian_transaksi');
-                clearForm("frxx_tkad");
-            },
-            (resError) => {
-                console.log(resError);
-            },
-        );
+            submitForm(
+                "frxx_vcr",
+                "btn_simpan",
+                "POST",
+                "{{ url('api/keuangan/kas/vcr') }}",
+                (resSuccess) => {
+                    // lodTable('serverSide_draft');
+                    var vcr_no = getText('tkav_nomor');
+                    bsimpan("btn_simpan", 'Simpan');
+                    closeModal('modal_voucher');
+                    clearForm("frxx_vcr");
+                    setText('tdna_kode_vcr', vcr_no);
+                },
+                (resError) => {
+                    console.log(resError);
+                },
+            );
 
-        tombol('click', 'tamDtl', function() {
-            $('#tMod').text('Rincian Transaksi');
-            openModal('modal_rincian_transaksi');
-            // setHide('btn_reset');
-            // clearForm("frxx_tkad");
-        });
+            submitForm(
+                "frxx_tkad",
+                "btn_simpan",
+                "POST",
+                "{{ url('api/keuangan/kas/dtl') }}",
+                (resSuccess) => {
+                    // filterInput('a_pk', 'serverSide_kas');
+                    lodTable('serverSide_kas');
+                    bsimpan("btn_simpan", 'Simpan');
+                    closeModal('modal_rincian_transaksi');
+                    clearForm("frxx_tkad");
+                },
+                (resError) => {
+                    console.log(resError);
+                },
+            );
 
-        $('body').on('change', '#jenis_dokumen', function() {
-            var _this = $(this).val();
-            console.log(_this);
-        }).change();
-        });
+            submitForm(
+                "frxx_m_kas",
+                "btn_simpan",
+                "POST",
+                "{{url('api/keuangan/kas/master-kas')}}",
+                (resSuccess) => {
+                    bsimpan('btn_simpan', 'Simpan')
+                    // clearForm("frxx_m_kas");
+                    reload();
+                    
+                },
+                (resError) => {
+                    console.log(resError);
+                },
+            );
+
+            tombol('click', 'mod_edit_dtl', function() {
+                var kode = $('#mod_edit_dtl').attr('data-resouce');
+                    // console.log(kode);
+                    lodJson("GET", "{{ url('api/keuangan/kas/api_edit_dtl') }}" + "/" + kode + "/edit", function (data) {
+                    titleAction('tMod', 'Edit Rincian Transaksi');
+                    bsimpan('btn_simpan', 'Update');
+                    openModal('modal_rincian_transaksi');
+                    jsonForm('frxx_tkad', data);
+                    lodJson("GET", "{{ url('api/keuangan/kas/edit_akun') }}" + "/" + data.tkad_askn_kode, function(res) {
+                        selectEdit('e_akun', res.asakn_kode, res.asakn_keterangan);
+                    });
+                });
+            });
+
+            tombol('click', 'mod_delete_dtl', function() {
+                var kode = $('#mod_delete_dtl').attr('data-resouce'),
+                    url = "{{ url('api/keuangan/kas/dtl') }}" + "/" + kode;
+                submitDelete(kode, url, function(resSuccess) {
+                    lodTable("serverSide_kas");
+                    // console.log(resSuccess);
+                }, function(resError) {
+                    // console.log(resError);
+                });
+            });
+
+            tombol('click', 'tamDtl', function() {
+                $('#tMod').text('Rincian Transaksi');
+                openModal('modal_rincian_transaksi');
+            });
+
+            tombol('click','btn_lihat_vcr', function() {
+                // var nomor_vcr = getText('tdna_kode_vcr');
+                // setText('tMod_vcr_view', nomor_vcr);
+                // titleAction('tMod_vcr_test', nomor_vcr);
+                // openModal('modal-view-pdf');
+                // console.log(nomor_vcr);
+                // var url = '{{ url("api/keuangan/kas/show-pdf") }}';
+                // $('#view_pdf_show').attr('src', url);
+            });
+
+            // $('body').on('change', '#jenis_dokumen', function() {
+            //     var _this = $(this).val();
+            //     console.log(_this);
+            // }).change();
 
 
-        // function tombolAct(tipe) {
-        //     if (tipe == '0') {
-        //         $('#tMod').text('Rincian Transaksi');
-        //         openModal('modal_rincian_transaksi');
-        //         // setHide('btn_reset');
-        //         // clearForm("frxx_tkad");
-        //     }
-        // }
-
-
-        //Voucher kas
-        function tombolVcr(tipe) {
-            if (tipe == '0') {
+            tombol('click', 'mod_input_vcr', function() {
                 url = "{{ url('api/keuangan/kas/tkav_nomor') }}";
+
+                // console.log(e_pk);
                 lodJson("GET", url, function(res) {
+                    var pk = getText('a_pk');
                     var tdna_tgl_aju = getText('tdna_tgl_aju');
                     var tdna_dk = getText('tdna_dk');
                     var tdna_penerima = getText('tdna_penerima');
                     var tdna_ket = getText('tdna_ket');
-                    // var tdna_dk = getText('tdna_dk');
-                    // var tdna_dk = getText('tdna_dk');
-                    // var tdna_dk = getText('tdna_dk');
                     $('#tMod_vcr').text('Input Voucher Kas');
                     openModal('modal_voucher');
+
+                    var key = "{{ url('api/keuangan/kas/vcr/get_tkad_akun') }}" + "/" + pk;
+                    // console.log(key);
+                    $.get(key, function(data) {
+                        setText('tkav_akun', data.tkad_askn_kode);
+                    });
                     setText('tkav_nomor', res);
                     setText('tkav_tanggal', tdna_tgl_aju);
                     setText('tkav_tipe_kas', tdna_dk);
@@ -424,23 +505,8 @@
                     setText('tkav_tipe_bayar', '0');
                     setText('tkav_ket', tdna_ket);
                 });
-
-
-                // $.get(url, function(res) {
-                //     var tdna_tgl_aju = getText('tdna_tgl_aju');
-                //     var tdna_dk = getText('tdna_dk');
-                //     // var tdna_dk = getText('tdna_dk');
-                //     // var tdna_dk = getText('tdna_dk');
-                //     // var tdna_dk = getText('tdna_dk');
-                //     $('#tMod_vcr').text('Input Voucher Kas');
-                //     openModal('modal_voucher');
-                //     setText('tkav_nomor', res);
-                //     setText('tkav_tanggal', tdna_tgl_aju);
-                //     setText('tkav_tipe_kas', tdna_dk);
-
-                // });
-            }
-        }
+            });
+        });
 
         function closeMod() {
             closeModal('modal_rincian_transaksi');
@@ -449,21 +515,6 @@
 
         function closeModalVcr() {
             closeModal('modal_voucher');
-            // clearForm('frxx_vcr');
         }
-
-        // function jenisFile(jenis1, jenis2) {
-        //     var doc = $('#jenis_dokumen').val();
-        //     var url = '{{ url('storage/legal/ojk') }}' + '/';
-        //     if (doc == '1') {
-        //         $('#view_pdf').attr('src', url + 'file1/' + jenis1);
-        //         openModal('modalView');
-        //     } else if (doc == '2') {
-        //         $('#view_pdf').attr('src', url + 'file2/' + jenis2);
-        //         openModal('modalView');
-        //     } else {
-        //         pesan('Silahkan pilih jenis file terlebih dahulu!');
-        //     }
-        // }
     </script>
 @endsection
