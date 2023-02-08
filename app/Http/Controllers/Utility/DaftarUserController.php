@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Utility;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Lib;
+use App\Http\Controllers\wwLib\Lib;
 use App\Models\User;
 use App\Models\Utility\DaftarUser;
 use Illuminate\Http\Request;

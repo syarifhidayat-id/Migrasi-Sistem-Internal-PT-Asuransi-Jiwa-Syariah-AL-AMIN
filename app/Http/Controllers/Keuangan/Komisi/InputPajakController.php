@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Keuangan\Komisi;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Lib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -46,7 +45,7 @@ class InputPajakController extends Controller
     public function store(Request $request)
     {
         if ($request->mtx_kode) {
-            $validasi = Lib::valid($request->all(), [
+            $validasi = __valid($request->all(), [
                 'mtx_kode' => 'required|max:16',
                 'mtx_npwp' => 'required|max:20',
                 'mtx_nama' => 'required',
@@ -107,7 +106,7 @@ class InputPajakController extends Controller
             );
             $data['msalk_mtx_kode'] = $request->x_kode;
             $data['msalk_tahun'] = $request->x_tahun;
-            $data['msalk_saldo'] = Lib::__str2($request->x_saldo, 'N');
+            $data['msalk_saldo'] = __str2($request->x_saldo, 'N');
             $vtable->update($data);
 
             return response()->json([
@@ -161,29 +160,6 @@ class InputPajakController extends Controller
         //
     }
 
-    public function selectCabAlm(Request $request)
-    {
-        $page = $request->page ? intval($request->page) : 1;
-        $rows = $request->rows ? intval($request->rows) : 100;
-        $offset = ($page - 1) * $rows;
-
-        $vtable = DB::table('emst.mst_lokasi');
-        $vField = DB::raw("mlok_kode kode,mlok_nama nama");
-
-        $vtable->select($vField)->where('mlok_kode', '<>', '');
-
-        if (!empty($request->q)) {
-            $vtable->where('mlok_kode', 'LIKE', "%$request->q%")->orWhere('mlok_nama', 'LIKE', "%$request->q%");
-        }
-
-        $data = $vtable
-        ->offset($offset)
-        ->limit($rows)
-        ->get();
-
-        return response()->json($data);
-    }
-
     public function cariTax(Request $request)
     {
         $page = $request->page ? intval($request->page) : 1;
@@ -233,7 +209,7 @@ class InputPajakController extends Controller
             msalk_tahun"))
             ->leftJoin('emst.mst_saldo_komisi', function($join) use ($request) {
                 $join->on('mtx_kode', '=', 'msalk_mtx_kode')
-                ->where('msalk_tahun', '=', DB::raw("year('".Lib::now()."')"));
+                ->where('msalk_tahun', '=', DB::raw("year('".__now()."')"));
             })
             ->where('mtx_kode', '<>', '');
 
@@ -436,7 +412,7 @@ class InputPajakController extends Controller
         ->setKeywords("office 2007 openxml php")
         ->setCategory("Test result file");
 
-        $namafile="_".' DETAIL PESERTA KOMISI & OVERREDING '.Lib::__getKey(14);
+        $namafile="_".' DETAIL PESERTA KOMISI & OVERREDING '.__getKey(14);
         $namasheet='DATA';
         $dirfile="public/keuangan/kemisi-overriding/input/xls";
 
@@ -572,34 +548,34 @@ class InputPajakController extends Controller
     public function postPjKomisi(Request $request)
     {
         if ($request->pic1==$request->pic1a) {
-            return Lib::json([
+            return __json([
                 'error' => 'PIC Pajak Komisi 1 dan 2 tidak boleh sama!'
             ]);
         } else if ($request->pic1==$request->pic2) {
-            return Lib::json([
+            return __json([
                 'error' => 'PIC Pajak Komisi 1 dan 3 tidak boleh sama!'
             ]);
         } else if ($request->pic1a==$request->pic2) {
-            return Lib::json([
+            return __json([
                 'error' => 'PIC Pajak Komisi 2 dan 3 tidak boleh sama!'
             ]);
         } else {
             $kode_polis = $request['kode'];
             $pst = $request['pst'];
-            $up = strval(Lib::__str2($request['up'],'N'));
+            $up = strval(__str2($request['up'],'N'));
             $bln1 = $request['bln1'];
             $bln2 = $request['bln2'];
             $thn = $request['thn'];
             $pic1 = $request['pic1']; //pic pajak komisi
             $pic1a = $request['pic1a'];
-            $kom = strval(Lib::__str2($request['tkom'],'N')); //nilai komisi
+            $kom = strval(__str2($request['tkom'],'N')); //nilai komisi
             $cab = $request['cab'];
 
             $pic2 = $request['pic2']; //pic pajak overreding
-            $over = strval(Lib::__str2($request['tover'],'N')); //nilai overreding
-            $user = Lib::__getUser();
-            $saldo1 = strval(Lib::__str2($request['saldo1'],'NO'));
-            $saldo2 = strval(Lib::__str2($request['saldo2'],'NO'));
+            $over = strval(__str2($request['tover'],'N')); //nilai overreding
+            $user = __getUser();
+            $saldo1 = strval(__str2($request['saldo1'],'NO'));
+            $saldo2 = strval(__str2($request['saldo2'],'NO'));
 
             $data = $request->all();
             $data['kode'] = $kode_polis;
@@ -639,20 +615,20 @@ class InputPajakController extends Controller
         //     AND tpprd_status_batal!=1 AND tpprd_status_bayar=1
         //     AND tpprd_status=1");
 
-        //     $rcek= Lib::__dbRow($cek);
+        //     $rcek= __dbRow($cek);
 
         //     if ($rcek['kompolis']<1) {
-        //         return Lib::json([
+        //         return __json([
         //             'error' => 'Komisi Pada Polis No l !'
         //         ]);
         //     }
         //     if ($rcek['t']!=$pst) {
-        //         return Lib::json([
+        //         return __json([
         //             'error' => 'Total Peserta berbeda Cek: '.$rcek['t'].' Sedangkan tabel: '.$pst
         //         ]);
         //     }
 
-        //     $pkx = Lib::__getKey(14);
+        //     $pkx = __getKey(14);
 
         //     if ($rcek['t']==$pst && strval($rcek['tup'])==strval($up)) {
         //         if ($pic1!='') {
@@ -661,7 +637,7 @@ class InputPajakController extends Controller
         //             FROM emst.`mst_tax`
         //             LEFT JOIN emst.mst_saldo_komisi ON mtx_kode=msalk_mtx_kode AND msalk_tahun=YEAR(CURDATE())
         //             WHERE 1=1 AND mtx_kode='".$pic1."'");
-        //             $r1 = Lib::__dbRow($cek1);
+        //             $r1 = __dbRow($cek1);
         //         }
         //         if ($pic1a!='') {
         //             $cek2 = DB::select("SELECT mtx_status sts, IFNULL(mtx_npwp,'') npwp,
@@ -669,7 +645,7 @@ class InputPajakController extends Controller
         //             FROM emst.`mst_tax`
         //             LEFT JOIN emst.mst_saldo_komisi ON mtx_kode=msalk_mtx_kode AND msalk_tahun=YEAR(CURDATE())
         //             WHERE 1=1 AND mtx_kode='".$pic1a."'");
-        //             $r2 = Lib::__dbRow($cek2);
+        //             $r2 = __dbRow($cek2);
         //         }
         //         if ($pic2!='') {
         //             $cek3 = DB::select("SELECT mtx_status sts, IFNULL(mtx_npwp,'') npwp,
@@ -677,7 +653,7 @@ class InputPajakController extends Controller
         //             FROM emst.`mst_tax`
         //             LEFT JOIN emst.mst_saldo_komisi ON mtx_kode=msalk_mtx_kode AND msalk_tahun=YEAR(CURDATE())
         //             WHERE 1=1 AND mtx_kode='".$pic2."'");
-        //             $r3 = Lib::__dbRow($cek3);
+        //             $r3 = __dbRow($cek3);
         //         }
 
 	    //         //---KONDISI KOMISI 1---//
@@ -686,7 +662,7 @@ class InputPajakController extends Controller
         //             WHERE (".$r1['saldo']."+".$kom.")>=mpt_nilai1
         //             AND mpt_nilai2>=(".$r1['saldo']."+".$kom.")
         //             LIMIT 1");
-        //             $rtax1 = Lib::__dbRow($tax1);
+        //             $rtax1 = __dbRow($tax1);
 
         //             $pajak1 = $rtax1['mpt_persen'];
 
@@ -706,7 +682,7 @@ class InputPajakController extends Controller
 
         //             $cek = DB::select("select count(*) t from etrs.trs_komisi_hdr where tkomh_nosurat='".$kode_polis."' and tkomh_pst='".$rcek['t']."'
         //             and tkomh_up='".$rcek['tup']."' and tkomh_penerima='".$pic1."'");
-        //             $rcek = Lib::__dbRow($cek);
+        //             $rcek = __dbRow($cek);
 
         //             if ($rcek['t']<1) {
         //                 $cmdh1 = DB::select("INSERT IGNORE INTO etrs.trs_komisi_hdr
@@ -736,7 +712,7 @@ class InputPajakController extends Controller
         //                 '' tkomh_sts3_date,
         //                 '' tkomh_sts3_user");
 
-        //                 Lib::__dbRow($cmdh1);
+        //                 __dbRow($cmdh1);
 
         //                 $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
         //                 (`tkomd_pk`,
@@ -882,7 +858,7 @@ class InputPajakController extends Controller
         //                AND tpprd_status_batal!=1 AND tpprd_status_bayar='1' AND tpprd_status='1'
         //                GROUP BY tpprd_pk LIMIT 100000");
 
-        //                Lib::__dbAll($cmd);
+        //                __dbAll($cmd);
         //             }
         //         }
         //         //---END KONDISI KOMISI 1---//
@@ -894,7 +870,7 @@ class InputPajakController extends Controller
         //             $tax1 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
         //             WHERE ".$sel1."+".$r1['saldo'].">=mpt_nilai1 AND mpt_nilai2>=".$sel1."+".$r1['saldo']."
         //             LIMIT 1");
-        //             $rtax1 = Lib::__dbRow($tax1);
+        //             $rtax1 = __dbRow($tax1);
 
         //             $pajak1 = $rtax1['mpt_persen'];
 
@@ -939,7 +915,7 @@ class InputPajakController extends Controller
         //             '' `tkomh_sts3_date`,
         //             '' `tkomh_sts3_user`");
 
-        //             Lib::__dbRow($cmdh);
+        //             __dbRow($cmdh);
 
         //             $cmdx1 = DB::select("SELECT
         //             tpprd_pk,
@@ -1004,12 +980,12 @@ class InputPajakController extends Controller
         //             AND tpprd_status='1'
         //             GROUP BY tpprd_pk LIMIT 100000");
 
-        //             $resx1 = Lib::__dbAll($cmdx1);
+        //             $resx1 = __dbAll($cmdx1);
 
         //             for ($i=0; $i < count($resx1); $i++) {
         //                 $ceklimit = DB::select("SELECT (`tkomh_komisi`+".$resx1[$i]['komisi'].") t
         //                 FROM etrs.`trs_komisi_hdr` WHERE `tkomh_pk`='".$pkx."K' LIMIT 1");
-        //                 $r = Lib::__dbRow($ceklimit);
+        //                 $r = __dbRow($ceklimit);
 
         //                 if ($r['t']<=$sel1) {
         //                     $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
@@ -1058,7 +1034,7 @@ class InputPajakController extends Controller
         //                       '' tkomd_mrkn_kode_induk,
         //                       '' tkomd_mpol_kode");
 
-        //                       Lib::__dbRow($cmd);
+        //                       __dbRow($cmd);
         //                 } else {
         //                     $i==count($resx1);
         //                 }
@@ -1067,7 +1043,7 @@ class InputPajakController extends Controller
         //             $sel2 = $r2['saldo']+($kom-$sel1);
         //             $tax2 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
         //             WHERE ".$sel2.">=mpt_nilai1 AND mpt_nilai2>=".$sel2." LIMIT 1");
-        //             $rtax2 = Lib::__dbRow($tax2);
+        //             $rtax2 = __dbRow($tax2);
 
         //             $pajak2 = $rtax2['mpt_persen'];
 
@@ -1148,12 +1124,12 @@ class InputPajakController extends Controller
         //             AND tpprd_status='1'
         //             AND tpprd_pk not in (select tkomd_tpprd_pk FROM etrs.trs_komisi_dtl WHERE tkomd_tkomh_pk='".$pkx."K' )
         //             GROUP BY tpprd_pk LIMIT 100000");
-        //             $resx1a = Lib::__dbAll($cmdx1a);
+        //             $resx1a = __dbAll($cmdx1a);
 
         //             for ($i=0; $i < count($resx1a); $i++) {
         //                 $ceklimit = DB::select("SELECT `tkomh_komisi` t FROM etrs.`trs_komisi_hdr`
         //                 WHERE `tkomh_pk`='".$pkx."K' LIMIT 1");
-        //                 $r =Lib::__dbRow($ceklimit);
+        //                 $r =__dbRow($ceklimit);
 
         //                 if ($r['t']<=($kom-$sel1)) {
         //                     $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
@@ -1198,7 +1174,7 @@ class InputPajakController extends Controller
         //                       '' tkomd_userbayar,
         //                       '' tkomd_prosesbayar,'','',''");
 
-        //                       Lib::__dbRow($cmd);
+        //                       __dbRow($cmd);
         //                 } else {
         //                     $i==count($resx1);
         //                 }
@@ -1207,7 +1183,7 @@ class InputPajakController extends Controller
         //             $sel2 = $r2['saldo']+($kom-$sel1);
         //             $tax2 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
         //             WHERE ".$sel2.">=mpt_nilai1 AND mpt_nilai2>=".$sel2." LIMIT 1");
-        //             $rtax2 = Lib::__dbRow($tax2);
+        //             $rtax2 = __dbRow($tax2);
 
         //             $pajak2 = $rtax2['mpt_persen'];
 
@@ -1289,7 +1265,7 @@ class InputPajakController extends Controller
         //             AND tpprd_pk not in (select tkomd_tpprd_pk FROM etrs.trs_komisi_dtl WHERE tkomd_tkomh_pk='".$pkx."K' )
         //             GROUP BY tpprd_pk LIMIT 100000");
 
-        //             $resx1a = Lib::__dbAll($cmdxx);
+        //             $resx1a = __dbAll($cmdxx);
 
         //             for ($i=0; $i < count($resx1a); $i++) {
         //                 $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
@@ -1334,7 +1310,7 @@ class InputPajakController extends Controller
         //                   '' tkomd_userbayar,
         //                   '' tkomd_prosesbayar,'','',''");
 
-        //                 Lib::__dbRow($cmd);
+        //                 __dbRow($cmd);
         //             }
 
         //         }
@@ -1347,7 +1323,7 @@ class InputPajakController extends Controller
         //             $tax1 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
         //             WHERE ".$sel1."+".$r1['saldo'].">=mpt_nilai1 AND mpt_nilai2>=".$sel1."+".$r1['saldo']."
         //             LIMIT 1");
-        //             $rtax1 = Lib::__dbRow($tax1);
+        //             $rtax1 = __dbRow($tax1);
 
         //             $pajak1 = $rtax1['mpt_persen'];
 
@@ -1392,7 +1368,7 @@ class InputPajakController extends Controller
         //             '' `tkomh_sts3_date`,
         //             '' `tkomh_sts3_user`");
 
-        //             Lib::__dbRow($cmdh);
+        //             __dbRow($cmdh);
 
         //             $cmdx1 = DB::select("SELECT
         //             tpprd_pk,
@@ -1456,13 +1432,13 @@ class InputPajakController extends Controller
         //             AND tpprd_status_batal!=1 AND tpprd_status_bayar='1'
         //             AND tpprd_status='1'
         //             GROUP BY tpprd_pk LIMIT 100000");
-        //             $resx1 = Lib::__dbAll($cmdx1);
+        //             $resx1 = __dbAll($cmdx1);
 
         //             for ($i=0; $i < count($resx1); $i++) {
 
         //                 $ceklimit = DB::select("SELECT `tkomh_komisi` t FROM etrs.`trs_komisi_hdr`
         //                 WHERE `tkomh_pk`='".$pkx."K' LIMIT 1");
-        //                 $r = Lib::__dbRow($ceklimit);
+        //                 $r = __dbRow($ceklimit);
 
         //                 if ($r['t']<=$sel1) {
         //                     $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
@@ -1507,7 +1483,7 @@ class InputPajakController extends Controller
         //                       '' tkomd_userbayar,
         //                       '' tkomd_prosesbayar,,'','',''");
 
-        //                     Lib::__dbRow($cmd);
+        //                     __dbRow($cmd);
         //                 } else {
         //                     $i==count($resx1);
         //                 }
@@ -1516,7 +1492,7 @@ class InputPajakController extends Controller
         //             $sel2 = $r2['saldo']+($kom-$sel1);
         //             $tax2 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
         //             WHERE ".$sel2.">=mpt_nilai1 AND mpt_nilai2>=".$sel2." LIMIT 1");
-        //             $rtax2 = Lib::__dbRow($tax2);
+        //             $rtax2 = __dbRow($tax2);
 
         //             $pajak2 = $rtax2['mpt_persen'];
 
@@ -1598,13 +1574,13 @@ class InputPajakController extends Controller
         //             AND tpprd_pk not in (select tkomd_tpprd_pk FROM etrs.trs_komisi_dtl WHERE tkomd_tkomh_pk='".$pkx."K' )
         //             GROUP BY tpprd_pk LIMIT 100000");
 
-        //             $resx1a = Lib::__dbAll($cmdx1a);
+        //             $resx1a = __dbAll($cmdx1a);
 
         //             for ($i=0; $i < count($resx1a); $i++) {
 
         //                 $ceklimit = DB::select("SELECT `tkomh_komisi` t FROM etrs.`trs_komisi_hdr`
         //                 WHERE `tkomh_pk`='".$pkx."K' LIMIT 1");
-        //                 $r = Lib::__dbRow($ceklimit);
+        //                 $r = __dbRow($ceklimit);
 
         //                 if ($r['t']<=($kom-$sel1)) {
         //                     $cmd = DB::select("INSERT IGNORE INTO etrs.trs_komisi_dtl
@@ -1648,7 +1624,7 @@ class InputPajakController extends Controller
         //                       '1881-01-01' tkomd_tglbayar,
         //                       '' tkomd_userbayar,
         //                       '' tkomd_prosesbayar,'','',''");
-        //                     Lib::__dbRow($cmd);
+        //                     __dbRow($cmd);
         //                 } else {
         //                     $i==count($resx1);
         //                 }
@@ -1657,7 +1633,7 @@ class InputPajakController extends Controller
         //             $sel3 = $r3['saldo']+($kom-$sel1-$sel2);
         //             $tax3 = DB::select("SELECT mpt_persen FROM emst.`mst_persen_tax`
         //             WHERE ".$sel3.">=mpt_nilai1 AND mpt_nilai2>=".$sel3." LIMIT 1");
-        //             $rtax3 = Lib::__dbRow($tax3);
+        //             $rtax3 = __dbRow($tax3);
 
         //             $pajak3 = $rtax3['mpt_persen'];
 
@@ -1738,7 +1714,7 @@ class InputPajakController extends Controller
         //             AND tpprd_status='1'
         //             AND tpprd_pk not in (select tkomd_tpprd_pk FROM etrs.trs_komisi_dtl WHERE tkomd_tkomh_pk='".$pkx."K' )
         //             GROUP BY tpprd_pk LIMIT 100000");
-        //             $resx1b = Lib::__dbAll($cmdb);
+        //             $resx1b = __dbAll($cmdb);
 
         //             for ($i=0; $i < count($resx1b); $i++) {
 
@@ -1786,7 +1762,7 @@ class InputPajakController extends Controller
         //                  '' tkomd_mlok_kode,
         //                  '' tkomd_mrkn_kode_induk,
         //                  '' tkomd_mpol_kode");
-        //                 Lib::__dbRow($cmd);
+        //                 __dbRow($cmd);
         //             }
         //         }
 	    //         //---END KONDISI KOMISI 3---//

@@ -163,6 +163,7 @@
     <div class="card-body py-10">
         <div class="table-responsive">
             <form id="frxx_pjkomisi" name="frxx_pjkomisi" class="form-table" method="post" enctype="multipart/form-data">
+                @csrf
                 <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="InpOjkKomOver">
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
@@ -227,13 +228,14 @@
         setTextReadOnly('x_npwp', true);
         setTextReadOnly('x_nama', true);
         setTextReadOnly('x_status', true);
+        formatNominal('x_saldo');
 
         $(function () {
             $.ajaxSetup({
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            selectSide('e_cab', false, '{{ url("api/keuangan/komisi-overriding/input-pajak-overriding/select-cabalamin") }}', function(d) { return {
+            selectSide('e_cab', false, '{{ url("api/keuangan/komisi-overriding/input-pajak-overriding/lod_cabalamin") }}', function(d) { return {
                 id: d.kode,
                 text: d.nama
             }});

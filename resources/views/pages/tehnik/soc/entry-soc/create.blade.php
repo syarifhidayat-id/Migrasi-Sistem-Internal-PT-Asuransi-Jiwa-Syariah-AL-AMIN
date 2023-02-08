@@ -9,26 +9,7 @@
 
     <div class="card-header">
         <div class="card-title">
-            <h3>Entry SOC</h3>
-        </div>
-
-        <div class="card-toolbar">
-            {{-- <label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                <input class="form-check-input" type="checkbox" checked="checked" value="1" />
-                <span class="form-check-label text-muted">Test mode</span>
-            </label>
-
-            <button type="button" class="btn btn-sm btn-light">
-                Action
-            </button> --}}
-        </div>
-    </div>
-
-    <div class="card-header border-0 pt-6">
-        <div class="card-title">
-            <div class="d-flex align-items-center position-relative my-1">
-                <button type="button" class="btn btn-light-primary" disabled id="title_action">Buat SOC Baru</button>
-            </div>
+            <span class="badge badge-warning" id="title_action">Buat SOC Baru</span>
         </div>
 
         <div class="card-toolbar">
@@ -963,13 +944,13 @@
                 setText('msoc_mpuw_nomor', rec.kode);
             });
 
-            $('body').on('click', '#importTarif', function() {
+            tombol('click', 'importTarif', function() {
                 openModal('modalTarif');
                 titleAction('titleTarif', 'Upload File Table Tarif');
                 clearForm('frxx_uploadTarif');
             });
 
-            $('body').on('click', '#lihatTarif', function() {
+            tombol('click', 'lihatTarif', function() {
                 var kode = getText('msoc_mth_nomor');
                 if (kode !== "" && kode !== null) {
                     openModal('modalLihatTarif');
@@ -984,7 +965,7 @@
                 }
             });
 
-            $('body').on('click', '#lihatUw', function() {
+            tombol('click', 'lihatUw', function() {
                 var kode = getText('msoc_mpuw_nomor');
                 if (kode !== "" && kode !== null) {
                     openModal('modalLihatUw');
@@ -999,37 +980,26 @@
                 }
             });
 
-            $('body').on('click', '#importUw', function() {
+            tombol('click', 'importUw', function() {
                 openModal('modalUw');
                 titleAction('titleUw', 'Upload File Table Uw');
                 clearForm('frxx_uploadUw');
             });
 
-            $('body').on('click', '#lihatDocSoc', function() {
+            tombol('change', 'msoc_dok', function(e) {
+                var _this = e.target.files[0];
+                showObj('viewPdfFile', 'data', _this);
+            });
+
+            tombol('click', 'lihatDocSoc', function() {
                 var file = getText('msoc_dok');
                 if (file == null || file == "") {
-                    message(
-                        "error",
-                        "Ops..",
-                        "File dokumen kosong, harap di isi dulu!"
-                    );
+                    message("error","Ops..","File dokumen kosong, harap di isi dulu!");
                 } else {
                     openModal('modalLihatDoc');
                     titleAction('titleLihatDoc', 'Lihat Dokumen');
-                    setText('current_page', 1);
                 }
             });
-
-            viewPdf(
-                "msoc_dok",
-                "viewPdfFile",
-                "go_previous",
-                "go_next",
-                "current_page",
-                "tot_page",
-                "zoom_in",
-                "zoom_out"
-            );
 
             submitForm(
                 "frxx_soc",
@@ -1234,7 +1204,7 @@
             rms = '&pmgpolis='+getText('msoc_mrkn_kode')+'&perus='+getText('msoc_jns_perusahaan')+'&mekanisme2='+getText('msoc_mekanisme2')+'&mekanisme='+getText('msoc_mekanisme')+'&jns_bayar='+getText('msoc_jenis_bayar')+'&nasabah='+getText('msoc_mjns_kode')+'&mrkn_nama='+getText('msoc_mrkn_nama')+'&mft='+getText('msoc_mft_kode');
 
             url = '{{ url("api/tehnik/soc/entry-soc/get-nosoc") }}' + '?' + rms;
-            $.get(url, function(data){
+            getJson(url, '', function(data) {
                 if (data) {
                     jsonForm('frxx_soc', data);
                 }

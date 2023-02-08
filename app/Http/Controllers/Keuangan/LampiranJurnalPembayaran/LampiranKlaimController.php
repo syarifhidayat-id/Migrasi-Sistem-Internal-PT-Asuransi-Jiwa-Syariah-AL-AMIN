@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Keuangan\LampiranJurnalPembayaran;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Lib;
+use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -238,7 +238,7 @@ class LampiranKlaimController extends Controller
             WHERE (klm.tpprd_mlam_nomor IS NULL OR klm.tpprd_mlam_nomor='') AND 1=1
             LIMIT ".$request['e_baris']." ");
 
-        $res = Lib::__dbAll($cmd);
+        $res = __dbAll($cmd);
 
         return DataTables::of($res)
         ->addIndexColumn()

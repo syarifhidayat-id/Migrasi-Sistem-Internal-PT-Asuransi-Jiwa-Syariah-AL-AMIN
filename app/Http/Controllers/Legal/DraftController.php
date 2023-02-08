@@ -8,7 +8,7 @@ use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Legal\Pks;
-use App\Http\Controllers\Library\Lib;
+use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;

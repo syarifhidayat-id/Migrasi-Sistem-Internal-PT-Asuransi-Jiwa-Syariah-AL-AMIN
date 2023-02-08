@@ -66,11 +66,11 @@
                         <thead>
                             <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 text-center align-middle">
                                 <th class="min-w-50px">No.</th>
-                                <th class="min-w-100px">Uraian</th>
-                                <th class="min-w-100px">D/K</th>
-                                <th class="min-w-250px">Jumlah</th>
+                                <th class="min-w-200px">Uraian</th>
+                                <th>D/K</th>
+                                <th class="min-w-100px">Jumlah</th>
                                 <th class="min-w-150px">Kode Akun</th>
-                                <th class="min-w-100px">Nama Akun</th>
+                                <th class="min-w-150px">Nama Akun</th>
                             </tr>
                         </thead>
                         {{-- <tbody></tbody> --}}

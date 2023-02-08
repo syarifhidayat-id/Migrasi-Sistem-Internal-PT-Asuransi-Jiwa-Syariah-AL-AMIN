@@ -10,7 +10,7 @@ use App\Http\Controllers\Keuangan\Kas\VoucherController;
 use App\Http\Controllers\Keuangan\Komisi\InputBayarController;
 use App\Http\Controllers\Keuangan\Komisi\InputPajakController;
 use App\Http\Controllers\Keuangan\LampiranJurnalPembayaran\LampiranKlaimController;
-use App\Http\Controllers\Library\LodController;
+use App\Http\Controllers\wwLoad\Load;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
@@ -21,15 +21,17 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('/cari-tax', [InputPajakController::class, 'cariTax']);
             Route::get('/lod-user-tax', [InputPajakController::class, 'userTax']);
             Route::get('/export-input', [InputPajakController::class, 'exportInput']);
-            Route::get('/select-cabalamin', [InputPajakController::class, 'selectCabAlm']);
+            Route::get('/lod_cabalamin', [Load::class, 'lod_cabalamin']);
             // Route::get('/post-pjkomisi', [InputPajakController::class, 'postPjKomisi']);
-            // Route::get('/lod_pmg_polis', [LodController::class, 'lod_pmg_polis']);
+            // Route::get('/lod_pmg_polis', [Load::class, 'lod_pmg_polis']);
         });
 
         Route::group(['prefix' => 'input-bayar-overriding', 'as' => 'input-bayar-overriding.'], function() {
             Route::resource('/', InputBayarController::class);
+            Route::get('/lod-input-bayar', [InputBayarController::class, 'lodInputBayar']);
+            Route::get('/lod_cabalamin', [Load::class, 'lod_cabalamin']);
             // Route::get('/post-pjkomisi', [InputBayarController::class, 'postPjKomisi']);
-            // Route::get('/lod_pmg_polis', [LodController::class, 'lod_pmg_polis']);
+            // Route::get('/lod_pmg_polis', [Load::class, 'lod_pmg_polis']);
         });
 
         Route::group(['prefix' => '/approval-komisi-overriding', 'as' => 'approval-komisi-overriding.'], function() {

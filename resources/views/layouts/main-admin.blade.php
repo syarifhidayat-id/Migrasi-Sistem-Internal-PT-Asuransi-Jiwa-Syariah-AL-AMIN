@@ -47,6 +47,7 @@
     <link href="{{ asset('assets/plugins/custom/inputpicker/jquery.inputpicker.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+    {{-- <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" /> --}}
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('vendor/fontawesome-6.2.0/css/all.min.css') }}" rel="stylesheet" type="text/css" />
@@ -162,8 +163,8 @@
                                 <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
 
                                     <div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                                        @if(file_exists( public_path().'/storage/utility/daftar-user/foto/'.Auth::user()->img_foto ))
-                                            <img src="{{ asset('storage/utility/daftar-user/foto/'.Auth::user()->img_foto) }}" alt="user" />
+                                        @if(file_exists( public_path().'/storage/utility/daftar-user/foto/'.__getGlbVal('img_foto') ))
+                                            <img src="{{ asset('storage/utility/daftar-user/foto/'.__getGlbVal('img_foto')) }}" alt="user" />
                                         @else
                                             <img src="{{ asset('assets/media/avatars/blank.png') }}" alt="user" />
                                         @endif
@@ -174,8 +175,8 @@
                                         <div class="menu-item px-3">
                                             <div class="menu-content d-flex align-items-center px-3">
                                                 <div class="symbol symbol-50px me-5">
-                                                    @if(file_exists( public_path().'/storage/utility/daftar-user/foto/'.Auth::user()->img_foto ))
-                                                        <img src="{{ asset('storage/utility/daftar-user/foto/'.Auth::user()->img_foto) }}" alt="user" />
+                                                    @if(file_exists( public_path().'/storage/utility/daftar-user/foto/'.__getGlbVal('img_foto') ))
+                                                        <img src="{{ asset('storage/utility/daftar-user/foto/'.__getGlbVal('img_foto')) }}" alt="user" />
                                                     @else
                                                         <img src="{{ asset('assets/media/avatars/blank.png') }}" alt="user" />
                                                     @endif
@@ -183,10 +184,10 @@
 
                                                 <div class="d-flex flex-column">
                                                     <div class="fw-bolder d-flex align-items-center fs-5">
-                                                        {{ Auth::user()->name }}
+                                                        {{ __getGlbVal('name') }}
                                                         <span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2"></span>
                                                     </div>
-                                                    <a href="#" class="fw-bold text-muted text-hover-primary fs-7">{{ Auth::user()->email_user }}</a>
+                                                    <a href="#" class="fw-bold text-muted text-hover-primary fs-7">{{ __getGlbVal('email_user') }}</a>
                                                 </div>
 
                                             </div>
@@ -371,6 +372,7 @@
     {{-- <script src="{{ asset('assets/plugins/custom/jquery/jquery.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/custom/jquery/jquery.easyui.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/datatables-serverside.min.js') }}"></script>

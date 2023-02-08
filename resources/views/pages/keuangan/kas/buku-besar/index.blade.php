@@ -319,7 +319,7 @@ $jab = Auth::user()->jabatan;
                         data: null,
                         orderable: false,
                         render: function(data, type, row, meta) {
-                            // var jab = '{{ Auth::user()->jabatan }}';
+                            var jab = '{{ __getJab() }}';
                             // if (row.tkad_final != "2" && row.tkad_final < "x" && row.tkad_final > "x") {
                             return `<button type="button" class="btn btn-primary btn-sm" onclick="proses_pst('` +
                                 row.tkad_pk + `','akuntrs` + row.DT_RowIndex + `','` + row.tkad_tipe_dk +
@@ -504,59 +504,48 @@ $jab = Auth::user()->jabatan;
                 if (data) {
                     openModal('dlgModal');
                     jsonForm('dlg2', data);
-                    urlJur = "{{ url('api/keuangan/kas/buku-besar-kas/i_jurkas') }}" + "?pk_h=" + kode;
+                    // urlJur = "{{ url('api/keuangan/kas/buku-besar-kas/i_jurkas') }}" + "?pk_h=" + kode;
                     // lodJson('GET', urlJur, function(res) {
 
-                        //     //setText("e_bersih","1");
-                        //     $('#ff2').form('load', data);
-                        //     var grd_loadjur = "ww.load/l_jurkas.php?";
-                        //     $('#dgjur2').datagrid('load', grd_loadjur + "&pk_h=" + kode + "&");
+                    //     //setText("e_bersih","1");
+                    //     $('#ff2').form('load', data);
+                    //     var grd_loadjur = "ww.load/l_jurkas.php?";
+                    //     $('#dgjur2').datagrid('load', grd_loadjur + "&pk_h=" + kode + "&");
 
-                        serverSide( //datatable serverside
-                            "serverSide_jurkas", urlJur,
-                            [
-                                {
-                                data: 'DT_RowIndex'
+                    serverSide( //datatable serverside
+                        "serverSide_jurkas",
+                        "{{ url('api/keuangan/kas/buku-besar-kas/i_jurkas') }}", //url api/route
+                        function(d) { // di isi sesuai dengan data yang akan di filter ->
+                            d.pk_h = kode;
+                        },
+
+                        [
+                            {
+                                data: "DT_RowIndex",
+                                className: "text-center"
                             },
-                                {
-                                data: 'DT_RowIndex'
+                            {
+                                data: 'atjd_keterangan'
                             },
-                                {
-                                data: 'DT_RowIndex'
+                            {
+                                data: 'atjd_tipe_dk'
                             },
-                                {
-                                data: 'DT_RowIndex'
+                            {
+                                data: 'atjd_totalx'
                             },
-                                {
-                                data: 'DT_RowIndex'
+                            {
+                                data: 'atjd_askn_kode'
                             },
-                                {
-                                data: 'DT_RowIndex'
+                            {
+                                data: 'asakn_keterangan'
                             },
-                        ]
-                        );
+                        ],
+                    );
                     // });
                 }
             });
             // $('#dlg2').dialog('open');
         }
-
-        //     function showPst22(kode,tipe)
-        // {
-        // 	 vv={ res : ''};
-        // 	 rms="kode="+kode;
-        // 	 url="ww.load/get_jurnalkasfull.php?id=&"+rms;				
-        // 		    $.getJSON(url,vv, function(data){
-        // 	if (data)
-        // 	  {
-        // 		//setText("e_bersih","1");
-        // 	    $('#ff22').form('load',data);	
-        // 		var grd_loadjur="ww.load/l_jurkas.php?";
-        // 		$('#dgjur22').datagrid('load', grd_loadjur+"&pk_h="+kode+"&");
-        // 	  }
-        // 	});
-        // 	$('#dlg22').dialog('open');	
-        // }		
 
         function e_lov(id, kode) {
             console.log(id, kode);

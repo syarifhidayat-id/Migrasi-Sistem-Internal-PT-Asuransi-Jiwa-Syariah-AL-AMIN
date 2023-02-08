@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Library\Lib;
-use App\Http\Controllers\Library\Config;
+use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -85,7 +84,7 @@ class RincianTransaksiController extends Controller
         } else {
             if (empty($request->tkad_pk)) {
                 $data = $request->all();
-                $kode = Lib::__getKey(14);
+                $kode = __getKey(14);
                 // $data = request()->except(['_token']);
                 $data = $request->except(
                     '_token',

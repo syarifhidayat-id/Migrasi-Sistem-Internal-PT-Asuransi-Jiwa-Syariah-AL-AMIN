@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Lib;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -125,7 +124,7 @@ class BukuBesarController extends Controller
         $cmd = DB::select("CALL epms.P_REPORT_KAS_PUS('" . $request['e_akun'] . "','" . $request['e_cabalamin'] . "','" . $request['e_entry1'] . "','" . $request['e_entry2'] . "','" . $request['e_tag'] . "','" . $request['e_jns'] . "')");
         // $cmd = DB::select("CALL epms.P_REPORT_KAS_PUS('150-540-0101001','01','2022-01-24','2022-01-31','','0');");
 
-        $data = Lib::__dbAll($cmd);
+        $data = __dbAll($cmd);
         return DataTables::of($data)->addIndexColumn()->make(true);
     }
 
@@ -138,8 +137,8 @@ class BukuBesarController extends Controller
         $cmd = DB::select("SELECT `asakn_kode` akun,`asakn_keterangan` nama FROM eacc.`ams_sub_akun` 
         WHERE `asakn_mlok_kode`='" . $request['mlok'] . "' AND `asakn_mrpt_kode`='NEROPR' AND `asakn_aakn_kode`='540' AND RIGHT(asakn_kode,1)='1';");
 
-        $res = Lib::__dbAll($cmd);
-        return Lib::json($res);
+        $res = __dbAll($cmd);
+        return __json($res);
     }
 
     public function getjurnalkasfull(Request $request)
@@ -170,7 +169,7 @@ class BukuBesarController extends Controller
 		ORDER BY atjd_tipe_dk
 		 ");
 
-        $data = Lib::__dbAll($cmd);
+        $data = __dbAll($cmd);
         // return DataTables::of($data)->addIndexColumn()->make(true);
         return response()->json($data[0]);
        
@@ -199,7 +198,7 @@ class BukuBesarController extends Controller
 	$order
 	 ");
 
-     $data = Lib::__dbAll($cmd);
+     $data = __dbAll($cmd);
 
     //  return response()->json($data);
 

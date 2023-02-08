@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Keuangan\Kas;
+namespace App\Http\Controllers\Tehnik\Polis;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\wwLib\Lib;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Str;
 
-class VoucherController extends Controller
+class EntryPolisController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +14,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-
+        return view('pages.tehnik.polis.entry-master-polis.create');
     }
 
     /**
@@ -39,27 +35,7 @@ class VoucherController extends Controller
      */
     public function store(Request $request)
     {
-        // $data = $request->all();
-        // return $data;
-
-        $kode = Lib::__getKey(14);
-        $data = $request->all();
-        $data = request()->except(['_token']);
-
-        $data['tkav_pk'] = $kode;
-
-        $insert = DB::table('epms.trs_kas_vcr')->insert($data);
-
-        if ($insert) {
-            return response()->json([
-                'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
-            ]);
-        } else {
-            return response()->json([
-                'error' => 'Data gagal disimpan !'
-            ]);
-        }
-
+        return $request->all();
     }
 
     /**
@@ -105,25 +81,5 @@ class VoucherController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-
-    public function get_vcr_kode() {
-        $kode = Lib::__getnx(4);
-        $tahun = date('ym');
-        // $bulan = date('m');
-        // $noUrut =  rand(1000, 5999);
-        $kode_vcr = $tahun .$kode;
-
-        return 'VCR.'.$kode_vcr;
-
-    }
-
-    public function get_tkad_akun($id) {
-        $data = DB::table('epms.trs_kas_dtl')->select('tkad_askn_kode')
-        ->where('tkad_atjh_pk', $id)
-        ->first();
-
-        return response()->json($data);
     }
 }

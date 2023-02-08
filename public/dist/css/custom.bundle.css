@@ -52,3 +52,7 @@ form span .selection .select2-selection .readonly_sel {
 [data-type="rupiah"] {
     text-align: right;
 }
+
+#title_action {
+    font-size: 1.3rem;
+}
