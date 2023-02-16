@@ -570,25 +570,6 @@
                 selectOpTag('mth_baris');
                 selectOpTag('mpuw_baris');
 
-                // setTextReq
-                setTextReq('msoc_mrkn_nama', true);
-                setTextReq('e_nasabah', true);
-                setTextReq('msoc_mssp_nama', true);
-                setTextReq('msoc_mekanisme', true);
-                setTextReq('e_manfaat_pol', true);
-                setTextReq('msoc_jenis_bayar', true);
-                setTextReq('msoc_jns_perusahaan', true);
-                setTextReq('e_manfaat', true);
-                setTextReq('e_pras', true);
-                setTextReq('msoc_mslr_kode', true);
-                setTextReq('msoc_mpojk_kode', true);
-                setTextReq('e_cabalamin', true);
-                setTextReq('msoc_pajakfee', true);
-                setTextReq('msoc_handlingfee', true);
-                setTextReq('msoc_handlingfee2', true);
-                setTextReq('e_tarif', true);
-                setTextReq('e_uw', true);
-
                 // setHide
                 setHide('msoc_mrkn_kode', true);
                 setHide('msoc_mpras_kode', true);
@@ -598,7 +579,7 @@
                 setHide('msoc_mssp_kode', true);
                 setHide('mpid_mssp_kode', true);
                 setHide('msoc_approve', true);
-                // setHide('edit_akses', true);
+                setHide('edit_akses', true);
                 setHide('msoc_mft_kode', true);
                 setHide('msoc_mjm_kode', true);
                 setHide('msoc_mpid_kode', true);
@@ -1405,6 +1386,7 @@
                 // setCombo('typerpt', 'web');
                 //$("#xtanya").hide();
                 cekfee();
+                cekReq();
                 setReadEdit(false);
 
                 var akses = {{ __getHak('sjab_editsoc') }};
@@ -1412,6 +1394,27 @@
                     akses=1;
                 }
                 setText('edit_akses', akses);
+            }
+
+            function cekReq() {
+                // setTextReq
+                setTextReq('msoc_mrkn_nama', true);
+                setTextReq('e_nasabah', true);
+                setTextReq('msoc_mssp_nama', true);
+                setTextReq('msoc_mekanisme', true);
+                setTextReq('e_manfaat_pol', true);
+                setTextReq('msoc_jenis_bayar', true);
+                setTextReq('msoc_jns_perusahaan', true);
+                setTextReq('e_manfaat', true);
+                setTextReq('e_pras', true);
+                setTextReq('msoc_mslr_kode', true);
+                setTextReq('msoc_mpojk_kode', true);
+                setTextReq('e_cabalamin', true);
+                setTextReq('msoc_pajakfee', true);
+                setTextReq('msoc_handlingfee', true);
+                setTextReq('msoc_handlingfee2', true);
+                setTextReq('e_tarif', true);
+                setTextReq('e_uw', true);
             }
 
             function bersih(tipe) {
