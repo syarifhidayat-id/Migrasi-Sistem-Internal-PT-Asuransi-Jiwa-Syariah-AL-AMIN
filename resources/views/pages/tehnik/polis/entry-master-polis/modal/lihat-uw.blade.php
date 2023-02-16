@@ -7,6 +7,12 @@
             </div>
 
             <div class="modal-body">
+                <div class="mb-5" hidden>
+                    <form id="frxmodalLihatUw" action="" method="POST">
+                        <label for="">mpuw nomor</label>
+                        <input type="text" class="form-control" name="mpuw_nomor" id="mpuw_nomor">
+                    </form>
+                </div>
                 <div class="card-body py-2 scroll-y">
                     <div class="d-flex flex-column scroll-y me-n7 pe-7" id="modalLihatUw_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modalLihatUw_header" data-kt-scroll-wrappers="#modalLihatUw_scroll" data-kt-scroll-offset="300px">
                         <div class="table-responsive">

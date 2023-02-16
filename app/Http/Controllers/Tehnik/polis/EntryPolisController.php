@@ -35,7 +35,28 @@ class EntryPolisController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+        $data = $request->all();
+        $data = $request->except(
+            '_token',
+            'judul',
+            'e_nasabah',
+            'e_manfaat',
+            'e_jenisprod',
+            'endors',
+            'e_pras',
+            'e_bersih',
+            'e_cabalamin',
+            'e_marketing',
+            'e_pinca',
+            'e_tarif',
+            'e_uw',
+        );
+        $data['mpol_va_via'] = __str2($request['mpol_va_via'], 'MS');
+        $data['mpol_playonline_via'] = __str2($request['mpol_playonline_via'], 'MS');
+        $data['mpol_agent_via'] = __str2($request['mpol_agent_via'], 'MS');
+        $data['mpol_mprov_berlaku'] = __str2($request['mpol_mprov_berlaku'], 'MS');
+
+        return __json($data);
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Lib;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -105,7 +104,7 @@ class ApprovKasAnggaranController extends Controller
 
         $cmd = DB::select("
         SELECT
-        tkad_pk,  
+        tkad_pk,
         tkad_atjh_pk,
         tkad_askn_kode,
         tkad_keterangan,
@@ -120,15 +119,15 @@ class ApprovKasAnggaranController extends Controller
         tkad_kd_keterangan,
         tkad_relops,
         tkad_kelompokas
-        FROM epms.trs_kas_dtl	
-        LEFT JOIN eacc.ams_sub_akun  ON asakn_kode=tkad_askn_kode 
+        FROM epms.trs_kas_dtl
+        LEFT JOIN eacc.ams_sub_akun  ON asakn_kode=tkad_askn_kode
         LEFT JOIN epms.`mst_tipe_anggaran` ON mta_pk=tkad_mta_pk
         LEFT JOIN `emst`.`mst_anggaran_realisasi` on mar_kode=tkad_jns_realisasi
         WHERE 1=1 AND tkad_tipe_dk='D'
-        " . $tambah . " 
+        " . $tambah . "
         ORDER BY tkad_tipe_dk DESC
         LIMIT " . $baris . "");
-        $data = Lib::__dbAll($cmd);
+        $data = __dbAll($cmd);
         return DataTables::of($data)
             ->addIndexColumn()
             ->filter(function ($instance) use ($request) {

@@ -29,22 +29,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-rounded table-striped border align-middle gy-5 gs-5" id="showUw">
-                                <thead>
-                                    <tr class="fw-bold text-gray-800 border-bottom border-gray-200 text-center align-middle">
-                                        <td>No.</td>
-                                        <td>Tipe Peserta</td>
-                                        <td>Keterangan</td>
-                                        <td>Deskripsi</td>
-                                        <td>Minimal Umur</td>
-                                        <td>Maksimal Umur</td>
-                                        <td>Minimal UP</td>
-                                        <td>Maksimal UP</td>
-                                        <td>x+n</td>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                            <iframe id="showTbUw" src="" frameborder="0" width="100%" height="450px"></iframe>
                         </div>
                     </div>
                 </div>

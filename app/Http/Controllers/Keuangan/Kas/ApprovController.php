@@ -23,10 +23,10 @@ class ApprovController extends Controller
     public function index(Request $request)
     {
         // $data = $this->api_dtl_approv($request);
-        // $res = Lib::__dbAll($data);
+        // $res = __dbAll($data);
         // $row = $res['original']['data'];
-        // for ($i=0; $i < count($row); $i++) { 
-            
+        // for ($i=0; $i < count($row); $i++) {
+
         //     return $row[$i]['tdna_bukti'];
         // }
         return view('pages.keuangan.kas.approv-transaksi-kas.index');
@@ -148,7 +148,7 @@ class ApprovController extends Controller
         //         '*',
         //         DB::raw("@no:=@no+1 AS DT_RowIndex"),
         //         // DB::raw('DATE_FORMAT(tdna_tgl_aju, "%d-%m-%Y") as date_aju'),
-        //         // DB::raw('CASE 
+        //         // DB::raw('CASE
         //         // WHEN tdna_mlok_kode = mlok_pk THEN mlok_nama END as cabang_alamin'),
         //         DB::raw('CASE WHEN tdna_aprov_admin = "1" THEN "Setuju" WHEN tdna_aprov_admin = "0" THEN "Belum Approv" END as admin,
         //     CASE WHEN tdna_aprov_kacab = "1" THEN "Setuju" WHEN tdna_aprov_kacab = "0" THEN "Belum Approv" END as kepala_cabang,
@@ -172,7 +172,7 @@ class ApprovController extends Controller
         } else {
             $baris = '50';
         }
-        
+
         if ($request->get('check_cab_alamin') == "1") {
             if (!empty($request['mlok_kode'])) {
                 $tambah = $tambah."and mlok_kode = '".$request['mlok_kode']."'";
@@ -182,7 +182,7 @@ class ApprovController extends Controller
         $cmd = DB::select("
         SELECT
         tdna_pk, DATE_FORMAT(tdna_tgl_aju,'%d-%m-%Y') tdna_tgl_aju, mlok_nama tdna_mlok_kode,  tdna_tipe,  tdna_penerima,tdna_akun_d, mlok_kode,
-        
+
         FORMAT(tdna_total, 2) tdna_total,
         tdna_kode_vcr,   LEFT(tdna_ket,85) tdna_ket,
         tdna_bukti,
@@ -193,12 +193,12 @@ class ApprovController extends Controller
         IF(tdna_aprov_ho=1,    'SETUJU',IF(tdna_aprov_ho=2 ,   'TOLAK','-')) tdna_aprov_ho,
         IF(tdna_sts_buku=1,    'SUDAH',IF(tdna_sts_buku=0,   'BELUM','-')) tdna_sts_buku,
         IF(tdna_sts_jurnal=1,  'SUDAH',IF(tdna_sts_jurnal=0 ,'BELUM','-')) tdna_sts_jurnal,tdna_sts_jurnal tdna_sts_jurnalx
-        FROM epms.trs_dana_aju,  emst.`mst_lokasi` 
+        FROM epms.trs_dana_aju,  emst.`mst_lokasi`
         WHERE mlok_kode=tdna_mlok_kode
-        ".$tambah." 
+        ".$tambah."
         ORDER BY tdna_date_ins DESC
         LIMIT ".$baris."");
-        $data = Lib::__dbAll($cmd);
+        $data = __dbAll($cmd);
         return DataTables::of($data)
             ->addIndexColumn()
             ->filter(function ($instance) use ($request) {
@@ -351,7 +351,7 @@ class ApprovController extends Controller
 
         );
 
-        $data['tdna_total'] = Lib::__str2($request->tdna_total, 'N');
+        $data['tdna_total'] = __str2($request->tdna_total, 'N');
 
 
         if ($level_jabatan->sjab_level == "STF" && $level_jabatan->sjab_sdir_kode == "OPS") {

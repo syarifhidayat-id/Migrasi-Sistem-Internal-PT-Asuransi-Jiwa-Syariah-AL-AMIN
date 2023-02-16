@@ -4,12 +4,6 @@ namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
-use App\Http\Controllers\wwLib\Lib;
-=======
-use App\Http\Controllers\Library\Lib;
-use App\Http\Controllers\Library\Config;
->>>>>>> 89db418d574760ab55ec2520d0e5f7f7b129bb34
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -89,7 +83,7 @@ class RincianTransaksiController extends Controller
         } else {
             if (empty($request->tkad_pk)) {
                 $data = $request->all();
-                $kode = Lib::__getKey(14);
+                $kode = __getKey(14);
                 // $data = request()->except(['_token']);
                 $data = $request->except(
                     '_token',
@@ -101,7 +95,7 @@ class RincianTransaksiController extends Controller
 
                 $data['tkad_pk']= $kode;
                 $data['tkad_askn_kode'] = $request->e_akun;
-                // $data['tkad_total'] = Lib::_str2($request->tkad_total, 'N');
+                // $data['tkad_total'] = _str2($request->tkad_total, 'N');
                 // $data['tkad_atjh_pk'] = $request->e_pk;
                 // $data['tkad_approvkeul_user'] = $request->user()->email;
                 $data['tkad_approvkeu1_date'] = date('Y-m-d H:i:s');
@@ -128,7 +122,7 @@ class RincianTransaksiController extends Controller
 
                 $data['tkad_askn_kode'] = $request->e_akun;
                 // $data['tkad_atjh_pk'] = $request->e_pk;
-                
+
                 $vtable = DB::table('epms.trs_kas_dtl')->where('tkad_atjh_pk', $request->tkad_atjh_pk);
                 $vtable->update($data);
                return response()->json([
@@ -205,7 +199,7 @@ class RincianTransaksiController extends Controller
 
 
         $data = DB::table('epms.trs_kas_dtl')
-        ->select('*', 
+        ->select('*',
         DB::raw('CASE WHEN tkad_tipe_dk = "D" THEN "Debit" WHEN tkad_tipe_dk = "K" THEN "Kredit" END as tipe_dk, FORMAT(tkad_total, 2) tkad_total')
         // DB::raw(number_format((float)'tkad_total','2') )
         )

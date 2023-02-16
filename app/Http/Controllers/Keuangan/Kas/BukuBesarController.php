@@ -125,7 +125,7 @@ class BukuBesarController extends Controller
         $cmd = DB::select("CALL epms.P_REPORT_KAS_PUS('" . $request['e_akun'] . "','" . $request['e_cabalamin'] . "','" . $request['e_entry1'] . "','" . $request['e_entry2'] . "','" . $request['e_tag'] . "','" . $request['e_jns'] . "')");
         // $cmd = DB::select("CALL epms.P_REPORT_KAS_PUS('150-540-0101001','01','2022-01-24','2022-01-31','','0');");
 
-        $data = Lib::__dbAll($cmd);
+        $data = __dbAll($cmd);
         return DataTables::of($data)->addIndexColumn()->make(true);
     }
 
@@ -135,11 +135,11 @@ class BukuBesarController extends Controller
         $rows = $request->rows ? intval($request->rows) : 100;
         $offset = ($page - 1) * $rows;
 
-        $cmd = DB::select("SELECT `asakn_kode` akun,`asakn_keterangan` nama FROM eacc.`ams_sub_akun` 
+        $cmd = DB::select("SELECT `asakn_kode` akun,`asakn_keterangan` nama FROM eacc.`ams_sub_akun`
         WHERE `asakn_mlok_kode`='" . $request['mlok'] . "' AND `asakn_mrpt_kode`='NEROPR' AND `asakn_aakn_kode`='540' AND RIGHT(asakn_kode,1)='1';");
 
-        $res = Lib::__dbAll($cmd);
-        return Lib::json($res);
+        $res = __dbAll($cmd);
+        return __json($res);
     }
 
     public function getjurnalkasfull(Request $request)
@@ -154,26 +154,26 @@ class BukuBesarController extends Controller
 
         //$jabatan=__getGlobalValue("jabatan");
 
-        $cmd = DB::select(" 
-		SELECT 
-		  atjh_pk,  atjh_mlok_pk,  
+        $cmd = DB::select("
+		SELECT
+		  atjh_pk,  atjh_mlok_pk,
 		  DATE_FORMAT(atjh_tanggal,'%d-%m-%Y') atjh_tanggal,
 		  atjh_periode_bulan,
 		  atjh_periode_tahun,  atjh_nomor,  atjh_tanggal_bukti,  atjh_amjb_kode,
 		  atjh_amjb_mlok_kode,  atjh_nomor_bukti,  atjh_keterangan,  atjh_total_debit,
 		  atjh_total_kredit,  atjh_status_posting,  atjh_insert_user,  atjh_update_user,  atjh_insert_date,  atjh_update_date,
 		  atjh_TS,  atjh_rpt,  atjh_manual,  atjh_final_acc,
-		  atjd_pk,  atjd_atjh_pk,  atjd_askn_kode,  atjd_keterangan,  atjd_tipe_dk,  atjd_total 
+		  atjd_pk,  atjd_atjh_pk,  atjd_askn_kode,  atjd_keterangan,  atjd_tipe_dk,  atjd_total
 		FROM ejur.atr_jurnal_hdr_all, ejur.atr_jurnal_dtl_all
 		WHERE atjd_atjh_pk = atjh_pk
 		AND 1=1 $tambah
 		ORDER BY atjd_tipe_dk
 		 ");
 
-        $data = Lib::__dbAll($cmd);
+        $data = __dbAll($cmd);
         // return DataTables::of($data)->addIndexColumn()->make(true);
         return response()->json($data[0]);
-       
+
     }
 
     public function i_jurkas(Request $request)
@@ -185,21 +185,21 @@ class BukuBesarController extends Controller
         $vidxkey = "atjd_pk";                              // field kode validasi
         $vfldname = "atjd_keterangan";                     // field nama validasi
 
-        $vfield = "atr_jurnal_dtl_all.*,asakn_keterangan, FORMAT(atjd_total,2) atjd_totalx   ";    // query field 
+        $vfield = "atr_jurnal_dtl_all.*,asakn_keterangan, FORMAT(atjd_total,2) atjd_totalx   ";    // query field
 
         if (isset($request['pk_h'])) {
             $tambah .= $tambah . " and atjd_atjh_pk='" . $request['pk_h'] . "'";
         }
-        $cmd = DB::select(" 
+        $cmd = DB::select("
 	SELECT
-	$vfield 
+	$vfield
 	FROM $vtable
-	where $vidxkey<>'' 
-	$tambah 
+	where $vidxkey<>''
+	$tambah
 	$order
 	 ");
 
-     $data = Lib::__dbAll($cmd);
+     $data = __dbAll($cmd);
 
     //  return response()->json($data);
 

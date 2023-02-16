@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Utility;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\wwLib\Lib;
 use App\Models\User;
 use App\Models\Utility\DaftarUser;
 use Illuminate\Http\Request;
@@ -76,7 +75,7 @@ class DaftarUserController extends Controller
             ]);
         } else {
             if (empty($request->id)) {
-                $kode = Lib::__getKey(4);
+                $kode = __getKey(4);
                 $data = $request->all();
                 if ($request->hasFile('img_bukti')) {
                     $img_bukti = $request->file('img_bukti');

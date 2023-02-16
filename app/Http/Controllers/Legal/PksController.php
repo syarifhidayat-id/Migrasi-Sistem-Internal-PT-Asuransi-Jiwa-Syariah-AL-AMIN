@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Legal;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Legal\Pks;
@@ -97,7 +96,7 @@ class PksController extends Controller
             ]);
         } else {
             if (empty($request->mpks_pk)) {
-                $kode = Lib::__getKey(14);
+                $kode = __getKey(14);
                 $data = $request->all();
                 $data = $request->except('_token', 'cari_pk', 'eds');
                 // $data = request()->except(['_token']);
@@ -177,7 +176,7 @@ class PksController extends Controller
                 }
 
                 if ($request->eds == "2") {
-                    $kode_add = Lib::__getKey(14);
+                    $kode_add = __getKey(14);
                     $data = $request->all();
                     $data = $request->except('cari_pk', 'mpks_pk', 'eds', '_token');
                     $data['mpks_pk'] = $kode_add;
@@ -190,7 +189,7 @@ class PksController extends Controller
                     ]);
                 }
                 if ($request->eds == "3") {
-                    // $kode_add = Lib::__getKey(14);
+                    // $kode_add = __getKey(14);
                     $vtable = DB::table('eopr.mst_pks')->where('mpks_pk', $request->mpks_pk);
                     $data = $request->all();
                     $data = $request->except('cari_pk', 'eds', '_token');

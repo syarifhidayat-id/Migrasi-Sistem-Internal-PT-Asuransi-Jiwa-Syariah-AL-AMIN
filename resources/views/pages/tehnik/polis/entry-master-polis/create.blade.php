@@ -12,6 +12,7 @@
             <div class="card-header">
                 <div class="card-title">
                     <span class="badge badge-warning" id="title_action">Polis Baru</span>
+                    <input type="text" class="form-control form-control-solid" name="judul" id="judul" placeholder="judul" />
                 </div>
 
                 <div class="card-toolbar">
@@ -81,14 +82,18 @@
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Mekanisme</label>
-                            <input type="text" class="easyui-combobox" name="mpol_mekanisme" id="mpol_mekanisme" data-options="prompt:'Pilih mkanisme'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_mekanisme" id="mpol_mekanisme" data-options="prompt:'Pilih mekanisme'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mkm_kode kode, mkm_nama nama FROM emst.mst_mekanisme WHERE mkm_aktif!=1 ORDER BY 1", "kode", "nama") }}
+                            </select>
                             <span class="text-danger error-text mpol_mekanisme_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Manfaat Asuransi</label>
-                            <input type="text" class="easyui-combogrid selectGrid" name="mpol_mft_kode" id="mpol_mft_kode" data-options="prompt:'Pilih manfaat asuransi'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_mft_kode" id="mpol_mft_kode" data-options="prompt:'Pilih manfaat asuransi', onSelect: function(rec){  }" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mft_kode kode, mft_nama nama FROM emst.mst_manfaat_plafond ORDER BY 1", "kode", "nama") }}
+                            </select>
                             <span class="text-danger error-text mpol_mft_kode_err"></span>
                         </div>
                     </div>
@@ -113,14 +118,16 @@
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Jenis Pekerjaan</label>
-                            <input type="text" class="easyui-combobox" name="mpol_jns_perusahaan" id="mpol_jns_perusahaan" data-options="prompt:'Pilih jenis pekerjaan'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_jns_perusahaan" id="mpol_jns_perusahaan" data-options="prompt:'Pilih jenis pekerjaan'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mker_kode kode,mker_nama ket FROM emst.mst_pekerjaan ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <span class="text-danger error-text mpol_jns_perusahaan_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Produk Induk Internal</label>
-                            <input type="text" class="easyui-combogrid selectGrid" name="e_jenisprod" id="e_jenisprod" data-options="prompt:'Pilih segmen pasar'" style="width: 100%; height: 38px;" />
+                            <input type="text" class="easyui-combogrid selectGrid" name="e_jenisprod" id="e_jenisprod" data-options="prompt:'Pilih produk induk'" style="width: 100%; height: 38px;" />
                             <input type="text" class="form-control form-control-solid" name="mpol_mpid_kode" id="mpol_mpid_kode" placeholder="mpol_mpid_kode" />
                             <input type="text" class="form-control form-control-solid" name="endors" id="endors" placeholder="endors" />
                             <span class="text-danger error-text e_jenisprod_err"></span>
@@ -137,7 +144,9 @@
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Saluran Distribusi</label>
-                            <input type="text" class="easyui-combobox" name="mpol_mslr_kode" id="mpol_mslr_kode" data-options="prompt:'Pilih saluran distribusi'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_mslr_kode" id="mpol_mslr_kode" data-options="prompt:'Pilih saluran distribusi'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mslr_kode kode, mslr_ket ket FROM emst.mst_saluran_distribusi ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <input type="text" class="form-control form-control-solid" name="e_bersih" id="e_bersih" placeholder="e_bersih" />
                             <span class="text-danger error-text mpol_mslr_kode_err"></span>
                         </div>
@@ -180,56 +189,70 @@
                     <div class="col-md-12">
                         <div class="mb-5">
                             <label class="required form-label">Produk Induk Ojk</label>
-                            <input type="text" class="easyui-combobox" name="mpol_mpojk_kode" id="mpol_mpojk_kode" data-options="prompt:'Pilih produk induk'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_mpojk_kode" id="mpol_mpojk_kode" data-options="prompt:'Pilih produk induk'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mpojk_kode kode, mpojk_nama ket FROM emst.mst_produk_ojk ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <span class="text-danger error-text mpol_mpojk_kode_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="required form-label">Jenis Ausransi</label>
-                            <input type="text" class="easyui-combobox" name="mpol_mja_kode" id="mpol_mja_kode" data-options="prompt:'Pilih jenis asuransi'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_mja_kode" id="mpol_mja_kode" data-options="prompt:'Pilih jenis asuransi'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mja_kode kode, mja_nama ket FROM emst.mst_jns_asu WHERE mja_kode IN (1,2) ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <span class="text-danger error-text mpol_mja_kode_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="required form-label">Produk Segmen</label>
-                            <input type="text" class="easyui-combobox" name="mpol_mgpp_kode" id="mpol_mgpp_kode" data-options="prompt:'Pilih produk'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_mgpp_kode" id="mpol_mgpp_kode" data-options="prompt:'Pilih produk segmen'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mgpp_kode kode, mgpp_nama ket FROM emst.mst_grup_prodpolis ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <span class="text-danger error-text mpol_mgpp_kode_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="required form-label">Kelompok Produk</label>
-                            <input type="text" class="easyui-combobox" name="mpol_mgp_kode" id="mpol_mgp_kode" data-options="prompt:'Pilih kelompok'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_mgp_kode" id="mpol_mgp_kode" data-options="prompt:'Pilih kelompok produk'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mgp_kode kode,mgp_nama ket FROM emst.mst_gruproduk ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <span class="text-danger error-text mpol_mgp_kode_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="required form-label">Rekan Segmen</label>
-                            <input type="text" class="easyui-combobox" name="mpol_mgs_kode" id="mpol_mgs_kode" data-options="prompt:'Pilih rekan segmen'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_mgs_kode" id="mpol_mgs_kode" data-options="prompt:'Pilih rekan segmen'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mgs_kode kode,mgs_nama ket FROM emst.mst_grupsegmen ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <span class="text-danger error-text mpol_mgs_kode_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="required form-label">Lini Usaha</label>
-                            <input type="text" class="easyui-combobox" name="mpol_mlu_kode" id="mpol_mlu_kode" data-options="prompt:'Pilih lini usaha'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_mlu_kode" id="mpol_mlu_kode" data-options="prompt:'Pilih lini usaha'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mlu_kode kode,mlu_nama ket FROM emst.mst_liniusaha ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <span class="text-danger error-text mpol_mlu_kode_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="required form-label">Golongan</label>
-                            <input type="text" class="easyui-combobox" name="mpol_mgol_kode" id="mpol_mgol_kode" data-options="prompt:'Pilih golongan'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_mgol_kode" id="mpol_mgol_kode" data-options="prompt:'Pilih golongan'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mgol_kode kode,mgol_nama ket FROM emst.mst_golongan ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <span class="text-danger error-text mpol_mgol_kode_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Status Aktif Polis</label>
-                            <select class="easyui-combobox" name="mpol_aktif" id="mpol_aktif" data-options="prompt:'Pilih status'" style="width: 100%; height: 38px;">
+                            <select class="easyui-combobox" name="mpol_aktif" id="mpol_aktif" data-options="prompt:'Pilih status', onSelect: function(rec){  }" style="width: 100%; height: 38px;">
                                 <option value="0">SUSPEND</option>
                                 <option value="1">AKTIF</option>
                                 <option value="2">MATI</option>
@@ -244,7 +267,7 @@
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
                             </select>
-                            <span class="text-danger error-text mpol_online_err">asdasdasdasdasdasd</span>
+                            <span class="text-danger error-text mpol_online_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -267,7 +290,7 @@
                     <div class="col-md-2">
                         <div class="mb-5">
                             <label class="required form-label">Open Polis</label>
-                            <select class="easyui-combobox" name="mpol_openpolis" id="mpol_openpolis" data-options="prompt:'Pilih online rekan'" style="width: 100%; height: 38px;">
+                            <select class="easyui-combobox" name="mpol_openpolis" id="mpol_openpolis" data-options="prompt:'Pilih online rekan', onSelect: function(rec){ cekopenpolis(); }" style="width: 100%; height: 38px;">
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
                             </select>
@@ -329,14 +352,18 @@
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="required form-label">Cetak Peserta Pengajuan</label>
-                            <input type="text" class="easyui-combobox" name="mpol_jenis_cetak" id="mpol_jenis_cetak" data-options="prompt:'Pilih cetak pengajuan'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_jenis_cetak" id="mpol_jenis_cetak" data-options="prompt:'Pilih cetak peserta pengajuan'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mpc_kode kode,mpc_nama ket FROM eopr.mst_polis_cetakan where mpc_tipe=0 ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <span class="text-danger error-text mpol_jenis_cetak_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="required form-label">Cetak Peserta Lunas</label>
-                            <input type="text" class="easyui-combobox" name="mpol_cetak_lunas" id="mpol_cetak_lunas" data-options="prompt:'Pilih cetak lunas'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_cetak_lunas" id="mpol_cetak_lunas" data-options="prompt:'Pilih cetak peserta lunas'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mpc_kode kode,mpc_nama ket FROM eopr.mst_polis_cetakan where mpc_tipe=1 UNION ALL SELECT mpc_kode kode,mpc_nama ket FROM eopr.mst_polis_cetakan WHERE mpc_kode=16 ORDER BY 1", "kode", "ket") }}
+                            </select>
                             <span class="text-danger error-text mpol_cetak_lunas_err"></span>
                         </div>
                     </div>
@@ -504,7 +531,9 @@
                             <label class="form-label">Ujrah Referal</label>
                             <div class="input-group input-group-solid flex-nowrap">
                                 <div class="overflow-hidden flex-grow-1">
-                                    <input type="text" class="easyui-combobox" name="mpol_mujhrf_kode" id="mpol_mujhrf_kode" data-options="prompt:'Pilih ujrah referal'" style="width: 100%; height: 38px;" />
+                                    <select class="easyui-combobox" name="mpol_mujhrf_kode" id="mpol_mujhrf_kode" data-options="prompt:'Pilih ujrah referal'" style="width: 100%; height: 38px;">
+                                        {{ optSql("SELECT mujhrf_tampil tampil, mujhrf_persen persen FROM emst.mst_ujrah_referal ORDER BY 1", "tampil", "persen") }}
+                                    </select>
                                 </div>
                                 <span class="input-group-text">%</span>
                             </div>
@@ -514,7 +543,9 @@
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Stnc Pelaporan</label>
-                            <input type="text" class="easyui-combobox" name="mpol_lapor_stnc" id="mpol_lapor_stnc" data-options="prompt:'Pilih stnc pelaporan'" style="width: 100%; height: 38px;" />
+                            <select class="easyui-combobox" name="mpol_lapor_stnc" id="mpol_lapor_stnc" data-options="prompt:'Pilih stnc pelaporan'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mlst_kode kode, mlst_hari hari FROM emst.mst_lapor_stnc ORDER BY 1", "kode", "hari") }}
+                            </select>
                             <span class="text-danger error-text mpol_lapor_stnc_err"></span>
                         </div>
                     </div>
@@ -523,7 +554,9 @@
                             <label class="form-label">Ujrah Treaty Reas</label>
                             <div class="input-group input-group-solid flex-nowrap">
                                 <div class="overflow-hidden flex-grow-1">
-                                    <input type="text" class="easyui-combobox" name="mpol_ujroh_treaty" id="mpol_ujroh_treaty" data-options="prompt:'Pilih ujrah treaty reas'" style="width: 100%; height: 38px;" />
+                                    <select class="easyui-combobox" name="mpol_ujroh_treaty" id="mpol_ujroh_treaty" data-options="prompt:'Pilih stnc pelaporan'" style="width: 100%; height: 38px;">
+                                        {{ optSql("SELECT mujh_tampil tampil, mujh_persen persen FROM emst.mst_ujroh WHERE mujh_tipe='Ujroh' ORDER BY 1", "persen", "tampil") }}
+                                    </select>
                                 </div>
                                 <span class="input-group-text">%</span>
                             </div>
@@ -569,7 +602,11 @@
                             <label class="form-label">Manfaat Jiwa</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_mnfa_kode" id="mpol_mnfa_kode" data-placeholder="Pilih manfaat jiwa" data-allow-clear="true">
                                 <option></option>
+                                {{ optSql("SELECT mnfa_kode kode, mnfa_nama nama FROM emst.mst_manfaat_asuransi ORDER BY 1", "kode", "nama") }}
                             </select>
+                            {{-- <select class="easyui-combobox" name="mpol_mnfa_kode" id="mpol_mnfa_kode" data-options="prompt:'Pilih manfaat jiwa'" style="width: 100%; height: 38px;">
+                                {{ optSql("SELECT mnfa_kode kode, mnfa_nama nama FROM emst.mst_manfaat_asuransi ORDER BY 1", "kode", "nama") }}
+                            </select> --}}
                             <span class="text-danger error-text mpol_mnfa_kode_err"></span>
                         </div>
                     </div>
@@ -578,6 +615,7 @@
                             <label class="form-label">Manfaat Tambahan Gu</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_gu" id="mpol_mmft_kode_gu" data-placeholder="Pilih manfaat tambahan gu" data-allow-clear="true">
                                 <option></option>
+                                {{ optSql("SELECT mmft_kode kode, mmft_nama nama FROM emst.mst_manfaat_tambahan WHERE mmft_kode = 'C' or mmft_kode = 'H' ORDER BY 1", "kode", "nama") }}
                             </select>
                             <span class="text-danger error-text mpol_mmft_kode_gu_err"></span>
                         </div>
@@ -591,6 +629,7 @@
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_wp_swasta" id="mpol_mmft_kode_wp_swasta" data-placeholder="Pilih manfaat tambahan wp" data-allow-clear="true">
                                                 <option></option>
+                                                {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='C' AND mprp_kode = 'B' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
                                         <span class="input-group-text">% Swasta</span>
@@ -602,6 +641,7 @@
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_wp_pns" id="mpol_mmft_kode_wp_pns" data-placeholder="Pilih manfaat tambahan wp" data-allow-clear="true">
                                                 <option></option>
+                                                {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='B' AND mprp_kode = 'B' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
                                         <span class="input-group-text">% Pns</span>
@@ -613,6 +653,7 @@
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_wp_pensiun" id="mpol_mmft_kode_wp_pensiun" data-placeholder="Pilih manfaat tambahan wp" data-allow-clear="true">
                                                 <option></option>
+                                                {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='B' AND mprp_kode = 'B' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
                                         <span class="input-group-text">% *(Diisi Jika Pensiun)</span>
@@ -631,6 +672,7 @@
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_phk_swasta" id="mpol_mmft_kode_phk_swasta" data-placeholder="Pilih manfaat tambahan phk" data-allow-clear="true">
                                                 <option></option>
+                                                {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='C' AND mprp_kode = 'X' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
                                         <span class="input-group-text">% Swasta</span>
@@ -642,6 +684,7 @@
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_phk_pns" id="mpol_mmft_kode_phk_pns" data-placeholder="Pilih manfaat tambahan phk" data-allow-clear="true">
                                                 <option></option>
+                                                {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='B' AND mprp_kode = 'X' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
                                         <span class="input-group-text">% Pns</span>
@@ -653,6 +696,7 @@
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_phk_pensiun" id="mpol_mmft_kode_phk_pensiun" data-placeholder="Pilih manfaat tambahan phk" data-allow-clear="true">
                                                 <option></option>
+                                                {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='B' AND mprp_kode = 'X' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
                                         <span class="input-group-text">% *(Diisi Jika Pensiun)</span>
@@ -669,6 +713,7 @@
                                     <label class="form-label">Manfaat Tambahan Fire</label>
                                     <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_fire" id="mpol_mmft_kode_fire" data-placeholder="Pilih manfaat tambahan Fire" data-allow-clear="true">
                                         <option></option>
+                                        {{ optSql("SELECT mmft_kode kode,mmft_nama nama FROM emst.mst_manfaat_tambahan WHERE mmft_kode = 'F' OR mmft_kode = 'G' OR mmft_kode = 'H' ORDER BY 1", "kode", "nama") }}
                                     </select>
                                     <span class="text-danger error-text mpol_mmft_kode_fire_err"></span>
                                 </div>
@@ -678,6 +723,7 @@
                                     <label class="form-label">Manfaat Tambahan Tlo</label>
                                     <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_tlo" id="mpol_mmft_kode_tlo" data-placeholder="Pilih manfaat tambahan tlo" data-allow-clear="true">
                                         <option></option>
+                                        {{ optSql("SELECT mmft_kode kode,mmft_nama nama FROM emst.mst_manfaat_tambahan WHERE mmft_kode = 'A' OR mmft_kode = 'B' OR mmft_kode = 'H' ORDER BY 1", "kode", "nama") }}
                                     </select>
                                     <span class="text-danger error-text mpol_mmft_kode_tlo_err"></span>
                                 </div>
@@ -689,6 +735,7 @@
                             <label class="form-label">Manfaat Tambahan Join Life</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_jl" id="mpol_jl" data-placeholder="Pilih manfaat tambahan join life" data-allow-clear="true">
                                 <option></option>
+                                {{ optSql("SELECT mmft_kode kode,mmft_nama nama FROM emst.mst_manfaat_tambahan WHERE mmft_tipe = 'JL' OR mmft_kode = '0' ORDER BY 1", "kode", "nama") }}
                             </select>
                             <span class="text-danger error-text mpol_jl_err"></span>
                         </div>
@@ -763,7 +810,9 @@
                                     <label class="form-label">Fee Ppn</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <input type="text" class="easyui-combobox" name="mpol_handlingfee" id="mpol_handlingfee" data-options="prompt:'Fee ppn'" style="width: 100%; height: 38px;" />
+                                            <select class="easyui-combobox" name="mpol_handlingfee" id="mpol_handlingfee" data-options="prompt:'Fee ppn'" style="width: 100%; height: 38px;">
+                                                {{ optSql("SELECT mmfee_persen persen,mmfee_tampil tampil FROM emst.mst_manajemen_fee ORDER BY 1", "persen", "tampil") }}
+                                            </select>
                                         </div>
                                         <span class="input-group-text">%</span>
                                     </div>
@@ -775,7 +824,9 @@
                                     <label class="form-label">Fee Pph 23</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <input type="text" class="easyui-combobox" name="mpol_pajakfee_persen" id="mpol_pajakfee_persen" data-options="prompt:'Fee pph 23'" style="width: 100%; height: 38px;" />
+                                            <select class="easyui-combobox" name="mpol_pajakfee_persen" id="mpol_pajakfee_persen" data-options="prompt:'Fee pph 23'" style="width: 100%; height: 38px;">
+                                                {{ optSql("SELECT mmfee_persen persen,mmfee_tampil tampil FROM emst.mst_manajemen_fee ORDER BY 1", "persen", "tampil") }}
+                                            </select>
                                         </div>
                                         <span class="input-group-text">%</span>
                                     </div>
@@ -791,7 +842,9 @@
                                     <label class="form-label">Ujrah</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <input type="text" class="easyui-combobox" name="mpol_mujh_persen" id="mpol_mujh_persen" data-options="prompt:'Ujrah'" style="width: 100%; height: 38px;" />
+                                            <select class="easyui-combobox" name="mpol_mujh_persen" id="mpol_mujh_persen" data-options="prompt:'Ujrah'" style="width: 100%; height: 38px;">
+                                                {{ optSql("SELECT mujh_tampil tampil, mujh_persen persen FROM emst.mst_ujroh where mujh_tipe='Ujroh' ORDER BY 1", "tampil", "persen") }}
+                                            </select>
                                         </div>
                                         <span class="input-group-text">%</span>
                                     </div>
@@ -803,7 +856,9 @@
                                     <label class="form-label">Managemen Fee</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <input type="text" class="easyui-combobox" name="mpol_mmfe_persen" id="mpol_mmfe_persen" data-options="prompt:'Managemen fee'" style="width: 100%; height: 38px;" />
+                                            <select class="easyui-combobox" name="mpol_mmfe_persen" id="mpol_mmfe_persen" data-options="prompt:'Managemen fee'" style="width: 100%; height: 38px;">
+                                                {{ optSql("SELECT mmfee_persen persen,mmfee_tampil tampil FROM emst.mst_manajemen_fee ORDER BY 1", "persen", "tampil") }}
+                                            </select>
                                         </div>
                                         <span class="input-group-text">%</span>
                                     </div>
@@ -815,7 +870,10 @@
                                     <label class="form-label">Overreding</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <input type="text" class="easyui-combobox" name="mpol_overreding" id="mpol_overreding" data-options="prompt:'Overreding'" style="width: 100%; height: 38px;" />
+                                            <select class="easyui-combobox" name="mpol_overreding" id="mpol_overreding" data-options="prompt:'Overreding'" style="width: 100%; height: 38px;">
+                                                <option value="0">0</option>
+                                                <option value="2.5">2.5</option>
+                                            </select>
                                         </div>
                                         <span class="input-group-text">%</span>
                                     </div>
@@ -831,7 +889,9 @@
                                     <label class="form-label">Komisi Tidak Potong</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <input type="text" class="easyui-combobox" name="mpol_mkom_persen" id="mpol_mkom_persen" data-options="prompt:'Komisi tidak potong'" style="width: 100%; height: 38px;" />
+                                            <select class="easyui-combobox" name="mpol_mkom_persen" id="mpol_mkom_persen" data-options="prompt:'Komisi tidak potong'" style="width: 100%; height: 38px;">
+                                                {{ optSql("SELECT mkom_persen persen,mkom_tipe tipe FROM emst.mst_komisi ORDER BY 1", "persen", "tipe") }}
+                                            </select>
                                         </div>
                                         <span class="input-group-text">%</span>
                                     </div>
@@ -843,7 +903,9 @@
                                     <label class="form-label">Referal</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <input type="text" class="easyui-combobox" name="mpol_referal" id="mpol_referal" data-options="prompt:'Referal'" style="width: 100%; height: 38px;" />
+                                            <select class="easyui-combobox" name="mpol_referal" id="mpol_referal" data-options="prompt:'Referal'" style="width: 100%; height: 38px;">
+                                                {{ optSql("SELECT mkom_persen persen,mkom_tipe tipe FROM emst.mst_komisi ORDER BY 1", "persen", "tipe") }}
+                                            </select>
                                         </div>
                                         <span class="input-group-text">%</span>
                                     </div>
@@ -855,7 +917,9 @@
                                     <label class="form-label">Maintenance</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <input type="text" class="easyui-combobox" name="mpol_maintenance" id="mpol_maintenance" data-options="prompt:'Maintenance'" style="width: 100%; height: 38px;" />
+                                            <select class="easyui-combobox" name="mpol_maintenance" id="mpol_maintenance" data-options="prompt:'Maintenance'" style="width: 100%; height: 38px;">
+                                                {{ optSql("SELECT mdr_persen persen,mdr_tipe tipe FROM emst.mst_discount_rate ORDER BY 1", "persen", "tipe") }}
+                                            </select>
                                         </div>
                                         <span class="input-group-text">%</span>
                                     </div>
@@ -871,7 +935,9 @@
                                     <label class="form-label">Feebase Tidak Potong</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <input type="text" class="easyui-combobox" name="mpol_mfee_persen" id="mpol_mfee_persen" data-options="prompt:'Feebase Tidak Potong'" style="width: 100%; height: 38px;" />
+                                            <select class="easyui-combobox" name="mpol_mfee_persen" id="mpol_mfee_persen" data-options="prompt:'Feebase Tidak Potong'" style="width: 100%; height: 38px;">
+                                                {{ optSql("SELECT mfee_persen persen,mfee_tipe tipe FROM emst.mst_fee ORDER BY 1", "persen", "tipe") }}
+                                            </select>
                                         </div>
                                         <span class="input-group-text">%</span>
                                     </div>
@@ -883,11 +949,27 @@
                                     <label class="form-label">Feebase Potong</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <input type="text" class="easyui-combobox" name="mpol_mdr_kode" id="mpol_mdr_kode" data-options="prompt:'Feebase Potong'" style="width: 100%; height: 38px;" />
+                                            <select class="easyui-combobox" name="mpol_mdr_kode" id="mpol_mdr_kode" data-options="prompt:'Feebase Potong'" style="width: 100%; height: 38px;">
+                                                {{ optSql("SELECT mdr_persen persen,mdr_tipe tipe FROM emst.mst_discount_rate ORDER BY 1", "persen", "tipe") }}
+                                            </select>
                                         </div>
                                         <span class="input-group-text">%</span>
                                     </div>
                                     <span class="text-danger error-text mpol_mdr_kode_err"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-5">
+                                    <label class="form-label">Komisi Potong Langsung</label>
+                                    <div class="input-group input-group-solid flex-nowrap">
+                                        <div class="overflow-hidden flex-grow-1">
+                                            <select class="easyui-combobox" name="mpol_mkomdisc_persen" id="mpol_mkomdisc_persen" data-options="prompt:'Feebase Potong'" style="width: 100%; height: 38px;">
+                                                {{ optSql("SELECT mmfee_persen persen,mmfee_tampil tampil FROM emst.mst_manajemen_fee ORDER BY 1", "persen", "tampil") }}
+                                            </select>
+                                        </div>
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                    <span class="text-danger error-text mpol_mkomdisc_persen_err"></span>
                                 </div>
                             </div>
                         </div>
@@ -929,12 +1011,7 @@
                     <div class="col-md-8">
                         <div class="mb-5">
                             <label class="form-label">Via</label>
-                            <div class="input-group input-group-solid flex-nowrap">
-                                <div class="overflow-hidden flex-grow-1">
-                                    <input type="text" class="form-control form-control-solid" name="mpol_va_via" id="mpol_va_via" placeholder="" />
-                                </div>
-                                <button type="button" class="btn btn-primary btn-sm" onclick=""><i class="fa-solid fa-plus"></i> Tambah</button>
-                            </div>
+                            <select class="form-select form-select-solid" name="mpol_va_via[]" id="mpol_va_via" data-placeholder="Pilih VA" data-allow-clear="true" multiple="multiple"></select>
                             <span class="text-danger error-text mpol_va_via_err"></span>
                         </div>
                     </div>
@@ -952,12 +1029,7 @@
                     <div class="col-md-8">
                         <div class="mb-5">
                             <label class="form-label">Via</label>
-                            <div class="input-group input-group-solid flex-nowrap">
-                                <div class="overflow-hidden flex-grow-1">
-                                    <input type="text" class="form-control form-control-solid" name="mpol_playonline_via" id="mpol_playonline_via" placeholder="" />
-                                </div>
-                                <button type="button" class="btn btn-primary btn-sm" onclick=""><i class="fa-solid fa-plus"></i> Tambah</button>
-                            </div>
+                            <select class="form-select form-select-solid" name="mpol_playonline_via[]" id="mpol_playonline_via" data-placeholder="Pilih pembayaran online" data-allow-clear="true" multiple="multiple"></select>
                             <span class="text-danger error-text mpol_playonline_via_err"></span>
                         </div>
                     </div>
@@ -975,12 +1047,7 @@
                     <div class="col-md-8">
                         <div class="mb-5">
                             <label class="form-label">Via</label>
-                            <div class="input-group input-group-solid flex-nowrap">
-                                <div class="overflow-hidden flex-grow-1">
-                                    <input type="text" class="form-control form-control-solid" name="mpol_agent_via" id="mpol_agent_via" placeholder="" />
-                                </div>
-                                <button type="button" class="btn btn-primary btn-sm" onclick=""><i class="fa-solid fa-plus"></i> Tambah</button>
-                            </div>
+                            <select class="form-select form-select-solid" name="mpol_agent_via[]" id="mpol_agent_via" data-placeholder="Pilih pembayaran retail/agent" data-allow-clear="true" multiple="multiple"></select>
                             <span class="text-danger error-text mpol_agent_via_err"></span>
                         </div>
                     </div>
@@ -1057,18 +1124,20 @@
                             <label class="form-label">Berlaku Untuk Provinsi</label>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <select class="form-select form-select-solid" data-control="select2" name="mpol_mprov_kode" id="mpol_mprov_kode" data-placeholder="Pilih berlaku" data-allow-clear="true">
-                                        <option></option>
-                                        <option value="1">Seluruh Provinsi</option>
-                                        <option value="0">Provinsi Tertentu</option></select>
-                                    </select>
-                                    <span class="text-danger error-text mpol_mprov_kode_err"></span>
+                                    <div class="mb-5">
+                                        <select class="form-select form-select-solid" data-control="select2" name="mpol_mprov_kode" id="mpol_mprov_kode" data-placeholder="Pilih berlaku" data-allow-clear="true">
+                                            <option></option>
+                                            <option value="1">Seluruh Provinsi</option>
+                                            <option value="0">Provinsi Tertentu</option></select>
+                                        </select>
+                                        <span class="text-danger error-text mpol_mprov_kode_err"></span>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <select class="form-select form-select-solid" name="mpol_mprov_berlaku" id="mpol_mprov_berlaku" data-placeholder="Pilih provinsi" data-allow-clear="true" multiple="multiple">
-                                        <option></option>
-                                    </select>
-                                    <span class="text-danger error-text mpol_mprov_berlaku_err"></span>
+                                <div class="col-md-8">
+                                    <div class="mb-5">
+                                        <select class="form-select form-select-solid" name="mpol_mprov_berlaku[]" id="mpol_mprov_berlaku" data-placeholder="Pilih provinsi" data-allow-clear="true" multiple="multiple"></select>
+                                        <span class="text-danger error-text mpol_mprov_berlaku_err"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1113,27 +1182,16 @@
                                         <span class="text-danger error-text mpol_jns_tarif_err"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-8">
                                     <div class="mb-5">
                                         <div class="input-group input-group-solid flex-nowrap">
                                             <div class="overflow-hidden flex-grow-1">
-                                                <input type="text" class="easyui-combobox" name="e_tarif" id="e_tarif" data-options="prompt:'Pilih jenis tarif'" style="width: 100%; height: 38px;" />
-                                                {{-- <select class="form-select form-select-solid" data-control="select2" name="e_tarif" id="e_tarif" data-placeholder="Pilih tarif" data-allow-clear="true">
-                                                    <option></option>
-                                                    @foreach ($e_tarif as $key => $data)
-                                                        <option value="{{ $data->kode }}">{{ $data->nama }}</option>
-                                                    @endforeach
-                                                </select> --}}
+                                                <input type="text" class="easyui-combogrid selectGrid" name="e_tarif" id="e_tarif" data-options="prompt:'Pilih jenis tarif'" style="width: 100%; height: 38px;" />
                                                 <input type="text" class="form-control form-control-solid" name="mpol_mth_nomor" id="mpol_mth_nomor" placeholder="mpol_mth_nomor" />
                                             </div>
+                                            <button type="button" id="lihatTarif" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
                                         </div>
                                         <span class="text-danger error-text e_tarif_err"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <button type="button" id="importTarif" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
-                                        <button type="button" id="lihatTarif" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
                                     </div>
                                 </div>
                             </div>
@@ -1153,27 +1211,16 @@
                                         <span class="text-danger error-text mpol_tipe_uw_err"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-8">
                                     <div class="mb-5">
                                         <div class="input-group input-group-solid flex-nowrap">
                                             <div class="overflow-hidden flex-grow-1">
-                                                <input type="text" class="easyui-combobox" name="e_uw" id="e_uw" data-options="prompt:'Pilih jenis underwriting'" style="width: 100%; height: 38px;" />
-                                                {{-- <select class="form-select form-select-solid" data-control="select2" name="e_uw" id="e_uw" data-placeholder="Pilih underwriting" data-allow-clear="true">
-                                                    <option></option>
-                                                    @foreach ($e_uw as $key => $data)
-                                                        <option value="{{ $data->kode }}">{{ $data->nama }}</option>
-                                                    @endforeach
-                                                </select> --}}
+                                                <input type="text" class="easyui-combogrid selectGrid" name="e_uw" id="e_uw" data-options="prompt:'Pilih jenis underwriting'" style="width: 100%; height: 38px;" />
                                                 <input type="text" class="form-control form-control-solid" name="mpol_mpuw_nomor" id="mpol_mpuw_nomor" placeholder="mpol_mpuw_nomor" />
                                             </div>
+                                            <button type="button" id="lihatUw" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
                                         </div>
                                         <span class="text-danger error-text e_uw_err"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <button type="button" id="importUw" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
-                                        <button type="button" id="lihatUw" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
                                     </div>
                                 </div>
                             </div>
@@ -1186,7 +1233,7 @@
                                 <div class="col-md-12">
                                     <div class="input-group input-group-solid">
                                         <input type="file" class="form-control" name="mpol_dok" id="mpol_dok" accept="application/pdf" placeholder="pilih file" />
-                                        <button type="button" id="lihatDocSoc" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
+                                        <button type="button" id="lihatDocPolis" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
                                     </div>
                                     <span>*Jenis file harus bentuk format PDF</span>
                                     <span class="text-danger error-text mpol_dok_err"></span>
@@ -1202,6 +1249,10 @@
                 <button type="button" class="btn btn-warning btn-sm" onclick="clear_f()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
             </div>
         </form>
+
+        @include('pages.tehnik.polis.entry-master-polis.modal.lihat-tarif')
+        @include('pages.tehnik.polis.entry-master-polis.modal.lihat-uw')
+        @include('pages.tehnik.polis.entry-master-polis.modal.lihat-doc')
     </div>
 @endsection
 
@@ -1233,13 +1284,15 @@
             //tab4
             setTextReq('mpol_penerima_manfaat', true);
             setTextReq('mpol_mnfa_kode', true);
+            //tab5
+            setTextReq('mpol_surplus', true);
             //tab6
             setTextReq('mpol_payonline', true);
             setTextReq('mpol_agent', true);
             setTextReq('mpol_msrf_kode', true);
-            setTextReadOnly('mpol_va_via', true);
-            setTextReadOnly('mpol_playonline_via', true);
-            setTextReadOnly('mpol_agent_via', true);
+            // setTextReadOnly('mpol_va_via', true);
+            // setTextReadOnly('mpol_playonline_via', true);
+            // setTextReadOnly('mpol_agent_via', true);
             //tab7
             setTextReq('mpol_jenis_login', true);
             setTextReq('mpol_acc_tek', true);
@@ -1249,6 +1302,7 @@
             setTextReadOnly('mpol_kode', true);
 
             // setHide
+            setHide('judul', true);
             setHide('mpol_mrkn_kode', true);
             setHide('mpol_mspaj_nomor', true);
             setHide('mpol_mjns_mpid_kode', true);
@@ -1300,10 +1354,10 @@
                 hidePesan('mpol_mrkn_nama');
                 var kode = row.kode;
                 setText('mpol_mrkn_kode', kode);
-                reSelGrid('mpol_msoc_kode','{{ url("api/tehnik/polis/entry-master-polis/lod_soc") }}' + '?pmgpolis=' + getText("mpol_mrkn_kode"));
+                reSelGrid('mpol_msoc_kode','{{ url("tehnik/polis/entry-master-polis/lod_soc") }}' + '?pmgpolis=' + getText("mpol_mrkn_kode"));
             });
 
-            selectGrid('mpol_msoc_kode', 'GET', '{{ url("api/tehnik/polis/entry-master-polis/lod_soc") }}', 'msoc_kode', 'msoc_kode', [
+            selectGrid('mpol_msoc_kode', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_soc") }}', 'msoc_kode', 'msoc_kode', [
                 {field:'msoc_kode',title:'Kode SOC',width:130},
                 {field:'mjns_Keterangan',title:'Nasabah',width:255},
                 {field:'mssp_nama',title:'Segemen',width:100,hidden:false},
@@ -1318,8 +1372,22 @@
             ], function(i, row) {
                 hidePesan('mpol_msoc_kode');
                 var kode = row.msoc_kode;
-                console.log(kode);
-                // reSelGrid('mpol_msoc_kode','{{ url("api/tehnik/polis/entry-master-polis/lod_soc") }}' + '?pmgpolis=' + getText("mpol_mrkn_kode"));
+                reSelGrid('e_tarif','{{ url("tehnik/polis/entry-master-polis/lod_tarif_polis") }}' + '?pmgpolis=' +getText("mpol_mrkn_kode")+"&msoc="+getText("mpol_msoc_kode")+"&mft="+getText("mpol_mft_kode")+"&jnspro="+getText("judul"));
+                reSelGrid('e_uw','{{ url("tehnik/polis/entry-master-polis/lod_uw_polis") }}' + '?pmgpolis=' + getText("mpol_mrkn_kode")+"&msoc="+getText("mpol_msoc_kode")+"&mft="+getText("mpol_mft_kode")+"&jnspro="+getText("judul"));
+
+				muncul4(row.mjm_bundling,row.mjns_wp_pens,row.mjns_phk_pens,row.mjm_jiwa,row.mjm_gu,row.mjm_phk,row.mjm_tlo,row.mjm_fire,row.mjm_wp,row.mjm_umut,0, row.mpras_discrate,row.mjm_wp_pensiun,row.mjm_phk_pensiun,row.mpras_uptambah,row.mpras_ujrah_referal,row.mpras_discrate,row.mpras_mmft_kode_jiwa,row.mssp_tgl_awal,row.mssp_tgl_ahir,row.mssp_komisi,row.mssp_feebase,row.mssp_openpolis,row.mjns_jl,row.mjns_jl_pst,row.mjns_jl_pas);
+				cekpolis();
+				ceksoc();
+				e_leave("mpol_kode");
+				cekdata();
+            });
+
+            selectGrid('mpol_mspaj_nama', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_spaj") }}' + '?id=spaj', 'mspaj_nomor', 'mspaj_keterangan', [
+                {field:'mspaj_keterangan',title:'Keterangan',align:'left',width:150},
+                {field:'mspaj_nomor',title:'Nomor SPAJ',width:50,hidden:false},
+            ], function(i, row) {
+                hidePesan('mpol_mspaj_nama');
+                setText("mpol_mspaj_nomor",row.mspaj_nomor);
             });
 
             selectGrid('e_nasabah', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_nasabah") }}', 'mjns_kode', 'mjns_keterangan', [
@@ -1333,11 +1401,46 @@
                 {field:'mjns_mpid_nomor',title:'Jenis Mpid',width:80,hidden:true},
             ], function(i, row) {
                 hidePesan('e_nasabah');
-				setText("mpol_mjns_kode", row.mjns_kode);
-				setText("mpol_mjns_mpid_kode", row.mjns_mpid_nomor);
+                setText("mpol_mjns_kode", row.mjns_kode);
+                setText("mpol_mjns_mpid_kode", row.mjns_mpid_nomor);
                 reSelGrid('e_jenisprod','{{ url("tehnik/polis/entry-master-polis/lod_mpid") }}' + '?mjns=' + getText("mpol_mjns_mpid_kode"));
-				cekpolis();
-				muncul3(row.mjns_jl,row.mjns_jl_pst,row.mjns_jl_pas,row.mjns_wp_pens,row.mjns_phk_pens);
+                cekpolis();
+                muncul3(row.mjns_jl,row.mjns_jl_pst,row.mjns_jl_pas,row.mjns_wp_pens,row.mjns_phk_pens);
+            });
+
+            selectGrid('mpol_mssp_nama', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_segmen") }}' + '?id=segmen', 'mssp_kode', 'mssp_nama', [
+                {field:'mssp_kode',title:'Kode Segmen Pasar',width:60},
+                {field:'mssp_nama',title:'Segmen Pasar',align:'left',width:150},
+                {field:'mssp_tgl_awal',title:'Tgl Awal',width:80,hidden:true},
+                {field:'mssp_tgl_ahir',title:'tgl Akhir',width:80,hidden:true},
+                {field:'mssp_komisi',title:'Komisi',width:50,hidden:true},
+                {field:'mssp_feebase',title:'Fee Base',width:50,hidden:true},
+                {field:'mssp_openpolis',title:'Open Polis',width:50,hidden:true},
+            ], function(i, row) {
+                hidePesan('mpol_mssp_nama');
+                setText("mpol_mssp_kode",row.mpol_mssp_kode);
+                muncul2(row.mssp_tgl_awal,row.mssp_tgl_ahir,row.mssp_komisi,row.mssp_feebase,row.mssp_openpolis);
+            });
+
+            selectGrid('e_manfaat', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_manfaat") }}', 'mjm_kode', 'mjm_nama', [
+                {field:'mjm_nama',title:'Manfaat',align:'left',width:280},
+                {field:'mjm_kode',title:'Kode',width:60},
+                {field:'mjm_bundling',title:'Bundling',width:80,hidden:true},
+                {field:'mjm_jiwa',title:'jiwa',width:180,hidden:true},
+                {field:'mjm_gu',title:'gu',width:50,hidden:true},
+                {field:'mjm_phk',title:'phk',width:50,hidden:true},
+                {field:'mjm_tlo',title:'tlo',width:50,hidden:true},
+                {field:'mjm_fire',title:'fire',width:50,hidden:true},
+                {field:'mjm_wp',title:'wp',width:50,hidden:true},
+                {field:'mjm_umut',title:'umut',width:50,hidden:true},
+                {field:'mjm_wp_pensiun',title:'wp_pens',width:50,hidden:true},
+                {field:'mjm_phk_pensiun',title:'phk_pens',width:50,hidden:true},
+            ], function(i, row) {
+                hidePesan('e_manfaat');
+                setText("mpol_mjm_kode",row.mjm_kode);
+				// setText("mpol_kode",kode);
+				muncul(row.mjm_bundling,row.mjm_jiwa,row.mjm_gu,row.mjm_phk,row.mjm_tlo,row.mjm_fire,row.mjm_wp,row.mjm_umut,row.mjm_wp_pensiun,row.mjm_phk_pensiun);
+				tanya();
             });
 
             selectGrid('e_jenisprod', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_mpid") }}', 'mpid_kode', 'mpid_nama', [
@@ -1345,21 +1448,130 @@
                 {field:'mpid_nama',title:'Jenis Produk',width:300},
             ], function(i, row) {
                 hidePesan('e_jenisprod');
-				// setText("e_jenisprod",row.e_jenisprod);
+                // setText("e_jenisprod",row.e_jenisprod);
             });
 
-            selectSideMt('mpol_mprov_berlaku', '{{ url("api/utility/menu/select-tipemenu") }}', function(d) { return {
-                id: d.wmt_kode,
-                text: d.wmt_nama
+            selectGrid('e_pras', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_pras") }}', 'mpras_kode', 'mpras_nama', [
+                {field:'mpras_nama',title:'Program Asuransi',align:'left',width:280},
+                {field:'mpras_kode',title:'Kode Program Asuransi',width:50,hidden:true},
+                {field:'mpras_uptambah',title:'UP Tambahan',width:80,hidden:true},
+                {field:'mpras_ujrah_referal',title:'Ujrah Referal',width:80,hidden:true},
+                {field:'mpras_disc_rate',title:'Discount Rate',width:50,hidden:true},
+                {field:'mpras_mmft_kode_jiwa',title:'Tambahan Jiwa',width:50,hidden:true},
+            ], function(i, row) {
+                hidePesan('e_pras');
+                setText("mpol_mpras_kode",row.mpras_kode);
+
+			    muncul1(row.mpras_uptambah,row.mpras_ujrah_referal,row.mpras_discrate,row.mpras_mmft_kode_jiwa);
+                e_leave("mpol_kode");
+            });
+
+            selectGrid('e_cabalamin', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_cabalamin_komisi") }}', 'kode', 'nama', [
+                {field:'kode',title:'Kode Cabang',width:60},
+                {field:'nama',title:'Nama Cabang',align:'left',width:150},
+            ], function(i, row) {
+                hidePesan('e_cabalamin');
+                setText("mpol_mlok_kode",row.kode);
+				setText("mpol_mkar_kode_pim",row.kd_pinca);
+                reSelGrid('e_marketing','{{ url("api/tehnik/polis/entry-master-polis/lod_marketing") }}' + '?mlok=' + row.kode);
+            });
+
+            selectGrid('e_marketing', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_marketing") }}', 'kode', 'nama', [
+                {field:'kode',title:'Kode Cabang',width:60},
+                {field:'nama',title:'Nama Cabang',align:'left',width:150},
+            ], function(i, row) {
+                hidePesan('e_marketing');
+                setText("mpol_mkar_kode_mkr",row.kode);
+            });
+
+            selectGrid('e_tarif', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_tarif_polis") }}', 'kode', 'nama', [
+                {field:'kode',title:'Kode tarif',width:75},
+                {field:'nama',title:'Keterangan',align:'left',width:300},
+            ], function(i, row) {
+                hidePesan('e_tarif');
+                setText("mpol_mth_nomor",row.kode);
+
+			    // setloadpolis();
+            });
+
+            selectGrid('e_uw', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_tarif_polis") }}', 'kode', 'nama', [
+                {field:'kode',title:'Kode Cabang',width:60},
+                {field:'nama',title:'Nama Cabang',align:'left',width:150},
+            ], function(i, row) {
+                hidePesan('e_uw');
+                setText("mpol_mpuw_nomor",row.kode);
+            });
+
+            selectSideMt('mpol_mprov_berlaku', '{{ url("tehnik/polis/entry-master-polis/lod_provinsi") }}' + '?polis=' + getText('mpol_kode'), function(d) { return {
+                id: d.mprov_kode,
+                text: d.mprov_nama
             }}, function(e) {
                 var data = e.params.data.id;
-                console.log(data);
+                // console.log(data);
             });
 
-            // onSelect('msoc_jns_perusahaan', function(e) {
-            //     var row = e.params.data;
-            //     cekpolis();
-            // });
+            selectSideMt('mpol_va_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=V', function(d) { return {
+                id: d.kode,
+                text: d.nama
+            }}, function(e) {
+                var data = e.params.data.id;
+                // console.log(data);
+            });
+
+            selectSideMt('mpol_playonline_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=O', function(d) { return {
+                id: d.kode,
+                text: d.nama
+            }}, function(e) {
+                var data = e.params.data.id;
+                // console.log(data);
+            });
+
+            selectSideMt('mpol_agent_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=A', function(d) { return {
+                id: d.kode,
+                text: d.nama
+            }}, function(e) {
+                var data = e.params.data.id;
+                // console.log(data);
+            });
+
+
+            tombol('click', 'lihatTarif', function() {
+                var kode = getText('mpol_mth_nomor');
+                var idFrame = $('#tbTarif');
+                if (kode !== "" && kode !== null) {
+                    openModal('modalLihatTarif');
+                    titleAction('titleLihatTarif', 'Table Tarif');
+                    setAttr("tbTarif", "src", "{{ url('tehnik/polis/entry-master-polis/rpt_lihattarif') }}" + "?nomor=" + kode);
+                } else {
+                    message('error', 'Oops...', 'Pilih dulu ketentuan tarif!');
+                }
+            });
+
+            tombol('click', 'lihatUw', function() {
+                var kode = getText('mpol_mpuw_nomor');
+                if (kode !== "" && kode !== null) {
+                    openModal('modalLihatUw');
+                    titleAction('titleLihatUw', 'Table Underwriting');
+                    setAttr("tbUw", "src", "{{ url('tehnik/polis/entry-master-polis/rpt_lihat_uw') }}" + "?nomor=" + kode);
+                } else {
+                    message('error', 'Oops...', 'Pilih dulu ketentuan uw!');
+                }
+            });
+
+            tombol('change', 'mpol_dok', function(e) {
+                var _this = e.target.files[0];
+                showObj('viewPdfFile', 'data', _this);
+            });
+
+            tombol('click', 'lihatDocPolis', function() {
+                var file = getText('mpol_dok');
+                if (file == null || file == "") {
+                    message("error","Ops..","File dokumen kosong, harap di isi dulu!");
+                } else {
+                    openModal('modalLihatDoc');
+                    titleAction('titleLihatDoc', 'Lihat Dokumen');
+                }
+            });
 
             submitForm(
                 "frxx_mstpolis",
@@ -1376,6 +1588,46 @@
             );
         });
 
+        function e_leave(id) {
+            var vv={ res : ''};
+            var rms="";
+            var url="";
+
+            if (id=="mpol_kode") {
+                var tipe=getText("endors");
+                vv={ res : ''};
+                rms="pmgpolis="+getText("mpol_mrkn_kode")+"&kdstatus="+getText("endors")+"&mekanisme2="+getText("mpol_mekanisme2")+"&judul="+getText("judul")+"&kdsoc="+getText("mpol_msoc_kode");
+
+                url="{{ url('tehnik/polis/entry-master-polis/get_kodepolis') }}"+"?id="+id+"&"+rms;
+                getJson(url,vv, function(data){
+                    console.log(data);
+                    if (data) {
+                        if (data.mpol_kode!="" && tipe=="0") {
+                            pesan("info", "Data sudah pernah di input dengan nomor: "+data.mpol_kode);
+                            clear_f();
+                        }
+                        if (tipe!="0") {
+                            setText("e_bersih","1");
+                            jsonForm('frxx_mstpolis', data);
+                            if(getText('judul')==4) {
+                                setText("mpol_tgl_terbit","");
+                                setText("mpol_tgl_awal_polis","");
+                            }
+                            if (data.mpol_mja_kode=="" || data.mpol_mja_kode=="0" || data.mpol_mgpp_kode=="" || data.mpol_mgpp_kode=="00") {
+                                setTextReadOnly("mpol_mja_kode",false) ;
+                                setTextReadOnly("mpol_mgpp_kode",false) ;
+                            } else {
+                                setTextReadOnly("mpol_mja_kode",true) ;
+                                setTextReadOnly("mpol_mgpp_kode",true) ;
+                            }
+                            // $('#ffile').form('load',data);
+                            setText("e_bersih","");
+                        }
+                        muncul(data.mjm_bundling,data.mjm_jiwa,data.mjm_gu,data.mjm_phk,data.mjm_tlo,data.mjm_fire,data.mjm_wp,data.mjm_umut);
+                    }
+                });
+            }
+        }
 
         function cekForm(tipe) {
             clear_f();
@@ -1387,6 +1639,7 @@
                 $('#btnBtl').removeClass('active');
                 toster('success', 'Tombol Polis Baru Telah Aktif', 5000, 2);
                 titleAction('title_action', 'Polis Baru');
+                setText('judul', tipe);
 
                 setText("mpol_ins_soc",0);
                 setTextReadOnly("mpol_ins_soc",true);
@@ -1413,6 +1666,7 @@
                 $('#btnBtl').removeClass('active');
                 toster('success', 'Tombol Polis Edit Telah Aktif', 5000, 2);
                 titleAction('title_action', 'Polis Edit');
+                setText('judul', tipe);
 
                 setText("mpol_ins_soc",0);
                 setTextReadOnly("mpol_ins_soc",true);
@@ -1439,6 +1693,7 @@
                 $('#btnBtl').removeClass('active');
                 toster('success', 'Tombol Polis Endors Telah Aktif', 5000, 2);
                 titleAction('title_action', 'Polis Endors');
+                setText('judul', tipe);
 
                 setText("mpol_ins_soc",0);
                 setTextReadOnly("mpol_ins_soc",true);
@@ -1465,6 +1720,7 @@
                 $('#btnEdsBr').removeClass('active');
                 toster('success', 'Tombol Polis Batal Telah Aktif', 5000, 2);
                 titleAction('title_action', 'Polis Batal');
+                setText('judul', tipe);
 
                 setText("mpol_ins_soc",0);
                 setTextReadOnly("mpol_ins_soc",true) ;
@@ -1491,6 +1747,7 @@
                 $('#btnBtl').removeClass('active');
                 toster('success', 'Tombol Polis Endors Baru Telah Aktif', 5000, 2);
                 titleAction('title_action', 'Polis Endors Baru');
+                setText('judul', tipe);
 
                 setTextReadOnly("mpol_ins_soc",false);
                 setTextReadOnly("mpol_pajakfee",false);
@@ -1510,13 +1767,33 @@
                 setReadEdit(false);
             }
             setText('endors',tipe);
-            reSelGrid('mpol_mrkn_nama','{{ url("tehnik/polis/entry-master-polis/lod_pmg_polis") }}' + '?tipe=' + tipe);
+            // reSelGrid('mpol_mrkn_nama','{{ url("tehnik/polis/entry-master-polis/lod_pmg_polis") }}' + '?tipe=' + tipe);
         }
 
         function setReadEdit(sts) {
             setTextReadOnly("mpol_mjns_kode",sts);
             setTextReadOnly("mpol_tgl_terbit",sts);
             setTextReadOnly("mpol_tgl_awal_polis",sts);
+        }
+
+        // function setloadpolis() {
+        //     //bersih(1)
+        //     //var url="/live/ww.load/lod_soc.php?&jmn="+getText("mpol_mjns_kode")+"&pmgpolis="+getText("mpol_mrkn_kode")+"&mft="+getText("mpol_mft_kode");
+        //     //alert(url);
+        //     //reComboGrid("#e_pras",url);
+        // }
+
+        function cekopenpolis() {
+            var _this = getText("mpol_openpolis");
+            // if (getText("mpol_openpolis")=="1") {
+            if (_this) {
+                setTextReadOnly("mpol_tgl_ahir_polis",true);
+                setTextReadOnly("mpol_tgl_awal_polis",true);
+            } else {
+                setTextReadOnly("mpol_tgl_ahir_polis",false);
+                setTextReadOnly("mpol_tgl_awal_polis",true);
+                //setTextReadOnly("mpol_tgl_awal_polis",false);
+            }
         }
 
         function cekpolis() {
@@ -1529,6 +1806,135 @@
                     jsonForm('frxx_mstpolis', data);
                 }
             });
+        }
+
+        function ceksoc() {
+            vv = { res : ''};
+            rms = "pmgpolis="+getText("mpol_mrkn_kode")+"&mekanisme="+getText("mpol_mekanisme")+"&msoc="+getText("mpol_msoc_kode")+"&judul="+getText("judul")+"&mrkn_nama="+getText("mpol_mrkn_nama");
+
+            url = '{{ url("tehnik/polis/entry-master-polis/get_ket_soc") }}' + '?' + rms;
+            getJson(url, vv, function(data) {
+                if (data) {
+                    jsonForm('frxx_mstpolis', data);
+                    setText("mpol_jns_perusahaan",data.mpol_jns_perusahaan);
+                }
+            });
+        }
+
+        function cekdata() {
+            messageValid('Apakah Anda Yakin data ini sudah sesuai dengan surat penawaran PT Asuransi Jiwa Syariah Al Amin ?', (result) => {
+                if (result.isConfirmed) {
+
+                } else if (result.isDenied) {
+                    // pesan("info", "Silahkan Konfirmasi ke Bagian Teknik !!! ");
+                    // clear_f();
+                    pesan("info", "Silahkan Konfirmasi ke Bagian Teknik !!! ");
+                    clear_f();
+                }
+            });
+        }
+
+        function tanya() {
+            setTextReadOnly("mpol_mujh_persen",true);
+            setTextReadOnly("mpol_mmfe_persen",true);
+            setTextReadOnly("mpol_overreding",true);
+            setTextReadOnly("mpol_mfee_persen",true);
+            setTextReadOnly("mpol_mkom_persen",true);
+            setTextReadOnly("mpol_mdr_kode",true);
+            messageValid('Silahkan Cek Terlebih Dahulu, Apakah Data Ujroh dan Feebase sudah Benar ( Mengikuti Ketentuan di SOC ) ?', (result) => {
+                if (result.isConfirmed) {
+
+                } else if (result.isDenied) {
+                    pesan("info", "Silahkan Konfirmasi ke Bagian Teknik !!! ");
+                    clearForm();
+                }
+            });
+        }
+
+        function muncul(bandling,jiwa,gu,phk,tlo,fire,wp,umut,ujrf,discrate,wp_pens,phk_pens) {
+            setTextReadOnly("mpol_mmft_kode_gu",true);
+            if (gu=="1") {
+                setTextReadOnly("mpol_mmft_kode_gu",false);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_wp_swasta",true);
+            if (wp=="1") {
+                setTextReadOnly("mpol_mmft_kode_wp_swasta",false);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_wp_pns",true);
+            if (wp=="1") {
+                setTextReadOnly("mpol_mmft_kode_wp_pns",false);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_phk_swasta",true);
+            if (phk=="1") {
+                setTextReadOnly("mpol_mmft_kode_phk_swasta",false);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_phk_pns",true);
+            if (phk=="1") {
+                setTextReadOnly("mpol_mmft_kode_phk_pns",false);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_tlo",true);
+            if (tlo=="1") {
+                setTextReadOnly("mpol_mmft_kode_tlo",false);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_fire",true);
+            if (fire=="1") {
+                setTextReadOnly("mpol_mmft_kode_fire",false);
+            }
+        }
+
+        function muncul1(uptambah,ujrah_referal,discrate,mmft_kode_jiwa) {
+            setTextReadOnly("mpol_mmft_kode_jiwa",true);
+            if (mmft_kode_jiwa=="1") {
+                setTextReadOnly("mpol_mmft_kode_jiwa",false);
+            }
+
+            setTextReadOnly("mpol_mut_kode",true);
+            if (uptambah=="1") {
+                setTextReadOnly("mpol_mut_kode",false);
+            }
+
+            setTextReadOnly("mpol_mujhrf_kode",true);
+            if (ujrah_referal=="1") {
+                setTextReadOnly("mpol_mujhrf_kode",false);
+            }
+
+            setTextReadOnly("mpol_mdr_kode",false);
+            if (discrate=="1") {
+                setTextReadOnly("mpol_mdr_kode",true);
+            }
+        }
+
+        function muncul2(mssp_tgl_awal,mssp_tgl_ahir,mssp_komisi,mssp_feebase,mssp_openpolis) {
+            setTextReadOnly("mpol_openpolis",false);
+            if (mssp_openpolis=="2") {
+                setTextReadOnly("mpol_openpolis",true);
+            }
+
+            setTextReadOnly("mpol_tgl_awal_polis",false);
+            if (mssp_tgl_awal=="1") {
+                setTextReadOnly("mpol_tgl_awal_polis",false);
+            }
+
+            setTextReadOnly("mpol_tgl_ahir_polis",false);
+            if (mssp_tgl_ahir=="1") {
+                setTextReadOnly("mpol_tgl_ahir_polis",true);
+            }
+
+            setTextReadOnly("mpol_overreding",false);
+            if (mssp_komisi=="1") {
+                setTextReadOnly("mpol_overreding",true);
+            }
+
+            setTextReadOnly("mpol_mfee_persen",false);
+            if (mssp_feebase=="1") {
+                setTextReadOnly("mpol_mfee_persen",true);
+            }
         }
 
         function muncul3(mjns_jl,mjns_jl_pst,mjns_jl_pas,mjns_wp_pens,mjns_phk_pens) {
@@ -1559,6 +1965,172 @@
             }
         }
 
+        function muncul4(bandling,mjns_wp_pens,mjns_phk_pens,jiwa,gu,phk,tlo,fire,wp,umut,ujrf,discrate,wp_pens,phk_pens,uptambah,ujrah_referal,discrate,mmft_kode_jiwa,mssp_tgl_awal,mssp_tgl_ahir,mssp_komisi,mssp_feebase,mssp_openpolis,mjns_jl,mjns_jl_pst,mjns_jl_pas)
+		{
+            if (jiwa="01") {
+                setTextReadOnly("mpol_mnfa_kode",false);
+                setTextReadOnly("mpol_mmft_kode_gu",true);
+                setTextReadOnly("mpol_mmft_kode_wp_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pns",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pns",true);
+                setTextReadOnly("mpol_mmft_kode_tlo",true);
+                setTextReadOnly("mpol_mmft_kode_fire",true);
+                setTextReadOnly("mpol_mmft_kode_jiwa",true);
+            }
+            setTextReadOnly("mpol_mmft_kode_gu",true);
+            if (gu=="1") {
+                setTextReadOnly("mpol_mmft_kode_gu",false);
+                setTextReadOnly("mpol_mmft_kode_wp_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pns",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pns",true);
+                setTextReadOnly("mpol_mmft_kode_tlo",true);
+                setTextReadOnly("mpol_mmft_kode_fire",true);
+                setTextReadOnly("mpol_mmft_kode_jiwa",true);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_wp_swasta",true);
+
+            if (wp=="1") {
+                setTextReadOnly("mpol_mmft_kode_wp_swasta",false);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_wp_pns",true);
+            if (wp=="1") {
+                setTextReadOnly("mpol_mmft_kode_wp_pns",false);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_wp_pensiun",true);
+            if (mjns_wp_pens=="1") {
+                setTextReadOnly("mpol_mmft_kode_wp_pensiun",false);
+                setTextReadOnly("mpol_mmft_kode_wp_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pns",true);
+
+                setTextReadOnly("mpol_mmft_kode_phk_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pns",true);
+
+                setTextReadOnly("mpol_mmft_kode_tlo",true);
+                setTextReadOnly("mpol_mmft_kode_fire",true);
+                setTextReadOnly("mpol_mmft_kode_jiwa",true);
+            }
+
+
+            //setTextReadOnly("mpol_mmft_kode_phk_pensiun",true);
+            if (mjns_phk_pens=="1") {
+                setTextReadOnly("mpol_mmft_kode_phk_pensiun",false);
+                setTextReadOnly("mpol_mmft_kode_phk_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pns",true);
+                if (mjns_wp_pens=="1")
+                {
+                setTextReadOnly("mpol_mmft_kode_wp_pensiun",false);
+                }
+                else
+                {
+
+                setTextReadOnly("mpol_mmft_kode_wp_pensiun",true);
+                }
+
+                setTextReadOnly("mpol_mmft_kode_wp_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pns",true);
+                setTextReadOnly("mpol_mmft_kode_tlo",true);
+                setTextReadOnly("mpol_mmft_kode_fire",true);
+                setTextReadOnly("mpol_mmft_kode_jiwa",true);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_phk_swasta",true);
+            if (phk=="1") {
+                setTextReadOnly("mpol_mmft_kode_phk_swasta",false);
+
+            }
+
+            setTextReadOnly("mpol_mmft_kode_phk_pns",true);
+            if (phk=="1") {
+                setTextReadOnly("mpol_mmft_kode_phk_pns",false);
+
+            }
+
+            setTextReadOnly("mpol_mmft_kode_tlo",true);
+            if (tlo=="1") {
+                setTextReadOnly("mpol_mmft_kode_tlo",false);
+                setTextReadOnly("mpol_mmft_kode_wp_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pns",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pns",true);
+                setTextReadOnly("mpol_mmft_kode_fire",true);
+                setTextReadOnly("mpol_mmft_kode_jiwa",true);
+            }
+
+            setTextReadOnly("mpol_mmft_kode_fire",true);
+            if (fire=="1") {
+                setTextReadOnly("mpol_mmft_kode_fire",false);
+                setTextReadOnly("mpol_mmft_kode_wp_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pns",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pns",true);
+                setTextReadOnly("mpol_mmft_kode_tlo",true);
+                setTextReadOnly("mpol_mmft_kode_jiwa",true);
+            }
+            setTextReadOnly("mpol_mmft_kode_jiwa",true);
+            if (mmft_kode_jiwa=="1") {
+                setTextReadOnly("mpol_mmft_kode_jiwa",false);
+                setTextReadOnly("mpol_mmft_kode_wp_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pns",true);
+                setTextReadOnly("mpol_mmft_kode_wp_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pensiun",true);
+                setTextReadOnly("mpol_mmft_kode_phk_swasta",true);
+                setTextReadOnly("mpol_mmft_kode_phk_pns",true);
+                setTextReadOnly("mpol_mmft_kode_tlo",true);
+                setTextReadOnly("mpol_mmft_kode_fire",true);
+            }
+
+            setTextReadOnly("mpol_mut_kode",true);
+            if (uptambah=="1") {
+                setTextReadOnly("mpol_mut_kode",false);
+            }
+
+            setTextReadOnly("mpol_mujhrf_kode",true);
+            if (ujrah_referal=="1") {
+                setTextReadOnly("mpol_mujhrf_kode",false);
+            }
+            setTextReadOnly("mpol_openpolis",false);
+            if (mssp_openpolis=="2") {
+                setTextReadOnly("mpol_openpolis",true);
+            }
+
+            setTextReadOnly("mpol_tgl_awal_polis",false);
+            if (mssp_tgl_awal=="1") {
+                setTextReadOnly("mpol_tgl_awal_polis",true);
+            }
+
+            setTextReadOnly("mpol_tgl_ahir_polis",false);
+            if (mssp_tgl_ahir=="1") {
+                setTextReadOnly("mpol_tgl_ahir_polis",true);
+            }
+
+            setTextReadOnly("mpol_jl",true);
+            if (mjns_jl=="1") {
+                setTextReadOnly("mpol_jl",false);
+            }
+            setTextReadOnly("mpol_jl_pst",true);
+            if (mjns_jl_pst=="1") {
+                setTextReadOnly("mpol_jl_pst",false);
+            }
+            setTextReadOnly("mpol_jl_pasangan",true);
+            if (mjns_jl_pas=="1") {
+                setTextReadOnly("mpol_jl_pasangan",false);
+            }
+        }
+
         function clear_f() {
             clearForm('frxx_mstpolis');
             bsimpan('btn_simpan', 'Simpan');
@@ -1580,62 +2152,47 @@
             // setText('sjab_editsoc','1');
 
             setText("mpol_mft_kode","01");
-			setText("mpol_aktif","1");
-			setText("mpol_online","0");
-			setText("mpol_va","0");
-			setText("mpol_jns_tarif","0");
-			// tutup_paymod();
-			setText("e_pras","REGULER");
-			setText("mpol_nilai_ketusreas1","0");
-			setText("mpol_nilai_ketusreas2","0");
+            setText("mpol_aktif","1");
+            setText("mpol_online","0");
+            setText("mpol_va","0");
+            setText("mpol_jns_tarif","0");
+            // tutup_paymod();
+            setText("e_pras","REGULER");
+            setText("mpol_nilai_ketusreas1","0");
+            setText("mpol_nilai_ketusreas2","0");
 
-			setText("mpol_endos","0");
-			setText("mpol_tgl_terbit", curDate());
-			setText("mpol_tgl_awal_polis", curDate());
-			setText("mpol_tgl_ahir_polis", curDate());
-			setText("mpol_usia_max","0");
-			setText("mpol_usia_min","0");
-			setText("mpol_tenor_max","0");
-			setText("mpol_jatuh_tempo","0");
-			setText("mpol_lapor_data","0");
-			setText("mpol_kadaluarsa_klaim","0");
-			setText("mpol_byr_premi","0");
-			setText("mpol_max_pst","100");
-			setText("mpol_max_up","1000000");
-			setText("mpol_standar_premi","50000");
+            setText("mpol_endos","0");
+            setText("mpol_tgl_terbit", curDate());
+            setText("mpol_tgl_awal_polis", curDate());
+            setText("mpol_tgl_ahir_polis", curDate());
+            setText("mpol_usia_max","0");
+            setText("mpol_usia_min","0");
+            setText("mpol_tenor_max","0");
+            setText("mpol_jatuh_tempo","0");
+            setText("mpol_lapor_data","0");
+            setText("mpol_kadaluarsa_klaim","0");
+            setText("mpol_byr_premi","0");
+            setText("mpol_max_pst","100");
+            setText("mpol_max_up","1000000");
+            setText("mpol_standar_premi","50000");
 
-			setText("mpol_aprove_fc","0");
-			setText("mpol_mfee_persen","0");
-			setText("mpol_mkom_persen","0");
-			setText("mpol_overreding","0");
-			setText("mpol_mmfe_persen","0");
-			setText("mpol_mujh_persen","0");
-			setText("mpol_mujhrf_kode","0");
-			setText("mpol_mdr_kode","0");
-			setText("mpol_mut_kode","0");
-			setText("mpol_ket_endors","-");
-			setText("mpol_no_endors","-");
-			setText("mpol_max_bayar_klaim","0");
-			setText("mpol_tipe_uw","0");
-			// setText("typerpt","web");
+            setText("mpol_aprove_fc","0");
+            setText("mpol_mfee_persen","0");
+            setText("mpol_mkom_persen","0");
+            setText("mpol_overreding","0");
+            setText("mpol_mmfe_persen","0");
+            setText("mpol_mujh_persen","0");
+            setText("mpol_mujhrf_kode","0");
+            setText("mpol_mdr_kode","0");
+            setText("mpol_mut_kode","0");
+            setText("mpol_ket_endors","-");
+            setText("mpol_no_endors","-");
+            setText("mpol_max_bayar_klaim","0");
+            setText("mpol_tipe_uw","0");
+            // setText("typerpt","web");
 
-			setReadEdit(false);
+            setReadEdit(false);
         }
-
-        // function e_pras() {
-        //     setTextReadOnly('e_pras', false);
-        //     setTextReadOnly('msoc_mpras_kode',false);
-        //     setTextReadOnly('msoc_mrkn_nama',false);
-        //     setTextReadOnly('msoc_mrkn_kode',false);
-        //     setTextReadOnly('e_nasabah',false);
-        //     setTextReadOnly('msoc_mspaj_nama',false);
-        //     setTextReadOnly('msoc_mft_kode',false);
-        //     setTextReadOnly('e_manfaat',false);
-        //     setTextReadOnly('e_manfaat_pol',false);
-        //     setTextReadOnly('msoc_mssp_nama',false);
-        //     setTextReadOnly('msoc_jenis_bayar',false);
-        //     setTextReadOnly('msoc_mekanisme',false);
-        // }
 
         function bersih(tipe) {
             if (getText("e_bersih")=="1") {
@@ -1667,138 +2224,7 @@
             closeModal('modalLihatDoc');
             $('#lihatFileDoc').attr("data","");
         }
-
-        function close_mTarif() {
-            closeModal('modalTarif');
-            clearForm('frxx_uploadTarif');
-        }
-
-        function close_mUw() {
-            closeModal('modalUw');
-            clearForm('frxx_uploadUw');
-        }
-
-        function close_lihatDoc() {
-            closeModal('modalLihatDoc');
-            $('#lihatFileDoc').attr("data","");
-        }
-
-        function showTarifTable(idTable, kode) {
-            dtTable(
-                idTable,
-                false,
-                "{{ url('api/tehnik/soc/entry-soc/lihat-tarif') }}" + "/" + kode,
-                [
-                    { data: "DT_RowIndex", className: "text-center" },
-                    { data: "mstuj_1", className: "text-center" },
-                    { data: "mstuj_2", className: "text-center" },
-                    { data: "mstuj_3", className: "text-center" },
-                    { data: "mstuj_4", className: "text-center" },
-                    { data: "mstuj_5", className: "text-center" },
-                    { data: "mstuj_6", className: "text-center" },
-                    { data: "mstuj_7", className: "text-center" },
-                    { data: "mstuj_8", className: "text-center" },
-                    { data: "mstuj_9", className: "text-center" },
-                    { data: "mstuj_10", className: "text-center" },
-                    { data: "mstuj_11", className: "text-center" },
-                    { data: "mstuj_12", className: "text-center" },
-                    { data: "mstuj_13", className: "text-center" },
-                    { data: "mstuj_14", className: "text-center" },
-                    { data: "mstuj_15", className: "text-center" },
-                    { data: "mstuj_16", className: "text-center" },
-                    { data: "mstuj_17", className: "text-center" },
-                    { data: "mstuj_18", className: "text-center" },
-                    { data: "mstuj_19", className: "text-center" },
-                    { data: "mstuj_20", className: "text-center" },
-                    { data: "mstuj_21", className: "text-center" },
-                    { data: "mstuj_22", className: "text-center" },
-                    { data: "mstuj_23", className: "text-center" },
-                    { data: "mstuj_24", className: "text-center" },
-                    { data: "mstuj_25", className: "text-center" },
-                    { data: "mstuj_26", className: "text-center" },
-                    { data: "mstuj_27", className: "text-center" },
-                    { data: "mstuj_28", className: "text-center" },
-                    { data: "mstuj_29", className: "text-center" },
-                    { data: "mstuj_30", className: "text-center" },
-                    { data: "mstuj_31", className: "text-center" },
-                    { data: "mstuj_32", className: "text-center" },
-                    { data: "mstuj_33", className: "text-center" },
-                    { data: "mstuj_34", className: "text-center" },
-                    { data: "mstuj_35", className: "text-center" },
-                    { data: "mstuj_36", className: "text-center" },
-                    { data: "mstuj_37", className: "text-center" },
-                    { data: "mstuj_38", className: "text-center" },
-                    { data: "mstuj_39", className: "text-center" },
-                    { data: "mstuj_40", className: "text-center" },
-                    { data: "mstuj_41", className: "text-center" },
-                    { data: "mstuj_42", className: "text-center" },
-                    { data: "mstuj_43", className: "text-center" },
-                    { data: "mstuj_44", className: "text-center" },
-                    { data: "mstuj_45", className: "text-center" },
-                    { data: "mstuj_46", className: "text-center" },
-                    { data: "mstuj_47", className: "text-center" },
-                    { data: "mstuj_48", className: "text-center" },
-                    { data: "mstuj_49", className: "text-center" },
-                    { data: "mstuj_50", className: "text-center" },
-                    { data: "mstuj_51", className: "text-center" },
-                    { data: "mstuj_52", className: "text-center" },
-                    { data: "mstuj_53", className: "text-center" },
-                    { data: "mstuj_54", className: "text-center" },
-                    { data: "mstuj_55", className: "text-center" },
-                    { data: "mstuj_56", className: "text-center" },
-                    { data: "mstuj_57", className: "text-center" },
-                    { data: "mstuj_58", className: "text-center" },
-                    { data: "mstuj_59", className: "text-center" },
-                    { data: "mstuj_60", className: "text-center" },
-                    { data: "mstuj_61", className: "text-center" },
-                    { data: "mstuj_62", className: "text-center" },
-                    { data: "mstuj_63", className: "text-center" },
-                    { data: "mstuj_64", className: "text-center" },
-                    { data: "mstuj_65", className: "text-center" },
-                    { data: "mstuj_66", className: "text-center" },
-                    { data: "mstuj_67", className: "text-center" },
-                    { data: "mstuj_68", className: "text-center" },
-                    { data: "mstuj_69", className: "text-center" },
-                    { data: "mstuj_70", className: "text-center" },
-                    // { data: "mstuj_71", className: "text-center" },
-                    // { data: "mstuj_72", className: "text-center" },
-                    // { data: "mstuj_73", className: "text-center" },
-                    // { data: "mstuj_74", className: "text-center" },
-                    // { data: "mstuj_75", className: "text-center" },
-                    // { data: "mstuj_76", className: "text-center" },
-                    // { data: "mstuj_77", className: "text-center" },
-                    // { data: "mstuj_78", className: "text-center" },
-                    // { data: "mstuj_79", className: "text-center" },
-                    // { data: "mstuj_80", className: "text-center" },
-                    // { data: "mstuj_81", className: "text-center" },
-                    // { data: "mstuj_82", className: "text-center" },
-                    // { data: "mstuj_83", className: "text-center" },
-                    // { data: "mstuj_84", className: "text-center" },
-                    // { data: "mstuj_85", className: "text-center" },
-                    // { data: "mstuj_86", className: "text-center" },
-                ],
-                [0, 'asc'],
-            );
-        }
-
-        function showUwTable(idTable, kode) {
-            dtTable(
-                idTable,
-                false,
-                "{{ url('api/tehnik/soc/entry-soc/lihat-uw') }}" + "/" + kode,
-                [
-                    { data: "mrmp_urut", className: "text-center" },
-                    { data: "mrmp_tipe_peserta", className: "text-center" },
-                    { data: "mrmp_ket1", className: "text-center" },
-                    { data: "mrmp_ket2", className: "text-left" },
-                    { data: "mrmp_min_umur", className: "text-center" },
-                    { data: "mrmp_max_umur", className: "text-center" },
-                    { data: "mrmp_total_min", className: "text-center" },
-                    { data: "mrmp_total_max", className: "text-center" },
-                    { data: "mrmp_xn_max", className: "text-center" },
-                ],
-                [0, 'asc'],
-            );
-        }
     </script>
+
+
 @endsection
