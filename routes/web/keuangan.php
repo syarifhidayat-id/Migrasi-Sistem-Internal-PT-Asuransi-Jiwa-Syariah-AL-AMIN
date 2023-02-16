@@ -49,6 +49,8 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
         Route::group(['prefix' => '/buku-besar-kas', 'as' => 'buku-besar-kas.'], function () {
             Route::get('/api-kantor-cabang', [BukuBesarController::class, 'kantor_cabang']);
             Route::get('/lod_bukber', [BukuBesarController::class, 'lod_bukber']);
+            Route::post('jurnalkasfinal', [BukuBesarController::class, 'jurnalkasfinal']);
+            
         });
     });
 

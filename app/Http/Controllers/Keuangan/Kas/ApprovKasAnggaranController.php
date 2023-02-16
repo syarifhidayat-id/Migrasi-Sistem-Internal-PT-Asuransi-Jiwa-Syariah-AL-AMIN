@@ -128,7 +128,7 @@ class ApprovKasAnggaranController extends Controller
         " . $tambah . " 
         ORDER BY tkad_tipe_dk DESC
         LIMIT " . $baris . "");
-        $data = Lib::__dbAll($cmd);
+        $data = __dbAll($cmd);
         return DataTables::of($data)
             ->addIndexColumn()
             ->filter(function ($instance) use ($request) {

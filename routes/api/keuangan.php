@@ -79,6 +79,8 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('/lod_bukber', [BukuBesarController::class, 'lod_bukber']);
             Route::get('getjurnalkasfull', [BukuBesarController::class, 'getjurnalkasfull']);
             Route::get('i_jurkas', [BukuBesarController::class, 'i_jurkas']);
+            Route::get('get_kasdetil', [BukuBesarController::class, 'get_kasdetil']);
+            Route::get('lov_polis', [BukuBesarController::class, 'lov_polis']);
         });
         Route::group(['prefix' => '/approv-kas-anggaran', 'as' => 'approv-kas-anggaran.'], function () {
             Route::get('cabang_alamin', [ApprovKasAnggaranController::class, 'selectCabang']);

@@ -23,7 +23,7 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
         Route::get('/get_nopolis', [Load::class, 'get_nopolis']);
     });
     Route::group(['prefix' => 'lihat-polis', 'as' => 'lihat-polis.'], function() {
-        Route::resource('/', PolisController::class);
+        // Route::resource('/', PolisController::class);
     });
     Route::resource('/approval-master-polis', ApprovalMasterPolisController::class);
   });

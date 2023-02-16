@@ -198,7 +198,7 @@ class ApprovController extends Controller
         ".$tambah." 
         ORDER BY tdna_date_ins DESC
         LIMIT ".$baris."");
-        $data = Lib::__dbAll($cmd);
+        $data = __dbAll($cmd);
         return DataTables::of($data)
             ->addIndexColumn()
             ->filter(function ($instance) use ($request) {
@@ -351,7 +351,7 @@ class ApprovController extends Controller
 
         );
 
-        $data['tdna_total'] = Lib::__str2($request->tdna_total, 'N');
+        $data['tdna_total'] = __str2($request->tdna_total, 'N');
 
 
         if ($level_jabatan->sjab_level == "STF" && $level_jabatan->sjab_sdir_kode == "OPS") {

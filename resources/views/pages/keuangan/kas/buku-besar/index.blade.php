@@ -108,6 +108,9 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end">
+                                {{-- <button type="submit" class="btn btn-primary fw-bold btn-sm me-2"
+                                    onclick="e_lov()"><i
+                                        class="fa-sharp fa-solid fa-magnifying-glass"></i> test</button> --}}
                                 <button type="submit" class="btn btn-primary fw-bold btn-sm me-2"
                                     data-kt-menu-dismiss="true" data-kt-datatable-table-filter="filter"><i
                                         class="fa-sharp fa-solid fa-magnifying-glass"></i> Cari</button>
@@ -189,6 +192,7 @@ $jab = Auth::user()->jabatan;
     @include('pages.keuangan.kas.buku-besar.modal.approv')
     @include('pages.keuangan.kas.buku-besar.modal.view')
     @include('pages.keuangan.kas.buku-besar.modal.show-pst')
+    @include('pages.keuangan.kas.buku-besar.modal.e_lov_cari')
 @endsection
 
 @section('script')
@@ -267,15 +271,26 @@ $jab = Auth::user()->jabatan;
                         orderable: false,
                     },
                     {
-                        data: 'tkad_keterangan',
+                        data: null,
                         orderable: false,
+                        render: function(data, type, row, meta) {
+                            if (row.tkad_final == '2') {
+                                return `<input type="text" style="background-color: #ffcc8a83;" class="form-control form-control-solid xket" id="xket${row.DT_RowIndex}" name="xket${row.DT_RowIndex}" value="${row.tkad_keterangan}" readonly />`;
+                            } else {
+                                return `<input type="text" class="form-control form-control-solid xket" id="xket${row.DT_RowIndex}" name="xket${row.DT_RowIndex}" value="${row.tkad_keterangan}" />`;
+                            }
+                        }
                     },
                     {
                         data: 'debit',
                         orderable: false,
                         className: "dt-body-right",
                         render: function(data, type, row, meta) {
-                            return `<input type="text" class="form-control form-control-solid xddr" id="xddr${row.DT_RowIndex}" name="xddr${row.DT_RowIndex}" value="${formatNum(row.debit, 2)}" />`;
+                            if (row.tkad_tipe_dk == 'D' || row.tkad_final == '2') {
+                                return `<input type="text" style="background-color: #ffcc8a83;" class="form-control form-control-solid xddr" id="xddr${row.DT_RowIndex}" name="xddr${row.DT_RowIndex}" value="${formatNum(row.debit, 2)}" readonly />`;
+                            } else {
+                                return `<input type="text" class="form-control form-control-solid xddr" id="xddr${row.DT_RowIndex}" name="xddr${row.DT_RowIndex}" value="${formatNum(row.debit, 2)}" />`;
+                            }
                         }
                     },
                     {
@@ -283,8 +298,11 @@ $jab = Auth::user()->jabatan;
                         orderable: false,
                         className: "dt-body-right",
                         render: function(data, type, row, meta) {
-                            // return formatNum(row.kredit, 2);
-                            return `<input type="text" class="form-control form-control-solid xdcr" id="xdcr${row.DT_RowIndex}" name="xdcr${row.DT_RowIndex}" value="${formatNum(row.kredit, 2)}" />`;
+                            if (row.tkad_tipe_dk == 'K' || row.tkad_final == '2') {
+                                return `<input type="text" style="background-color: #ffcc8a83;" class="form-control form-control-solid xdcr" id="xdcr${row.DT_RowIndex}" name="xdcr${row.DT_RowIndex}" value="${formatNum(row.kredit, 2)}" readonly />`;
+                            } else {
+                                return `<input type="text" class="form-control form-control-solid xdcr" id="xdcr${row.DT_RowIndex}" name="xdcr${row.DT_RowIndex}" value="${formatNum(row.kredit, 2)}" />`;
+                            }
                         }
                     },
                     {
@@ -299,12 +317,24 @@ $jab = Auth::user()->jabatan;
                         data: 'tkad_askn_kode',
                         orderable: false,
                         render: function(data, type, row, meta) {
+                            if (row.tkad_final == '2' || row.debit > 0) {
+                                return ` 
+                                <div class="input-group input-group-solid">
+                                        <input type="text" style="background-color: #ffcc8a83;" class="form-control form-control-solid akuntrs" id="akuntrs${row.DT_RowIndex}" name="akuntrs${row.DT_RowIndex}" value="${row.tkad_askn_kode}" readonly />
 
-                            return `<div class="input-group input-group-solid">
+                                        <button type="button" onclick="e_lov('akuntrs` + row.DT_RowIndex + `','` + row
+                                    .tkad_tipe_dk + `')" data-resouce="` + row.tkad_pk + `" class="btn btn-light-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                    </div>
+                                `;
+                            } else {
+                                return ` 
+                                <div class="input-group input-group-solid">
                                         <input type="text" class="form-control form-control-solid akuntrs" id="akuntrs${row.DT_RowIndex}" name="akuntrs${row.DT_RowIndex}" value="${row.tkad_askn_kode}" />
                                         <button type="button" onclick="e_lov('akuntrs` + row.DT_RowIndex + `','` + row
-                                .tkad_tipe_dk + `')" data-resouce="` + row.tkad_pk + `" class="btn btn-light-success"><i class="fa-solid fa-magnifying-glass"></i></button>
-                                    </div>`;
+                                    .tkad_tipe_dk + `')" data-resouce="` + row.tkad_pk + `" class="btn btn-light-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                    </div>
+                                `;
+                            }
                         }
                     },
 
@@ -312,22 +342,25 @@ $jab = Auth::user()->jabatan;
                         data: 'asakn_keterangan',
                         orderable: false,
                         render: function(data, type, row, meta) {
-                            return `<input type="text" class="form-control form-control-solid takuntrs" id="takuntrs${row.DT_RowIndex}" name="takuntrs${row.DT_RowIndex}" value="${row.asakn_keterangan}" />`;
+                            return `<input type="text" style="background-color: #ffcc8a83;" class="form-control form-control-solid takuntrs" id="takuntrs${row.DT_RowIndex}" name="takuntrs${row.DT_RowIndex}" value="${row.asakn_keterangan}" readonly />`;
                         }
                     },
                     {
                         data: null,
                         orderable: false,
+                        className: "text-center",
                         render: function(data, type, row, meta) {
                             var jab = '{{ __getJab() }}';
                             // if (row.tkad_final != "2" && row.tkad_final < "x" && row.tkad_final > "x") {
-                            return `<button type="button" class="btn btn-primary btn-sm" onclick="proses_pst('` +
-                                row.tkad_pk + `','akuntrs` + row.DT_RowIndex + `','` + row.tkad_tipe_dk +
-                                `','` + row.DT_RowIndex + `','` + row.tkad_atjh_pk + `','` + row
-                                .tkad_final + `')">Update</button>`;
-                            // }else{
-                            //     return `tidak`;
-                            // }
+                            if (row.tkad_final != "2") {
+                                return `<button type="button" class="btn btn-primary btn-sm" onclick="proses_pst('` +
+                                    row.tkad_pk + `','akuntrs` + row.DT_RowIndex + `','` + row
+                                    .tkad_tipe_dk +
+                                    `','` + row.DT_RowIndex + `','` + row.tkad_atjh_pk + `','` + row
+                                    .tkad_final + `')">Update</button>`;
+                            } else {
+                                return ``;
+                            }
 
                             // return ;
                         }
@@ -335,16 +368,17 @@ $jab = Auth::user()->jabatan;
                     {
                         data: null,
                         orderable: false,
+                        className: "text-center",
                         render: function(data, type, row, meta) {
                             if (row.tkad_final == "0") {
                                 return `<button type="button" class="btn btn-primary btn-sm" onclick="aprovPst('` +
                                     row.tkad_pk + `','` + row.tkad_tipe_dk + `','` + row.tkad_atjh_pk +
                                     `','` + row.tkad_final + `','` + row.tdna_tgl_aju + `','` + row
-                                    .tkad_finalket + `'">Belum Diproses</button>`;
+                                    .tkad_finalket + `')">` + row.tkad_finalket + `</button>`;
                             }
-                            if (row.tkad_final == "2") {
+                            if (row.tkad_final == "1") {
                                 return `<button type="button" class="btn btn-primary btn-sm" onclick="showPst22('` +
-                                    row.tkad_pk + `','0'">` + row.tkad_finalket + `</button>`;
+                                    row.tkad_pk + `','0')">` + row.tkad_finalket + `</button>`;
                             } else {
                                 return `Final`;
                             }
@@ -431,38 +465,22 @@ $jab = Auth::user()->jabatan;
             });
 
             submitForm(
-                "frxx_approv",
+                "ff",
                 "btn_simpan",
                 "POST",
-                "{{ url('keuangan/kas/approv') }}",
+                "{{ url('keuangan/kas/buku-besar-kas/jurnalkasfinal') }}",
                 (resSuccess) => {
-                    // filterInput('a_pk', 'serverSide_kas');
-                    lodTable('serverSide_approv_kas');
+                    // lodTable('serverSide_buku_besar');
                     bsimpan("btn_simpan", 'Simpan');
-                    closeModal('modal_approv');
-                    clearForm("frxx_approv");
+                    closeModal('approv');
+                    // clearForm("ff");
                 },
                 (resError) => {
                     console.log(resError);
                 },
             );
 
-            submitForm(
-                "frxx_upload",
-                "btn_simpan",
-                "POST",
-                "{{ url('keuangan/kas/upload') }}",
-                (resSuccess) => {
-                    // filterInput('a_pk', 'serverSide_kas');
-                    lodTable('serverSide_approv_kas');
-                    bsimpan("btn_simpan", 'Simpan');
-                    closeModal('modal_upload');
-                    clearForm("frxx_upload");
-                },
-                (resError) => {
-                    console.log(resError);
-                },
-            )
+            
         });
 
         function uploadPolis(kode, doc) {
@@ -503,14 +521,8 @@ $jab = Auth::user()->jabatan;
                 console.log(data);
                 if (data) {
                     openModal('dlgModal');
+                    titleAction('tMod', 'Lihat Jurnal KAS');
                     jsonForm('dlg2', data);
-                    // urlJur = "{{ url('api/keuangan/kas/buku-besar-kas/i_jurkas') }}" + "?pk_h=" + kode;
-                    // lodJson('GET', urlJur, function(res) {
-
-                    //     //setText("e_bersih","1");
-                    //     $('#ff2').form('load', data);
-                    //     var grd_loadjur = "ww.load/l_jurkas.php?";
-                    //     $('#dgjur2').datagrid('load', grd_loadjur + "&pk_h=" + kode + "&");
 
                     serverSide( //datatable serverside
                         "serverSide_jurkas",
@@ -519,50 +531,171 @@ $jab = Auth::user()->jabatan;
                             d.pk_h = kode;
                         },
 
-                        [
-                            {
+                        [{
                                 data: "DT_RowIndex",
                                 className: "text-center"
                             },
                             {
-                                data: 'atjd_keterangan'
+                                data: "atjd_keterangan",
+                                className: "dt-body-left"
                             },
                             {
-                                data: 'atjd_tipe_dk'
+                                data: "atjd_tipe_dk"
                             },
                             {
-                                data: 'atjd_totalx'
+                                data: "atjd_totalx",
+                                className: "dt-body-right"
                             },
                             {
-                                data: 'atjd_askn_kode'
+                                data: "atjd_askn_kode",
+                                className: "dt-body-left"
                             },
                             {
-                                data: 'asakn_keterangan'
+                                data: "asakn_keterangan",
+                                className: "dt-body-left"
                             },
                         ],
                     );
                     // });
                 }
             });
-            // $('#dlg2').dialog('open');
         }
 
-        function e_lov(id, kode) {
-            console.log(id, kode);
-            openModal('e_lov');
-            titleAction('tMod', 'Lov Pencarian Data');
+        function aprovPst(kode, tipe, hdrpk, tkad_final, tgl_aju) {
 
+            titleAction('tModtest', 'Lihat Jurnal KAS');
+            openModal('approv');
+            url = "{{ url('api/keuangan/kas/buku-besar-kas/get_kasdetil') }}" + "?kode=" + kode + "&tipe=" +
+                tipe;
+            lodJson('GET', url, function(res) {
+                if (res) {
+                    console.log(res);
+                    jsonForm('ff', res);
+
+                    setText("tkad_pk", kode);
+                    setText("hdrpk", hdrpk);
+                    // setCombo("tkad_final",tkad_final);
+                    setText("mlok_kode", getText("tdna_mlok_kode"));
+                    var vlok = getText("mlok_kode");
+                    var vket1 = getText("ket_1");
+                    var vket2 = getText("ket_2");
+                    var vak1 = getText("a_1");
+                    var vak2 = getText("a_2");
+                    var vdb1 = getText("d_1");
+                    var vhdrpk = getText("hdrpk");
+                    var vtkad_pk = getText("tkad_pk");
+                    var vdkhdr = getText("tdna_dk");
+                    var vakunkas = getText("tdna_asakn_kode");
+
+
+
+                }
+            });
+
+            url = "{{ url('api/keuangan/kas/buku-besar-kas/getjurnalkasfull') }}" + "?kode=" + kode;
+            lodJson('GET', url, function(data) {
+                // console.log(data);
+                if (data) {
+                    jsonForm('ff', data);
+                }
+            });
+
+            serverSide( //datatable serverside
+                "serverSide_ff",
+                "{{ url('api/keuangan/kas/buku-besar-kas/i_jurkas') }}", //url api/route
+                function(d) { // di isi sesuai dengan data yang akan di filter 
+                    d.pk_h = kode;
+                },
+                [{
+                        data: "DT_RowIndex",
+                        className: "text-center"
+                    },
+                    {
+                        data: "atjd_keterangan",
+                        className: "dt-body-left"
+                    },
+                    {
+                        data: "atjd_tipe_dk"
+                    },
+                    {
+                        data: "atjd_totalx",
+                        className: "dt-body-right"
+                    },
+                    {
+                        data: "atjd_askn_kode",
+                        className: "dt-body-left"
+                    },
+                    {
+                        data: "asakn_keterangan",
+                        className: "dt-body-left"
+                    },
+                ]
+            );
         }
+
+        function e_lov(id, vlain) {
+            openModal('modalAkun');
+            titleAction('titleMod', 'Lov Pencarian Data');
+            setText('e_lov', id);
+            setText('e_lovlain', vlain);
+            setHide('e_lov', true);
+            setHide('e_lovlain', true);
+
+            filterAll('input[type="search"]', 'serverSide_lov_polis');
+            serverSide(
+                'serverSide_lov_polis', "{{url('api/keuangan/kas/buku-besar-kas/lov_polis')}}" , function(d) {
+                    d.id = getText('e_lov'),
+                    // d.nama = getText('e_lovcari'),
+                    d.xakun = getText('tdna_asakn_kode'),
+                    d.xdk = getText('e_lovlain'),
+                    d.nama = $('input[type="search"]').val();
+
+                },
+                [
+                    {
+                        data: null,
+                        render: function(row, type, data, meta) {
+                            return `<button type="button" class="btn btn-primary btn-sm" onclick="pilih('` +
+                                    row.kode + `','`+ row.nama +`','`+ row.lain +`')">`+ row.kode +`</button>`;
+                        }
+                    },
+                    {
+                        data: 'nama'
+                    },
+                    {
+                        data: 'lain'
+                    }
+                ]);
+            }
+
+            function pilih(kode, nama, lain) {
+                closeModal('modalAkun');
+                var akuntrs = getText('e_lov');
+                setText(akuntrs, kode);
+                setText('t'+akuntrs, nama);
+            }
 
         function proses_pst(pk, tipe, dk_dtl, i, pkhdr, tkad_final) {
-            // var vakun  	= getText("#"+tipe);
-            // var vdr  	= getText("#xddr"+i);		
-            // var vcr  	= getText("#xdcr"+i);
-            // var vket  	= getText("#xket"+i);
-            // var vdk_dtl = dk_dtl;
-            // var vpkhdr  = pkhdr;
-            // var vinal  	= tkad_final;
-            console.log(pk, tipe, dk_dtl, i, pkhdr, tkad_final);
+            var vakun  	= getText("#"+tipe);
+            var vdr  	= getText("#xddr"+i);		
+            var vcr  	= getText("#xdcr"+i);
+            var vket  	= getText("#xket"+i);
+            var vdk_dtl = dk_dtl;
+            var vpkhdr  = pkhdr;
+            var vinal  	= tkad_final;
+            // console.log(pk, tipe, dk_dtl, i, pkhdr, tkad_final);
+
+            if (vinal == '2') {
+                alert('Sudah Final, Tidak bisa Update!');
+            }
+
+            var url="ww.post/p_ubah_akunkas.php?tkad_pk="+pk+"&vakun="+vakun+"&vdr="+vdr+"&vcr="+vcr+"&vdk_dtl="+vdk_dtl+"&vpkhdr="+vpkhdr+"&vket="+vket+"&vinal="+vinal+"&";
+				$.getJSON(url,vv, function(data){
+				 if (data)
+				 {
+					notif(data.tkad_pk,"Update :"+data.tkad_pk+" Berhasil Diproses ");
+				 }
+			}); 
         }
     </script>
 @endsection
