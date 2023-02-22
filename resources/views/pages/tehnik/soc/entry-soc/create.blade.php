@@ -54,7 +54,7 @@
                         <div class="col-md-6">
                             <div class="mb-5">
                                 <label class="required form-label">Segmen Pasar</label>
-                                <input type="text" class="easyui-combobox" name="msoc_mssp_nama" id="msoc_mssp_nama" data-options="prompt:'Pilih segmen pasar'" style="width: 100%; height: 38px;" />
+                                <input type="text" class="easyui-combobox inputCombo" name="msoc_mssp_nama" id="msoc_mssp_nama" data-options="prompt:'Pilih segmen pasar'" style="width: 100%; height: 38px;" />
                                 <input type="text" class="form-control form-control-solid" name="msoc_mssp_kode" id="msoc_mssp_kode" placeholder="msoc_mssp_kode" />
                                 <input type="text" class="form-control form-control-solid" name="mpid_mssp_kode" id="mpid_mssp_kode" placeholder="mpid_mssp_kode" />
                                 <span class="text-danger error-text msoc_mssp_nama_err"></span>
@@ -570,51 +570,7 @@
                 selectOpTag('mth_baris');
                 selectOpTag('mpuw_baris');
 
-                // setHide
-                setHide('msoc_mrkn_kode', true);
-                setHide('msoc_mpras_kode', true);
-                setHide('msoc_mjns_kode', true);
-                setHide('msoc_mjns_mpid_kode', true);
-                setHide('e_bersih', true);
-                setHide('msoc_mssp_kode', true);
-                setHide('mpid_mssp_kode', true);
-                setHide('msoc_approve', true);
-                setHide('edit_akses', true);
-                setHide('msoc_mft_kode', true);
-                setHide('msoc_mjm_kode', true);
-                setHide('msoc_mpid_kode', true);
-                setHide('msoc_mlok_kode', true);
-                setHide('endors', true);
-                setHide('msoc_mkar_kode_mkr', true);
-                setHide('msoc_mkar_kode_pim', true);
-                setHide('msoc_mth_nomor', true);
-                setHide('msoc_mpuw_nomor', true);
-
                 cekForm(0);
-                // change message Form SOC
-                hidePesan('msoc_jenis_bayar');
-                hidePesan('msoc_mslr_kode');
-                hidePesan('msoc_dok');
-
-                // Form Upload Tarif
-                hidePesan('mth_tipe_pertanggungan');
-                hidePesan('mth_ket');
-                hidePesan('mth_tipe_rumus');
-                hidePesan('mth_kolom');
-                hidePesan('mth_baris');
-                hidePesan('mth_file');
-                hidePesan('mth_final');
-
-                // Form Update Upload Tarif
-                hidePesan('mth_final');
-
-                // Form Upload Uw
-                hidePesan('mpuw_tipe_pertanggungan');
-                hidePesan('mpuw_nama');
-                hidePesan('mpuw_type_uw');
-                hidePesan('mpuw_baris');
-                hidePesan('mpuw_file');
-                hidePesan('mpuw_final');
             });
 
             $(function () {
@@ -622,12 +578,13 @@
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
                 });
 
-                selectGrid('msoc_mrkn_nama', 'GET', '{{ url("api/tehnik/soc/entry-soc/select-pmgpolis") }}', 'nama', 'nama', [
+                selectGrid('msoc_mrkn_nama', 'GET', '{{ url("tehnik/soc/entry-soc/lod_pmg_polis") }}', 'nama', 'nama', [
                     {field:'kode',title:'Kode',align:'left',width:180},
                     {field:'nama',title:'Nama',align:'left',width:280},
                 ], function(i, row) {
                     hidePesan('msoc_mrkn_nama');
                     var kode = row.kode;
+                    setText('msoc_mrkn_kode', kode);
                     // if (getText('msoc_nomor')=='') {
                     //     setText('msoc_mrkn_kode', kode);
                     //     bersih(2);
@@ -659,7 +616,7 @@
 
                         var rms = '&mjns='+getText("msoc_mjns_kode")+'&mft='+getText("msoc_mft_kode")+'&mrkn='+getText("msoc_mrkn_kode")+'&mssp='+getText("msoc_mssp_kode")+'&mkm='+getText("msoc_mekanisme")+'&mkm2='+getText("msoc_mekanisme2")+'&perush='+getText("msoc_jns_perusahaan")+'&byr='+getText("msoc_jenis_bayar")+'&mjm='+getText("msoc_mjm_kode")+'&mpid='+getText("msoc_mpid_kode");
 
-                        reSelGrid('e_pras', '{{ url("api/tehnik/soc/entry-soc/pilih-program-asuransi") }}' + '?' + rms);
+                        reSelGrid('e_pras', '{{ url("api/tehnik/soc/entry-soc/lod_prassoc") }}' + '?' + rms);
                         reSelGrid('e_manfaat_pol','{{ url("api/tehnik/soc/entry-soc/select-manasu") }}' + '?' + '&mjns=' + getText("msoc_mjns_kode"));
                     }
                 );
@@ -733,7 +690,7 @@
 
                         var rms = '&mjns='+getText("msoc_mjns_kode")+'&mft='+getText("msoc_mft_kode")+'&mrkn='+getText("msoc_mrkn_kode")+'&mssp='+getText("msoc_mssp_kode")+'&mkm='+getText("msoc_mekanisme")+'&mkm2='+getText("msoc_mekanisme2")+'&perush='+getText("msoc_jns_perusahaan")+'&byr='+getText("msoc_jenis_bayar")+'&mjm='+getText("msoc_mjm_kode")+'&mpid='+getText("msoc_mpid_kode");
 
-                        reSelGrid('e_pras', '{{ url("api/tehnik/soc/entry-soc/pilih-program-asuransi") }}' + '?' + rms);
+                        reSelGrid('e_pras', '{{ url("api/tehnik/soc/entry-soc/lod_prassoc") }}' + '?' + rms);
 
                         muncul(row.mjm_bundling,row.mjm_jiwa,row.mjm_gu,row.mjm_phk,row.mjm_tlo,row.mjm_fire,row.mjm_wp,row.mjm_umut,row.mjm_wp_pensiun,row.mjm_phk_pensiun);
                     }
@@ -741,7 +698,7 @@
                 selectGrid(
                     'e_pras',
                     'GET',
-                    '{{ url("api/tehnik/soc/entry-soc/pilih-program-asuransi") }}',
+                    '{{ url("api/tehnik/soc/entry-soc/lod_prassoc") }}',
                     'mpras_kode',
                     'mpras_nama',
                     [
@@ -1065,10 +1022,11 @@
             }
 
             function cekpolis() {
-                rms = '&pmgpolis='+getText('msoc_mrkn_kode')+'&perus='+getText('msoc_jns_perusahaan')+'&mekanisme2='+getText('msoc_mekanisme2')+'&mekanisme='+getText('msoc_mekanisme')+'&jns_bayar='+getText('msoc_jenis_bayar')+'&nasabah='+getText('msoc_mjns_kode')+'&mrkn_nama='+getText('msoc_mrkn_nama')+'&mft='+getText('msoc_mft_kode');
+			    vv = { res : ''};
+                rms = "pmgpolis="+getText("msoc_mrkn_kode")+"&perus="+getText("msoc_jns_perusahaan")+"&mekanisme2="+getText("msoc_mekanisme2")+"&mekanisme="+getText("msoc_mekanisme")+"&jns_bayar="+getText("msoc_jenis_bayar")+"&nasabah="+getText("msoc_mjns_kode")+"&mrkn_nama="+getText("msoc_mrkn_nama")+"&mft="+getText("msoc_mft_kode");
 
-                url = '{{ url("api/tehnik/soc/entry-soc/get-nosoc") }}' + '?' + rms;
-                getJson(url, '', function(data) {
+                url = '{{ url("api/tehnik/soc/entry-soc/get_nosoc") }}' + '?' + rms;
+                getJson(url, vv, function(data) {
                     if (data) {
                         jsonForm('frxx_soc', data);
                     }
@@ -1163,10 +1121,11 @@
                 if (id=='msoc_kode') {
                     var aksess = getText('edit_akses');
                     var tipe = getText('endors');
+			        vv = { res : '' };
                     rms = '&pmgpolis='+getText('msoc_mrkn_kode')+'&nopolis='+getText('msoc_nomor')+'&nasabah='+getText('msoc_mjns_kode')+'&mft='+getText('msoc_mft_kode')+'&mjm='+getText('msoc_mjm_kode')+'&mekanisme='+getText('msoc_mekanisme')+'&jns_bayar='+getText('msoc_jenis_bayar')+'&jns_perusahaan='+getText('msoc_jns_perusahaan')+'&mrkn_nama='+getText('msoc_mrkn_nama')+'&mekanisme2='+getText('msoc_mekanisme2')+'&kode='+getText('msoc_kode')+'&pras='+getText('msoc_mpras_kode')+'&endos='+getText('endors');
 
-                    url = '{{ url("api/tehnik/soc/entry-soc/get-kodesoc") }}' + '?id=' + id + rms;
-                    $.get(url, function(data) {
+                    url = '{{ url("api/tehnik/soc/entry-soc/get_kodesoc") }}' + '?id=' + id + rms;
+                    getJson(url, vv, function(data) {
                         // console.log(data);
                         if (data) {
                             if(tipe=='1' && data.msoc_mlsr_kode=='4') {
@@ -1186,8 +1145,11 @@
                             }
 
                             if (tipe=='1' && aksess=='0') {
-                                pesan('info', 'Maaf Anda Tidak Punya Hak Akses');
-                                clear_f();
+                                cekPesan("info", "Maaf Anda Tidak Punya Hak Akses!", (result) => {
+                                    if (result.isConfirmed) {
+                                        clear_f();
+                                    }
+                                });
                             } else {
                                 if (getText('msoc_kode')!="" && tipe=="0") {
                                     pesan('info', 'Data sudah pernah di input dengan nomor: '+getText('msoc_kode'));
@@ -1199,9 +1161,6 @@
                                 if (tipe!='0') {
                                     setText('e_bersih','1');
                                     jsonForm('frxx_soc', data);
-                                    // console.log(data);
-                                    //coba form file
-                                    // $('#ffile').form('load',data);
                                     setText('e_bersih','');
                                     setReadEdit(true);
                                 }
@@ -1387,6 +1346,8 @@
                 //$("#xtanya").hide();
                 cekfee();
                 cekReq();
+                cekHide();
+                cekHideMess();
                 setReadEdit(false);
 
                 var akses = {{ __getHak('sjab_editsoc') }};
@@ -1415,6 +1376,35 @@
                 setTextReq('msoc_handlingfee2', true);
                 setTextReq('e_tarif', true);
                 setTextReq('e_uw', true);
+            }
+
+            function cekHide() {
+                // setHide
+                setHide('msoc_mrkn_kode', true);
+                setHide('msoc_mpras_kode', true);
+                setHide('msoc_mjns_kode', true);
+                setHide('msoc_mjns_mpid_kode', true);
+                setHide('e_bersih', true);
+                setHide('msoc_mssp_kode', true);
+                setHide('mpid_mssp_kode', true);
+                setHide('msoc_approve', true);
+                setHide('edit_akses', true);
+                setHide('msoc_mft_kode', true);
+                setHide('msoc_mjm_kode', true);
+                setHide('msoc_mpid_kode', true);
+                setHide('msoc_mlok_kode', true);
+                setHide('endors', true);
+                setHide('msoc_mkar_kode_mkr', true);
+                setHide('msoc_mkar_kode_pim', true);
+                setHide('msoc_mth_nomor', true);
+                setHide('msoc_mpuw_nomor', true);
+            }
+
+            function cekHideMess() {
+                // change message Form SOC
+                // hidePesan('msoc_jenis_bayar');
+                hidePesan('msoc_mslr_kode');
+                hidePesan('msoc_dok');
             }
 
             function bersih(tipe) {
