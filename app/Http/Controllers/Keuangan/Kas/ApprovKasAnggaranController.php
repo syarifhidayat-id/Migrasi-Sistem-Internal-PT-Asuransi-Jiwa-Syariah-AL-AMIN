@@ -93,6 +93,7 @@ class ApprovKasAnggaranController extends Controller
         $tambah = "";
         $group = "";
 
+
         if (isset($request['e_baris'])) {
             $baris = $request['e_baris'];
             // $baris = '10';
@@ -101,10 +102,20 @@ class ApprovKasAnggaranController extends Controller
         }
         if (isset($request['c_group'])) {
             $group = $group . "ORDER BY " . $request['e_group'] . " ASC";
-        }else{
+        } else {
             $group = $group . "ORDER BY tkad_mta_pk ASC";
         }
-        
+
+        // if (isset($request['c_periode'])) {
+        //     $tambah = $tambah . " and month(tdna_tgl_aju) between '" . $request['e_probulan1'] . "' and '" . $request['e_probulan2'] . "' and year(tdna_tgl_aju)='" . $request['e_protahun'] . "' ";
+        // }
+
+
+        if ($request->get('c_periode') == "1") {
+            if (!empty($request->get('e_probulan1')) && !empty($request->get('e_probulan2')) && !empty($request->get('e_protahun'))) {
+                $tambah = $tambah . " and month(tdna_tgl_aju) between '" . $request['e_probulan1'] . "' and '" . $request['e_probulan2'] . "' and year(tdna_tgl_aju)='" . $request['e_protahun'] . "' ";
+            }
+        }
 
         $cmd = DB::select("
         SELECT 
@@ -137,11 +148,12 @@ class ApprovKasAnggaranController extends Controller
         LEFT JOIN epms.`mst_kelompok_kas` ON `mkk_pk`= tkad_kelompokas
         LEFT JOIN epms.`mst_tipe_anggaran` ON tkad_mta_pk=mta_pk
         WHERE 1=1 AND asakn_buku_kas!='1'
-            " .$tambah."  
+            " . $tambah . "  
             GROUP BY tkad_pk
-            " .$group." 
-        LIMIT ". $baris ."	
+            " . $group . " 
+        LIMIT " . $baris . "	
                 ");
+
         $data = __dbAll($cmd);
         return DataTables::of($data)
             ->addIndexColumn()
@@ -153,6 +165,7 @@ class ApprovKasAnggaranController extends Controller
                         });
                     }
                 }
+
                 if ($request->get('c_keu1') == "1") {
                     if (!empty($request->get('e_keu1'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
@@ -181,21 +194,16 @@ class ApprovKasAnggaranController extends Controller
                         });
                     }
                 }
-                
+
                 if (!empty($request->get('search'))) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                         if (Str::contains(Str::lower($row['mta_keterangan']), Str::lower($request->get('search')))) {
                             return true;
-                        }
-
-                        else if (Str::contains(Str::lower($row['mrops_keterangan']), Str::lower($request->get('search')))) {
+                        } else if (Str::contains(Str::lower($row['mrops_keterangan']), Str::lower($request->get('search')))) {
+                            return true;
+                        } else if (Str::contains(Str::lower($row['mlok_nama']), Str::lower($request->get('search')))) {
                             return true;
                         }
-                        else if (Str::contains(Str::lower($row['mlok_nama']), Str::lower($request->get('search')))) {
-                            return true;
-                        }
-                       
-
                         return false;
                     });
                 }
@@ -250,5 +258,36 @@ class ApprovKasAnggaranController extends Controller
         return response()->json($data);
     }
 
-   
+    public function get_kaskeu(Request $request)
+    {
+        $tambah = "";
+        if (isset($_GET['kode'])) {
+            if ($_GET['kode'] != "") {
+                $tambah .= " and tkad_pk='" . $_GET['kode'] . "'";
+            }
+        }
+
+        $cmd="
+        SELECT
+        tkad_pk,  
+        tkad_atjh_pk,
+        tkad_askn_kode,
+        tkad_keterangan,
+        tkad_tipe_dk,
+        FORMAT(tkad_total,2) tkad_total,
+        tkad_jns_realisasi,
+        mar_nama e_realisasi,
+        tkad_tkb_pk,
+        tkad_mta_pk,
+        mta_keterangan,
+        tkad_kd_keterangan,
+        tkad_relops,
+        tkad_kelompokas
+        FROM   epms.trs_kas_dtl	
+        LEFT JOIN eacc.ams_sub_akun  ON asakn_kode=tkad_askn_kode 
+        LEFT JOIN epms.`mst_tipe_anggaran` ON mta_pk=tkad_mta_pk
+        LEFT JOIN `emst`.`mst_anggaran_realisasi` on mar_kode=tkad_jns_realisasi
+        WHERE 1=1  $tambah limit 1 
+        ";
+    }
 }

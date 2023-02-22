@@ -189,13 +189,13 @@ class BukuBesarController extends Controller
             $tambah .= $tambah . " and atjd_atjh_pk='" . $request['pk_h'] . "'";
         }
         $cmd = DB::select("
-	SELECT
-	$vfield
-	FROM $vtable
-	where $vidxkey<>''
-	$tambah
-	$order
-	 ");
+        SELECT
+        $vfield
+        FROM $vtable
+        where $vidxkey<>''
+        $tambah
+        $order
+        ");
 
         $data = __dbAll($cmd);
 
