@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Tehnik\Soc;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,41 +20,7 @@ class EntrySocController extends Controller
      */
     public function index(Request $request)
     {
-        $mks1 =  $this->selectMeka1($request);
-        $mks2 =  $this->selectMeka2($request);
-        $jnskerja =  $this->selectJnsKerja($request);
-        $slurdis =  $this->selectSalDistri($request);
-        // $prodojk =  $this->selectProdOjk($request);
-        $feeppn =  $this->selectFeePPn($request);
-        $feepph =  $this->selectFeePPh23($request);
-        $ujroh =  $this->selectUjroh($request);
-        $mnfee =  $this->selectMnFee($request);
-        $komtidakpot =  $this->selectKomtidakpot($request);
-        $kompot =  $this->selectKompot($request);
-        $referal =  $this->selectReferal($request);
-        $maintenence =  $this->selectMaintenence($request);
-        $fbtpot =  $this->selectFeebtidakpotong($request);
-        $fbpot =  $this->selectFeebpotong($request);
-        $e_tarif =  $this->selectTarifImport($request);
-        $e_uw =  $this->selectUnderwritingImport($request);
-        return view('pages.tehnik.soc.entry-soc.create', [
-            // 'mks1' => $mks1,
-            // 'mks2' => $mks2,
-            // 'jnskerja' => $jnskerja,
-            // 'slurdis' => $slurdis,
-            'feeppn' => $feeppn,
-            'feepph' => $feepph,
-            'ujroh' => $ujroh,
-            'mnfee' => $mnfee,
-            'komtidakpot' => $komtidakpot,
-            'kompot' => $kompot,
-            'referal' => $referal,
-            'maintenence' => $maintenence,
-            'fbtpot' => $fbtpot,
-            'fbpot' => $fbpot,
-            // 'e_tarif' => $e_tarif,
-            // 'e_uw' => $e_uw,
-        ]);
+        return view('pages.tehnik.soc.entry-soc.create');
     }
 
     /**
@@ -127,7 +92,7 @@ class EntrySocController extends Controller
                 $vtable = DB::table('eopr.mst_soc');
                 $kdAwal = $request->msoc_mjns_kode . '.' . $request->msoc_mpid_kode;
                 $kdAkhir = $request->msoc_mft_kode . '.' . $request->msoc_mjm_kode . '.' . $request->msoc_mpras_kode . '.' . $request->msoc_jns_perusahaan;
-                $kode = Lib::__getNo($kdAwal, $vtable->max('msoc_kode'), 4);
+                $kode = __getNo($kdAwal, $vtable->max('msoc_kode'), 4);
                 $data = $request->all();
                 $data = $request->except(
                     '_token',
@@ -158,17 +123,17 @@ class EntrySocController extends Controller
                     $dir = 'public/tehnik/soc/doc';
                     $fileOri = $msoc_dok->getClientOriginalName();
                     $namaFile = $kode . '.' . $kdAkhir . '-DokumenSoc-' . $fileOri;
-                    $path = Lib::upfile($dir, $msoc_dok, $namaFile);
+                    $path = __upfile($dir, $msoc_dok, $namaFile);
                     $data['msoc_dok'] = $namaFile;
                 }
 
                 $data['msoc_endos'] = $request->endors;
                 $data['msoc_endors'] = $request->endors;
                 $data['msoc_approve'] = '0';
-                $data['msoc_ins_date'] = Lib::now();
-                $data['msoc_ins_user'] = Lib::__getUser();
-                $data['msoc_upd_date'] = Lib::now();
-                $data['msoc_upd_user'] = Lib::__getUser();
+                $data['msoc_ins_date'] = __now();
+                $data['msoc_ins_user'] = __getUser();
+                $data['msoc_upd_date'] = __now();
+                $data['msoc_upd_user'] = __getUser();
 
                 // return $data;
                 $vtable->insert($data);
@@ -202,17 +167,17 @@ class EntrySocController extends Controller
                         $dir = 'public/tehnik/soc/doc';
                         $fileOri = $msoc_dok->getClientOriginalName();
                         $namaFile = $request->msoc_kode . '-DokumenSoc-' . $fileOri;
-                        $path = Lib::upfile($dir, $msoc_dok, $namaFile);
+                        $path = __upfile($dir, $msoc_dok, $namaFile);
                         $data['msoc_dok'] = $namaFile;
                     }
                     $data['msoc_endos'] = $request->endors;
                     $data['msoc_endors'] = $request->endors;
                     $data['msoc_approve'] = 0;
                     // $data['msoc_status'] = 0;
-                    $data['msoc_ins_date'] = Lib::now();
-                    $data['msoc_ins_user'] = Lib::__getUser();
-                    $data['msoc_upd_date'] = Lib::now();
-                    $data['msoc_upd_user'] = Lib::__getUser();
+                    $data['msoc_ins_date'] = __now();
+                    $data['msoc_ins_user'] = __getUser();
+                    $data['msoc_upd_date'] = __now();
+                    $data['msoc_upd_user'] = __getUser();
 
                     $vtable->update($data);
 
@@ -255,7 +220,7 @@ class EntrySocController extends Controller
                         $dir = 'public/tehnik/soc/doc';
                         $fileOri = $msoc_dok->getClientOriginalName();
                         $namaFile = $kodepoliseds . '-DokumenSoc-' . $fileOri;
-                        $path = Lib::upfile($dir, $msoc_dok, $namaFile);
+                        $path = __upfile($dir, $msoc_dok, $namaFile);
                         $data['msoc_dok'] = $namaFile;
                     }
                     $data['msoc_kode'] = $kodepoliseds;
@@ -266,10 +231,10 @@ class EntrySocController extends Controller
                     $data['msoc_endos'] = $request->endors;
                     $data['msoc_endors'] = $request->endors;
                     $data['msoc_approve'] = 0;
-                    $data['msoc_ins_date'] = Lib::now();
-                    $data['msoc_ins_user'] = Lib::__getUser();
-                    $data['msoc_upd_date'] = Lib::now();
-                    $data['msoc_upd_user'] = Lib::__getUser();
+                    $data['msoc_ins_date'] = __now();
+                    $data['msoc_ins_user'] = __getUser();
+                    $data['msoc_upd_date'] = __now();
+                    $data['msoc_upd_user'] = __getUser();
 
                     $vtable->insert($data);
 
@@ -302,16 +267,16 @@ class EntrySocController extends Controller
                         $dir = 'public/tehnik/soc/doc';
                         $fileOri = $msoc_dok->getClientOriginalName();
                         $namaFile = $request->msoc_kode . '-DokumenSoc-' . $fileOri;
-                        $path = Lib::upfile($dir, $msoc_dok, $namaFile);
+                        $path = __upfile($dir, $msoc_dok, $namaFile);
                         $data['msoc_dok'] = $namaFile;
                     }
                     $data['msoc_endos'] = $request->endors;
                     $data['msoc_endors'] = $request->endors;
                     $data['msoc_approve'] = 0;
-                    $data['msoc_ins_date'] = Lib::now();
-                    $data['msoc_ins_user'] = Lib::__getUser();
-                    $data['msoc_upd_date'] = Lib::now();
-                    $data['msoc_upd_user'] = Lib::__getUser();
+                    $data['msoc_ins_date'] = __now();
+                    $data['msoc_ins_user'] = __getUser();
+                    $data['msoc_upd_date'] = __now();
+                    $data['msoc_upd_user'] = __getUser();
 
                     $vtable->update($data);
 

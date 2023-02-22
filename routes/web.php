@@ -27,7 +27,7 @@ require __DIR__ . './auth.php';
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/maintenance', [DashboardController::class, 'maintenance'])->name('maintenance');
-
+    Route::get('/404', [DashboardController::class, 'error'])->name('error');
     // require __DIR__ . '/api.php';
     // require __DIR__ . '/web/sdm.php';
     require __DIR__ . '/web/legal.php';
@@ -41,4 +41,5 @@ Route::middleware(['auth'])->group(function () {
     require __DIR__ . '/web/sekper.php';
     // require __DIR__ . '/web/exports.php';
     // require __DIR__ . '/web/ajax.php';
+
 });

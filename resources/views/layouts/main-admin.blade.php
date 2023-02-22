@@ -386,6 +386,9 @@
 
     <script>
         $('.menu-title').capitalize();
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        }
     </script>
     @yield('script')
     @livewireScripts

@@ -264,7 +264,7 @@
 
 @section('script')
     <script type="text/javascript">
-        setHide('btn_reset', true);
+        // setHide('btn_reset', true);
         
         
         setTextReadOnly('mlok_nama', true);
@@ -336,18 +336,6 @@
                         data: "DT_RowIndex",
                         className: "text-center"
                     },
-                    // {
-                    //     // data: 'mojk_pk'
-                    //     data: null,
-                    //     orderable: false,
-                    //     className: 'text-center',
-                    //     render: function(data, type, row) {
-                    //         return `
-                    //     <button type="button" id="omodEdit" data-resouce="` + row.tdna_pk +
-                    //             `" class="btn btn-light-success" target="blank"> ` + row.tdna_pk +
-                    //             ` </button>`
-                    //     }
-                    // },
                     {
                         data: 'tdna_mlok_kode'
                     },
@@ -386,32 +374,6 @@
                                 return `<button type="button" id="btn_upload" onclick="uploadPolis('`+row.tdna_pk+`','`+row.tdna_bukti+`')" class="btn btn-light-success">Lihat</button>`
                         }
                     },
-                    // {
-                    //     data: null,
-                    //     orderable: false,
-                    //     className: 'text-center',
-                    //     render: function(data, type, row) {
-                    //         var doc = row.tdna_bukti;
-                    //         return `<button type="button" onclick="uploadPolis('`+row.tdna_pk+`','`+row.tdna_bukti+`')" class="btn btn-light-success">
-                    //         @if(file_exists(public_path().'/storage/keuangan/kas/master-kas/'.`+row.tdna_bukti+` )) Lihat @else Upload @endif </button>`;
-                    //     }
-                    // },
-                    // {
-                    //     data: null,
-                    //     orderable: false,
-                    //     className: 'text-center',
-                    //     render: function(data, type, row) {
-                    //         return `Bukti Kas`
-                    //     }
-                    // },
-                    // {
-                    //     data: null,
-                    //     orderable: false,
-                    //     className: 'text-center',
-                    //     render: function(data, type, row) {
-                    //         return `<button type="button" id="btn_lihat_bukti" class="btn btn-light-success"> Proses </button>`
-                    //     }
-                    // },
                     {
                         data: 'tdna_aprov_admin'
                     },

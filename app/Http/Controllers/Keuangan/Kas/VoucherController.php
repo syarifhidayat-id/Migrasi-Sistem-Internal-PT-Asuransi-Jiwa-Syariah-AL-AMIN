@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
@@ -42,7 +41,7 @@ class VoucherController extends Controller
         // $data = $request->all();
         // return $data;
 
-        $kode = Lib::__getKey(14);
+        $kode = __getKey(14);
         $data = $request->all();
         $data = request()->except(['_token']);
 
@@ -109,7 +108,7 @@ class VoucherController extends Controller
 
 
     public function get_vcr_kode() {
-        $kode = Lib::__getnx(4);
+        $kode = __getnx(4);
         $tahun = date('ym');
         // $bulan = date('m');
         // $noUrut =  rand(1000, 5999);

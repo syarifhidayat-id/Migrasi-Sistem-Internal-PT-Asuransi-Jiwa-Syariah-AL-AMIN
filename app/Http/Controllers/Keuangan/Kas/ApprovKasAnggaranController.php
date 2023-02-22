@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Library\Lib;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -89,118 +88,117 @@ class ApprovKasAnggaranController extends Controller
         //
     }
 
-    public function api_dtl_approv_kas(Request $request)
+    public function api_approv_kas_anggaran(Request $request)
     {
         $tambah = "";
-        if (!empty($request['search'])) {
-            $tambah = $tambah . " and tkad_pk= '" . $request['search'] . "' ";
-        }
+        $group = "";
 
         if (isset($request['e_baris'])) {
             $baris = $request['e_baris'];
             // $baris = '10';
         } else {
-            $baris = '50';
+            $baris = '100';
         }
+        if (isset($request['c_group'])) {
+            $group = $group . "ORDER BY " . $request['e_group'] . " ASC";
+        }else{
+            $group = $group . "ORDER BY tkad_mta_pk ASC";
+        }
+        
 
         $cmd = DB::select("
-        SELECT
-        tkad_pk,  
+        SELECT 
+        tdna_pk,
+        tkad_pk,
         tkad_atjh_pk,
+        DATE_FORMAT(tdna_tgl_aju,'%d-%m-%Y') tdna_tgl_aju,
+        tdna_kode_vcr,
+        tdna_pk,
+        mlok_nama,
+        mlok_kode,
         tkad_askn_kode,
         tkad_keterangan,
-        tdna_mlok_kode,
+        IF(tkad_tipe_dk='K',tkad_total,0) debit,
+        IF(tkad_tipe_dk='D',tkad_total,0) kredit,
         tkad_tipe_dk,
-        FORMAT(tkad_total,2) tkad_total,
-        tkad_jns_realisasi,
-        mar_nama e_realisasi,
-        tkad_tkb_pk,
-        tkad_mta_pk,
-        mta_keterangan,
-        tkad_kd_keterangan,
-        tkad_relops,
-        tkad_kelompokas
-        FROM epms.trs_kas_dtl	
-        LEFT JOIN eacc.ams_sub_akun  ON asakn_kode=tkad_askn_kode 
-        LEFT JOIN epms.`mst_tipe_anggaran` ON mta_pk=tkad_mta_pk
-        LEFT JOIN `emst`.`mst_anggaran_realisasi` on mar_kode=tkad_jns_realisasi
-        WHERE 1=1 AND tkad_tipe_dk='D'
-        " . $tambah . " 
-        ORDER BY tkad_tipe_dk DESC
-        LIMIT " . $baris . "");
+        tkad_total,
+        CONCAT(`tkad_mta_pk`,'|',`mta_keterangan`) `mta_keterangan`,
+        CONCAT(`tkad_relops`,'|',`mrops_keterangan`) `mrops_keterangan`,
+        CONCAT(`tkad_kelompokas`,'|',`mkk_nama`) mkk_nama,
+        IF(tkad_approvkeu1=1,'SETUJU',IF(tkad_approvkeu1=2,'TOLAK','-')) approv_staffkeu,
+        IF(tkad_approvkeu2=1,'SETUJU',IF(tkad_approvkeu2=2,'TOLAK','-')) approv_kbgkeu,
+        IF(tkad_approvpms=1,'SETUJU',IF(tkad_approvpms=2,'TOLAK','-')) approv_pms,
+        IF(tkad_approvacc=1,'SETUJU',IF(tkad_approvacc=2,'TOLAK','-')) approv_acc
+        FROM epms.`trs_kas_dtl`
+        LEFT JOIN eacc.`ams_sub_akun` ON asakn_kode=tkad_askn_kode
+        LEFT JOIN epms.`trs_dana_aju` ON tkad_atjh_pk=tdna_pk
+        LEFT JOIN emst.`mst_lokasi` ON mlok_kode=tdna_mlok_kode
+        LEFT JOIN emst.mst_relops ON tkad_relops = mrops_pk
+        LEFT JOIN epms.`mst_kelompok_kas` ON `mkk_pk`= tkad_kelompokas
+        LEFT JOIN epms.`mst_tipe_anggaran` ON tkad_mta_pk=mta_pk
+        WHERE 1=1 AND asakn_buku_kas!='1'
+            " .$tambah."  
+            GROUP BY tkad_pk
+            " .$group." 
+        LIMIT ". $baris ."	
+                ");
         $data = __dbAll($cmd);
         return DataTables::of($data)
             ->addIndexColumn()
             ->filter(function ($instance) use ($request) {
-                if ($request->get('check_cab_alamin') == "1") {
-                    if (!empty($request->get('mlok_kode'))) {
+                if ($request->get('c_cabang') == "1") {
+                    if (!empty($request->get('tdna_mlok_kode'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_mlok_kode'], $request->get('tdna_mlok_kode')) ? true : false;
+                            return Str::contains($row['mlok_kode'], $request->get('tdna_mlok_kode')) ? true : false;
                         });
                     }
                 }
-                if ($request->get('check_buku_besar') == "1") {
-                    if (!empty($request->get('tdna_sts_buku'))) {
+                if ($request->get('c_keu1') == "1") {
+                    if (!empty($request->get('e_keu1'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_sts_buku'], $request->get('tdna_sts_buku')) ? true : false;
+                            return Str::contains($row['tkad_approvkeu1'], $request->get('tkad_approvkeu1')) ? true : false;
                         });
                     }
                 }
-                if ($request->get('check_jurnal') == "1") {
-                    if (!empty($request->get('tdna_sts_jurnal'))) {
+                if ($request->get('c_keu2') == "1") {
+                    if (!empty($request->get('e_keu2'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_sts_jurnal'], $request->get('tdna_sts_jurnal')) ? true : false;
+                            return Str::contains($row['tkad_approvkeu2'], $request->get('tkad_approvkeu2')) ? true : false;
                         });
                     }
                 }
-                if ($request->get('check_admin') == "1") {
-                    if (!empty($request->get('tdna_aprov_admin'))) {
+                if ($request->get('c_pms') == "1") {
+                    if (!empty($request->get('e_pms'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_aprov_admin'], $request->get('tdna_aprov_admin')) ? true : false;
+                            return Str::contains($row['tkad_approvpms'], $request->get('tkad_approvpms')) ? true : false;
                         });
                     }
                 }
-                if ($request->get('check_pincab') == "1") {
-                    if (!empty($request->get('tdna_aprov_kacab'))) {
+                if ($request->get('c_acc') == "1") {
+                    if (!empty($request->get('e_acc'))) {
                         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_aprov_kacab'], $request->get('tdna_aprov_kacab')) ? true : false;
+                            return Str::contains($row['tkad_approvacc'], $request->get('tkad_approvacc')) ? true : false;
                         });
                     }
                 }
-                if ($request->get('check_keu') == "1") {
-                    if (!empty($request->get('tdna_aprov_ho'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_aprov_ho'], $request->get('tdna_aprov_ho')) ? true : false;
-                        });
-                    }
-                }
-                if ($request->get('check_kadiv') == "1") {
-                    if (!empty($request->get('tdna_aprov_kapms'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_aprov_kapms'], $request->get('tdna_aprov_kapms')) ? true : false;
-                        });
-                    }
-                }
-                if ($request->get('check_korwil') == "1") {
-                    if (!empty($request->get('tdna_aprov_korwil'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['tdna_aprov_korwil'], $request->get('tdna_aprov_korwil')) ? true : false;
-                        });
-                    }
-                }
-                // if (!empty($request->get('search'))) {
-                //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                //         if (Str::contains(Str::lower($row['tdna_pk']), Str::lower($request->get('search')))) {
-                //             return true;
-                //         }
+                
+                if (!empty($request->get('search'))) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if (Str::contains(Str::lower($row['mta_keterangan']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
 
-                //         //else if (Str::contains(Str::lower($row['mua_ins_user']), Str::lower($request->get('search')))) {
-                //         //     return true;
-                //         // }
+                        else if (Str::contains(Str::lower($row['mrops_keterangan']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
+                        else if (Str::contains(Str::lower($row['mlok_nama']), Str::lower($request->get('search')))) {
+                            return true;
+                        }
+                       
 
-                //         return false;
-                //     });
-                // }
+                        return false;
+                    });
+                }
             })
             ->make(true);
     }
@@ -227,4 +225,30 @@ class ApprovKasAnggaranController extends Controller
 
         return response()->json($data);
     }
+
+    public function getCabang(Request $request, $id)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('emst.mst_lokasi')
+                ->select('*')
+                ->where([
+                    ['mlok_pk', $id],
+                    ['mlok_nama', 'like', "%$search%"],
+                ])
+                ->get();
+        } else {
+            $data = DB::table('emst.mst_lokasi')
+                ->select('*')
+                ->where([
+                    ['mlok_pk', $id],
+                ])
+                ->get();
+        }
+
+        return response()->json($data);
+    }
+
+   
 }

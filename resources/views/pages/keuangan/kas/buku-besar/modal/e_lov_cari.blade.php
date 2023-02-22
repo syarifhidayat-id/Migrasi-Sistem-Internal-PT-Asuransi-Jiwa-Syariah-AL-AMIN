@@ -23,12 +23,12 @@
                             </div>
                             <div class="col-md-6 mb-5">
                                 {{-- <label class="required form-label">Keterangan Dokumen</label> --}}
-                                <input class="form-control" name="e_lov" id="e_lov" type="text"
+                                <input class="form-control" name="id_index" id="id_index" type="hidden"
                                     data-allow-clear="true" />
                             </div>
                             <div class="col-md-6 mb-5">
                                 {{-- <label class="required form-label">Keterangan Dokumen</label> --}}
-                                <input class="form-control" name="e_lovlain" id="e_lovlain" type="text"
+                                <input class="form-control" name="e_lovlain" id="e_lovlain" type="hidden"
                                     data-allow-clear="true" />
                             </div>
                         </div>

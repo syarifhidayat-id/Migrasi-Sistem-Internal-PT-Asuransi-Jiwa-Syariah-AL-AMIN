@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\tehnik\Soc;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -63,7 +62,7 @@ class UploadUwController extends Controller
             ]);
         } else {
             $vtable = DB::table('emst.mst_polis_uwtable');
-            $kodeImportUw = Lib::__getpx($vtable->max('mpuw_nomor'), 14);
+            $kodeImportUw = __getpx($vtable->max('mpuw_nomor'), 14);
             $data = $request->all();
             $data = $request->except('_token');
             if ($request->hasFile('mpuw_file')) {
@@ -96,7 +95,7 @@ class UploadUwController extends Controller
             $row=0;
             for ($row=2; $row <= $rowxls; $row++) {
                 $vtable2 = DB::table('emst.mst_polis_uwtable_dtl');
-                $rows['mrmp_pk'] = Lib::__getpx($vtable2->max('mrmp_pk'), 18);
+                $rows['mrmp_pk'] = __getpx($vtable2->max('mrmp_pk'), 18);
                 $rows['mrmp_mpuw_nomor'] = $kodeImportUw;
                 $rows['mrmp_tipe_masa'] = $objWorkSheet->getCellByColumnAndRow(1, $row)->getCalculatedValue();
                 $rows['mrmp_masa'] = $objWorkSheet->getCellByColumnAndRow(2, $row)->getCalculatedValue();

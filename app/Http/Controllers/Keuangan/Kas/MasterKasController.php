@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Keuangan\Kas;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -23,7 +22,7 @@ class MasterKasController extends Controller
     public function index()
     {
 
-         $kode = Lib::__getKey(14);
+         $kode = __getKey(14);
          response()->json([
              'kode' => $kode,
         ]);
@@ -73,7 +72,7 @@ class MasterKasController extends Controller
                 'error' => $validasi->errors()
             ]);
         } else {
-            $data = $request->all(); 
+            $data = $request->all();
             $kode = $request->kode_new;
             $data = $request->except(
                 '_token',
@@ -92,7 +91,7 @@ class MasterKasController extends Controller
                 $path = Storage::putFileAs($dir, $dokumen, $nameBukti);
                 $data['tdna_bukti'] = $nameBukti;
             }
-            
+
             // $vtable = DB::table('epms.trs_dana_aju')->select('*')->get();
             if ($request->tdna_aprov_admin == '1' && $request->tdna_aprov_kacab == '1' && $request->tdna_aprov_kapms == '1' && $request->tdna_aprov_korwil == '1' && $request->tdna_aprov_ho == '1') {
                 $data['tdna_sts_buku'] = '1';
@@ -155,7 +154,7 @@ class MasterKasController extends Controller
 
     // public function pdf_vcr(Request $request) {
     //     // $data = DB::table('epms.trs_dtl_vcr')::get();
-        
+
     //     $file_data = DB::table('epms.trs_kas_vcr')
     //     ->where('tkav_nomor', $request->id)
     //     ->first();
@@ -164,7 +163,7 @@ class MasterKasController extends Controller
     // 	// $html = '<h1 style="color:red;">Hello World</h1>';
 
     // 	// $pdf = new TCPDF;
-        
+
     //     // $pdf::SetTitle($file_data::tkav_nomor);
     //     // $pdf::AddPage();
     //     // $pdf::writeHTML($html, true, false, true, false, '');
@@ -216,7 +215,7 @@ class MasterKasController extends Controller
     //     $pdf::setFontSubsetting(true);
 
     //     $pdf::SetFont('helvetica', '', 8, '', true);
-        
+
     //     $pdf::AddPage();
 
     //     $page = <<<EOD
@@ -278,7 +277,7 @@ class MasterKasController extends Controller
     //             <td style="border: 1px solid black; width: 60%; text-align: center;">Total</td>
     //             <td style="border: 1px solid black; width: 40%; text-align: right;">Rp. </td>
     //         </tr>
-           
+
     //     </table>
     //     <table style="width: 100%;">
     //         <tr>
@@ -342,7 +341,7 @@ class MasterKasController extends Controller
     //             <td colspan="4" style="border: 1px solid black; width: 60%; text-align: center;">Total</td>
     //             <td style="border: 1px solid black; width: 40%; text-align: right;">Rp. </td>
     //         </tr>
-           
+
     //     </table>
     //     <table style="width: 100%;">
     //         <tr>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // });
 
 Route::get('/reload-captcha', [LoginController::class, 'reloadCaptha']);
+Route::get('hari', [ApiController::class, 'hari']);
+Route::get('bulan', [ApiController::class, 'bulan']);
+Route::get('tahun', [ApiController::class, 'tahun']);
 
 require __DIR__ . '/api/keuangan.php';
 require __DIR__ . '/api/utility.php';

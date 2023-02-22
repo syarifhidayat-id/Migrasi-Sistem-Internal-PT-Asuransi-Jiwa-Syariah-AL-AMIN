@@ -6,6 +6,7 @@ use App\Http\Controllers\Tehnik\Soc\LihatSocController;
 use App\Http\Controllers\Tehnik\Soc\UploadTarifController;
 use App\Http\Controllers\tehnik\Soc\UploadUwController;
 use App\Http\Controllers\wwLoad\Load;
+use App\Http\Controllers\wwRpt\Rpt;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
@@ -42,11 +43,11 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
             Route::get('/select-maintenence', [EntrySocController::class, 'selectMaintenence']);
             Route::get('/select-feebtidakpotong', [EntrySocController::class, 'selectFeebtidakpotong']);
             Route::get('/select-feebpotong', [EntrySocController::class, 'selectFeebpotong']);
-            Route::post('/select-tarifimport', [EntrySocController::class, 'selectTarifImport']);
-            Route::post('/select-underwritingimport', [EntrySocController::class, 'selectUnderwritingImport']);
+            Route::get('/select-tarifimport', [EntrySocController::class, 'selectTarifImport']);
+            Route::get('/select-underwritingimport', [EntrySocController::class, 'selectUnderwritingImport']);
 
-            Route::get('/lihat-tarif/{id}', [EntrySocController::class, 'lihatTarif']);
-            Route::get('/lihat-uw/{id}', [EntrySocController::class, 'lihatUw']);
+            Route::get('/rpt_lihattarif', [Rpt::class, 'rpt_lihattarif']);
+            Route::get('/rpt_lihat_uw', [Rpt::class, 'rpt_lihat_uw']);
             Route::post('/upload-tarif', [UploadTarifController::class, 'store']);
             Route::post('/update-upload-tarif', [UploadTarifController::class, 'updateTarif'])->name('updatetarif');
             Route::post('/upload-uw', [UploadUwController::class, 'store']);
@@ -69,6 +70,8 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
         });
         Route::group(['prefix' => '/entry-master-polis', 'as' => 'entry-master-polis.'], function() {
             Route::get('/lod_soc', [Load::class, 'lod_soc']);
+            // Route::get('/lod_provinsi', [Load::class, 'lod_provinsi']);
+            // Route::get('/lod_paymod', [Load::class, 'lod_paymod']);
         });
 
     });

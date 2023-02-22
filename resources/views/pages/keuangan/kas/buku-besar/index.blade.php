@@ -20,6 +20,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-5">
+                                    <input type="hidden" value="{{ __getUser() }}" class="form-control" id="i_user"
+                                        name="i_user" />
                                     <label class="form-label fs-6 fw-bold">Kantor Cabang</label>
                                     <select class="form-select form-select-solid fw-bolder" data-control="select2"
                                         data-kt-select2="true" data-placeholder="Pilih cabang" data-allow-clear="true"
@@ -163,7 +165,10 @@ $jab = Auth::user()->jabatan;
                             <td colspan="14">colspan</td>
                         </tr> --}}
                     </thead>
-                    <tbody></tbody>
+                    <form id="frxx_" name="frxx_" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <tbody></tbody>
+                    </form>
                     <tfoot>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200 align-middle" align="right">
                             <th></th>
@@ -197,12 +202,13 @@ $jab = Auth::user()->jabatan;
 
 @section('script')
     <script type="text/javascript">
-        setHide('btn_reset', true);
+        hidePesan('btn_reset');
         setTextReadOnly('atjh_tanggal', true);
         setTextReadOnly('atjh_pk', true);
         setTextReadOnly('atjh_amjb_kode', true);
         setTextReadOnly('atjh_nomor', true);
         setTextReadOnly('atjh_keterangan', true);
+        setTextReadOnly('e_tgljur', true);
 
         $(function() {
             $.ajaxSetup({
@@ -353,7 +359,7 @@ $jab = Auth::user()->jabatan;
                             var jab = '{{ __getJab() }}';
                             // if (row.tkad_final != "2" && row.tkad_final < "x" && row.tkad_final > "x") {
                             if (row.tkad_final != "2") {
-                                return `<button type="button" class="btn btn-primary btn-sm" onclick="proses_pst('` +
+                                return `<button type="button" id="btn_update_kas" class="btn btn-primary btn-sm" onclick="proses_pst('` +
                                     row.tkad_pk + `','akuntrs` + row.DT_RowIndex + `','` + row
                                     .tkad_tipe_dk +
                                     `','` + row.DT_RowIndex + `','` + row.tkad_atjh_pk + `','` + row
@@ -424,10 +430,26 @@ $jab = Auth::user()->jabatan;
                     {
                         data: null,
                         orderable: false,
-                        render: function(row, type, data, meta) {
-                            return `-`;
+                        render: function(data, type, row, meta) {
+                            if (row.tkad_final == "0" || row.tkad_final == "1") {
+                                return `<button type="button" class="btn btn-primary btn-sm" onclick="refreshjurkas('` +
+                                    row.tkad_pk + `','` + row.tdna_tgl_aju + `', 'R')">Refresh</button>`;
+                            } else {
+                                return `-`;
+                            }
                         }
                     },
+                    // {
+                    //     data: 'tkad_pk',
+                    //     orderable: false,
+                    //     render: function(row, type, data, meta) {
+                    //         if (row.tkad_final == "0" || row.tkad_final == "1") {
+                    //             return `<button type="button" class="btn btn-primary btn-sm" onclick="refreshjurkas('` +
+                    //                 row.tkad_pk + `','`+row.tdna_tgl_aju+`', 'R')">Refresh</button>`;
+                    //         }
+
+                    //     }
+                    // },
                 ], '',
                 function(row, data, start, end, display) {
                     var api = this.api(),
@@ -480,7 +502,7 @@ $jab = Auth::user()->jabatan;
                 },
             );
 
-            
+
         });
 
         function uploadPolis(kode, doc) {
@@ -634,29 +656,31 @@ $jab = Auth::user()->jabatan;
         }
 
         function e_lov(id, vlain) {
+            console.log(id, vlain);
+            clearForm('frxx_akun');
             openModal('modalAkun');
             titleAction('titleMod', 'Lov Pencarian Data');
-            setText('e_lov', id);
+            setText('id_index', id);
             setText('e_lovlain', vlain);
-            setHide('e_lov', true);
-            setHide('e_lovlain', true);
+            hidePesan('id_index');
+            hidePesan('e_lovlain');
 
             filterAll('input[type="search"]', 'serverSide_lov_polis');
             serverSide(
-                'serverSide_lov_polis', "{{url('api/keuangan/kas/buku-besar-kas/lov_polis')}}" , function(d) {
-                    d.id = getText('e_lov'),
-                    // d.nama = getText('e_lovcari'),
-                    d.xakun = getText('tdna_asakn_kode'),
-                    d.xdk = getText('e_lovlain'),
-                    d.nama = $('input[type="search"]').val();
+                'serverSide_lov_polis', "{{ url('api/keuangan/kas/buku-besar-kas/lov_polis') }}",
+                function(d) {
+                    d.id = getText('id_index'),
+                        // d.nama = getText('e_lovcari'),
+                        d.xakun = getText('tdna_asakn_kode'),
+                        d.xdk = getText('e_lovlain'),
+                        d.nama = $('input[type="search"]').val();
 
                 },
-                [
-                    {
+                [{
                         data: null,
                         render: function(row, type, data, meta) {
                             return `<button type="button" class="btn btn-primary btn-sm" onclick="pilih('` +
-                                    row.kode + `','`+ row.nama +`','`+ row.lain +`')">`+ row.kode +`</button>`;
+                                row.kode + `','` + row.nama + `','` + row.lain + `')">` + row.kode + `</button>`;
                         }
                     },
                     {
@@ -666,36 +690,58 @@ $jab = Auth::user()->jabatan;
                         data: 'lain'
                     }
                 ]);
-            }
+        }
 
-            function pilih(kode, nama, lain) {
-                closeModal('modalAkun');
-                var akuntrs = getText('e_lov');
-                setText(akuntrs, kode);
-                setText('t'+akuntrs, nama);
-            }
+        function pilih(kode, nama, lain) {
+            closeModal('modalAkun');
+            var akuntrs = getText('id_index');
+            setText(akuntrs, kode);
+            setText('t' + akuntrs, nama);
+        }
 
         function proses_pst(pk, tipe, dk_dtl, i, pkhdr, tkad_final) {
-            var vakun  	= getText("#"+tipe);
-            var vdr  	= getText("#xddr"+i);		
-            var vcr  	= getText("#xdcr"+i);
-            var vket  	= getText("#xket"+i);
+            var vakun = getText(tipe);
+            var vdr = getText("xddr" + i);
+            var vcr = getText("xdcr" + i);
+            var vket = getText("xket" + i);
             var vdk_dtl = dk_dtl;
-            var vpkhdr  = pkhdr;
-            var vinal  	= tkad_final;
+            var vpkhdr = pkhdr;
+            var vinal = tkad_final;
             // console.log(pk, tipe, dk_dtl, i, pkhdr, tkad_final);
 
             if (vinal == '2') {
                 alert('Sudah Final, Tidak bisa Update!');
             }
 
-            var url="ww.post/p_ubah_akunkas.php?tkad_pk="+pk+"&vakun="+vakun+"&vdr="+vdr+"&vcr="+vcr+"&vdk_dtl="+vdk_dtl+"&vpkhdr="+vpkhdr+"&vket="+vket+"&vinal="+vinal+"&";
-				$.getJSON(url,vv, function(data){
-				 if (data)
-				 {
-					notif(data.tkad_pk,"Update :"+data.tkad_pk+" Berhasil Diproses ");
-				 }
-			}); 
+            $.ajax({
+                type: 'POST',
+                url: "{{ url('keuangan/kas/buku-besar-kas/p_ubah_akunkas') }}" + "?tkad_pk=" + pk + "&vakun=" +
+                    vakun + "&vdr=" + vdr + "&vcr=" + vcr + "&vdk_dtl=" + vdk_dtl + "&vpkhdr=" + vpkhdr + "&vket=" +
+                    vket + "&vinal=" + vinal + "&",
+                success: function(res) {
+                    Swal.fire(
+                        'Berhasil!',
+                        res.success,
+                        'success'
+                    );
+                    clearForm('frxx_akun');
+                }
+            });
+        }
+
+        function refreshjurkas(pk, tgl, tipe) {
+            var user = getText('i_user');
+            var url = "{{ url('api/keuangan/kas/buku-besar-kas/p_jurkas_cek') }}" + "?tkad=" + pk + "&tgl=" + tgl +
+                "&tipe=" + tipe + "&user=" + user;
+            lodJson('GET', url, function(res) {
+                if (res) {
+                    Swal.fire(
+                        'Berhasil!',
+                        res.info,
+                        'success'
+                    );
+                }
+            });
         }
     </script>
 @endsection

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Sdm;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\wwLib\Lib;
 use App\Models\Sdm\Direktorat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -214,7 +213,7 @@ class EntryJabatanController extends Controller
         // }
 
         // if ($request->sdir_kode == "") {
-        //     $kode = Lib::__getKey(14);
+        //     $kode = __getKey(14);
         //     $data = $request->all();
         //     $data = $request->except('_token');
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Legal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\wwLib\Lib;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -64,7 +63,7 @@ class PojkSeojkController extends Controller
         } else {
 
             if ($request->mpojk_pk == "") {
-                $kode = Lib::__getKey(14);
+                $kode = __getKey(14);
                 $data = $request->all();
                 $data = request()->except(['_token']);
 

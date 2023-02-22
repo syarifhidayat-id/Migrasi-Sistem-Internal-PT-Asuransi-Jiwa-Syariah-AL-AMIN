@@ -17,24 +17,25 @@
                         <div class="row mb-5">
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
-                                    {{-- <input class="form-control" name="e_tgljur" id="e_tgljur" type="text" /> --}}
-                                    <input class="form-control" name="ket_1" id="ket_1" type="text" />
-                                    <input class="form-control" name="d_1" id="d_1" type="text" />
-                                    <input class="form-control" name="k_1" id="k_1" type="text" />
-                                    <input class="form-control" name="a_1" id="a_1" type="text" />
-                                    <input class="form-control" name="namakun_1" id="namakun_1" type="text" />
+                                    <label class="form-label">Tgl. Jurnal</label>
+                                    <input class="form-control" name="atjh_tanggal" id="atjh_tanggal" type="text" />
+                                    <input class="form-control" name="ket_1" id="ket_1" type="hidden" />
+                                    <input class="form-control" name="d_1" id="d_1" type="hidden" />
+                                    <input class="form-control" name="k_1" id="k_1" type="hidden" />
+                                    <input class="form-control" name="a_1" id="a_1" type="hidden" />
+                                    <input class="form-control" name="namakun_1" id="namakun_1" type="hidden" />
 
-                                    <input class="form-control" name="ket_2" id="ket_2" type="text" />
-                                    <input class="form-control" name="d_2" id="d_2" type="text" />
-                                    <input class="form-control" name="k_2" id="k_2" type="text" />
-                                    <input class="form-control" name="a_2" id="a_2" type="text" />
-                                    <input class="form-control" name="namakun_2" id="namakun_2" type="text" />
+                                    <input class="form-control" name="ket_2" id="ket_2" type="hidden" />
+                                    <input class="form-control" name="d_2" id="d_2" type="hidden" />
+                                    <input class="form-control" name="k_2" id="k_2" type="hidden" />
+                                    <input class="form-control" name="a_2" id="a_2" type="hidden" />
+                                    <input class="form-control" name="namakun_2" id="namakun_2" type="hidden" />
 
-                                    <input class="form-control" name="hdrpk" id="hdrpk" type="text" />
-                                    <input class="form-control" name="vinal" id="vinal" type="text" />
-                                    <input class="form-control" name="tdna_dk" id="tdna_dk" type="text" />
-                                    <input class="form-control" name="mlok_kode" id="mlok_kode" type="text" />
-                                    <input class="form-control" name="tkad_pk" id="tkad_pk" type="text" />
+                                    <input class="form-control" name="hdrpk" id="hdrpk" type="hidden" />
+                                    <input class="form-control" name="vinal" id="vinal" type="hidden" />
+                                    <input class="form-control" name="tdna_dk" id="tdna_dk" type="hidden" />
+                                    <input class="form-control" name="mlok_kode" id="mlok_kode" type="hidden" />
+                                    <input class="form-control" name="tkad_pk" id="tkad_pk" type="hidden" />
                                     {{-- <span class="text-danger error-text mpojk_tentang_err"></span> --}}
                                 </div>
                             </div>

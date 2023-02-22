@@ -18,4 +18,9 @@ class DashboardController extends Controller
     {
         return view('pages.maintenance');
     }
+
+    public function error()
+    {
+        return view('pages.404');
+    }
 }

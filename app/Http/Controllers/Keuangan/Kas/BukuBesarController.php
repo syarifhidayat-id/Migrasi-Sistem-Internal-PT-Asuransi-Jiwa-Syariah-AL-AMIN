@@ -134,7 +134,7 @@ class BukuBesarController extends Controller
         $rows = $request->rows ? intval($request->rows) : 100;
         $offset = ($page - 1) * $rows;
 
-        $cmd = DB::select("SELECT `asakn_kode` akun,`asakn_keterangan` nama FROM eacc.`ams_sub_akun` 
+        $cmd = DB::select("SELECT `asakn_kode` akun,`asakn_keterangan` nama FROM eacc.`ams_sub_akun`
         WHERE `asakn_mlok_kode`='" . $request['mlok'] . "' AND `asakn_mrpt_kode`='NEROPR' AND `asakn_aakn_kode`='540' AND RIGHT(asakn_kode,1)='1';");
 
         $res = __dbAll($cmd);
@@ -153,16 +153,16 @@ class BukuBesarController extends Controller
 
         //$jabatan=__getGlobalValue("jabatan");
 
-        $cmd = DB::select(" 
-		SELECT 
-		  atjh_pk,  atjh_mlok_pk,  
+        $cmd = DB::select("
+		SELECT
+		  atjh_pk,  atjh_mlok_pk,
 		  DATE_FORMAT(atjh_tanggal,'%d-%m-%Y') atjh_tanggal,
 		  atjh_periode_bulan,
 		  atjh_periode_tahun,  atjh_nomor,  atjh_tanggal_bukti,  atjh_amjb_kode,
 		  atjh_amjb_mlok_kode,  atjh_nomor_bukti,  atjh_keterangan,  atjh_total_debit,
 		  atjh_total_kredit,  atjh_status_posting,  atjh_insert_user,  atjh_update_user,  atjh_insert_date,  atjh_update_date,
 		  atjh_TS,  atjh_rpt,  atjh_manual,  atjh_final_acc,
-		  atjd_pk,  atjd_atjh_pk,  atjd_askn_kode,  atjd_keterangan,  atjd_tipe_dk,  atjd_total 
+		  atjd_pk,  atjd_atjh_pk,  atjd_askn_kode,  atjd_keterangan,  atjd_tipe_dk,  atjd_total
 		FROM ejur.atr_jurnal_hdr_all, ejur.atr_jurnal_dtl_all
 		WHERE atjd_atjh_pk = atjh_pk
 		AND 1=1 $tambah
@@ -183,17 +183,17 @@ class BukuBesarController extends Controller
         $vidxkey = "atjd_pk";                              // field kode validasi
         $vfldname = "atjd_keterangan";                     // field nama validasi
 
-        $vfield = "atr_jurnal_dtl_all.*,asakn_keterangan, FORMAT(atjd_total,2) atjd_totalx   ";    // query field 
+        $vfield = "atr_jurnal_dtl_all.*,asakn_keterangan, FORMAT(atjd_total,2) atjd_totalx   ";    // query field
 
         if (isset($request['pk_h'])) {
             $tambah .= $tambah . " and atjd_atjh_pk='" . $request['pk_h'] . "'";
         }
-        $cmd = DB::select(" 
+        $cmd = DB::select("
 	SELECT
-	$vfield 
+	$vfield
 	FROM $vtable
-	where $vidxkey<>'' 
-	$tambah 
+	where $vidxkey<>''
+	$tambah
 	$order
 	 ");
 
@@ -370,7 +370,7 @@ class BukuBesarController extends Controller
                 $tambah .= " and (LEFT(asakn_kode,3)='550' AND asakn_mrpt_kode='LABRUG' OR  (asakn_aakn_kode IN ('554','558'))  OR (asakn_aakn_kode='540' AND asakn_bnb='1' )  OR  (LEFT(asakn_kode,7) = '240-580') OR  (LEFT(asakn_kode,7) = '150-556') OR  (asakn_kode = '150-544-0601201') OR  (asakn_kode = '150-544-0601101'))  ";
             }
 
-            $cmd = DB::select("SELECT asakn_kode kode, asakn_keterangan nama,asakn_mlok_kode lain FROM eacc.ams_sub_akun 
+            $cmd = __select("SELECT asakn_kode kode, asakn_keterangan nama,asakn_mlok_kode lain FROM eacc.ams_sub_akun 
 				WHERE 1=1 
 				" . $tambah . " ");
             //echo $cmd;	
@@ -378,74 +378,180 @@ class BukuBesarController extends Controller
             $r = __dbAll($cmd);
 
             return DataTables::of($r)->addIndexColumn()->make(true);
-           
         }
     }
 
-    public function p_ubah_akunkas(Request $request) {
-        $data = $request->all();
-        $vtable		=DB::table("epms.trs_kas_dtl");
-		$tkad_pk	= $request['tkad_pk'];
-		$vpkhdr		= $request['vpkhdr'];
-		$vakun		= $request['vakun'];		
-		$vdr		= __str2($request['vdr'],'N') ;
-		$vcr		= __str2($request['vcr'],'N') ;
-		$vket		= $request['vket'];
-		$vdk_dtl	= $request['vdk_dtl'];
-		$vinal		= $request['vinal'];
+    public function p_ubah_akunkas(Request $request)
+    {
+        $cmd = "";
+        // $cms = "";
+        // $cmdk = "";
+        $vtable        = " epms.trs_kas_dtl ";
+        $tkad_pk    = $request['tkad_pk'];
+        $vpkhdr        = $request['vpkhdr'];
+        $vakun        = $request['vakun'];
+        $vdr        = __str2($request['vdr'], 'N');
+        $vcr        = __str2($request['vcr'], 'N');
+        $vket        = $request['vket'];
+        $vdk_dtl    = $request['vdk_dtl'];
+        $vinal        = $request['vinal'];
 
-        if( $vdk_dtl == "D" && strval($vcr)<>0 )		//	P_REPORT_KASCAB tkad_Dr (bea++ )= rpdiBB_CR filled
-		{
-            $data['tkad_keterangan'] = $vket;
-            $data['tkad_total'] = $vcr;
+        $data = $request->except(
+            'vakun',
+            'vdr',
+            'vcr',
+            'vdk_dtl',
+            'vinal',
+            'vpkhdr',
+            'vket',
+        );
 
-            $cms = $vtable->where([
-                ['tkad_pk', $tkad_pk],
-                ['tkad_atjh_pk', $vpkhdr]
-            ])->update($data);
-            $ress = __dbRow($cms);
+        if ($vdk_dtl == "D" && strval($vcr) <> 0)        //	P_REPORT_KASCAB tkad_Dr (bea++ )= rpdiBB_CR filled
+        {
+            $cms = __select("UPDATE epms.trs_kas_dtl	SET tkad_askn_kode = '" . $vakun . "', tkad_keterangan = '" . $vket . "', tkad_total = '" . $vcr . "' WHERE tkad_pk ='" . $tkad_pk . "' AND  tkad_atjh_pk='" . $vpkhdr . "'");
+            // $ress =__dbRow($cms);
 
-            // $cmd = DB::table('epms.trs_kas_dtl')
-            // ->select('DB::raw(SUM(tkad_total))AS rp')
-            // ->where([
-            //     ['tkad_atjh_pk', $vpkhdr],
-            //     ['tkad_tipe_dk', 'K']
-            // ]);
+            // xD == K Rp changed
+            $cmd = __select("UPDATE epms.trs_kas_dtl AS tbl 
+            JOIN  (SELECT tkad_atjh_pk, SUM(tkad_total) rp FROM epms.trs_kas_dtl WHERE tkad_tipe_dk='D' AND  tkad_atjh_pk='" . $vpkhdr . "' GROUP BY tkad_atjh_pk) AS grp ON grp.tkad_atjh_pk = tbl.tkad_atjh_pk SET tbl.tkad_total = grp.rp WHERE tbl.tkad_atjh_pk ='" . $vpkhdr . "' AND tbl.tkad_tipe_dk='K'");
 
-            // $data['tkad_total'] = $cmd['rp'];
+            // $res =__dbRow($cmd);
 
-            // $cmd = DB::table('epms.trs_kas_dtl AS tbl')
-            // ->join('epms.trs_kas_dtl AS grp', 'grp.rp', 'tbl.tkad_atjh_pk')
-            // ->select('grp.tkad_atjh_pk', DB::raw('SUM(tkad_total)AS rp'))
-            // ->where([['grp.tkad_tipe_dk', 'D'],['grp.tkad_atjh_pk', $vpkhdr]])
-            // ->set('tbl.tkad_total', 'grp.rp')->where([['tbl.tkad_atjh_pk', $vpkhdr], ['tbl.tkad_tipe_dk', 'K']]);
-            // $cmd->update();
+            // Vcr Rp
+            $cmd = __select("
+            UPDATE epms.trs_kas_vcr	SET tkav_total = (SELECT SUM(tkad_total) rp FROM epms.trs_kas_dtl WHERE tkad_tipe_dk='D' AND  tkad_atjh_pk='" . $vpkhdr . "')	WHERE  tkav_tdna_pk ='" . $vpkhdr . "'
+            ");
+
+            // $res =__dbRow($cmd);
+
+            // TDNA Rp
+            $cmdk = __select("
+            UPDATE epms.trs_dana_aju	SET tdna_total = (SELECT SUM(tkad_total) rp FROM epms.trs_kas_dtl WHERE tkad_tipe_dk='D' AND  tkad_atjh_pk='" . $vpkhdr . "')	WHERE  tdna_pk ='" . $vpkhdr . "'
+            ");
+
+            // $resk =__dbRow($cmdk);
+
+            // JUR Rp
+            if ($vinal == "1") {
+                // change akun selected
+                $sql = __select("
+                UPDATE ejur.atr_jurnal_dtl_all SET atjd_total='" . $vcr . "', atjd_askn_kode='" . $vakun . "', atjd_keterangan='" . $vket . "'	
+				WHERE atjd_atjh_pk ='" . $tkad_pk . "'  AND atjd_tipe_dk='K'
+                ");
+
+                // $resq =__dbRow($sql);
+
+                // change xD == K Rp
+                $sqlx = __select("
+            UPDATE ejur.atr_jurnal_dtl_all SET atjd_total='" . $vcr . "'
+            WHERE atjd_atjh_pk ='" . $tkad_pk . "'  AND atjd_tipe_dk='D'
+            ");
+
+                // $resqx =__dbRow($sqlx);
+
+                $sqlz = __select("
+            UPDATE ejur.atr_jurnal_hdr_all SET atjh_total_debit='" . $vcr . "', atjh_total_kredit='" . $vcr . "' WHERE atjh_pk ='" . $tkad_pk . "'
+            ");
+
+                // $resqz =__dbRow($sqlz);
+            }
+        }
+
+        if ($vdk_dtl == "K" && strval($vdr) <> 0) //	P_REPORT_KASCAB tkad_Kr (kas++) = rpdiBB_DR filled
+        {
+            $cms = __select("
+            UPDATE epms.trs_kas_dtl	SET tkad_askn_kode = '" . $vakun . "', tkad_keterangan = '" . $vket . "', tkad_total = '" . $vdr . "' WHERE tkad_pk ='" . $tkad_pk . "' AND  tkad_atjh_pk='" . $vpkhdr . "'
+            ");
+            // $ress =__dbRow($cms);
+
+            // xK == D Rp changed
+
             $cmd = __select("
             UPDATE epms.trs_kas_dtl AS tbl 
             JOIN  (
-                    SELECT tkad_atjh_pk, SUM(tkad_total) rp FROM epms.trs_kas_dtl WHERE tkad_tipe_dk='D' AND  tkad_atjh_pk='".$vpkhdr."'
-                                GROUP BY tkad_atjh_pk
+                SELECT tkad_atjh_pk, SUM(tkad_total) rp FROM epms.trs_kas_dtl WHERE tkad_tipe_dk='K' AND  tkad_atjh_pk='" . $vpkhdr . "'
+                              GROUP BY tkad_atjh_pk
                 ) AS grp
             ON grp.tkad_atjh_pk = tbl.tkad_atjh_pk 
-            SET tbl.tkad_total = grp.rp
-            WHERE tbl.tkad_atjh_pk ='".$vpkhdr."' AND tbl.tkad_tipe_dk='K'
+         SET tbl.tkad_total = grp.rp
+         WHERE tbl.tkad_atjh_pk ='" . $vpkhdr . "' AND tbl.tkad_tipe_dk='D'
             ");
-
-            $res = __dbRow($cmd);
+            // $res =__dbRow($cmd);
 
             $cmd = __select("
-            UPDATE epms.trs_kas_vcr	SET tkav_total = (SELECT SUM(tkad_total) rp FROM epms.trs_kas_dtl WHERE tkad_tipe_dk='D' AND  tkad_atjh_pk='".$vpkhdr."')	WHERE  tkav_tdna_pk ='".$vpkhdr."'
+            UPDATE epms.trs_kas_vcr	SET tkav_total = (SELECT SUM(tkad_total) rp FROM epms.trs_kas_dtl WHERE tkad_tipe_dk='K' AND  tkad_atjh_pk='" . $vpkhdr . "')	WHERE tkav_tdna_pk ='" . $vpkhdr . "'
             ");
+            // $res =__dbRow($cmd);
 
-            $res = __dbRow($cmd);
-
+            // TDNA Rp
             $cmdk = __select("
-            UPDATE epms.trs_dana_aju	SET tdna_total = (SELECT SUM(tkad_total) rp FROM epms.trs_kas_dtl WHERE tkad_tipe_dk='D' AND  tkad_atjh_pk='".$vpkhdr."')	WHERE  tdna_pk ='".$vpkhdr."'
+            UPDATE epms.trs_dana_aju	SET tdna_total = (SELECT SUM(tkad_total) rp FROM epms.trs_kas_dtl WHERE tkad_tipe_dk='K' AND  tkad_atjh_pk='" . $vpkhdr . "')	WHERE  tdna_pk ='" . $vpkhdr . "'
             ");
+            // $resk =__dbRow($cmdk);
 
-		    $resk =__dbRow($cmdk);
-            
-            
+            // JUR Rp
+            if ($vinal == "1") {
+                $sql = __select("
+                UPDATE ejur.atr_jurnal_dtl_all SET atjd_total='" . $vcr . "', atjd_askn_kode='" . $vakun . "', atjd_keterangan='" . $vket . "'	
+                WHERE atjd_atjh_pk ='" . $tkad_pk . "'  AND atjd_tipe_dk='K'
+                ");
+                // $resq =__dbRow($sql);
+
+                $sqlx = __select("
+                UPDATE ejur.atr_jurnal_dtl_all SET atjd_total='" . $vcr . "'
+                WHERE atjd_atjh_pk ='" . $tkad_pk . "'  AND atjd_tipe_dk='D'
+                ");
+                // $resqx =__dbRow($sqlx);
+
+                $sqlz = __select("
+                UPDATE ejur.atr_jurnal_hdr_all SET atjh_total_debit='" . $vcr . "', atjh_total_kredit='" . $vcr . "' WHERE atjh_pk ='" . $tkad_pk . "'
+                ");
+                // $resqz =__dbRow($sqlz);
+            }
+        }
+
+        // $cmdx =__select("
+        // select tkad_pk from ".$vtable." where  tkad_pk='".$request['tkad_pk']."'
+        // ");
+        // // $cmdx = DB::table("epms.trs_kas_dtl")->where('tkad_pk', $request['tkad_pk']);
+        // $res =__dbAll($cmdx);
+        return response()->json(['success' => 'Data berhasil di update']);
+        // // return $data;
+    }
+
+    public function p_jurkas_cek(Request $request)
+    {
+        $cmd = "";
+        // $user = "";
+
+        $tgl = $request->tgl;
+        $tkad_pk = $request->tkad_pk;
+        $tipe = $request->tipe;
+        $user = $request->user;
+
+        // $user = __getUser();
+        $tglx = __str2($tgl, 'D');
+
+        $bulan = __select("select 
+        month('" . $tglx . "') as bulan,
+        year('" . $tglx . "') as tahun");
+        $rbln = __dbRow($bulan);
+
+        if ($tipe == "R") {
+            if ($rbln['bulan'] <= '11' and $rbln['tahun'] <= '2018') {
+                $call1 = __select("CALL epms.`P_JURNAL_KAS_ULANG`('" . $tkad_pk . "','" . $user . "')");
+                $cmd = __dbRow($call1);
+                //$rcmd=__dbRow($cmd);
+                //echo $cmd;
+
+                return response()->json(['info' => 'Data sudah direfresh, Silahkan Approval']);
+            } else {   #----CEK HAK AKSES KADIV ACC---#
+                $call2 = __select("CALL epms.`P_JURNAL_KAS_ULANG`('" . $tkad_pk . "','" . $user. "')");
+                $cmd = __dbRow($call2);
+
+                // echo '{"info" : "Data sudah direfresh, Silahkan Approval "}';
+                return response()->json(['info' => 'Data sudah direfresh, Silahkan Approval']);
+            }
         }
     }
 }
