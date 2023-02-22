@@ -24,6 +24,7 @@ class InputPajakController extends Controller
         return view('pages.keuangan.komisi-overreding.input-pajak.index', [
             'month' => $month,
             'year' => date('2007'),
+            'tahun' => date('2007'),
         ]);
     }
 

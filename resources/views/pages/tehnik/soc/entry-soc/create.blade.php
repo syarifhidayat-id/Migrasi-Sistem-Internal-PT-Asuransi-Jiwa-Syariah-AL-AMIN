@@ -464,24 +464,17 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="mb-5">
-                                                    <div class="input-group input-group-solid flex-nowrap">
-                                                        <div class="overflow-hidden flex-grow-1">
-                                                            <input type="text" class="easyui-combogrid" name="e_tarif" id="e_tarif" data-options="prompt:'Pilih jenis tarif'" style="width: 100%; height: 38px;" />
-                                                            <input type="text" class="form-control form-control-solid" name="msoc_mth_nomor" id="msoc_mth_nomor" placeholder="msoc_mth_nomor" />
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-danger error-text e_tarif_err"></span>
+                                        <div class="mb-5">
+                                            <div class="input-group input-group-solid flex-nowrap">
+                                                <div class="overflow-hidden flex-grow-1">
+                                                    <input type="text" class="easyui-combogrid" name="e_tarif" id="e_tarif" data-options="prompt:'Pilih jenis tarif'" style="width: 100%; height: 38px;" />
+                                                    <input type="text" class="form-control form-control-solid" name="msoc_mth_nomor" id="msoc_mth_nomor" placeholder="msoc_mth_nomor" />
                                                 </div>
+
+                                                <button type="button" id="importTarif" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
+                                                <button type="button" id="lihatTarif" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
                                             </div>
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <button type="button" id="importTarif" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
-                                                    <button type="button" id="lihatTarif" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
-                                                </div>
-                                            </div>
+                                            <span class="text-danger error-text e_tarif_err"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -502,24 +495,14 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="mb-5">
-                                                    <div class="input-group input-group-solid flex-nowrap">
-                                                        <div class="overflow-hidden flex-grow-1">
-                                                            <input type="text" class="easyui-combogrid" name="e_uw" id="e_uw" data-options="prompt:'Pilih jenis underwriting'" style="width: 100%; height: 38px;" />
-                                                            <input type="text" class="form-control form-control-solid" name="msoc_mpuw_nomor" id="msoc_mpuw_nomor" placeholder="msoc_mpuw_nomor" />
-                                                        </div>
-                                                    </div>
-                                                    <span class="text-danger error-text e_uw_err"></span>
+                                        <div class="mb-5">
+                                            <div class="input-group input-group-solid flex-nowrap">
+                                                <div class="overflow-hidden flex-grow-1">
+                                                    <input type="text" class="easyui-combogrid" name="e_uw" id="e_uw" data-options="prompt:'Pilih jenis underwriting'" style="width: 100%; height: 38px;" />
+                                                    <input type="text" class="form-control form-control-solid" name="msoc_mpuw_nomor" id="msoc_mpuw_nomor" placeholder="msoc_mpuw_nomor" />
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <button type="button" id="importUw" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
-                                                    <button type="button" id="lihatUw" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
-                                                </div>
-                                            </div>
+                                            <span class="text-danger error-text e_uw_err"></span>
                                         </div>
                                     </div>
                                 </div>

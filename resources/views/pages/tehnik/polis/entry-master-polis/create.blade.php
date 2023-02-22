@@ -1690,7 +1690,7 @@
                 setReadEdit(false);
             }
             setText('endors',tipe);
-            // reSelGrid('mpol_mrkn_nama','{{ url("tehnik/polis/entry-master-polis/lod_pmg_polis") }}' + '?tipe=' + tipe);
+            reSelGrid('mpol_mrkn_nama','{{ url("tehnik/polis/entry-master-polis/lod_pmg_polis") }}');
         }
 
         function setReadEdit(sts) {
