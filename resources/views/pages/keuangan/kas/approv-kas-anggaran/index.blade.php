@@ -266,9 +266,9 @@
             </div>
         </div>
 
-        @include('pages.keuangan.kas.approv-transaksi-kas.modal.upload')
-        @include('pages.keuangan.kas.approv-transaksi-kas.modal.approv')
-        @include('pages.keuangan.kas.approv-transaksi-kas.modal.view')
+        @include('pages.keuangan.kas.approv-kas-anggaran.modal.upload')
+        @include('pages.keuangan.kas.approv-kas-anggaran.modal.approv')
+        @include('pages.keuangan.kas.approv-kas-anggaran.modal.view')
         <div class="card-body py-10">
             <div class="table-responsive">
                 <table class="table table-rounded table-striped border cell-border align-middle gy-5 gs-5"
@@ -321,6 +321,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            selectOpTag('tkad_keterangan');
 
             // SELECT FILTER
             selectSide('e_cabalaminx', false, '{{ url('api/keuangan/kas/approv-kas-anggaran/cabang_alamin') }}',
@@ -503,7 +505,20 @@
 
         function approv_rk(kode, tipe)
         {
-            var url = "{{url('')}}"
+            // var rms="kode="+kode;
+            var url = "{{url('api/keuangan/kas/approv-kas-anggaran/get_kaskeu')}}"+ "?kode=" + kode;
+            // $('#tMod').text('Form Approval');
+            $.get(url, function(data) {
+                console.log(data);
+                titleAction('title_mod','Form Approval');
+                openModal('dlg_approv');
+                jsonForm('ff_dlg_approv', data);
+            });
+        }
+
+        function close_dlg_approv() {
+            clearForm('ff_dlg_approv');
+            closeModal('dlg_approv');
         }
 
     </script>

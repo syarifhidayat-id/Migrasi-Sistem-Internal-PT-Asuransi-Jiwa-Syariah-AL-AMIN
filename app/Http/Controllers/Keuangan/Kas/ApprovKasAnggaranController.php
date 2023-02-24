@@ -19,7 +19,21 @@ class ApprovKasAnggaranController extends Controller
      */
     public function index()
     {
-        return view('pages.keuangan.kas.approv-kas-anggaran.index');
+        $slc_ket = DB::table('eset.uti_setting')
+        ->select('uset_value1 AS kode', 'uset_value1 AS ket')
+        ->where('uset_modul', 'KASKET')
+        // ->orderBy(1)
+        ->get();
+
+        // dd($slc_ket);
+
+        $slc_tipe_diang = __select("SELECT mta_pk kode,mta_keterangan ket FROM epms.mst_tipe_anggaran   ORDER BY 1");
+        // $tipe_diang = __dbAll($slc_tipe_diang);
+
+
+        return view('pages.keuangan.kas.approv-kas-anggaran.index', [
+           'slc_ket' => $slc_ket
+        ]);
     }
 
     /**
@@ -234,60 +248,89 @@ class ApprovKasAnggaranController extends Controller
         return response()->json($data);
     }
 
-    public function getCabang(Request $request, $id)
-    {
-        $data = [];
-        if ($request->has('q')) {
-            $search = $request->q;
-            $data = DB::table('emst.mst_lokasi')
-                ->select('*')
-                ->where([
-                    ['mlok_pk', $id],
-                    ['mlok_nama', 'like', "%$search%"],
-                ])
-                ->get();
-        } else {
-            $data = DB::table('emst.mst_lokasi')
-                ->select('*')
-                ->where([
-                    ['mlok_pk', $id],
-                ])
-                ->get();
-        }
+    // public function getCabang(Request $request, $id)
+    // {
+    //     $data = [];
+    //     if ($request->has('q')) {
+    //         $search = $request->q;
+    //         $data = DB::table('emst.mst_lokasi')
+    //             ->select('*')
+    //             ->where([
+    //                 ['mlok_pk', $id],
+    //                 ['mlok_nama', 'like', "%$search%"],
+    //             ])
+    //             ->get();
+    //     } else {
+    //         $data = DB::table('emst.mst_lokasi')
+    //             ->select('*')
+    //             ->where([
+    //                 ['mlok_pk', $id],
+    //             ])
+    //             ->get();
+    //     }
 
-        return response()->json($data);
-    }
+    //     return response()->json($data);
+    // }
 
     public function get_kaskeu(Request $request)
     {
         $tambah = "";
-        if (isset($_GET['kode'])) {
-            if ($_GET['kode'] != "") {
-                $tambah .= " and tkad_pk='" . $_GET['kode'] . "'";
+        if (isset($request['kode'])) {
+            if ($request['kode'] != "") {
+                $tambah .= " and tkad_pk='" . $request['kode'] . "'";
             }
         }
 
-        $cmd="
-        SELECT
-        tkad_pk,  
-        tkad_atjh_pk,
-        tkad_askn_kode,
-        tkad_keterangan,
-        tkad_tipe_dk,
-        FORMAT(tkad_total,2) tkad_total,
-        tkad_jns_realisasi,
-        mar_nama e_realisasi,
-        tkad_tkb_pk,
-        tkad_mta_pk,
-        mta_keterangan,
-        tkad_kd_keterangan,
-        tkad_relops,
-        tkad_kelompokas
-        FROM   epms.trs_kas_dtl	
-        LEFT JOIN eacc.ams_sub_akun  ON asakn_kode=tkad_askn_kode 
-        LEFT JOIN epms.`mst_tipe_anggaran` ON mta_pk=tkad_mta_pk
-        LEFT JOIN `emst`.`mst_anggaran_realisasi` on mar_kode=tkad_jns_realisasi
-        WHERE 1=1  $tambah limit 1 
-        ";
+        $cmd= __select(
+            "
+            SELECT
+            tkad_pk,  
+            tkad_atjh_pk,
+            tkad_askn_kode,
+            tkad_keterangan,
+            tkad_tipe_dk,
+            FORMAT(tkad_total,2) tkad_total,
+            tkad_jns_realisasi,
+            mar_nama e_realisasi,
+            tkad_tkb_pk,
+            tkad_mta_pk,
+            mta_keterangan,
+            tkad_kd_keterangan,
+            tkad_relops,
+            tkad_kelompokas
+            FROM   epms.trs_kas_dtl	
+            LEFT JOIN eacc.ams_sub_akun  ON asakn_kode=tkad_askn_kode 
+            LEFT JOIN epms.`mst_tipe_anggaran` ON mta_pk=tkad_mta_pk
+            LEFT JOIN `emst`.`mst_anggaran_realisasi` on mar_kode=tkad_jns_realisasi
+            WHERE 1=1   $tambah  limit 1 
+            "
+        );
+        $r = __dbRow($cmd);
+
+        return response()->json($r);
+    }
+
+    public function selectKeterangan(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $vtable = DB::table('eset.uti_setting')
+            ->select('uset_value1 AS kode', 'uset_value1 AS ket');
+
+        if (!empty($request->q)) {
+            $vtable->where('ket', 'LIKE', "%$request->q%");
+        }
+
+        $data = $vtable
+            // ->groupBy('ket')
+            ->where('uset_modul', 'KASKET')
+            ->orderBy('kode')
+            ->offset($offset)
+            ->limit($rows)
+            ->get();
+
+        return response()->json($data);
     }
 }

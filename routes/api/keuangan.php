@@ -87,6 +87,8 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('cabang_alamin', [ApprovKasAnggaranController::class, 'selectCabang']);
             Route::get('api_dtl_approv_kas', [ApprovKasAnggaranController::class, 'api_dtl_approv_kas']);
             Route::get('api_approv_kas_anggaran', [ApprovKasAnggaranController::class, 'api_approv_kas_anggaran']);
+            Route::get('get_kaskeu', [ApprovKasAnggaranController::class, 'get_kaskeu']);
+            Route::get('selectKeterangan', [ApprovKasAnggaranController::class, 'selectKeterangan']);
             
         });
 
