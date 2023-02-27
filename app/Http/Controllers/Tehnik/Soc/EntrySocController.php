@@ -41,6 +41,10 @@ class EntrySocController extends Controller
      */
     public function store(Request $request)
     {
+        extract($_POST);
+        $cmd = "";
+        $vtable = "";
+
         $validasi = Validator::make($request->all(), [
             // 'msoc_mrkn_nama' => 'required',
             'e_nasabah' => 'required',
@@ -88,203 +92,78 @@ class EntrySocController extends Controller
                 'error' => $validasi->errors()
             ]);
         } else {
-            if (empty($request->msoc_kode)) {
-                $vtable = DB::table('eopr.mst_soc');
-                $kdAwal = $request->msoc_mjns_kode . '.' . $request->msoc_mpid_kode;
-                $kdAkhir = $request->msoc_mft_kode . '.' . $request->msoc_mjm_kode . '.' . $request->msoc_mpras_kode . '.' . $request->msoc_jns_perusahaan;
-                $kode = __getNo($kdAwal, $vtable->max('msoc_kode'), 4);
-                $data = $request->all();
-                $data = $request->except(
-                    '_token',
-                    'e_nasabah',
-                    'mpid_mssp_kode',
-                    'e_cabalamin',
-                    'e_manfaat',
-                    'e_manfaat_pol',
-                    'e_marketing',
-                    'e_pinca',
-                    'e_pras',
-                    'e_tarif',
-                    'e_uw',
-                    'edit_akses',
-                    'mpid_nama',
-                    'e_bersih',
-                    'endors',
-                );
-                if ($request->msoc_mpid_kode != "" && $request->msoc_endors != "2") {
-                    $data['msoc_kode'] = $kode . '.' . $kdAkhir;
-                    $data['msoc_kode_ori'] = $kode . '.' . $kdAkhir;
-                    $data['msoc_nomor'] = $kode;
-                    $data['msoc_approve'] = 0;
-                    $data['msoc_endos'] = $request->endors;
+            $vtable = "eopr.mst_soc";
+            $kodepolisendos = "";
+            if (trim($_POST['endors'])=="2") {
+                if (trim($_POST['msoc_nomor'])=="") {
+                    return __json([ 'error' => 'Gagal Simpan Endos , Nomor SOC Kosong !!' ]);
                 }
-                if ($request->hasFile('msoc_dok')) {
-                    $msoc_dok = $request->file('msoc_dok');
-                    $dir = 'public/tehnik/soc/doc';
-                    $fileOri = $msoc_dok->getClientOriginalName();
-                    $namaFile = $kode . '.' . $kdAkhir . '-DokumenSoc-' . $fileOri;
-                    $path = __upfile($dir, $msoc_dok, $namaFile);
-                    $data['msoc_dok'] = $namaFile;
+                if (trim($_POST['msoc_kode'])=="") {
+                    return __json([ 'error' => 'Gagal Simpan Endos , Kode SOC Kosong !!' ]);
                 }
+                $msoc_endos_idx = 0;
+                $cmd = "SELECT IFNULL(max(msoc_endos_idx),0)+1 idx ,msoc_kode_ori FROM $vtable WHERE msoc_kode='".$_POST['msoc_kode']."'";
+                $res = __dbRow($cmd);
+                $msoc_endos_idx = strval($res['idx']);
 
-                $data['msoc_endos'] = $request->endors;
-                $data['msoc_endors'] = $request->endors;
-                $data['msoc_approve'] = '0';
-                $data['msoc_ins_date'] = __now();
-                $data['msoc_ins_user'] = __getUser();
-                $data['msoc_upd_date'] = __now();
-                $data['msoc_upd_user'] = __getUser();
+                $kodepolisendos = "EDS".$msoc_endos_idx.'.'.$res['msoc_kode_ori'];
+                $cmd = "UPDATE $vtable SET msoc_endos=3 WHERE msoc_kode='".$_POST['msoc_kode']."'";
+                __dbRow($cmd);
 
-                // return $data;
-                $vtable->insert($data);
-
-                return response()->json([
-                    'success' => 'Data berhasil disimpan dengan Kode '.$kode . '.' . $kdAkhir.' !'
-                ]);
-            } else {
-                if($request->endors=="1") {
-                    $vtable = DB::table('eopr.mst_soc')->where('msoc_kode', $request->msoc_kode);
-                    $data = $request->all();
-                    $data = $request->except(
-                        '_token',
-                        'e_nasabah',
-                        'mpid_mssp_kode',
-                        'e_cabalamin',
-                        'e_manfaat',
-                        'e_manfaat_pol',
-                        'e_marketing',
-                        'e_pinca',
-                        'e_pras',
-                        'e_tarif',
-                        'e_uw',
-                        'edit_akses',
-                        'mpid_nama',
-                        'e_bersih',
-                        'endors',
-                    );
-                    if ($request->hasFile('msoc_dok')) {
-                        $msoc_dok = $request->file('msoc_dok');
-                        $dir = 'public/tehnik/soc/doc';
-                        $fileOri = $msoc_dok->getClientOriginalName();
-                        $namaFile = $request->msoc_kode . '-DokumenSoc-' . $fileOri;
-                        $path = __upfile($dir, $msoc_dok, $namaFile);
-                        $data['msoc_dok'] = $namaFile;
-                    }
-                    $data['msoc_endos'] = $request->endors;
-                    $data['msoc_endors'] = $request->endors;
-                    $data['msoc_approve'] = 0;
-                    // $data['msoc_status'] = 0;
-                    $data['msoc_ins_date'] = __now();
-                    $data['msoc_ins_user'] = __getUser();
-                    $data['msoc_upd_date'] = __now();
-                    $data['msoc_upd_user'] = __getUser();
-
-                    $vtable->update($data);
-
-                    return response()->json([
-                        'success' => 'Data berhasil di Update dengan Kode '.$request->msoc_kode.' !'
-                    ]);
-                }
-                if($request->endors=="2") {
-                    $msoc_endos_idx = '0';
-                    $vtable = DB::table('eopr.mst_soc');
-                    $getFill = DB::table('eopr.mst_soc')
-                    ->select(DB::raw("IFNULL(MAX(msoc_endos_idx),0)+1 idx, msoc_kode_ori"))
-                    ->where('msoc_kode', $request->msoc_kode)
-                    ->first();
-
-                    $msoc_endos_idx = strval($getFill->idx);
-                    $kodepoliseds = 'EDS'.$msoc_endos_idx.'.'.$getFill->msoc_kode_ori;
-                    $nomor = substr($getFill->msoc_kode_ori,0,10);
-
-                    $data = $request->all();
-                    $data = $request->except(
-                        '_token',
-                        'e_nasabah',
-                        'mpid_mssp_kode',
-                        'e_cabalamin',
-                        'e_manfaat',
-                        'e_manfaat_pol',
-                        'e_marketing',
-                        'e_pinca',
-                        'e_pras',
-                        'e_tarif',
-                        'e_uw',
-                        'edit_akses',
-                        'mpid_nama',
-                        'e_bersih',
-                        'endors',
-                    );
-                    if ($request->hasFile('msoc_dok')) {
-                        $msoc_dok = $request->file('msoc_dok');
-                        $dir = 'public/tehnik/soc/doc';
-                        $fileOri = $msoc_dok->getClientOriginalName();
-                        $namaFile = $kodepoliseds . '-DokumenSoc-' . $fileOri;
-                        $path = __upfile($dir, $msoc_dok, $namaFile);
-                        $data['msoc_dok'] = $namaFile;
-                    }
-                    $data['msoc_kode'] = $kodepoliseds;
-                    $data['msoc_kode_ori'] = $getFill->msoc_kode_ori;
-                    $data['msoc_nomor'] = $nomor;
-                    $data['msoc_endos_idx'] = $msoc_endos_idx;
-                    // $data['msoc_status'] = 0;
-                    $data['msoc_endos'] = $request->endors;
-                    $data['msoc_endors'] = $request->endors;
-                    $data['msoc_approve'] = 0;
-                    $data['msoc_ins_date'] = __now();
-                    $data['msoc_ins_user'] = __getUser();
-                    $data['msoc_upd_date'] = __now();
-                    $data['msoc_upd_user'] = __getUser();
-
-                    $vtable->insert($data);
-
-                    return response()->json([
-                        'success' => 'Data berhasil di Endors dengan Kode '.$kodepoliseds.' !'
-                    ]);
-                }
-                if($request->endors=="3") {
-                    $vtable = DB::table('eopr.mst_soc')->where('msoc_kode', $request->msoc_kode);
-                    $data = $request->all();
-                    $data = $request->except(
-                        '_token',
-                        'e_nasabah',
-                        'mpid_mssp_kode',
-                        'e_cabalamin',
-                        'e_manfaat',
-                        'e_manfaat_pol',
-                        'e_marketing',
-                        'e_pinca',
-                        'e_pras',
-                        'e_tarif',
-                        'e_uw',
-                        'edit_akses',
-                        'mpid_nama',
-                        'e_bersih',
-                        'endors',
-                    );
-                    if ($request->hasFile('msoc_dok')) {
-                        $msoc_dok = $request->file('msoc_dok');
-                        $dir = 'public/tehnik/soc/doc';
-                        $fileOri = $msoc_dok->getClientOriginalName();
-                        $namaFile = $request->msoc_kode . '-DokumenSoc-' . $fileOri;
-                        $path = __upfile($dir, $msoc_dok, $namaFile);
-                        $data['msoc_dok'] = $namaFile;
-                    }
-                    $data['msoc_endos'] = $request->endors;
-                    $data['msoc_endors'] = $request->endors;
-                    $data['msoc_approve'] = 0;
-                    $data['msoc_ins_date'] = __now();
-                    $data['msoc_ins_user'] = __getUser();
-                    $data['msoc_upd_date'] = __now();
-                    $data['msoc_upd_user'] = __getUser();
-
-                    $vtable->update($data);
-
-                    return response()->json([
-                        'success' => 'Data berhasil di Batalkan dengan Kode '.$request->msoc_kode.' !'
-                    ]);
-                }
+                $nomorx = substr($res['msoc_kode_ori'],0,10);
+                $_POST['msoc_kode'] = "";
+                $_POST['msoc_endos'] = "1";
+                $_POST['msoc_approve'] = "0";
+                $_POST['msoc_kode_ori'] = $res['msoc_kode_ori'];
+                $_POST['msoc_endos_idx'] = $msoc_endos_idx;
             }
+
+            if ((trim($_POST['msoc_kode']))=="") {
+                if ((trim($_POST['msoc_mpid_kode']))!="" && ($_POST['endors']!="2")) {
+                    $kdx = $_POST['msoc_mjns_kode'].'.'.$_POST['msoc_mpid_kode'].'.';
+                    $kd = __get_no('',$kdx,'2016-01-01','Y','SOC','0');
+
+                    $_POST['msoc_nomor'] = $kd;
+                    $_POST['msoc_approve'] = "0";
+                }
+
+                if (trim($kodepolisendos)!="") {
+                    $_POST['msoc_kode'] = $kodepolisendos;
+                    $_POST['msoc_nomor'] = $nomorx;
+                } else {
+                    $_POST['msoc_kode'] = $_POST['msoc_nomor'].'.'.$_POST['msoc_mft_kode'].'.'.$_POST['msoc_mjm_kode'].'.'.$_POST['msoc_mpras_kode'].'.'.$_POST['msoc_jns_perusahaan'].'.'.$_POST['msoc_mekanisme'].'.'.$_POST['msoc_mekanisme2'];
+                    $_POST['msoc_kode_ori'] = $_POST['msoc_kode'];
+                }
+
+                $_POST['msoc_ins_date'] = __now();
+                $_POST['msoc_ins_user'] = __getUser();
+                $_POST['msoc_upd_date'] = __now();
+                $_POST['msoc_upd_user'] = __getUser();
+
+                $field = __getKode('msoc_', $_POST);
+                $cmd = __toSQL($vtable, $field, "I", "", true, "");
+            } else {
+                $_POST['msoc_upd_date'] = __now();
+                $_POST['msoc_upd_user'] = __getUser();
+
+                $field = __getKode('msoc_', $_POST);
+                $cmd = __toSQL($vtable, $field, "U", "WHERE msoc_kode='".$_POST['msoc_kode']."'", true, "");
+            }
+
+            if (!empty($_FILES['msoc_dok']['name'])) {
+                $msoc_dok = $request->file('msoc_dok');
+                $dir = 'public/tehnik/soc/doc';
+                $fileOri = $msoc_dok->getClientOriginalName();
+                $namaFile = $_POST['msoc_kode'] . '-DokumenSoc-' . $fileOri;
+                $path = __upfile($dir, $msoc_dok, $namaFile);
+                // $_POST['msoc_dok'] = $namaFile;
+                $cmd = "UPDATE $vtable SET msoc_dok='".$namaFile."', msoc_indexfolder='1' WHERE msoc_kode='".$_POST['msoc_kode']."'";
+                __dbRow($cmd);
+            }
+
+            return __json([
+                'success' => 'Data berhasil disimpan dengan Kode '.$_POST['msoc_kode']. ' !'
+            ]);
         }
     }
 
@@ -331,33 +210,6 @@ class EntrySocController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function selectPmgPolis(Request $request)
-    {
-        $page = $request->page ? intval($request->page) : 1;
-        $rows = $request->rows ? intval($request->rows) : 1000;
-        $offset = ($page - 1) * $rows;
-        $vtable = DB::table('emst.mst_rekanan as cb')
-        ->select('cb.mrkn_kode as kode', DB::raw("if(cb.mrkn_nama = ps.mrkn_nama OR ps.mrkn_nama IS NULL, cb.mrkn_nama, concat(ps.mrkn_nama, ' ', cb.mrkn_nama)) as nama"))
-        ->leftJoin('emst.mst_rekanan as ps', 'ps.mrkn_kode', '=', 'cb.mrkn_kode')
-        ->where([
-            ['cb.mrkn_kode','<>',''],
-            ['cb.mrkn_kantor_pusat','1'],
-            ['cb.mrkn_nama','!=',''],
-            // ['cb.mrkn_nama','like',"%$search%"],
-        ]);
-
-        if (!empty($request->q)) {
-            $vtable->where('cb.mrkn_kode', 'LIKE', "%$request->q%")->orWhere('cb.mrkn_nama', 'LIKE', "%$request->q%");
-        }
-
-        $data = $vtable
-        ->offset($offset)
-        ->limit($rows)
-        ->get();
-
-        return response()->json($data);
     }
 
     public function selectJnsNasabah(Request $request)
@@ -541,163 +393,6 @@ class EntrySocController extends Controller
         // return $data;
     }
 
-    public function getNoSoc(Request $request)
-    {
-        $vtable = DB::table('eopr.mst_soc_induk')
-        ->select(DB::raw("msli_nomor msotd_msoc_nomor,
-        msli_nomor msoc_nomor,
-        msli_mrkn_kode,
-        msli_mrkn_nama,
-        msli_mpras_kode"))
-        ->leftJoin('eopr.mst_soc as msoc', function($join) use ($request) {
-            $join->on('msoc.msoc_nomor', '=', 'msli_nomor');
-            if (!empty($request->mft)) {
-                $join->where('msoc_mft_kode', $request->mft);
-            }
-            if (!empty($request->mekanisme)) {
-                $join->where('msoc_mekanisme', $request->mekanisme);
-            }
-            if (!empty($request->mekanisme2)) {
-                $join->where('msoc_mekanisme2', $request->mekanisme2);
-            }
-            if (!empty($request->perus)) {
-                $join->where('msoc_jns_perusahaan', $request->perus);
-            }
-            if (!empty($request->jns_bayar)) {
-                $join->where('msoc_jenis_bayar', $request->jns_bayar);
-            }
-        })
-        ->leftJoin('emst.mst_rekanan as rkn', 'mrkn_kode', '=', 'msli_mrkn_kode');
-
-        if (!empty($request->pmgpolis)) {
-            $vtable->where('msli_mrkn_kode', $request->pmgpolis);
-        }
-        if (!empty($request->nopolis)) {
-            $vtable->where('msli_nomor', $request->nopolis);
-        }
-        if (!empty($request->nasabah)) {
-            $vtable->where('msli_mjns_kode', $request->nasabah);
-        }
-        if (!empty($request->mrkn_nama)) {
-            $vtable->where('msli_mrkn_nama', $request->mrkn_nama);
-        }
-
-        $data = $vtable->whereIn('msli_status_endos', [0,1,2])->first();
-        return response()->json($data);
-    }
-
-    public function getKodeSoc(Request $request)
-    {
-        $vtable = DB::table('eopr.mst_soc');
-        if (!empty($request->id)) {
-            if (!empty($request->endos)) {
-                $vtable->select(DB::raw("IF('".$request->endos."'='2','0',msoc_approve) msoc_approve,"));
-            }
-        }
-        $vtable->select(DB::raw("msoc_nomor,
-        msoc_referal,
-        msoc_maintenance,
-        msoc_pajakfee,
-        msoc_handlingfee,
-        msoc_handlingfee2,
-        msoc_kode,
-        msoc_mslr_kode,
-        msoc_file_polis,
-        msoc_mspaj_nomor,
-        msoc_mrkn_kode,
-        msoc_mpid_kode,
-        msoc_mpojk_kode,
-        msoc_mjm_kode,
-        msoc_mft_kode,
-        msoc_jenis_tarif,
-        msoc_mujh_persen,
-        msoc_mmfe_persen,
-        msoc_mfee_persen,
-        msoc_mkom_persen,
-        msoc_mkomdisc_persen,
-        msoc_overreding,
-        msoc_endors,
-        msoc_mkar_kode_pim,
-        msoc_mkar_kode_mkr,
-        msoc_mlok_kode,
-        msoc_mth_nomor,
-        msoc_mssp_nama msoc_mssp_kode,
-        msoc_mjns_kode,
-        msoc_ket_endors,
-        msoc_mpuw_nomor,
-        msoc_mujhrf_kode,
-        msoc_mdr_kode,
-        msoc_mpras_kode,
-        msoc_status,
-        msoc_no_endors,
-        IF(IFNULL(msoc_mrkn_nama,'')='',mrkn_nama,msoc_mrkn_nama) msoc_mrkn_nama,
-        mlok_nama e_cabalamin,
-        pnc.skar_nama e_pinca,
-        mkr.skar_nama e_marketing,
-        trf.mth_ket e_tarif,
-        uw.mpuw_nama e_uw,
-        msoc_mssp_nama,
-        spaj.mspaj_mrkn_nama msoc_mspaj_nama,
-        jmn.mjm_kode e_manfaat"))
-        ->leftJoin('emst.mst_polis_uwtable as uw', 'uw.mpuw_nomor', '=', 'msoc_mpuw_nomor')
-        ->leftJoin('emst.mst_jaminan as jmn', 'jmn.mjm_kode', '=', 'msoc_mjm_kode')
-        ->leftJoin('emst.mst_rekanan as rkn', 'rkn.mrkn_kode', '=', 'msoc_mrkn_kode')
-        ->leftJoin('emst.mst_lokasi as lok', 'lok.mlok_kode', '=', 'msoc_mlok_kode')
-        ->leftJoin('esdm.sdm_karyawan_new as pnc', 'pnc.skar_pk', '=', 'msoc_mkar_kode_pim')
-        ->leftJoin('esdm.sdm_karyawan_new as mkr', 'mkr.skar_pk', '=', 'msoc_mkar_kode_mkr')
-        ->leftJoin('emst.mst_tarif as trf', 'trf.mth_nomor', '=', 'msoc_mth_nomor')
-        ->leftJoin('eopr.mst_spaj_polis as spaj', 'spaj.mspaj_nomor', '=', 'msoc_mspaj_nomor');
-
-        if (!empty($request->id)) {
-            if (!empty($request->pmgpolis)) {
-                $vtable->where('msoc_mrkn_kode', $request->pmgpolis);
-            }
-            // if (!empty($request->nopolis)) {
-            //     $vtable->where('msoc_nomor', $request->nopolis);
-            // }
-            if (!empty($request->nasabah)) {
-                $vtable->where('msoc_mjns_kode', $request->nasabah);
-            }
-            if (!empty($request->mft)) {
-                $vtable->where('msoc_mft_kode', $request->mft);
-            }
-            if (!empty($request->mjm)) {
-                $vtable->where('msoc_mjm_kode', $request->mjm);
-            }
-            if (!empty($request->mekanisme)) {
-                $vtable->where('msoc_mekanisme', $request->mekanisme);
-            }
-            if (!empty($request->jns_bayar)) {
-                $vtable->where('msoc_jenis_bayar', $request->jns_bayar);
-            }
-            if (!empty($request->jns_perusahaan)) {
-                $vtable->where('msoc_jns_perusahaan', $request->jns_perusahaan);
-            }
-            if (!empty($request->mrkn_nama)) {
-                $vtable->where('msoc_mrkn_nama', $request->mrkn_nama);
-            }
-            if (!empty($request->mekanisme2)) {
-                $vtable->where('msoc_mekanisme2', $request->mekanisme2);
-            }
-            if (!empty($request->pras)) {
-                $vtable->where('msoc_mpras_kode', $request->pras);
-            }
-            if (!empty($request->kode)) {
-                $vtable->where('msoc_kode', $request->kode);
-            }
-        }
-        // if (!empty($request->id) && !empty($request->kode)) {
-        //     $vtable->where($request->id, $request->kode);
-        // }
-
-        $data = $vtable
-        // ->where('msoc_kode', $request->kode)
-        ->whereIn('msoc_endors', [0,1,2])
-        ->first();
-
-        return response()->json($data);
-    }
-
     public function selectJamiAsu(Request $request)
     {
         $page = $request->page ? intval($request->page) : 1;
@@ -723,54 +418,6 @@ class EntrySocController extends Controller
             $vtable->where('mptr_induk', $request->mssp);
         }
         $data = $vtable->orderBy('mpid_nama', 'ASC')->offset($offset)->limit($rows)->get();
-        return response()->json($data);
-    }
-
-    public function pilihProgramAsuransi(Request $request)
-    {
-        $page = $request->page ? intval($request->page) : 1;
-        $rows = $request->rows ? intval($request->rows) : 100;
-        $offset = ($page - 1) * $rows;
-        $vtable = DB::table('emst.mst_program_asuransi')
-        ->select(DB::raw("mpras_kode,
-        mpras_nama,
-        mpras_uptambah,
-        mpras_ujrah_referal,
-        mpras_disc_rate,
-        mpras_info,
-        mpras_mmft_kode_jiwa,
-        msoc_mekanisme,
-        IFNULL(msoc_kode, '') msoc_kode,
-        msoc_mekanisme2"))
-        ->leftJoin('emst.mst_protree_4 as mptr', 'mptr.mptr_kode', '=', 'mpras_kode')
-        ->leftJoin('eopr.mst_soc', function ($join) use ($request) {
-            $join->on('mpras_kode', '=', 'msoc_mpras_kode');
-            $join->where([
-                ['msoc_mpid_kode', $request->mpid],
-                ['msoc_mekanisme', $request->mkm],
-                ['msoc_mekanisme2', $request->mkm2],
-                ['msoc_mft_kode', $request->mft],
-                ['msoc_mrkn_kode', $request->mrkn],
-                ['msoc_mssp_nama', $request->mssp],
-                ['msoc_mjm_kode', $request->mjm],
-                ['msoc_mjns_kode', $request->mjns],
-                ['msoc_jenis_bayar', $request->byr],
-                ['msoc_jns_perusahaan', $request->perush],
-            ])
-            ->whereIn('msoc_endors', [0,1,2]);
-        });
-
-        if (!empty($request->q)) {
-            $vtable->where('mpras_kode', 'LIKE', "%$request->q%")->orWhere('mpras_nama', 'LIKE', "%$request->q%");
-        }
-
-        $data = $vtable
-        ->where('mpras_kode', '<>', '')
-        ->groupBy('mpras_kode')
-        ->offset($offset)
-        ->limit($rows)
-        ->get();
-
         return response()->json($data);
     }
 

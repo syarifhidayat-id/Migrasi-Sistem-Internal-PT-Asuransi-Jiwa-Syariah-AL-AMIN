@@ -49,6 +49,7 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
+        extract($_POST);
         $validasi = Validator::make($request->all(), [
             'wmn_tipe' => 'required',
             'wmn_key' => 'required',
@@ -90,13 +91,14 @@ class MenuController extends Controller
                 ]);
 
             } else {
-                $vtable = DB::table('web_menu')->where('wmn_kode', $request->wmn_kode);
-                $data = $request->all();
-                $data = $request->except('_token');
-                $vtable->update($data);
-
+                $vtable = "web_conf.web_menu";
+                // $data = $request->all();
+                // $data = $request->except('_token');
+                // $vtable->update($data);
+                $field = __getKode('wmn_', $_POST);
+                $cmd = __toSQL($vtable, $field, "U", "WHERE wmn_kode='".$_POST['wmn_kode']."'", true, "");
                 return response()->json([
-                    'success' => 'Data berhasil diupdate dengan Kode '.$request->wmn_kode.'!'
+                    'success' => 'Data berhasil diupdate dengan Kode '.$_POST['wmn_kode'].' !'
                 ]);
             }
         }

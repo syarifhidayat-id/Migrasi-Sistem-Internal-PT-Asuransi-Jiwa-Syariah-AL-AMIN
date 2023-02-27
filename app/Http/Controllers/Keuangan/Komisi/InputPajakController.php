@@ -20,7 +20,9 @@ class InputPajakController extends Controller
      */
     public function index()
     {
+        $month = array(1 => 'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
         return view('pages.keuangan.komisi-overreding.input-pajak.index', [
+            'month' => $month,
             'year' => date('2007'),
             'tahun' => date('2007'),
         ]);

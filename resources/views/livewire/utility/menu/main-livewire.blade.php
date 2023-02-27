@@ -11,7 +11,7 @@
                 <span class="menu-link">
                     <span class="menu-icon">
                         <span class="svg-icon svg-icon-2">
-                            <i class="{{ $menu->wmn_icon }}"></i>
+                            <i class="{{ $menu['wmn_icon'] }}"></i>
                         </span>
                     </span>
                     <span class="menu-title">{{ $menu['wmn_descp'] }}</span>
@@ -132,7 +132,7 @@
                     @endif
                     ">
                     <span class="menu-icon">
-                        <i class="{{ $menu->wmn_icon }}"></i>
+                        <i class="{{ $menu['wmn_icon'] }}"></i>
                     </span>
                     <span class="menu-title">{{ $menu['wmn_descp'] }}</span>
                 </a>

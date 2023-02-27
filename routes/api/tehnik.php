@@ -13,21 +13,20 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
 
     Route::group(['prefix' => '/soc', 'as' => 'soc.'], function() {
 
-            Route::group(['prefix' => '/entry-soc', 'as' => 'entry-soc.'], function() {
-            Route::get('/select-pmgpolis', [EntrySocController::class, 'selectPmgPolis']);
-            Route::get('/select-jnsnasabah', [EntrySocController::class, 'selectJnsNasabah']);
-            Route::post('/select-segmen', [EntrySocController::class, 'selectSegmen']);
+        Route::group(['prefix' => '/entry-soc', 'as' => 'entry-soc.'], function() {
+            // Route::get('/select-jnsnasabah', [EntrySocController::class, 'selectJnsNasabah']);
+            // Route::post('/select-segmen', [EntrySocController::class, 'selectSegmen']);
             Route::get('/select-nospaj', [EntrySocController::class, 'selectNoSpaj']);
 
-            Route::get('/get-nosoc', [EntrySocController::class, 'getNoSoc']);
-            Route::get('/get-kodesoc', [EntrySocController::class, 'getKodeSoc']);
+            Route::get('/get_nosoc', [Load::class, 'get_nosoc']);
+            Route::get('/get_kodesoc', [Load::class, 'get_kodesoc']);
 
             Route::post('/select-meka1', [EntrySocController::class, 'selectMeka1']);
             Route::post('/select-meka2', [EntrySocController::class, 'selectMeka2']);
             Route::get('/select-manasu', [EntrySocController::class, 'selectManfaatAsu']);
             Route::post('/select-jnskerja', [EntrySocController::class, 'selectJnsKerja']);
             Route::get('/select-jamiasu', [EntrySocController::class, 'selectJamiAsu']);
-            Route::get('/pilih-program-asuransi', [EntrySocController::class, 'pilihProgramAsuransi']);
+            Route::get('/lod_prassoc', [Load::class, 'lod_prassoc']);
             Route::post('/select-salurandistribusi', [EntrySocController::class, 'selectSalDistri']);
             Route::post('/select-prodojk', [EntrySocController::class, 'selectProdOjk']);
             Route::get('/select-cabalamin', [EntrySocController::class, 'selectCabAlamin']);
@@ -52,6 +51,10 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
             Route::post('/update-upload-tarif', [UploadTarifController::class, 'updateTarif'])->name('updatetarif');
             Route::post('/upload-uw', [UploadUwController::class, 'store']);
             Route::post('/update-upload-uw', [UploadUwController::class, 'updateUw'])->name('updateuw');
+
+        });
+
+        Route::group(['prefix' => '/entry-tarifuw-soc', 'as' => 'entry-tarifuw-soc.'], function() {
 
         });
 
