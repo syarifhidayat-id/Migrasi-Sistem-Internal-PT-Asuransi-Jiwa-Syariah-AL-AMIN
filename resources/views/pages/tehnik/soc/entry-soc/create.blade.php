@@ -173,6 +173,10 @@
                                     <option selected disabled>Pilih saluran distribusi</option>
                                     {{ optSql("SELECT mslr_kode kode,mslr_ket ket FROM emst.mst_saluran_distribusi ORDER BY 1", "kode", "ket") }}
                                 </select>
+                                {{-- <select class="form-select form-select-solid" data-control="select2" name="msoc_mslr_kode" id="msoc_mslr_kode" data-placeholder="Pilih">
+                                    <option selected disabled>Pilih saluran distribusi</option>
+                                    {{ optSql("SELECT mslr_kode kode,mslr_ket ket FROM emst.mst_saluran_distribusi ORDER BY 1", "kode", "ket") }}
+                                </select> --}}
                                 <input type="text" class="form-control form-control-solid" name="endors" id="endors" placeholder="endors" />
                                 <span class="text-danger error-text msoc_mslr_kode_err"></span>
                             </div>
@@ -463,18 +467,19 @@
                                             <span class="text-danger error-text msoc_jenis_tarif_err"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-4">
                                         <div class="mb-5">
-                                            <div class="input-group input-group-solid flex-nowrap">
-                                                <div class="overflow-hidden flex-grow-1">
-                                                    <input type="text" class="easyui-combogrid" name="e_tarif" id="e_tarif" data-options="prompt:'Pilih jenis tarif'" style="width: 100%; height: 38px;" />
-                                                    <input type="text" class="form-control form-control-solid" name="msoc_mth_nomor" id="msoc_mth_nomor" placeholder="msoc_mth_nomor" />
-                                                </div>
-
+                                            <input type="text" class="easyui-combogrid" name="e_tarif" id="e_tarif" data-options="prompt:'Pilih jenis tarif'" style="width: 100%; height: 38px;" />
+                                            <input type="text" class="form-control form-control-solid" name="msoc_mth_nomor" id="msoc_mth_nomor" placeholder="msoc_mth_nomor" />
+                                            <span class="text-danger error-text e_tarif_err"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-5">
+                                            <div class="input-group">
                                                 <button type="button" id="importTarif" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
                                                 <button type="button" id="lihatTarif" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
                                             </div>
-                                            <span class="text-danger error-text e_tarif_err"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -494,15 +499,19 @@
                                             <span class="text-danger error-text msoc_tipe_uw_err"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-4">
                                         <div class="mb-5">
-                                            <div class="input-group input-group-solid flex-nowrap">
-                                                <div class="overflow-hidden flex-grow-1">
-                                                    <input type="text" class="easyui-combogrid" name="e_uw" id="e_uw" data-options="prompt:'Pilih jenis underwriting'" style="width: 100%; height: 38px;" />
-                                                    <input type="text" class="form-control form-control-solid" name="msoc_mpuw_nomor" id="msoc_mpuw_nomor" placeholder="msoc_mpuw_nomor" />
-                                                </div>
-                                            </div>
+                                            <input type="text" class="easyui-combogrid" name="e_uw" id="e_uw" data-options="prompt:'Pilih jenis underwriting'" style="width: 100%; height: 38px;" />
+                                            <input type="text" class="form-control form-control-solid" name="msoc_mpuw_nomor" id="msoc_mpuw_nomor" placeholder="msoc_mpuw_nomor" />
                                             <span class="text-danger error-text e_uw_err"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-5">
+                                            <div class="input-group">
+                                                <button type="button" id="importUw" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-upload"></i> Upload</button>
+                                                <button type="button" id="lihatUw" class="btn btn-sm btn-light-primary"><i class="fa-solid fa-eye"></i> Lihat</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -577,7 +586,7 @@
                 selectGrid(
                     'e_nasabah',
                     'GET',
-                    '{{ url("api/tehnik/soc/entry-soc/select-jnsnasabah") }}',
+                    '{{ url("tehnik/soc/entry-soc/lod_nasabah") }}',
                     'mjns_kode',
                     'mjns_keterangan',
                     [
@@ -595,7 +604,7 @@
                         setText('msoc_mjns_mpid_kode', row.mjns_mpid_nomor);
 
                         setText('msoc_mssp_nama', '');
-                        reSelBox('msoc_mssp_nama', '{{ url("api/tehnik/soc/entry-soc/select-segmen") }}' + '?' + '&mjns=' + getText("e_nasabah"));
+                        reSelBox('msoc_mssp_nama', '{{ url("tehnik/soc/entry-soc/grd_segmen") }}' + '?' + '&mjns=' + getText("e_nasabah"));
 
                         var rms = '&mjns='+getText("msoc_mjns_kode")+'&mft='+getText("msoc_mft_kode")+'&mrkn='+getText("msoc_mrkn_kode")+'&mssp='+getText("msoc_mssp_kode")+'&mkm='+getText("msoc_mekanisme")+'&mkm2='+getText("msoc_mekanisme2")+'&perush='+getText("msoc_jns_perusahaan")+'&byr='+getText("msoc_jenis_bayar")+'&mjm='+getText("msoc_mjm_kode")+'&mpid='+getText("msoc_mpid_kode");
 
@@ -603,10 +612,10 @@
                         reSelGrid('e_manfaat_pol','{{ url("api/tehnik/soc/entry-soc/select-manasu") }}' + '?' + '&mjns=' + getText("msoc_mjns_kode"));
                     }
                 );
-                selectBox('msoc_mssp_nama', 'POST', '{{ url("api/tehnik/soc/entry-soc/select-segmen") }}', 'value', 'text', function(rec) {
+                selectBox('msoc_mssp_nama', 'GET', '{{ url("tehnik/soc/entry-soc/grd_segmen") }}', 'value', 'text', function(rec) {
                     hidePesan('msoc_mssp_nama');
                     setsegmen(rec);
-                }, 'group');
+                }, 'groupx');
                 selectGrid(
                     'msoc_mspaj_nama',
                     'GET',
@@ -893,10 +902,10 @@
             function cekForm(tipe) {
                 clear_f();
                 if (tipe=='0') {
-                    $('#btnBru').addClass('active');
-                    $('#btnEds').removeClass('active');
-                    $('#btnEdt').removeClass('active');
-                    $('#btnBtl').removeClass('active');
+                    adClass('btnBru', 'active');
+                    rmClass('btnEds', 'active');
+                    rmClass('btnEdt', 'active');
+                    rmClass('btnBtl', 'active');
                     toster('success', 'Tombol Buat SOC Baru Telah Aktif', 5000, 2);
                     titleAction('title_action', 'Buat SOC Baru');
                     // setTextReadOnly('msoc_mrkn_nama',false);
@@ -919,10 +928,10 @@
                 }
 
                 if (tipe=='1') {
-                    $('#btnEdt').addClass('active');
-                    $('#btnBru').removeClass('active');
-                    $('#btnEds').removeClass('active');
-                    $('#btnBtl').removeClass('active');
+                    adClass('btnEdt', 'active');
+                    rmClass('btnBru', 'active');
+                    rmClass('btnEds', 'active');
+                    rmClass('btnBtl', 'active');
                     toster('success', 'Tombol SOC Edit Telah Aktif', 5000, 2);
                     titleAction('title_action', 'SOC Edit');
                     // setTextReadOnly('e_manfaat_pol',false);
@@ -945,10 +954,10 @@
                 }
 
                 if (tipe=='2') {
-                    $('#btnEds').addClass('active');
-                    $('#btnBru').removeClass('active');
-                    $('#btnEdt').removeClass('active');
-                    $('#btnBtl').removeClass('active');
+                    adClass('btnEds', 'active');
+                    rmClass('btnBru', 'active');
+                    rmClass('btnEdt', 'active');
+                    rmClass('btnBtl', 'active');
                     toster('success', 'Tombol SOC Endors Telah Aktif', 5000, 2);
                     titleAction('title_action', 'SOC Endors');
                     // setTextReadOnly('msoc_mrkn_nama',false);
@@ -971,10 +980,10 @@
                 }
 
                 if (tipe=='3') {
-                    $('#btnBtl').addClass('active');
-                    $('#btnBru').removeClass('active');
-                    $('#btnEdt').removeClass('active');
-                    $('#btnEds').removeClass('active');
+                    adClass('btnBtl', 'active');
+                    rmClass('btnBru', 'active');
+                    rmClass('btnEdt', 'active');
+                    rmClass('btnEds', 'active');
                     toster('success', 'Tombol SOC Batal Telah Aktif', 5000, 2);
                     titleAction('title_action', 'SOC Batal');
                     // setTextReadOnly('msoc_mrkn_nama',false);
@@ -1098,6 +1107,7 @@
             }
 
             function e_leave(id) {
+                var vv='';
                 var rms='';
                 var url='';
 

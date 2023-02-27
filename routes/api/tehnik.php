@@ -13,9 +13,9 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
 
     Route::group(['prefix' => '/soc', 'as' => 'soc.'], function() {
 
-            Route::group(['prefix' => '/entry-soc', 'as' => 'entry-soc.'], function() {
-            Route::get('/select-jnsnasabah', [EntrySocController::class, 'selectJnsNasabah']);
-            Route::post('/select-segmen', [EntrySocController::class, 'selectSegmen']);
+        Route::group(['prefix' => '/entry-soc', 'as' => 'entry-soc.'], function() {
+            // Route::get('/select-jnsnasabah', [EntrySocController::class, 'selectJnsNasabah']);
+            // Route::post('/select-segmen', [EntrySocController::class, 'selectSegmen']);
             Route::get('/select-nospaj', [EntrySocController::class, 'selectNoSpaj']);
 
             Route::get('/get_nosoc', [Load::class, 'get_nosoc']);
@@ -51,6 +51,10 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
             Route::post('/update-upload-tarif', [UploadTarifController::class, 'updateTarif'])->name('updatetarif');
             Route::post('/upload-uw', [UploadUwController::class, 'store']);
             Route::post('/update-upload-uw', [UploadUwController::class, 'updateUw'])->name('updateuw');
+
+        });
+
+        Route::group(['prefix' => '/entry-tarifuw-soc', 'as' => 'entry-tarifuw-soc.'], function() {
 
         });
 

@@ -49,6 +49,201 @@ class Load extends Controller
         return __json($res);
     }
 
+    public function lod_Cabang_polis()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 500;
+        $offset = ($page - 1) * $rows;
+
+        $tambah = "";
+        $vtable="";
+
+        $menu_tipe = __getGlbVal('menu_tipe');
+        $cabx = __getGlbVal('lokasi');
+        $tcab = strval(str_replace(",","','",$cabx));
+        $user = __getUser();
+
+        if (isset($_GET['q'])) {
+            $e_value = $_GET['q'];
+        }
+
+        $vidxkey="mrkn_kode";
+        $vfldname="mrkn_nama";
+        $vfldnamelain="mrkn_nama_lain";
+
+        $vfield = "
+        mrkn_kode kode,
+        CONCAT(mrkn_nama_lain,IF(mrkn_mrkn_kode_induk=mrkn_kode,' PUSAT','')) nama,
+        mrkn_mrkn_kode_induk  kodeinduk,
+        ifnull(mrkn_mlok_kode,'') tpprd_mlok_kode,
+        ifnull(mrkn_mprov_kode,'') tpprd_mprov_kode,
+        ifnull(mlok_nama,'') e_cabalamin,
+        ifnull(mprov_nama,'') e_provinsi,
+        mrkn_norekening norek";
+
+        $vtable = "emst.mst_rekanan
+        LEFT JOIN emst.mst_lokasi ON mrkn_mlok_kode=mlok_acc
+        LEFT JOIN emst.mst_provinsi ON mrkn_mprov_kode=mprov_kode";
+
+        if (!empty($e_value)) {
+            $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%' or $vfldnamelain like '%$e_value%')";
+        }
+
+        if($menu_tipe=="CABANG") {
+            if($user=='erin_dki') {
+                $tambah = $tambah."and mrkn_mlok_kode='".$cab."' ";
+            } else {
+                $tambah = $tambah."and mrkn_mlok_kode IN ('".$tcab."') ";
+            }
+        }
+
+        if($menu_tipe=="ADMKORWIL" || $menu_tipe=="KORWIL") {
+            $tambah =  $tambah."and mlok_mreg_kode in (SELECT mlok_mreg_kode FROM emst.mst_lokasi WHERE mlok_kode='".$cab."' ) and mlok_tipe=1";
+        }
+
+        $tambah .= $tambah."and (mrkn_mrkn_kode_induk ='".$pmgpolis."' ".$tambah." )";
+
+        $cmd = "
+        SELECT
+        $vfield
+        FROM $vtable
+        WHERE $vidxkey<>'' $tambah
+        ORDER BY mrkn_nama ASC
+        LIMIT $offset,$rows";
+
+        $res = __dbAll($cmd);
+
+        return __json($res);
+    }
+
+    public function lod_perusahaan()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $tambah = "";
+        $vtable="";
+
+        if (isset($_GET['q'])) {
+            $e_value = $_GET['q'];
+        }
+
+        $vidxkey="mpt_kode";
+        $vfldname="mpt_nama";
+        // $vfldnamelain="mrkn_nama_lain";
+
+        $vfield = "mpt_kode kode, mpt_nama nama";
+
+        $vtable = "emst.mst_perusahaan";
+
+        if (!empty($e_value)) {
+            $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+        }
+        // if (isset($_GET['mjns'])) {
+        //     if ($_GET['mjns']!="") {
+        //         $tambah.=" and mpt_kode='".$_GET['mjns']."'";
+        //     }
+        // }
+
+        $cmd = "
+        SELECT
+        $vfield
+        FROM $vtable
+        WHERE $vidxkey<>'' $tambah
+        AND mpt_aktif='1'
+        ORDER BY mpt_nama ASC
+        LIMIT $offset,$rows";
+
+        $res = __dbAll($cmd);
+
+        return __json($res);
+    }
+
+    public function lod_perusahaansoc()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $tambah = "";
+        $vtable="";
+
+        if (isset($_GET['q'])) {
+            $e_value = $_GET['q'];
+        }
+
+        $vidxkey="mpt_kode";
+        $vfldname="mpt_nama";
+        // $vfldnamelain="mrkn_nama_lain";
+
+        $vfield = "mpt_kode kode, mpt_nama nama";
+
+        $vtable = "emst.mst_perusahaan";
+
+        if (!empty($e_value)) {
+            $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+        }
+        if (isset($_GET['mjns'])) {
+            if ($_GET['mjns']!="") {
+                $tambah.=" and mpt_kode='".$_GET['mjns']."'";
+            }
+        }
+
+        $cmd = "
+        SELECT
+        $vfield
+        FROM $vtable
+        WHERE $vidxkey<>'' $tambah
+        ORDER BY mpt_nama ASC
+        LIMIT $offset,$rows";
+
+        $res = __dbAll($cmd);
+
+        return __json($res);
+    }
+
+    public function lod_ocab()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $tambah = "";
+        $vtable="";
+
+        if (isset($_GET['q'])) {
+            $e_value = $_GET['q'];
+        }
+
+        $vidxkey="mlok_kode";
+        $vfldname="mlok_nama";
+        // $vfldnamelain="mrkn_nama_lain";
+
+        $vfield = "mlok_kode kode, mlok_nama nama, 0  ck";
+
+        $vtable = "emst.mst_lokasi";
+
+        if (!empty($e_value)) {
+            $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+        }
+
+        $cmd = "
+        SELECT
+        $vfield
+        FROM $vtable
+        WHERE $vidxkey<>'' $tambah
+        LIMIT $offset,$rows";
+
+        $res = __dbAll($cmd);
+
+        return __json($res);
+    }
+
     public function get_nosoc()
     {
         extract($_GET);
@@ -347,6 +542,212 @@ class Load extends Controller
         WHERE $vkey<>'' $tambah
         LIMIT $offset,$rows";
         $res = __dbAll($cmd);
+
+        return __json($res);
+    }
+
+    public function lod_oldpolis()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $tambah="";
+        $vtable="";
+
+        if (isset($_GET['q'])) {
+            $e_value = $_GET['q'];
+        }
+
+        $tambah ="and mpol_mrkn_kode='".$pmgpolis."' and mpol_approve='1' and mpol_endos!=3";
+
+        $vkey = "mpol_kode";
+        $vname = "mpol_mrkn_nama";
+
+        $vfield = "mpol_kode,
+        mpol_msoc_kode,
+        mpol_mrkn_nama,
+        mjm.mjm_nama mpol_mjm_nama,
+        mpol_mujh_persen,
+        mpol_mmfe_persen,
+        mpol_overreding,
+        mpol_mfee_persen,
+        mpol_mkom_persen,
+        mpol_mdr_kode,
+        mjns_Keterangan,
+        mssp_nama,
+        mpras_nama,
+        mjns_wp_pens,
+        mjns_phk_pens,
+        mjm_jiwa,
+        mjm_gu,
+        mjm_phk,
+        mjm_tlo,
+        mjm_fire,
+        mjm_wp,
+        mjm_wp_pensiun,
+        mjm_wp_pns,
+        mjm_wp_swasta,
+        mjm_phk_pensiun,
+        mjm_phk_pns,
+        mjm_phk_swasta,
+        mpras_uptambah,
+        mpras_ujrah_referal,
+        mpras_disc_rate,
+        mjns_jl,
+        mjns_jl_pst,
+        mjns_jl_pas,
+        mjns_mpid_nomor,
+        mft_nama,
+        mkm_nama,
+        mpras_nama,
+        mkm_ket2,
+        mker_nama,mpol_ins_date,mpol_ins_user,
+        mjm_nama,
+        if(mpol_jenis_bayar=2,'PER BULAN',if(mpol_jenis_bayar=1,'PER TAHUN','SEKALIGUS')) bayar";
+
+        $vtable = "eopr.mst_polis
+        LEFT JOIN emst.mst_jenis_nasabah mjns ON mjns.mjns_kode=mpol_mjns_kode
+        LEFT JOIN emst.mst_produk_segment mssp ON mssp.mssp_kode=mpol_mssp_kode
+        LEFT JOIN emst.mst_program_asuransi mpras ON mpras.mpras_kode=mpol_mpras_kode
+        LEFT JOIN emst.mst_jaminan mjm ON mjm.mjm_kode=mpol_mjm_kode
+        LEFT JOIN emst.mst_manfaat_plafond  ON mft_kode=mpol_mft_kode
+        LEFT JOIN emst.mst_mekanisme ON mkm_kode=mpol_mekanisme
+        LEFT JOIN emst.mst_pekerjaan ON mker_kode=mpol_jns_perusahaan
+        LEFT JOIN emst.mst_mekanisme2 ON mkm_kode2=mpol_mekanisme2";
+
+        if (!empty($e_value)) {
+            $tambah .= $tambah . "and ($vkey like '%$e_value%' or $vname like '%$e_value%')";
+        }
+        if (isset($mjm)) {
+            $tambah.="and mpol_mjm_kode='$mjm'";
+        }
+        if (isset($mpras)) {
+            $tambah.="and mpol_mpras_kode='$mpras'";
+        }
+        if (isset($mft)) {
+            $tambah.="and mpol_mft_kode='$mft'";
+        }
+        if (isset($mker)) {
+            $tambah.="and mpol_jns_perusahaan='$mker'";
+        }
+        if (isset($mkm)) {
+            $tambah.="and mpol_mekanisme='$mkm'";
+        }
+        if (isset($mkm2)) {
+            $tambah.="and mpol_mekanisme2='$mkm2'";
+        }
+
+        $cmd = "
+        SELECT
+        $vfield
+        FROM $vtable
+        WHERE $vkey<>'' $tambah
+        GROUP BY 1
+        LIMIT $offset,$rows";
+        $res = __dbAll($cmd);
+
+        return __json($res);
+    }
+
+    public function get_oldpolis()
+    {
+        extract($_GET);
+        $tambah="";
+
+        $msoc2=$msoc;
+        if (isset($_GET['pmgpolis'])) {
+            if ($_GET['pmgpolis']!="") {
+                $tambah.=" and mpol_mrkn_kode='".$_GET['pmgpolis']."'";
+            }
+        }
+
+        if (isset($_GET['mrkn_nama'])) {
+            if ($_GET['mrkn_nama']!="" && $_GET['pmgpolis']=="") {
+                $tambah.=" and mpol_mrkn_nama='".$_GET['mrkn_nama']."'";
+            }
+        }
+        $tambah.=" and mpol_msoc_kode='".$msoc."' ";
+
+        $cmd = "
+        SELECT
+            mpol_kode,
+            mpol_nomor,
+            mpol_lapor_stnc,
+            mpol_handlingfee,
+            mpol_va,
+            mpol_cetak_lunas,
+            mpol_produkbank,
+            mpol_aktif,
+            mpol_max_up,
+            mpol_online,
+            mpol_jns_perusahaan,
+            mpol_penerima_manfaat,
+            mpol_openpolis,
+            mpol_penerima_manfaat,
+            mpol_jl,
+            mpol_jl_pst,
+            mpol_jl_pasangan,
+            mpol_file_polis,
+            mpol_lapor_data,
+            mpol_byr_premi,
+            mpol_mspaj_nomor,
+            mpol_aktif,
+            mpol_usia_max,
+            mpol_usia_min,
+            mpol_tenor_max,
+            mpol_jatuh_tempo,
+            mpol_mmft_kode_gu,
+            mpol_mmft_kode_wp_pns,
+            mpol_mmft_kode_wp_swasta,
+            mpol_mmft_kode_phk_swasta,
+            mpol_mmft_kode_phk_pns,
+            mpol_mmft_kode_tlo,
+            mpol_mmft_kode_fire,
+            mpol_mmft_kode_jiwa,
+            mpol_mnfa_kode,
+            date_format(mpol_tgl_terbit,'%d-%m-%Y')mpol_tgl_terbit,
+            date_format(mpol_tgl_awal_polis,'%d-%m-%Y')mpol_tgl_awal_polis,
+            date_format(mpol_tgl_ahir_polis,'%d-%m-%Y')mpol_tgl_ahir_polis,
+            mpol_mrpm_nomor,
+            mpol_mjns_kode,
+            mjns.mjns_keterangan e_nasabah,
+            mpol_ket_endors,
+            mpol_msrf_kode,
+            mpol_kadaluarsa_klaim,
+            mpol_max_bayar_klaim,
+            mpol_mpras_kode,
+            mpol_aprove_fc,
+            mpol_no_endors,
+            mpol_jenis_cetak,
+            if(ifnull(mpol_mrkn_nama,'')='',mrkn_nama,mpol_mrkn_nama)  mpol_mrkn_nama,
+            mpol_mut_kode,
+            mjm_bundling,
+            mjm_jiwa,
+            mjm_gu,
+            mjm_phk,
+            mjm_tlo,
+            mjm_fire,
+            mjm_wp,
+            mjm_umut,
+            mpol_mjm_kode,
+            mpol_mekanisme
+        FROM eopr.mst_polis
+        LEFT JOIN emst.mst_program_asuransi pras on pras.mpras_kode=mpol_mpras_kode
+        LEFT JOIN emst.mst_polis_uwtable uw ON uw.mpuw_nomor=mpol_mpuw_nomor
+        LEFT JOIN emst.mst_jaminan jmn ON jmn.mjm_kode=mpol_mjm_kode
+        LEFT JOIN emst.mst_rekanan rkn ON rkn.mrkn_kode=mpol_mrkn_kode
+        LEFT JOIN emst.mst_lokasi lok  ON lok.mlok_kode=mpol_mlok_kode
+        LEFT JOIN esdm.sdm_karyawan_new pnc ON pnc.skar_pk=mpol_mkar_kode_pim
+        LEFT JOIN esdm.sdm_karyawan_new mkr ON mkr.skar_pk=mpol_mkar_kode_mkr
+        LEFT JOIN emst.mst_tarif trf ON trf.mth_nomor=mpol_mth_nomor
+        LEFT JOIN eopr.mst_spaj_polis spaj ON spaj.mspaj_nomor=mpol_mspaj_nomor
+        LEFT JOIN emst.mst_produk_induk mpid ON mpid.mpid_kode=mpol_mpid_kode
+        LEFT JOIN emst.mst_jenis_nasabah mjns ON mjns.mjns_kode=mpol_mjns_kode
+        LEFT JOIN emst.mst_produk_segment mssp ON mssp.mssp_kode=mpol_mssp_nama
+        WHERE 1=1 AND mpol_endos!='3' and mpol_kode='".$nomor."'";
+        $res = __dbRow($cmd);
 
         return __json($res);
     }
@@ -1450,6 +1851,44 @@ class Load extends Controller
         return __json($res);
     }
 
+    public function lod_tarif()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $tambah = "";
+        $vtable="";
+
+        if (isset($_GET['q'])) {
+            $e_value = $_GET['q'];
+        }
+
+        $vidxkey="mth_nomor";
+        $vfldname="mth_ket";
+
+        $vfield = "
+        mth_nomor kode,
+        mth_ket nama";
+
+        $vtable = "emst.mst_tarif";
+
+        if (!empty($e_value)) {
+            $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+        }
+
+        $cmd = "
+        SELECT
+        $vfield
+        FROM $vtable
+        WHERE $vidxkey<>'' $tambah
+        GROUP BY 1
+        LIMIT $offset,$rows";
+        $res = __dbAll($cmd);
+        return __json($res);
+    }
+
     public function lod_tarif_polis()
     {
         extract($_GET);
@@ -1492,6 +1931,45 @@ class Load extends Controller
 
         $res = __dbAll($cmd);
 
+        return __json($res);
+    }
+
+    public function lod_uw()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $tambah = "";
+        $vtable="";
+
+        if (isset($_GET['q'])) {
+            $e_value = $_GET['q'];
+        }
+
+        $vidxkey="mpuw_nomor";
+        $vfldname="mpuw_nama";
+
+        $vfield = "
+        mpuw_nomor kode,
+        mpuw_nama nama";
+
+        $vtable = "emst.mst_polis_uwtable";
+
+        if (!empty($e_value)) {
+            $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+        }
+
+        $cmd = "
+        SELECT
+        $vfield
+        FROM $vtable
+        WHERE $vidxkey<>'' $tambah
+        GROUP BY 1
+        LIMIT $offset,$rows";
+
+        $res = __dbAll($cmd);
         return __json($res);
     }
 
@@ -1554,29 +2032,31 @@ class Load extends Controller
             $e_value = $_GET['q'];
         }
 
-        $vidxkey="mprov_kode";
-        $vfldname="mprov_nama";
+        if ($_GET['id']=='polis') {
+            $vidxkey="mprov_kode";
+            $vfldname="mprov_nama";
 
-        $vfield = "
-        mprov_kode,
-        mprov_nama,
-        IF(IFNULL(mpwl_mpol_kode,'')='','0','1') ck";
+            $vfield = "
+            mprov_kode,
+            mprov_nama,
+            IF(IFNULL(mpwl_mpol_kode,'')='','0','1') ck";
 
-        $vtable = "emst.mst_provinsi LEFT JOIN eopr.mst_polis_provinsi ON mpwl_mpol_kode='".$polis."'
-        AND mprov_kode=mpwl_mprov_kode";
+            $vtable = "emst.mst_provinsi LEFT JOIN eopr.mst_polis_provinsi ON mpwl_mpol_kode='".$polis."'
+            AND mprov_kode=mpwl_mprov_kode";
 
-        if (!empty($e_value)) {
-            $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+            if (!empty($e_value)) {
+                $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+            }
+
+            $cmd = "
+            SELECT
+            $vfield
+            FROM $vtable
+            WHERE $vidxkey<>'' $tambah
+            LIMIT $offset,$rows";
+
+            $res = __dbAll($cmd);
         }
-
-        $cmd = "
-        SELECT
-        $vfield
-        FROM $vtable
-        WHERE $vidxkey<>'' $tambah
-        LIMIT $offset,$rows";
-
-        $res = __dbAll($cmd);
 
         return __json($res);
     }
@@ -1634,22 +2114,124 @@ class Load extends Controller
         return __json($res);
     }
 
+    public function get_kodesocdtluw()
+    {
+        extract($_GET);
+        $tambah = "";
+
+        $cmd = "
+        SELECT
+            msotd_pk,
+            mpuw_nama e_uw,
+            msotd_mujh_persen,
+            msotd_mdr_persen,
+            msotd_mfee_persen,
+            msotd_status,
+            msotd_berlaku,
+            date_format(msotd_tgl1,'%d-%m-%Y') msotd_tgl1,
+            date_format(msotd_tgl2,'%d-%m-%Y') msotd_tgl2,
+            msotd_ketentuan,
+            mth_ket e_tarif,
+            msotd_mth_nomor,
+            msotd_mpuw_nomor,
+            msotd_tipe,
+            msotd_jenis_tarif,
+            msotd_tipe_uw
+
+        FROM eopr.mst_soc_tarifuw_dtl
+        LEFT JOIN emst.mst_tarif on mth_nomor  = msotd_mth_nomor
+        LEFT JOIN emst.mst_polis_uwtable ON mpuw_nomor=msotd_mpuw_nomor
+        WHERE 1=1
+        AND msotd_status='0'
+        AND msotd_tipe='".$tipe."'
+        AND msotd_msoc_kode='".$msoc."'
+        AND msotd_mlok_kode='".$mlok."'
+        ".$tambah."";
+
+        $res = __dbRow($cmd);
+
+        if (!empty($res)) {
+            return __json($res);
+        } else {
+            $cmd = "
+            SELECT '' msotd_pk, '' msotd_mth_nomor";
+            $res = __dbRow($cmd);
+            return __json($res);
+        }
+    }
+
+    public function grd_segmen()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $tambah = "";
+
+        $vidxkey="value";
+        $vfldname="text";
+
+        if (isset($_GET['q'])) {
+            $e_value = $_GET['q'];
+        }
+
+        if (!empty($e_value)) {
+            $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+        }
+
+        if (isset($_GET['mjns'])) {
+            if ($_GET['mjns']!="") {
+                $tambah .= $tambah."and mssp_kode In (SELECT mptr_kode FROM emst.mst_protree_2 WHERE mptr_induk='".$_GET['mjns']."')";
+            }
+        }
+
+        $cmdx = "
+        SELECT
+            mssp_kode value,
+            mssp_nama text,
+            mssp_group groupx
+        FROM emst.mst_produk_segment
+        WHERE mssp_group<>'' AND 1=1 $tambah
+        LIMIT $offset,$rows";
+        $res1 = __dbAll($cmdx);
+
+        $cmd = "
+        SELECT
+            mssp_kode value,
+            mssp_nama text
+        FROM emst.mst_produk_segment
+        WHERE mssp_group='' AND 1=1 $tambah
+        LIMIT $offset,$rows";
+        $res2 = __dbAll($cmd);
+
+        $res = array_merge($res2, $res1);
+        if (!empty($res)) {
+            return __json($res);
+        } else {
+            $cmd = "
+            '' kode, '' nama, '' result";
+            $res = __dbAll($cmd);
+            return __json($res);
+        }
+    }
+
     public function menuAll()
     {
-        $cmd = "
-        SELECT *
-        FROM web_conf.web_menu
-        LEFT JOIN web_conf.user_accounts ON wmn_tipe=menu_tipe
-        LEFT JOIN web_conf.web_menu_jabatan ON wmn_kode=wmj_wmn_kode AND jabatan=wmj_sjab_kode
-        WHERE 1=1
-        AND wmn_key='MAIN'
-        AND wmn_tipe='".__getGlbVal('menu_tipe')."'
-        AND email='".__getGlbVal('email')."'
-        AND wmj_sjab_kode='".__getJab()."'
-        AND wmj_aktif=1
-        ORDER BY wmn_urut ASC";
-        $menulist = __dbAll($cmd);
+        // $cmd = "
+        // SELECT *
+        // FROM web_conf.web_menu
+        // LEFT JOIN web_conf.user_accounts ON wmn_tipe=menu_tipe
+        // LEFT JOIN web_conf.web_menu_jabatan ON wmn_kode=wmj_wmn_kode AND jabatan=wmj_sjab_kode
+        // WHERE 1=1
+        // AND wmn_key='MAIN'
+        // AND wmn_tipe='".__getGlbVal('menu_tipe')."'
+        // AND email='".__getGlbVal('email')."'
+        // AND wmj_sjab_kode='".__getJab()."'
+        // AND wmj_aktif=1
+        // ORDER BY wmn_urut ASC";
+        // $menulist = __dbAll($cmd);
 
-        return __json($menulist);
+        // return __json($menulist);
     }
 }

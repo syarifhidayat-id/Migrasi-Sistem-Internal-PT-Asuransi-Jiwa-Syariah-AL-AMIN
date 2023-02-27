@@ -43,6 +43,14 @@
                             <span class="text-danger error-text mpol_msoc_kode_err"></span>
                         </div>
                     </div>
+                    <div class="col-md-12 bg-light-warning hoverable" id="polisOld">
+                        <div class="mb-5 my-3">
+                            <label class="required form-label">Endos Untuk Polis Lama</label>
+                            <input type="text" class="easyui-combogrid" name="e_oldpolis" id="e_oldpolis" data-options="prompt:'Pilih pemegang polis lama'" style="width: 100%; height: 38px;" />
+                            <span>*Polis lama akan di batal endos dan terbit polis baru</span>
+                            <span class="text-danger error-text e_oldpolis_err"></span>
+                        </div>
+                    </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Nomor Spaj</label>
@@ -589,7 +597,8 @@
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Penerima Manfaat</label>
-                            <select class="form-select form-select-solid" data-control="select2" name="mpol_penerima_manfaat" id="mpol_penerima_manfaat" data-placeholder="Pilih penerima manfaat" data-allow-clear="true">
+                            <select class="easyui-combobox" name="mpol_penerima_manfaat" id="mpol_penerima_manfaat" data-options="prompt:'Pilih penerima manfaat'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih penerima manfaat</option>
                                 <option value="0">PEMEGANG POLIS</option>
                                 <option value="1">AHLI WARIS</option>
                                 <option value="2">PEMEGANG POLIS & AHLI WARIS</option>
@@ -600,35 +609,32 @@
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Manfaat Jiwa</label>
-                            <select class="form-select form-select-solid" data-control="select2" name="mpol_mnfa_kode" id="mpol_mnfa_kode" data-placeholder="Pilih manfaat jiwa" data-allow-clear="true">
-                                <option></option>
+                            <select class="easyui-combobox" name="mpol_mnfa_kode" id="mpol_mnfa_kode" data-options="prompt:'Pilih manfaat jiwa'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih manfaat jiwa</option>
                                 {{ optSql("SELECT mnfa_kode kode, mnfa_nama nama FROM emst.mst_manfaat_asuransi ORDER BY 1", "kode", "nama") }}
                             </select>
-                            {{-- <select class="easyui-combobox" name="mpol_mnfa_kode" id="mpol_mnfa_kode" data-options="prompt:'Pilih manfaat jiwa'" style="width: 100%; height: 38px;">
-                                {{ optSql("SELECT mnfa_kode kode, mnfa_nama nama FROM emst.mst_manfaat_asuransi ORDER BY 1", "kode", "nama") }}
-                            </select> --}}
                             <span class="text-danger error-text mpol_mnfa_kode_err"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Manfaat Tambahan Gu</label>
-                            <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_gu" id="mpol_mmft_kode_gu" data-placeholder="Pilih manfaat tambahan gu" data-allow-clear="true">
-                                <option></option>
-                                {{ optSql("SELECT mmft_kode kode, mmft_nama nama FROM emst.mst_manfaat_tambahan WHERE mmft_kode = 'C' or mmft_kode = 'H' ORDER BY 1", "kode", "nama") }}
+                            <select class="easyui-combobox" name="mpol_mmft_kode_gu" id="mpol_mmft_kode_gu" data-options="prompt:'Pilih manfaat tambahan gu'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih manfaat tambahan gu</option>
+                                {{ optSql("SELECT mnfa_kode kode, mnfa_nama nama FROM emst.mst_manfaat_asuransi ORDER BY 1", "kode", "nama") }}
                             </select>
                             <span class="text-danger error-text mpol_mmft_kode_gu_err"></span>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="mb-5">
-                            <label class="form-label">Manfaat Tambahan Wp</label>
-                            <div class="row">
-                                <div class="col-md-4">
+                        <label class="form-label">Manfaat Tambahan Wp</label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-5">
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_wp_swasta" id="mpol_mmft_kode_wp_swasta" data-placeholder="Pilih manfaat tambahan wp" data-allow-clear="true">
-                                                <option></option>
+                                            <select class="easyui-combobox" name="mpol_mmft_kode_wp_swasta" id="mpol_mmft_kode_wp_swasta" data-options="prompt:'Pilih manfaat tambahan wp'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Pilih manfaat tambahan wp</option>
                                                 {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='C' AND mprp_kode = 'B' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
@@ -636,11 +642,13 @@
                                     </div>
                                     <span class="text-danger error-text mpol_mmft_kode_wp_swasta_err"></span>
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-5">
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_wp_pns" id="mpol_mmft_kode_wp_pns" data-placeholder="Pilih manfaat tambahan wp" data-allow-clear="true">
-                                                <option></option>
+                                            <select class="easyui-combobox" name="mpol_mmft_kode_wp_pns" id="mpol_mmft_kode_wp_pns" data-options="prompt:'Pilih manfaat tambahan wp'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Pilih manfaat tambahan wp</option>
                                                 {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='B' AND mprp_kode = 'B' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
@@ -648,11 +656,13 @@
                                     </div>
                                     <span class="text-danger error-text mpol_mmft_kode_wp_pns_err"></span>
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-5">
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_wp_pensiun" id="mpol_mmft_kode_wp_pensiun" data-placeholder="Pilih manfaat tambahan wp" data-allow-clear="true">
-                                                <option></option>
+                                            <select class="easyui-combobox" name="mpol_mmft_kode_wp_pensiun" id="mpol_mmft_kode_wp_pensiun" data-options="prompt:'Pilih manfaat tambahan wp'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Pilih manfaat tambahan wp</option>
                                                 {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='B' AND mprp_kode = 'B' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
@@ -664,14 +674,14 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="mb-5">
-                            <label class="form-label">Manfaat Tambahan Phk</label>
-                            <div class="row">
-                                <div class="col-md-4">
+                        <label class="form-label">Manfaat Tambahan Phk</label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-5">
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_phk_swasta" id="mpol_mmft_kode_phk_swasta" data-placeholder="Pilih manfaat tambahan phk" data-allow-clear="true">
-                                                <option></option>
+                                            <select class="easyui-combobox" name="mpol_mmft_kode_phk_swasta" id="mpol_mmft_kode_phk_swasta" data-options="prompt:'Pilih manfaat tambahan phk'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Pilih manfaat tambahan phk</option>
                                                 {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='C' AND mprp_kode = 'X' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
@@ -679,11 +689,13 @@
                                     </div>
                                     <span class="text-danger error-text mpol_mmft_kode_phk_swasta_err"></span>
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-5">
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_phk_pns" id="mpol_mmft_kode_phk_pns" data-placeholder="Pilih manfaat tambahan phk" data-allow-clear="true">
-                                                <option></option>
+                                            <select class="easyui-combobox" name="mpol_mmft_kode_phk_pns" id="mpol_mmft_kode_phk_pns" data-options="prompt:'Pilih manfaat tambahan phk'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Pilih manfaat tambahan phk</option>
                                                 {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='B' AND mprp_kode = 'X' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
@@ -691,11 +703,13 @@
                                     </div>
                                     <span class="text-danger error-text mpol_mmft_kode_phk_pns_err"></span>
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-5">
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_phk_pensiun" id="mpol_mmft_kode_phk_pensiun" data-placeholder="Pilih manfaat tambahan phk" data-allow-clear="true">
-                                                <option></option>
+                                            <select class="easyui-combobox" name="mpol_mmft_kode_phk_pensiun" id="mpol_mmft_kode_phk_pensiun" data-options="prompt:'Pilih manfaat tambahan phk'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Pilih manfaat tambahan phk</option>
                                                 {{ optSql("SELECT mpwp_kode kode, mprp_kode kodee, mins_kode koddee, mpwp_persen persen FROM emst.mst_persen_wpphk WHERE mins_kode='B' AND mprp_kode = 'X' ORDER BY mpwp_persen", "kode", "persen") }}
                                             </select>
                                         </div>
@@ -711,8 +725,8 @@
                             <div class="col-md-4">
                                 <div class="mb-5">
                                     <label class="form-label">Manfaat Tambahan Fire</label>
-                                    <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_fire" id="mpol_mmft_kode_fire" data-placeholder="Pilih manfaat tambahan Fire" data-allow-clear="true">
-                                        <option></option>
+                                    <select class="easyui-combobox" name="mpol_mmft_kode_fire" id="mpol_mmft_kode_fire" data-options="prompt:'Pilih manfaat tambahan Fire'" style="width: 100%; height: 38px;">
+                                        <option selected disabled>Pilih manfaat tambahan Fire</option>
                                         {{ optSql("SELECT mmft_kode kode,mmft_nama nama FROM emst.mst_manfaat_tambahan WHERE mmft_kode = 'F' OR mmft_kode = 'G' OR mmft_kode = 'H' ORDER BY 1", "kode", "nama") }}
                                     </select>
                                     <span class="text-danger error-text mpol_mmft_kode_fire_err"></span>
@@ -721,8 +735,8 @@
                             <div class="col-md-4">
                                 <div class="mb-5">
                                     <label class="form-label">Manfaat Tambahan Tlo</label>
-                                    <select class="form-select form-select-solid" data-control="select2" name="mpol_mmft_kode_tlo" id="mpol_mmft_kode_tlo" data-placeholder="Pilih manfaat tambahan tlo" data-allow-clear="true">
-                                        <option></option>
+                                    <select class="easyui-combobox" name="mpol_mmft_kode_tlo" id="mpol_mmft_kode_tlo" data-options="prompt:'Pilih manfaat tambahan tlo'" style="width: 100%; height: 38px;">
+                                        <option selected disabled>Pilih manfaat tambahan tlo</option>
                                         {{ optSql("SELECT mmft_kode kode,mmft_nama nama FROM emst.mst_manfaat_tambahan WHERE mmft_kode = 'A' OR mmft_kode = 'B' OR mmft_kode = 'H' ORDER BY 1", "kode", "nama") }}
                                     </select>
                                     <span class="text-danger error-text mpol_mmft_kode_tlo_err"></span>
@@ -733,8 +747,8 @@
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Manfaat Tambahan Join Life</label>
-                            <select class="form-select form-select-solid" data-control="select2" name="mpol_jl" id="mpol_jl" data-placeholder="Pilih manfaat tambahan join life" data-allow-clear="true">
-                                <option></option>
+                            <select class="easyui-combobox" name="mpol_jl" id="mpol_jl" data-options="prompt:'Pilih manfaat tambahan join life', onSelect: function(rec) { jointlife(); }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih manfaat tambahan join life</option>
                                 {{ optSql("SELECT mmft_kode kode,mmft_nama nama FROM emst.mst_manfaat_tambahan WHERE mmft_tipe = 'JL' OR mmft_kode = '0' ORDER BY 1", "kode", "nama") }}
                             </select>
                             <span class="text-danger error-text mpol_jl_err"></span>
@@ -743,8 +757,8 @@
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Manfaat Join Life Peserta</label>
-                            <select class="form-select form-select-solid" data-control="select2" name="mpol_jl_pst" id="mpol_jl_pst" data-placeholder="Pilih manfaat j.life peserta" data-allow-clear="true">
-                                <option></option>
+                            <select class="easyui-combobox" name="mpol_jl_pst" id="mpol_jl_pst" data-options="prompt:'Pilih manfaat j.life peserta'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih manfaat j.life peserta</option>
                                 <option value="0">0</option>
                                 <option value="10">10</option>
                                 <option value="20">20</option>
@@ -763,8 +777,8 @@
                     <div class="col-md-4">
                         <div class="mb-5">
                             <label class="form-label">Manfaat Join Life Pasangan</label>
-                            <select class="form-select form-select-solid" data-control="select2" name="mpol_jl_pasangan" id="mpol_jl_pasangan" data-placeholder="Pilih manfaat  j.life pasangan" data-allow-clear="true">
-                                <option></option>
+                            <select class="easyui-combobox" name="mpol_jl_pasangan" id="mpol_jl_pasangan" data-options="prompt:'Pilih manfaat j.life pasangan'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih manfaat j.life pasangan</option>
                                 <option value="0">0</option>
                                 <option value="10">10</option>
                                 <option value="20">20</option>
@@ -997,7 +1011,7 @@
 
             <div class="card-body py-10">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="mb-5">
                             <label class="form-label">Virtual Account</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_va" id="mpol_va" data-placeholder="Pilih vistual account" data-allow-clear="true">
@@ -1008,17 +1022,29 @@
                             <span class="text-danger error-text mpol_va_err"></span>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <div class="mb-5">
                             <label class="form-label">Via</label>
-                            <select class="form-select form-select-solid" name="mpol_va_via[]" id="mpol_va_via" data-placeholder="Pilih VA" data-allow-clear="true" multiple="multiple"></select>
-                            <span class="text-danger error-text mpol_va_via_err"></span>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="mb-5">
+                                        <select class="form-select form-select-solid" data-control="select2" name="buka_paymod1[]" id="buka_paymod1" data-placeholder="Pilih VA" data-allow-clear="true" multiple="multiple"></select>
+                                        <span class="text-danger error-text buka_paymod1_err"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-5">
+                                        <input type="text" class="form-control form-control-solid" name="mpol_va_via" id="mpol_va_via" placeholder="Virtuaal account" />
+                                        <span class="text-danger error-text mpol_va_via_err"></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="mb-5">
                             <label class="required form-label">Pembayaran Online</label>
-                            <select class="form-select form-select-solid" data-control="select2" name="mpol_payonline" id="mpol_payonline" data-placeholder="Pilih pembayaran online" data-allow-clear="true">
+                            <select class="form-select form-select-solid" data-control="select2" name="mpol_payonline" id="mpol_payonline" data-placeholder="Pilih" data-allow-clear="true">
                                 <option></option>
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
@@ -1026,17 +1052,29 @@
                             <span class="text-danger error-text mpol_payonline_err"></span>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <div class="mb-5">
                             <label class="form-label">Via</label>
-                            <select class="form-select form-select-solid" name="mpol_playonline_via[]" id="mpol_playonline_via" data-placeholder="Pilih pembayaran online" data-allow-clear="true" multiple="multiple"></select>
-                            <span class="text-danger error-text mpol_playonline_via_err"></span>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="mb-5">
+                                        <select class="form-select form-select-solid" data-control="select2" name="buka_paymod2[]" id="buka_paymod2" data-placeholder="Pilih VA" data-allow-clear="true" multiple="multiple"></select>
+                                        <span class="text-danger error-text buka_paymod2_err"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-5">
+                                        <input type="text" class="form-control form-control-solid" name="mpol_playonline_via" id="mpol_playonline_via" placeholder="Pembayaran online" />
+                                        <span class="text-danger error-text mpol_playonline_via_err"></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="mb-5">
-                            <label class="required form-label">Pembayaran Retail/Agent</label>
-                            <select class="form-select form-select-solid" data-control="select2" name="mpol_agent" id="mpol_agent" data-placeholder="Pilih pembayaran retail/agent" data-allow-clear="true">
+                            <label class="required form-label">Pembayaran Agent</label>
+                            <select class="form-select form-select-solid" data-control="select2" name="mpol_agent" id="mpol_agent" data-placeholder="Pilih" data-allow-clear="true">
                                 <option></option>
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
@@ -1044,11 +1082,23 @@
                             <span class="text-danger error-text mpol_agent_err"></span>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <div class="mb-5">
                             <label class="form-label">Via</label>
-                            <select class="form-select form-select-solid" name="mpol_agent_via[]" id="mpol_agent_via" data-placeholder="Pilih pembayaran retail/agent" data-allow-clear="true" multiple="multiple"></select>
-                            <span class="text-danger error-text mpol_agent_via_err"></span>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="mb-5">
+                                        <select class="form-select form-select-solid" data-control="select2" name="buka_paymod3[]" id="buka_paymod3" data-placeholder="Pilih VA" data-allow-clear="true" multiple="multiple"></select>
+                                        <span class="text-danger error-text buka_paymod3_err"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-5">
+                                        <input type="text" class="form-control form-control-solid" name="mpol_agent_via" id="mpol_agent_via" placeholder="Pembayaran retail/agent" />
+                                        <span class="text-danger error-text mpol_agent_via_err"></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -1135,8 +1185,9 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="mb-5">
-                                        <select class="form-select form-select-solid" name="mpol_mprov_berlaku[]" id="mpol_mprov_berlaku" data-placeholder="Pilih provinsi" data-allow-clear="true" multiple="multiple"></select>
-                                        <span class="text-danger error-text mpol_mprov_berlaku_err"></span>
+                                        <select class="form-select form-select-solid" data-control="select2" name="o_prov[]" id="o_prov" data-placeholder="Pilih provinsi" data-allow-clear="true" multiple="multiple"></select>
+                                        <input type="text" class="form-control form-control-solid" name="mpol_mprov_berlaku" id="mpol_mprov_berlaku" placeholder="" />
+                                        <span class="text-danger error-text o_prov_err"></span>
                                     </div>
                                 </div>
                             </div>
@@ -1249,17 +1300,21 @@
                 <button type="button" class="btn btn-warning btn-sm" onclick="clear_f()"><i class="fa-solid fa-trash"></i> Bersihkan</button>
             </div>
         </form>
-
-        @include('pages.tehnik.polis.entry-master-polis.modal.lihat-tarif')
-        @include('pages.tehnik.polis.entry-master-polis.modal.lihat-uw')
-        @include('pages.tehnik.polis.entry-master-polis.modal.lihat-doc')
     </div>
+
+    @include('pages.tehnik.polis.entry-master-polis.modal.lihat-tarif')
+    @include('pages.tehnik.polis.entry-master-polis.modal.lihat-uw')
+    @include('pages.tehnik.polis.entry-master-polis.modal.lihat-doc')
 @endsection
 
 @section('script')
     <script>
         $(document).ready(function() {
             cekForm(0);
+            buka_paymod('buka_paymod1', 'mpol_va_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=V');
+            buka_paymod('buka_paymod2', 'mpol_playonline_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=O');
+            buka_paymod('buka_paymod3', 'mpol_agent_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=A');
+            buka_provinsi('{{ url("tehnik/polis/entry-master-polis/lod_provinsi") }}', 'polis', '&polis=' + getText('mpol_kode'));
         });
 
         $(function () {
@@ -1422,37 +1477,37 @@
                 setText("mpol_mpuw_nomor",row.kode);
             });
 
-            selectSideMt('mpol_mprov_berlaku', '{{ url("tehnik/polis/entry-master-polis/lod_provinsi") }}' + '?polis=' + getText('mpol_kode'), function(d) { return {
-                id: d.mprov_kode,
-                text: d.mprov_nama
-            }}, function(e) {
-                var data = e.params.data.id;
-                // console.log(data);
-            });
+            // selectSideMt('mpol_mprov_berlaku', '{{ url("tehnik/polis/entry-master-polis/lod_provinsi") }}' + '?polis=' + getText('mpol_kode'), function(d) { return {
+            //     id: d.mprov_kode,
+            //     text: d.mprov_nama
+            // }}, function(e) {
+            //     var data = e.params.data.id;
+            //     // console.log(data);
+            // });
 
-            selectSideMt('mpol_va_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=V', function(d) { return {
-                id: d.kode,
-                text: d.nama
-            }}, function(e) {
-                var data = e.params.data.id;
-                // console.log(data);
-            });
+            // selectSideMt('mpol_va_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=V', function(d) { return {
+            //     id: d.kode,
+            //     text: d.nama
+            // }}, function(e) {
+            //     var data = e.params.data.id;
+            //     // console.log(data);
+            // });
 
-            selectSideMt('mpol_playonline_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=O', function(d) { return {
-                id: d.kode,
-                text: d.nama
-            }}, function(e) {
-                var data = e.params.data.id;
-                // console.log(data);
-            });
+            // selectSideMt('mpol_playonline_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=O', function(d) { return {
+            //     id: d.kode,
+            //     text: d.nama
+            // }}, function(e) {
+            //     var data = e.params.data.id;
+            //     // console.log(data);
+            // });
 
-            selectSideMt('mpol_agent_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=A', function(d) { return {
-                id: d.kode,
-                text: d.nama
-            }}, function(e) {
-                var data = e.params.data.id;
-                // console.log(data);
-            });
+            // selectSideMt('mpol_agent_via', '{{ url("tehnik/polis/entry-master-polis/lod_paymod") }}' + '?tipe=A', function(d) { return {
+            //     id: d.kode,
+            //     text: d.nama
+            // }}, function(e) {
+            //     var data = e.params.data.id;
+            //     // console.log(data);
+            // });
 
 
             tombol('click', 'lihatTarif', function() {
@@ -1509,7 +1564,7 @@
         });
 
         function e_leave(id) {
-            var vv={ res : ''};
+            var vv='';
             var rms="";
             var url="";
 
@@ -1555,11 +1610,12 @@
         function cekForm(tipe) {
             clear_f();
             if (tipe=='0') {
-                $('#btnBru').addClass('active');
-                $('#btnEds').removeClass('active');
-                $('#btnEdsBr').removeClass('active');
-                $('#btnEdt').removeClass('active');
-                $('#btnBtl').removeClass('active');
+                adClass('btnBru', 'active');
+                setHide('polisOld', true);
+                rmClass('btnEds', 'active');
+                rmClass('btnEdsBr', 'active');
+                rmClass('btnEdt', 'active');
+                rmClass('btnBtl', 'active');
                 toster('success', 'Tombol Polis Baru Telah Aktif', 5000, 2);
                 titleAction('title_action', 'Polis Baru');
                 setText('judul', tipe);
@@ -1582,11 +1638,12 @@
             }
 
             if (tipe=='1') {
-                $('#btnEdt').addClass('active');
-                $('#btnBru').removeClass('active');
-                $('#btnEds').removeClass('active');
-                $('#btnEdsBr').removeClass('active');
-                $('#btnBtl').removeClass('active');
+                adClass('btnEdt', 'active');
+                setHide('polisOld', true);
+                rmClass('btnBru', 'active');
+                rmClass('btnEds', 'active');
+                rmClass('btnEdsBr', 'active');
+                rmClass('btnBtl', 'active');
                 toster('success', 'Tombol Polis Edit Telah Aktif', 5000, 2);
                 titleAction('title_action', 'Polis Edit');
                 setText('judul', tipe);
@@ -1609,11 +1666,13 @@
             }
 
             if (tipe=='2') {
-                $('#btnEds').addClass('active');
-                $('#btnEdsBr').removeClass('active');
-                $('#btnBru').removeClass('active');
-                $('#btnEdt').removeClass('active');
-                $('#btnBtl').removeClass('active');
+                adClass('btnEds', 'active');
+                setHide('polisOld', false);
+                oldPolis();
+                rmClass('btnEdsBr', 'active');
+                rmClass('btnBru', 'active');
+                rmClass('btnEdt', 'active');
+                rmClass('btnBtl', 'active');
                 toster('success', 'Tombol Polis Endors Telah Aktif', 5000, 2);
                 titleAction('title_action', 'Polis Endors');
                 setText('judul', tipe);
@@ -1636,11 +1695,12 @@
             }
 
             if (tipe=='3') {
-                $('#btnBtl').addClass('active');
-                $('#btnBru').removeClass('active');
-                $('#btnEdt').removeClass('active');
-                $('#btnEds').removeClass('active');
-                $('#btnEdsBr').removeClass('active');
+                adClass('btnBtl', 'active');
+                setHide('polisOld', true);
+                rmClass('btnBru', 'active');
+                rmClass('btnEdt', 'active');
+                rmClass('btnEds', 'active');
+                rmClass('btnEdsBr', 'active');
                 toster('success', 'Tombol Polis Batal Telah Aktif', 5000, 2);
                 titleAction('title_action', 'Polis Batal');
                 setText('judul', tipe);
@@ -1663,11 +1723,12 @@
             }
 
             if (tipe=='4') {
-                $('#btnEdsBr').addClass('active');
-                $('#btnBru').removeClass('active');
-                $('#btnEdt').removeClass('active');
-                $('#btnEds').removeClass('active');
-                $('#btnBtl').removeClass('active');
+                adClass('btnEdsBr', 'active');
+                setHide('polisOld', true);
+                rmClass('btnBru', 'active');
+                rmClass('btnEdt', 'active');
+                rmClass('btnEds', 'active');
+                rmClass('btnBtl', 'active');
                 toster('success', 'Tombol Polis Endors Baru Telah Aktif', 5000, 2);
                 titleAction('title_action', 'Polis Endors Baru');
                 setText('judul', tipe);
@@ -1690,13 +1751,34 @@
                 setReadEdit(false);
             }
             setText('endors',tipe);
-            reSelGrid('mpol_mrkn_nama','{{ url("tehnik/polis/entry-master-polis/lod_pmg_polis") }}');
+            // reSelGrid('mpol_mrkn_nama','{{ url("tehnik/polis/entry-master-polis/lod_pmg_polis") }}');
         }
 
         function setReadEdit(sts) {
             setTextReadOnly("mpol_mjns_kode",sts);
             setTextReadOnly("mpol_tgl_terbit",sts);
             setTextReadOnly("mpol_tgl_awal_polis",sts);
+        }
+
+        function oldPolis() {
+            selectGrid('e_oldpolis', 'GET', '{{ url("tehnik/polis/entry-master-polis/lod_oldpolis") }}', 'mpol_kode', 'mpol_kode', [
+                {field:'mpol_kode',title:'No. Polis',width:150},
+                {field:'mpol_msoc_kode',title:'No. Soc',width:150},
+                {field:'mjns_Keterangan',title:'Nasabah',width:200},
+                {field:'mssp_nama',title:'Segemen',width:100,hidden:false},
+                {field:'mkm_nama',title:'Mekanisme 1',width:100,hidden:false},
+                {field:'mkm_ket2',title:'Mekanisme 2',width:100,hidden:false},
+                {field:'mker_nama',title:'Pekerjaan',width:140,hidden:false},
+                {field:'mft_nama',title:'Manfaat',width:70,hidden:false},
+                {field:'bayar',title:'Pembayaran',width:70,hidden:false},
+                {field:'msoc_mjm_nama',title:'Jaminan',width:100},
+                {field:'mpras_nama',title:'Program Asuransi',width:97},
+                {field:'msoc_mrkn_nama',title:'Pmg Polis',width:200,hidden:true},
+            ], function(i, row) {
+                // hidePesan('e_oldpolis');
+                var kode = row.mpol_kode;
+                ambil_oldpolis(kode);
+            });
         }
 
         // function setloadpolis() {
@@ -1726,6 +1808,18 @@
 
             url = '{{ url("tehnik/polis/entry-master-polis/get_nopolis") }}' + '?' + rms;
             getJson(url, vv, function(data) {
+                if (data) {
+                    jsonForm('frxx_mstpolis', data);
+                }
+            });
+        }
+
+        function ambil_oldpolis(kode) {
+            vv={};
+            rms="pmgpolis="+getText("mpol_mrkn_kode")+"&mekanisme2="+getText("mpol_mekanisme2")+"&judul="+getText("judul")+"&nomor="+kode;
+            url='{{ url("tehnik/polis/entry-master-polis/get_oldpolis") }}' + '?' + rms;
+
+            getJson(url,vv, function(data){
                 if (data) {
                     jsonForm('frxx_mstpolis', data);
                 }
@@ -1775,6 +1869,14 @@
                     clearForm();
                 }
             });
+        }
+
+        function jointlife() {
+            if (getText('mpol_jl')==0) {
+                setTextReadOnly("mpol_jl",true);
+                setTextReadOnly("mpol_jl_pst",false);
+                setTextReadOnly("mpol_jl_pasangan",false);
+            }
         }
 
         function muncul(bandling,jiwa,gu,phk,tlo,fire,wp,umut,ujrf,discrate,wp_pens,phk_pens) {
@@ -2147,15 +2249,16 @@
             //tab4
             setTextReq('mpol_penerima_manfaat', true);
             setTextReq('mpol_mnfa_kode', true);
+            setTextReadOnly("mpol_jl", false);
             //tab5
             setTextReq('mpol_surplus', true);
             //tab6
             setTextReq('mpol_payonline', true);
             setTextReq('mpol_agent', true);
             setTextReq('mpol_msrf_kode', true);
-            // setTextReadOnly('mpol_va_via', true);
-            // setTextReadOnly('mpol_playonline_via', true);
-            // setTextReadOnly('mpol_agent_via', true);
+            setTextReadOnly('mpol_va_via', true);
+            setTextReadOnly('mpol_playonline_via', true);
+            setTextReadOnly('mpol_agent_via', true);
             //tab7
             setTextReq('mpol_jenis_login', true);
             setTextReq('mpol_acc_tek', true);
@@ -2163,6 +2266,7 @@
             setTextReadOnly('mpol_nomor', true);
             setTextReadOnly('mpol_nomor_cetak', true);
             setTextReadOnly('mpol_kode', true);
+            setHide('mpol_mprov_berlaku', true);
 
             // setHide
             setHide('judul', true);

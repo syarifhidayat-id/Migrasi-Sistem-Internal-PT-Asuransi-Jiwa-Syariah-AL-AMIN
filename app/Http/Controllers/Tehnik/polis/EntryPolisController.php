@@ -105,10 +105,10 @@ class EntryPolisController extends Controller
             $_POST['mpol_tgl_terbit'] = __str2($_POST['mpol_tgl_terbit'], 'D');
             $_POST['mpol_tgl_awal_polis'] = __str2($_POST['mpol_tgl_awal_polis'], 'D');
             $_POST['mpol_tgl_ahir_polis'] = __str2($_POST['mpol_tgl_ahir_polis'], 'D');
-            $_POST['mpol_va_via'] = __str2($_POST['mpol_va_via'], 'MS');
-            $_POST['mpol_playonline_via'] = __str2($_POST['mpol_playonline_via'], 'MS');
-            $_POST['mpol_agent_via'] = __str2($_POST['mpol_agent_via'], 'MS');
-            $_POST['mpol_mprov_berlaku'] = __str2($_POST['mpol_mprov_berlaku'], 'MS');
+            // $_POST['mpol_va_via'] = __str2($_POST['mpol_va_via'], 'MS');
+            // $_POST['mpol_playonline_via'] = __str2($_POST['mpol_playonline_via'], 'MS');
+            // $_POST['mpol_agent_via'] = __str2($_POST['mpol_agent_via'], 'MS');
+            // $_POST['mpol_mprov_berlaku'] = __str2($_POST['mpol_mprov_berlaku'], 'MS');
 
             $kodepolisendos = "";
             if ((trim($_POST['endors']))=="2") {

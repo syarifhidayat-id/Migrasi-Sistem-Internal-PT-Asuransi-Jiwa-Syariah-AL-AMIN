@@ -91,14 +91,14 @@ class MenuController extends Controller
                 ]);
 
             } else {
-                // $vtable = DB::table('web_menu')->where('wmn_kode', $request->wmn_kode);
+                $vtable = "web_conf.web_menu";
                 // $data = $request->all();
                 // $data = $request->except('_token');
                 // $vtable->update($data);
                 $field = __getKode('wmn_', $_POST);
-                $cmd = __toSQL("web_menu", $field, "U", "WHERE wmn_kode='".$_POST['wmn_kode']."'", true, "");
+                $cmd = __toSQL($vtable, $field, "U", "WHERE wmn_kode='".$_POST['wmn_kode']."'", true, "");
                 return response()->json([
-                    'success' => 'Data berhasil diupdate dengan Kode '.$request->wmn_kode.'!'
+                    'success' => 'Data berhasil diupdate dengan Kode '.$_POST['wmn_kode'].' !'
                 ]);
             }
         }
