@@ -307,30 +307,14 @@ class ApprovKasAnggaranController extends Controller
         );
         $r = __dbRow($cmd);
 
-        return response()->json($r);
+        // return response()->json($r);
+        return $r;
     }
 
     public function selectKeterangan(Request $request)
     {
-        $page = $request->page ? intval($request->page) : 1;
-        $rows = $request->rows ? intval($request->rows) : 100;
-        $offset = ($page - 1) * $rows;
+        $vtable = DB::table('eset.uti_setting')->where('uset_value1', $request['kode_ket'])->first();
 
-        $vtable = DB::table('eset.uti_setting')
-            ->select('uset_value1 AS kode', 'uset_value1 AS ket');
-
-        if (!empty($request->q)) {
-            $vtable->where('ket', 'LIKE', "%$request->q%");
-        }
-
-        $data = $vtable
-            // ->groupBy('ket')
-            ->where('uset_modul', 'KASKET')
-            ->orderBy('kode')
-            ->offset($offset)
-            ->limit($rows)
-            ->get();
-
-        return response()->json($data);
+        return __json($vtable);
     }
 }

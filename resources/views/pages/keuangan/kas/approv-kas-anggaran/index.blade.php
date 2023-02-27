@@ -322,7 +322,7 @@
                 }
             });
 
-            selectOpTag('tkad_keterangan');
+            // selectOpTag('tkad_keterangan');
 
             // SELECT FILTER
             selectSide('e_cabalaminx', false, '{{ url('api/keuangan/kas/approv-kas-anggaran/cabang_alamin') }}',
@@ -513,6 +513,13 @@
                 titleAction('title_mod','Form Approval');
                 openModal('dlg_approv');
                 jsonForm('ff_dlg_approv', data);
+                lodJson("GET", "{{ url('api/keuangan/kas/approv-kas-anggaran/selectKeterangan') }}" + "?kode_ket=" + data.tkad_keterangan, function (res) {
+                    if ($('#tkad_keterangan').find("option[value='" + data.tkad_keterangan + "']").length) {
+                        $('#tkad_keterangan').val(res.wmn_kode).trigger('change');
+                    } else {
+                        selectEdit('tkad_keterangan', res.uset_value1, res.uset_value1);
+                    }
+                });
             });
         }
 

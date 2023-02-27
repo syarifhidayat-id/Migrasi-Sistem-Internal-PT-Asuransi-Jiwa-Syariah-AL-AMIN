@@ -24,11 +24,18 @@
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="form-label">Peruntukan Dana</label>
-                                    <select class="form-select form-select-solid" data-kt-select2="true"
+                                    {{-- <select class="form-select form-select-solid" data-kt-select2="true"
                                         name="tkad_keterangan" data-control="select2" id="tkad_keterangan"
                                         data-dropdown-parent="#dlg_approv" data-placeholder="pilih" type="text"
                                         data-allow-clear="true">
                                         <option></option>
+                                        @foreach ($slc_ket as $key => $data)
+                                            <option value="{{ $data->kode }}">{{ $data->ket }}</option>
+                                        @endforeach
+                                    </select> --}}
+                                    
+                                    <select data-dropdown-parent="#dlg_approv" id="tkad_keterangan" name="tkad_keterangan" class="form-select" data-placeholder="pilih" data-allow-clear="true" data-control="select2" >
+                                        {{-- <option></option> --}}
                                         @foreach ($slc_ket as $key => $data)
                                             <option value="{{ $data->kode }}">{{ $data->ket }}</option>
                                         @endforeach
@@ -46,7 +53,7 @@
                                     </select>
 
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="form-label">Nilai</label>
@@ -54,6 +61,7 @@
 
                                 </div>
                             </div>
+                            {{-- 
                             <div class="col-md-6 mb-5">
                                 <div class="mb-5">
                                     <label class="form-label">Jenis Realisasi</label>
