@@ -51,6 +51,7 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('/lod_bukber', [BukuBesarController::class, 'lod_bukber']);
             Route::post('jurnalkasfinal', [BukuBesarController::class, 'jurnalkasfinal']);
             Route::post('p_ubah_akunkas', [BukuBesarController::class, 'p_ubah_akunkas']);
+            Route::post('p_approv_kaskeu', [ApprovKasAnggaranController::class, 'p_approv_kaskeu']);
             
         });
     });

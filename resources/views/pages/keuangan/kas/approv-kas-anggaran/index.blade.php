@@ -322,7 +322,12 @@
                 }
             });
 
+            selectOpTag('tkad_keterangan');
+            // selectOpTag('tkad_mta_pk');
             // selectOpTag('tkad_keterangan');
+            // selectOpTag('tkad_keterangan');
+            // selectOpTag('tkad_keterangan');
+            setTextReadOnly('tkad_relops', true);
 
             // SELECT FILTER
             selectSide('e_cabalaminx', false, '{{ url('api/keuangan/kas/approv-kas-anggaran/cabang_alamin') }}',
@@ -442,7 +447,7 @@
                         orderable: true,
                         // className: 'text-left',
                         render: function(data, type, row) {
-                            return `<button type="button" onclick="showPil('` + row.tdna_pk +
+                            return `<button type="button" onclick="showPil('`+ row.DT_RowIndex +`','` + row.tdna_pk +
                                 `')" class="btn btn-light-success">Lihat</button>`;
                         }
                     },
@@ -486,21 +491,18 @@
             );
 
             submitForm(
-                "frxx_approv",
+                "ff_dlg_approv",
                 "btn_simpan",
                 "POST",
-                "{{ url('keuangan/kas/approv') }}",
+                "{{url('keuangan/kas/buku-besar-kas/p_approv_kaskeu')}}",
                 (resSuccess) => {
-                    // filterInput('a_pk', 'serverSide_kas');
-                    lodTable('serverSide_approv_kas');
+                    lodTable('serverSide_approv_kas_anggaran');
                     bsimpan("btn_simpan", 'Simpan');
-                    closeModal('modal_approv');
-                    clearForm("frxx_approv");
-                },
-                (resError) => {
-                    console.log(resError);
-                },
-            );
+                    closeModal('dlg_approv');
+                    clearForm("ff_dlg_approv");
+                }
+            )
+
         });
 
         function approv_rk(kode, tipe)
@@ -513,14 +515,38 @@
                 titleAction('title_mod','Form Approval');
                 openModal('dlg_approv');
                 jsonForm('ff_dlg_approv', data);
-                lodJson("GET", "{{ url('api/keuangan/kas/approv-kas-anggaran/selectKeterangan') }}" + "?kode_ket=" + data.tkad_keterangan, function (res) {
-                    if ($('#tkad_keterangan').find("option[value='" + data.tkad_keterangan + "']").length) {
-                        $('#tkad_keterangan').val(res.wmn_kode).trigger('change');
-                    } else {
-                        selectEdit('tkad_keterangan', res.uset_value1, res.uset_value1);
-                    }
-                });
+                // lodJson("GET", "{{ url('api/keuangan/kas/approv-kas-anggaran/selectKeterangan') }}" + "?id=" + data.tkad_keterangan, function (res) {
+                //     if ($('#tkad_keterangan').find("option[value='" + data.tkad_keterangan + "']").length) {
+                //         $('#tkad_keterangan').val(res.wmn_kode).trigger('change');
+                //     } else {
+                //         selectEdit('tkad_keterangan', res.uset_value1, res.uset_value1);
+                //     }
+                // });
+                // lodJson("GET", "{{ url('api/keuangan/kas/approv-kas-anggaran/selectTipeAnggaran') }}" + "?id=" + data.tkad_mta_pk, function (res) {
+                //     if ($('#tkad_mta_pk').find("option[value='" + data.tkad_mta_pk + "']").length) {
+                //         $('#tkad_mta_pk').val(res.mta_pk).trigger('change');
+                //     } else {
+                //         selectEdit('tkad_mta_pk', res.mta_pk, res.mta_keterangan);
+                //     }
+                // });
+                // lodJson("GET", "{{ url('api/keuangan/kas/approv-kas-anggaran/selectKelompokKas') }}" + "?id=" + data.tkad_kelompokas, function (res) {
+                //     if ($('#tkad_kelompokas').find("option[value='" + data.tkad_kelompokas + "']").length) {
+                //         $('#tkad_kelompokas').val(res.mkk_pk).trigger('change');
+                //     } else {
+                //         selectEdit('tkad_kelompokas', res.mkk_pk, res.mkk_nama);
+                //     }
+                // });
             });
+        }
+
+        function showPil(i, pk)
+        {
+            var tipe = "0";
+            // var kode = $(this).attr('data-show-pdf');
+            var file = '{{ url('api/keuangan/kas/approv-kas-anggaran/op_file_danaju') }}' + '/' + '?nomor=' + pk + '&tipe=' + tipe;
+            $('#view_pdf').attr('src', file);
+            openModal('modalView');
+            
         }
 
         function close_dlg_approv() {

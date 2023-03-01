@@ -258,12 +258,8 @@
                         className: 'text-center',
                         render: function(data, type, row) {
                             return `
-                        <button type="button" id="bmoViewPdf" data-resouce="` + row.mpojk_pk + `" data-show-pdf="` +
-                                row
-                                .mpojk_dokumen + `"
-                                        class="btn btn-light-success" target="blank"> Lihat </button>`
+                        <button type="button" id="bmoViewPdf" data-resouce="` + row.mpojk_pk + `" data-show-pdf="` + row.mpojk_dokumen + `" class="btn btn-light-success" target="blank"> Lihat </button>`
                         }
-
                     },
                     {
                         data: null,

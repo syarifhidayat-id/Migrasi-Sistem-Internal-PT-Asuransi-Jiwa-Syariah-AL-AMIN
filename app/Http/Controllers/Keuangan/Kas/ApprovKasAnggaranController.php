@@ -20,19 +20,24 @@ class ApprovKasAnggaranController extends Controller
     public function index()
     {
         $slc_ket = DB::table('eset.uti_setting')
-        ->select('uset_value1 AS kode', 'uset_value1 AS ket')
-        ->where('uset_modul', 'KASKET')
-        // ->orderBy(1)
-        ->get();
+            ->select('uset_value1 AS kode', 'uset_value1 AS ket')
+            ->where('uset_modul', 'KASKET')
+            // ->orderBy(1)
+            ->get();
 
         // dd($slc_ket);
 
-        $slc_tipe_diang = __select("SELECT mta_pk kode,mta_keterangan ket FROM epms.mst_tipe_anggaran   ORDER BY 1");
-        // $tipe_diang = __dbAll($slc_tipe_diang);
+        $slc_tipe_diang = "SELECT mta_pk kode,mta_keterangan ket FROM epms.mst_tipe_anggaran   ORDER BY 1";
+        $tipe_diang = __dbRow($slc_tipe_diang);
+
+        $slc_kel_kas = "SELECT mkk_pk kode,mkk_nama ket FROM epms.mst_kelompok_kas ORDER BY 1";
+        $kelompok_kas = __dbRow($slc_kel_kas);
 
 
         return view('pages.keuangan.kas.approv-kas-anggaran.index', [
-           'slc_ket' => $slc_ket
+            'slc_ket' => $slc_ket,
+            'slc_tipe_diang' => $tipe_diang,
+            'slc_kel_kas' => $kelompok_kas
         ]);
     }
 
@@ -131,7 +136,7 @@ class ApprovKasAnggaranController extends Controller
             }
         }
 
-        $cmd = DB::select("
+        $cmd = "
         SELECT 
         tdna_pk,
         tkad_pk,
@@ -165,8 +170,7 @@ class ApprovKasAnggaranController extends Controller
             " . $tambah . "  
             GROUP BY tkad_pk
             " . $group . " 
-        LIMIT " . $baris . "	
-                ");
+        LIMIT " . $baris . " ";
 
         $data = __dbAll($cmd);
         return DataTables::of($data)
@@ -211,7 +215,7 @@ class ApprovKasAnggaranController extends Controller
 
                 if (!empty($request->get('search'))) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if (Str::contains(Str::lower($row['mta_keterangan']), Str::lower($request->get('search')))) {
+                        if (Str::contains(Str::lower($row['tkad_atjh_pk']), Str::lower($request->get('search')))) {
                             return true;
                         } else if (Str::contains(Str::lower($row['mrops_keterangan']), Str::lower($request->get('search')))) {
                             return true;
@@ -281,13 +285,13 @@ class ApprovKasAnggaranController extends Controller
             }
         }
 
-        $cmd= __select(
+        $cmd =
             "
             SELECT
             tkad_pk,  
             tkad_atjh_pk,
             tkad_askn_kode,
-            tkad_keterangan,
+            LOWER(tkad_keterangan) AS tkad_keterangan,
             tkad_tipe_dk,
             FORMAT(tkad_total,2) tkad_total,
             tkad_jns_realisasi,
@@ -303,18 +307,183 @@ class ApprovKasAnggaranController extends Controller
             LEFT JOIN epms.`mst_tipe_anggaran` ON mta_pk=tkad_mta_pk
             LEFT JOIN `emst`.`mst_anggaran_realisasi` on mar_kode=tkad_jns_realisasi
             WHERE 1=1   $tambah  limit 1 
-            "
-        );
+            ";
         $r = __dbRow($cmd);
 
-        // return response()->json($r);
-        return $r;
+        return response()->json($r);
+        // return $r;
     }
 
     public function selectKeterangan(Request $request)
     {
-        $vtable = DB::table('eset.uti_setting')->where('uset_value1', $request['kode_ket'])->first();
+        $vtable = DB::table('eset.uti_setting')->where('uset_value1', $request['id'])->first();
 
         return __json($vtable);
+    }
+
+    public function selectTipeAnggaran(Request $request)
+    {
+        $vtable = DB::table('epms.mst_tipe_anggaran')->where('mta_pk', $request['id'])->first();
+
+        return __json($vtable);
+    }
+    public function selectKelompokKas(Request $request)
+    {
+        $vtable = DB::table('epms.mst_kelompok_kas')->where('mkk_pk', $request['id'])->first();
+
+        return __json($vtable);
+    }
+
+    public function p_approv_kaskeu(Request $request)
+    {
+        extract($_POST);
+        $cmd = "";
+        $scr = "";
+        $val = "";
+        $nomor = "";
+        $aret = array();
+        $vtable = "epms.trs_kas_dtl";
+        $user = $request->user()->email;
+
+        // return $request->user();
+
+        $cek = "SELECT tkad_approvkeu1,tkad_approvkeu2,tkad_approvpms,tkad_approvacc FROM $vtable WHERE tkad_pk='" . $_POST['tkad_pk'] .  "'";
+
+        $sts = __dbRow($cek);
+
+        if ($sts['tkad_approvkeu1'] == '0') {
+            if (__getHak("sjab_level") == "STF" && __getHak("sjab_kode") == "STFKEU" && $user == "nabila") {
+                $_POST['tkad_approvkeu1'] = $_POST['statusx'];
+                $_POST['tkad_approvkeu1_date'] = date('Y-m-d H:i:s');
+                $_POST['tkad_approvkeu1_user'] = $request->user()->email;
+            }
+        }
+
+        if ($sts['tkad_approvkeu1'] == '1' || $sts['tkad_approvkeu2'] == '1' || $sts['tkad_approvpms'] == '1' || $sts['tkad_approvacc'] == '1') {
+            if (__getHak("sjab_level") == "STF" && __getHak("sjab_kode") == "STFKEU" && $user == "nabila") {
+                $_POST['tkad_approvkeu1'] = $_POST['statusx'];
+                $_POST['tkad_relops'] = $_POST['tkad_relops'];
+                $_POST['tkad_kelompokas'] = $_POST['tkad_kelompokas'];
+                $_POST['tkad_mta_pk'] = $_POST['tkad_mta_pk'];
+            }
+        }
+
+
+
+        if ($sts['tkad_approvkeu2'] == '0') {
+            if (__getHak("sjab_level") == "KBG" && __getHak("sjab_kode") == "KBGKEU") {
+                $_POST['tkad_approvkeu2'] = $_POST['statusx'];
+                $_POST['tkad_approvkeu2_date'] = date('Y-m-d H:i:s');
+                $_POST['tkad_approvkeu2_user'] = $request->user()->email;
+            }
+        }
+
+        if ($sts['tkad_approvpms'] == '0') {
+            if (__getHak("sjab_level") == "SPV" && __getHak("sjab_kode") == "SPV2") {
+                $_POST['tkad_approvpms'] = $_POST['statusx'];
+                $_POST['tkad_approvpms_date'] = date('Y-m-d H:i:s');
+                $_POST['tkad_approvpms_user'] = $request->user()->email;
+            }
+        }
+
+        if ($sts['tkad_approvacc'] == '0') {
+            if (__getHak("sjab_level") == "SPV" && __getHak("sjab_kode") == "SPVKEUJAK") {
+                $_POST['tkad_approvacc'] = $_POST['statusx'];
+                $_POST['tkad_approvacc_date'] = date('Y-m-d H:i:s');
+                $_POST['tkad_approvacc_user'] = $request->user()->email;
+            }
+        }
+
+        if ($sts['tkad_approvacc'] == '0') {
+            if (__getHak("sjab_kode") == "STFAKU") {
+                $_POST['tkad_approvacc'] = $_POST['statusx'];
+                $_POST['tkad_approvacc_date'] = date('Y-m-d H:i:s');
+                $_POST['tkad_approvacc_user'] = $request->user()->email;
+            }
+        }
+
+        if ($sts['tkad_approvacc'] == '0') {
+            if (__getHak("sjab_level") == "KBG" && __getHak("sjab_kode") == "KBGACCLOLA") {
+                $_POST['tkad_approvacc'] = $_POST['statusx'];
+                $_POST['tkad_approvacc_date'] = date('Y-m-d H:i:s');
+                $_POST['tkad_approvacc_user'] = $request->user()->email;
+            }
+        }
+
+        if (
+            $sts['tkad_approvacc'] == '1' or $sts['tkad_approvpms'] == 1 or $sts['tkad_approvkeu2'] == 1 or
+            $sts['tkad_approvkeu1'] == 1
+        ) {
+            if (__getHak("sjab_kadiv_acc") == 1) {
+                $_POST['tkad_approvacc'] = $_POST['statusx'];
+                $_POST['tkad_approvacc_date'] = date('Y-m-d H:i:s');
+                $_POST['tkad_approvacc_user'] = $request->user()->email;
+            }
+        }
+
+
+        $field = __getKode("tkad_", $_POST);
+        $cmd = __toSQL($vtable, $field, "U", "  WHERE  tkad_pk='" . $_POST['tkad_pk'] . "'", true, '');
+        //echo $cmd;
+
+        $cmdz = " select tkad_pk from " . $vtable . " where  tkad_pk='" . $_POST['tkad_pk'] . "'";
+        $res = __dbAll($cmdz);
+        return response()->json([
+            'success' => 'Berhasil Disimpan'
+        ]);
+
+
+
+
+        // if (count($res) > 0 && trim($res[0]['tkad_pk']) == trim($_POST['tkad_pk'])) {
+        //     $json_data = "" . json_encode($res) . "";
+        //     $json_data = str_replace("[{", "{", $json_data);
+        //     $json_data = str_replace("}]", "}", $json_data);
+        //     echo $json_data;
+        // } else {
+        //     echo '{"error" : " Gagal Simpan ... , coba simpan ulang  ERROR MESSAGE "}';
+        //     return;
+        // }
+    }
+
+    public function op_file_danaju(Request $request)
+    {
+        extract($_GET);
+        $ket="";
+        $filex="";
+
+        $cmd = "select ifnull(tdna_bukti,'')  tdna_bukti , ifnull(tdna_file_vcr,'')  tdna_file_vcr , tdna_indexfolder indexfolder
+		FROM epms.trs_dana_aju where tdna_pk='".$nomor."'";
+        $res= __dbRow($cmd);
+
+        // $sdir=_getdirId($res['indexfolder']);
+        // $uploaddir ='/live/'.$sdir['dir'];
+        //echo $uploaddir;
+
+        $uploaddir = 'public/keuangan/kas/master-kas/';
+        // $fileOri = $dokumen->getClientOriginalName();
+
+        // if (file_exists($uploaddir.$res['tdna_bukti'])) {
+        //     echo "ada";
+        // } else {
+        //     echo "tidak ada!";
+        // }
+        if($tipe=="0")
+        {
+        $sfile=$res['tdna_bukti'];
+        $filex=$uploaddir.$sfile;
+        }
+        if($tipe=="1")
+        {
+        $sfile=$res['tdna_file_vcr'];
+        $filex=$uploaddir.$sfile;
+        }
+
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].$filex) && trim($sfile)!="")
+        {
+            return $filex;
+        }else{
+            return 'FILE TIDAK ADA';
+        }
     }
 }
