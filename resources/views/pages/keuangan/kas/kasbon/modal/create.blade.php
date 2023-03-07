@@ -76,8 +76,7 @@
                             <div class="col-md-6">
                                 <div class="mb-5">
                                     <label class="form-label fs-6 fw-bold">Nominal</label>
-                                    <input class="form-control form-control-solid fw-bolder text-end"
-                                        data-placeholder="Masukan nominal" data-allow-clear="true" type="text"
+                                    <input class="form-control form-control-solid fw-bolder text-end" placeholder="Ex: 1000000!" data-allow-clear="true" type="text"
                                         data-hide-search="false" id="tkb_nominal" name="tkb_nominal" />
                                         <span class="text-danger error-text tkb_nominal_err"></span>
                                 </div>
@@ -86,7 +85,7 @@
                                 <div class="mb-5">
                                     <label class="form-label fs-6 fw-bold">Peruntukan</label>
                                     <input class="form-control form-control-solid fw-bolder"
-                                        data-placeholder="Masukan peruntukan" data-allow-clear="true" type="textarea"
+                                        data-placeholder="Masukan peruntukan" placeholder="Masukan peruntukan kasbon!" data-allow-clear="true" type="textarea"
                                         data-hide-search="false" id="tkb_peruntukan_dana" name="tkb_peruntukan_dana" />
                                         <span class="text-danger error-text tkb_peruntukan_dana_err"></span>
                                 </div>
@@ -97,7 +96,7 @@
                 <div class="modal-footer justify-content-center">
                     <button type="submit" class="btn btn-primary btn-sm" id="btn_simpan"><i
                             class="fa-solid fa-floppy-disk"></i> Simpan</button>
-                    <button type="button" class="btn btn-warning btn-sm" id="btn_reset"><i
+                    <button type="button" class="btn btn-warning btn-sm" onclick="clearForm('frxx_kasbon')"><i
                             class="fa-solid fa-trash"></i> Hapus</button>
                     <button type="button" class="btn btn-danger btn-sm" id="btn_tutup" onclick="closeMod()"><i
                             class="fa-solid fa-xmark"></i> Tutup</button>

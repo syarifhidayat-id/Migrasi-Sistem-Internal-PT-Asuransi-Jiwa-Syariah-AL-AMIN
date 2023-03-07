@@ -320,22 +320,8 @@
         });
 
         function closeMod() {
-            closeModal('modal');
-            clearForm('frxx');
-        }
-
-        function jenisFile(jenis1, jenis2) {
-            var doc = $('#jenis_dokumen').val();
-            var url = '{{ url('storage/legal/ojk') }}' + '/';
-            if (doc == '1') {
-                $('#view_pdf').attr('src', url + 'file1/' + jenis1);
-                openModal('modalView');
-            } else if (doc == '2') {
-                $('#view_pdf').attr('src', url + 'file2/' + jenis2);
-                openModal('modalView');
-            } else {
-                pesan('Silahkan pilih jenis file terlebih dahulu!');
-            }
+            closeModal('modalTamKasbon');
+            clearForm('frxx_kasbon');
         }
     </script>
 @endsection
