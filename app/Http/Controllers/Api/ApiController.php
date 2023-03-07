@@ -26,164 +26,64 @@ class ApiController extends Controller
         $data = DB::table('eset.tahun')->select('*')->get();
         return response()->json($data);
     }
-    // /**
-    //  * Display a listing of the resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
 
-    // public function polis(Request $request)
-    // {
-    //     $data = [];
-    //     if ($request->has('q')) {
-    //         $search = $request->q;
-    //         $data = DB::table('emst.mst_rekanan')
-    //             ->select('mrkn_kode', 'mrkn_nama')
-    //             ->where('mrkn_nama', 'like', "%$search%")
-    //             ->orderBy('mrkn_kode')
-    //             ->get();
-    //     } else {
-    //         $data = DB::table('emst.mst_rekanan')
-    //             ->select('mrkn_kode', 'mrkn_nama')
-    //             ->orderBy('mrkn_kode')
-    //             ->get();
-    //     }
-    //     return response()->json($data);
-    // }
+    public function kantor_cabang(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
 
+        $vtable = DB::table('emst.mst_lokasi')
+            ->select('mlok_kode', 'mlok_nama');
 
+        if (!empty($request->q)) {
+            $vtable->where('mlok_nama', 'LIKE', "%$request->q%");
+        }
 
+        $data = $vtable
+            ->groupBy('mlok_nama')
+            ->orderBy('mlok_kode')
+            ->offset($offset)
+            ->limit($rows)
+            ->get();
 
+        return response()->json($data);
+    }
+    public function lod_karyawan(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
 
+        $cmd = "SELECT `skar_pk` kode, `skar_nama` nama, `skar_nip` nik FROM `esdm`.`sdm_karyawan_new`
+        WHERE `skar_mlok_kode`='" . $request['mlok'] . "';";
 
+        $res = __dbAll($cmd);
+        return __json($res);
+    }
+    public function lod_ang_realisasi(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
 
-    // public function peraturan_perusahaan(Request $request)
-    // {
-    //     $data = DB::table('emst.mst_atur_perusahaan')->select(
-    //         '*',
-    //         // DB::raw("@no:=@no+1 AS DT_RowIndex"),
-    //         DB::raw("@no:=@no+1 AS DT_RowIndex"),
-    //         DB::raw('DATE_FORMAT(map_ins_date, "%d-%m-%Y") as ins_date'),
-    //         DB::raw(
-    //             'CASE
-    //             WHEN map_jenis = "0" THEN "Peraturan Perusahaan"
-    //             WHEN map_jenis = "1" THEN "SOP"
-    //             WHEN map_jenis = "2" THEN "SK"
-    //             WHEN map_jenis = "3" THEN "Pedoman"
-    //             WHEN map_jenis = "4" THEN "Job Desc"
-    //             END as jenis_map'),
-    //         DB::raw(
-    //             'CASE
-    //             WHEN map_bulan = "1" THEN "Januari"
-    //             WHEN map_bulan = "2" THEN "Februari"
-    //             WHEN map_bulan = "3" THEN "Maret"
-    //             WHEN map_bulan = "4" THEN "April"
-    //             WHEN map_bulan = "5" THEN "Mei"
-    //             WHEN map_bulan = "6" THEN "Juni"
-    //             WHEN map_bulan = "7" THEN "Juli"
-    //             WHEN map_bulan = "8" THEN "Agustus"
-    //             WHEN map_bulan = "9" THEN "September"
-    //             WHEN map_bulan = "10" THEN "Oktober"
-    //             WHEN map_bulan = "11" THEN "November"
-    //             WHEN map_bulan = "12" THEN "Desember"
-    //             END as bulan_map')
+        $cmd = "SELECT `mar_kode` kode, `mar_nama` nama FROM `emst`.`mst_anggaran_realisasi`;";
 
-    //     )->orderBy('map_ins_date', 'DESC');
+        $res = __dbAll($cmd);
+        return __json($res);
+    }
 
-    //     return Datatables::of($data)
-    //         ->addIndexColumn()
-    //         ->filter(function ($instance) use ($request) {
-    //             // if($request->has('wmn_tipe') && $request->wmn_tipe!=null) {
-    //             //     return $instance->where('wmn_tipe', $request->wmn_tipe);
-    //             // }
-    //             // if (!empty($request->get('wmn_tipe'))) {
-    //             //     $instance->where('wmn_tipe', $request->get('wmn_tipe'));
-    //             // }
-    //             // if (!empty($request->get('wmn_descp'))) {
-    //             //     $instance->where('wmn_descp', $request->get('wmn_descp'));
-    //             // }
-    //             if (!empty($request->get('search'))) {
-    //                 $instance->where(function ($w) use ($request) {
-    //                     $search = $request->get('search');
-    //                     $w->orWhere('map_tentang', 'LIKE', "%$search%")
-    //                         ->orWhere('map_nomor', 'LIKE', "%$search%");
-    //                 });
-    //             }
-    //         })
-    //         ->make(true);
-    //     // }
-    // }
+    public function lod_akunkascab(Request $request)
+    {
+        $page = $request->page ? intval($request->page) : 1;
+        $rows = $request->rows ? intval($request->rows) : 100;
+        $offset = ($page - 1) * $rows;
 
+        $cmd = "SELECT `asakn_kode` akun,`asakn_keterangan` nama FROM eacc.`ams_sub_akun`
+        WHERE `asakn_mlok_kode`='" . $request['mlok'] . "' AND `asakn_mrpt_kode`='NEROPR' AND `asakn_aakn_kode`='540' AND RIGHT(asakn_kode,1)='1';";
 
+        $res = __dbAll($cmd);
+        return __json($res);
+    }
 
-
-
-
-
-    // public function viewPdf($id)
-    // {
-    //     $data = DB::table('emst.mst_uu_asuransi')
-    //         ->where('mua_pk', $id)->first();
-    //     $path = Storage::get('public/legal/uu_asuransi/' . $data->mua_dokumen);
-    //     $file = File::get($path);
-    //     $response = Response::make($file, 200);
-    //     $response->header('Content-Type', 'application/pdf');
-    //     return $response;
-    // }
-
-
-
-    // public function mssp_kode(Request $request)
-    // {
-    //     $data = [];
-    //     if ($request->has('q')) {
-    //         $search = $request->q;
-    //         $data = DB::table('emst.mst_produk_segment')
-    //             ->select('mssp_kode', 'mssp_nama')
-    //             ->where('mssp_nama', 'like', "%$search%")
-    //             ->get();
-    //     } else {
-    //         $data = DB::table('emst.mst_produk_segment')
-    //             ->select('mssp_kode', 'mssp_nama')
-    //             ->get();
-    //     }
-    //     return response()->json($data);
-    // }
-
-    // public function getPojkPdf($id)
-    // {
-    //     $data = DB::table('emst.mst_pojk')
-    //         ->where('mpojk_pk', $id)->first();
-    //     $path = Storage::get('public/legal/pojk/' . $data->mpojk_dokumen);
-    //     $file = File::get($path);
-    //     $response = Response::make($file, 200);
-    //     $response->header('Content-Type', 'application/pdf');
-    //     return $response;
-    // }
-
-    // public function get_uu($id)
-    // {
-    //     $data = DB::table('emst.mst_uu_asuransi')
-    //         ->where('mua_pk', '=', $id)
-    //         ->get();
-    //     return response()->json($data);
-    // }
-
-    // public function get_mojk_jenis(Request $request)
-    // {
-    //     $data = [];
-    //     if ($request->has('q')) {
-    //         $search = $request->q;
-    //         $data = DB::table('emst.mst_laporan_berkala')
-    //             ->select('mlapbkl_jenis', 'mlapbkl_pk')
-    //             ->where('mlapbkl_jenis', 'like', "%$search%")
-    //             // ->where('mlapbkl_pk', 'like', "%$search%")
-    //             ->get();
-    //     } else {
-    //         $data = DB::table('emst.mst_laporan_berkala')
-    //             ->select('mlapbkl_jenis', 'mlapbkl_pk')
-    //             ->get();
-    //     }
-    //     return response()->json($data);
-    // }
 }

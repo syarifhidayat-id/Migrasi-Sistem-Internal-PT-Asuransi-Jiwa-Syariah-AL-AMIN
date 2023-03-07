@@ -131,7 +131,8 @@ class ApprovKasAnggaranController extends Controller
 
 
         if ($request->get('c_periode') == "1") {
-            if (!empty($request->get('e_probulan1')) && !empty($request->get('e_probulan2')) && !empty($request->get('e_protahun'))) {
+            if (!empty($request->get('e_probulan1')) 
+            && !empty($request->get('e_probulan2')) && !empty($request->get('e_protahun'))) {
                 $tambah = $tambah . " and month(tdna_tgl_aju) between '" . $request['e_probulan1'] . "' and '" . $request['e_probulan2'] . "' and year(tdna_tgl_aju)='" . $request['e_protahun'] . "' ";
             }
         }

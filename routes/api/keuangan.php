@@ -3,6 +3,9 @@
 use App\Http\Controllers\Keuangan\Kas\ApprovController;
 use App\Http\Controllers\Keuangan\Kas\ApprovKasAnggaranController;
 use App\Http\Controllers\Keuangan\Kas\BukuBesarController;
+use App\Http\Controllers\Keuangan\Kas\KasbonController;
+use App\Http\Controllers\Keuangan\Kas\ListTransaksiKasController;
+use App\Http\Controllers\Keuangan\Kas\ListVcrController;
 use App\Http\Controllers\Keuangan\Komisi\ApprovalKomisiController;
 use App\Http\Controllers\Keuangan\Kas\MasterKasController;
 use App\Http\Controllers\Keuangan\Kas\RincianTransaksiController;
@@ -95,9 +98,17 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             
         });
 
-
-
-
+        Route::group(['prefix' => '/list-vcr', 'as' => 'list-vcr.'], function () {
+            Route::get('rpt_kas', [ListVcrController::class, 'rpt_kas']);
+        });
+        Route::group(['prefix' => '/list-trs', 'as' => 'list-trs.'], function () {
+            Route::get('rpt_kasbb', [ListTransaksiKasController::class, 'rpt_kasbb']);
+        });
+        Route::group(['prefix' => '/kasbon', 'as' => 'kasbon.'], function () {
+            Route::get('lod_ang_realisasi', [KasbonController::class, 'lod_ang_realisasi']);
+            Route::get('grd_lihat_kasbon', [KasbonController::class, 'grd_lihat_kasbon']);
+        });
+        
     });
 
 });

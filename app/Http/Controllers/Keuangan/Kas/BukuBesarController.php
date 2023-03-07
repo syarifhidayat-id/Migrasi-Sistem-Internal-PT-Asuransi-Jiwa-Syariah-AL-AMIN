@@ -121,7 +121,7 @@ class BukuBesarController extends Controller
                 "e_jns = '" . $request['e_jns'] . "'";
             }
         }
-        $cmd = DB::select("CALL epms.P_REPORT_KAS_PUS('" . $request['e_akun'] . "','" . $request['e_cabalamin'] . "','" . $request['e_entry1'] . "','" . $request['e_entry2'] . "','" . $request['e_tag'] . "','" . $request['e_jns'] . "')");
+        $cmd = "CALL epms.P_REPORT_KAS_PUS('" . $request['e_akun'] . "','" . $request['e_cabalamin'] . "','" . $request['e_entry1'] . "','" . $request['e_entry2'] . "','" . $request['e_tag'] . "','" . $request['e_jns'] . "')";
         // $cmd = DB::select("CALL epms.P_REPORT_KAS_PUS('150-540-0101001','01','2022-01-24','2022-01-31','','0');");
 
         $data = __dbAll($cmd);
@@ -134,8 +134,8 @@ class BukuBesarController extends Controller
         $rows = $request->rows ? intval($request->rows) : 100;
         $offset = ($page - 1) * $rows;
 
-        $cmd = DB::select("SELECT `asakn_kode` akun,`asakn_keterangan` nama FROM eacc.`ams_sub_akun`
-        WHERE `asakn_mlok_kode`='" . $request['mlok'] . "' AND `asakn_mrpt_kode`='NEROPR' AND `asakn_aakn_kode`='540' AND RIGHT(asakn_kode,1)='1';");
+        $cmd = "SELECT `asakn_kode` akun,`asakn_keterangan` nama FROM eacc.`ams_sub_akun`
+        WHERE `asakn_mlok_kode`='" . $request['mlok'] . "' AND `asakn_mrpt_kode`='NEROPR' AND `asakn_aakn_kode`='540' AND RIGHT(asakn_kode,1)='1';";
 
         $res = __dbAll($cmd);
         return __json($res);
@@ -208,7 +208,7 @@ class BukuBesarController extends Controller
     {
         if (isset($request['tipe'])) {
             if ($request['tipe'] == "D") {
-                $cmd = DB::select("
+                $cmd = "
 					SELECT t1.tdna_dk,
 					IF(t1.tdna_dk='K',IF(kas_1<>1,akun_1,IF(kas_2<>1,akun_2,'')) ,IF(kas_1=1,akun_1,IF(kas_2=1,akun_2,''))) a_1,
 					IF(t1.tdna_dk='K',IF(kas_1=1,akun_1,IF(kas_2=1,akun_2,'')) ,IF(kas_1<>1,akun_1,IF(kas_2<>1,akun_2,''))) a_2,
@@ -263,7 +263,7 @@ class BukuBesarController extends Controller
 					AND tkad_atjh_pk IN (SELECT tkad_atjh_pk  FROM epms.trs_kas_dtl WHERE tkad_pk='" . $request['kode'] . "'  )
 					) t2
 					;
-					");
+					";
             }
         }
         //echo $cmd;
@@ -271,7 +271,7 @@ class BukuBesarController extends Controller
 
         if (isset($request['tipe'])) {
             if ($request['tipe'] == "K") {
-                $cmd = DB::select(" 
+                $cmd = " 
 					SELECT t1.tdna_dk,
 					IF(t1.tdna_dk='D',IF(kas_1=1,akun_1,IF(kas_2=1,akun_2,'')) ,IF(kas_1<>1,akun_1,IF(kas_2<>1,akun_2,''))) a_1,
 					IF(t1.tdna_dk='D',IF(kas_1<>1,akun_1,IF(kas_2<>1,akun_2,'')) ,IF(kas_1=1,akun_1,IF(kas_2=1,akun_2,''))) a_2,
@@ -325,7 +325,7 @@ class BukuBesarController extends Controller
 					WHERE tkad_pk<>'" . $request['kode'] . "' AND tdna_dk=tkad_tipe_dk
 					AND tkad_atjh_pk IN (SELECT tkad_atjh_pk  FROM epms.trs_kas_dtl WHERE tkad_pk='" . $request['kode'] . "'  )
 					) t2
-					");
+					";
             }
         }
         $data = __dbAll($cmd);

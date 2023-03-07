@@ -239,17 +239,15 @@ $jab = Auth::user()->jabatan;
                 });
 
             filterAll('input[type="search"]', 'serverSide_buku_besar'); //khusus type search inputan
-            var e_cabalamin = getText('e_cabalamin'),
-                e_akun = getText('e_akun'),
-                // tdna_askn_kode = getText('e_akun'),
-                e_entry1 = getText('e_entry1'),
-                e_entry2 = getText('e_entry2'),
-                e_jns = getText('e_jns'),
-                e_tag = getText('e_tag'),
-                url = "?e_cabalamin=" + e_cabalamin + "&e_akun=" + e_akun + "&e_entry1=" + e_entry1 + "&e_entry2=" +
-                e_entry2 + "&e_jns=" + e_jns + "&e_tag=" + e_tag;
-
-
+            // var e_cabalamin = getText('e_cabalamin'),
+            //     e_akun = getText('e_akun'),
+            //     // tdna_askn_kode = getText('e_akun'),
+            //     e_entry1 = getText('e_entry1'),
+            //     e_entry2 = getText('e_entry2'),
+            //     e_jns = getText('e_jns'),
+            //     e_tag = getText('e_tag'),
+            //     url = "?e_cabalamin=" + e_cabalamin + "&e_akun=" + e_akun + "&e_entry1=" + e_entry1 + "&e_entry2=" +
+            //     e_entry2 + "&e_jns=" + e_jns + "&e_tag=" + e_tag;
 
             serverSide( //datatable serverside
                 "serverSide_buku_besar",
