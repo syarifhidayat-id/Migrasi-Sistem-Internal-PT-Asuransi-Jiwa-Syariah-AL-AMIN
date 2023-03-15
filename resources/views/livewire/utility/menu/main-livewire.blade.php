@@ -116,8 +116,9 @@
     @else
     @if($menu['wmn_tipe']=="ALL")
     <div class="menu-item">
-        <a class="menu-link {{ (Request::is('dashboard') || Request::is('dashboard')) ? 'active' : '' }}"
-            href="{{ route('dashboard') }}">
+        <a class="menu-link {{ (Request::is($menu['wmn_url_n']) || Request::is($menu['wmn_url_o_n'])) ? 'active' : '' }}"
+            href="@if ($menu['wmn_url_n'] == " maintenance" || $menu['wmn_url_n']=="" ) # @else {{
+            route($menu['wmn_url_n']) }} @endif">
             <span class="menu-icon">
                 <span class="svg-icon svg-icon-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -140,9 +141,9 @@
     <div class="menu-item">
         <a class="menu-link {{ (Request::is($menu['wmn_url_n']) || Request::is($menu['wmn_url_o_n'])) ? 'active' : '' }}"
             href="@if ($menu['wmn_url_n'] == " maintenance" || $menu['wmn_url_n']=="" ) # @else {{
-            route($menu['wmn_url_n']) }} @endif ">
-                    <span class=" menu-icon">
-            <i class="{{ $menu['wmn_icon'] }}"></i>
+            route($menu['wmn_url_n']) }} @endif">
+            <span class=" menu-icon">
+                <i class="{{ $menu['wmn_icon'] }}"></i>
             </span>
             <span class="menu-title">{{ $menu['wmn_descp'] }}</span>
         </a>
