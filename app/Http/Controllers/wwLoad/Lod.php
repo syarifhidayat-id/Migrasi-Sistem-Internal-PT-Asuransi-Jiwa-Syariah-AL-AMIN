@@ -1276,9 +1276,23 @@ class Lod extends Controller
 
         // return __json($menulist);
 
-        $cmd = "SELECT eset.f_get_pkw(20) pk";
-        $r = __dbRow($cmd);
-        $ret = $r['pk'];
-        return $ret;
+        // $cmd = "SELECT eset.f_get_pkw(20) pk";
+        // $r = __dbRow($cmd);
+        // $ret = $r['pk'];
+        // return $ret;
+        $cmd = "
+        SELECT *
+        FROM web_conf.web_menu
+        LEFT JOIN web_conf.user_accounts ON wmn_tipe=menu_tipe
+        LEFT JOIN web_conf.web_menu_jabatan ON wmn_kode=wmj_wmn_kode AND jabatan=wmj_sjab_kode
+        WHERE wmn_tipe='ALL' OR menu_tipe='" . __getGlbVal('menu_tipe') . "'
+        AND wmn_key='MAIN'
+        AND email='" . __getGlbVal('email') . "'
+        AND wmj_sjab_kode='" . __getJab() . "'
+        AND wmj_aktif=1
+        GROUP BY wmn_kode
+        ORDER BY wmn_urut ASC";
+        $menulist = __dbAll($cmd);
+        return __json($menulist);
     }
 }

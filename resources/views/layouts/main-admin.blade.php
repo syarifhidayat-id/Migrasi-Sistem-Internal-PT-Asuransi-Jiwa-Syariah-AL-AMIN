@@ -138,7 +138,7 @@
                             id="#kt_aside_menu" data-kt-menu="true" data-kt-menu-expand="false">
 
                             @if (Route::has('signin.store'))
-                            <div class="menu-item">
+                            {{-- <div class="menu-item">
                                 <a class="menu-link {{ (Request::is('dashboard') || Request::is('dashboard')) ? 'active' : '' }}"
                                     href="{{ route('dashboard') }}">
                                     <span class="menu-icon">
@@ -162,7 +162,7 @@
                                 <div class="menu-content pt-8 pb-0">
                                     <span class="menu-section text-muted text-uppercase fs-8 ls-1">Main Menu</span>
                                 </div>
-                            </div>
+                            </div> --}}
                             @livewire('utility.menu.main-livewire')
                             @endif
 
