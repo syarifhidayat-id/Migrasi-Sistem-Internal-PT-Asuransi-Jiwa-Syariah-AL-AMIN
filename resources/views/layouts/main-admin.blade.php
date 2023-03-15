@@ -138,31 +138,6 @@
                             id="#kt_aside_menu" data-kt-menu="true" data-kt-menu-expand="false">
 
                             @if (Route::has('signin.store'))
-                            {{-- <div class="menu-item">
-                                <a class="menu-link {{ (Request::is('dashboard') || Request::is('dashboard')) ? 'active' : '' }}"
-                                    href="{{ route('dashboard') }}">
-                                    <span class="menu-icon">
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none">
-                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2"
-                                                    fill="black" />
-                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2"
-                                                    fill="black" />
-                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2"
-                                                    fill="black" />
-                                            </svg>
-                                        </span>
-                                    </span>
-                                    <span class="menu-title">DASHBOARD</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <div class="menu-content pt-8 pb-0">
-                                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">Main Menu</span>
-                                </div>
-                            </div> --}}
                             @livewire('utility.menu.main-livewire')
                             @endif
 
@@ -331,7 +306,7 @@
                                                         <a href="#"
                                                             class="d-flex text-dark text-hover-primary align-items-center mb-5">
                                                             <div class="symbol symbol-40px me-4">
-                                                                <img src="{{ asset('ww.css/css.admin/stl-admin/assets/media/avatars/300-6.jpg') }}"
+                                                                <img src="{{ asset('ww.css/css.admin/assets/media/avatars/300-6.jpg') }}"
                                                                     alt="" />
                                                             </div>
 
@@ -346,7 +321,7 @@
                                                         <a href="#"
                                                             class="d-flex text-dark text-hover-primary align-items-center mb-5">
                                                             <div class="symbol symbol-40px me-4">
-                                                                <img src="{{ asset('ww.css/css.admin/stl-admin/assets/media/avatars/300-2.jpg') }}"
+                                                                <img src="{{ asset('ww.css/css.admin/assets/media/avatars/300-2.jpg') }}"
                                                                     alt="" />
                                                             </div>
                                                             <div
