@@ -50,6 +50,7 @@ class MenuController extends Controller
     public function store(Request $request)
     {
         extract($_POST);
+        $vtable = "";
         $validasi = Validator::make($request->all(), [
             'wmn_tipe' => 'required',
             'wmn_key' => 'required',
@@ -65,36 +66,50 @@ class MenuController extends Controller
                 'error' => $validasi->errors()
             ]);
         } else {
-
+            $vtable = "web_conf.web_menu";
             if (empty($request->wmn_kode)) {
                 $kode = __getKey(14);
-                $vtable = DB::table('web_menu');
+                // $vtable = DB::table('web_menu');
 
-                if (empty($request->wmn_url)) {
-                    $request->merge([
-                        'wmn_url_n' => 'maintenance',
-                    ]);
+                // if (empty($request->wmn_url_n)) {
+                //     $request->merge([
+                //         'wmn_url_n' => 'maintenance',
+                //     ]);
+                // }
+                // $data = $request->all();
+                // $data = $request->except('_token');
+                // $data['wmn_kode'] = $kode;
+                // $data['wmn_slide'] = 0;
+                // $data['wmn_timer'] = 0;
+                // $data['wmn_open_w'] = 0;
+                // $data['wmn_url_o_aktif_n'] = 0;
+                // $data['wmn_bot'] = 0;
+
+                // $vtable->insert($data);
+
+
+                if (empty($_POST['wmn_url_n'])) {
+                    $_POST['wmn_url_n'] = "maintenance";
                 }
-                $data = $request->all();
-                $data = $request->except('_token');
-                $data['wmn_kode'] = $kode;
-                $data['wmn_slide'] = 0;
-                $data['wmn_timer'] = 0;
-                $data['wmn_open_w'] = 0;
-                $data['wmn_url_o_aktif_n'] = 0;
-                $data['wmn_bot'] = 0;
+                if (empty($_POST['wmn_icon'])) {
+                    $_POST['wmn_icon'] = "fa-sharp fa-solid fa-gear";
+                }
 
-                $vtable->insert($data);
+                $_POST['wmn_kode'] = $kode;
+                $_POST['wmn_slide'] = 0;
+                $_POST['wmn_timer'] = 0;
+                $_POST['wmn_open_w'] = 0;
+                $_POST['wmn_url_o_aktif_n'] = 0;
+                $_POST['wmn_bot'] = 0;
+
+                $field = __getKode("wmn_", $_POST);
+                $cmd = __toSQL($vtable, $field, "I", "", true, "");
 
                 return response()->json([
-                    'success' => 'Data berhasil disimpan dengan Kode '.$kode.'!'
+                    'success' => 'Data berhasil disimpan dengan Kode '.$_POST['wmn_kode'].' !'
                 ]);
 
             } else {
-                $vtable = "web_conf.web_menu";
-                // $data = $request->all();
-                // $data = $request->except('_token');
-                // $vtable->update($data);
                 $field = __getKode('wmn_', $_POST);
                 $cmd = __toSQL($vtable, $field, "U", "WHERE wmn_kode='".$_POST['wmn_kode']."'", true, "");
                 return response()->json([

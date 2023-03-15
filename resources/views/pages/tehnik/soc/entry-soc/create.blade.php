@@ -81,26 +81,22 @@
                         <div class="col-md-4">
                             <div class="mb-5">
                                 <label class="required form-label">Mekanisme 1 (Umum)</label>
-                                {{-- <select class="form-select form-select-solid" data-control="select2" name="msoc_mekanisme" id="msoc_mekanisme" data-placeholder="Pilih jenis pekerjaan" data-allow-clear="true">
-                                    <option></option>
-                                    @foreach ($mks1 as $key => $data)
-                                        <option value="{{ $data->mkm_kode }}">{{ $data->mkm_nama }}</option>
-                                    @endforeach
-                                </select> --}}
-                                <input type="text" class="easyui-combobox" name="msoc_mekanisme" id="msoc_mekanisme" data-options="prompt:'Pilih mkanisme 1'" style="width: 100%; height: 38px;" />
+                                <select class="easyui-combobox" name="msoc_mekanisme" id="msoc_mekanisme" data-options="prompt:'Pilih mekanisme'" style="width: 100%; height: 38px;">
+                                    <option selected disabled>Pilih mekanisme</option>
+                                    {{ optSql("SELECT mkm_kode kode, mkm_nama nama FROM emst.mst_mekanisme WHERE mkm_aktif!=1 ORDER BY 1", "kode", "nama") }}
+                                </select>
+                                {{-- <input type="text" class="easyui-combobox" name="msoc_mekanisme" id="msoc_mekanisme" data-options="prompt:'Pilih mkanisme 1'" style="width: 100%; height: 38px;" /> --}}
                                 <span class="text-danger error-text msoc_mekanisme_err"></span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-5">
                                 <label class="form-label">Mekanisme 2 (Penutupan)</label>
-                                {{-- <select class="form-select form-select-solid" data-control="select2" name="msoc_mekanisme2" id="msoc_mekanisme2" data-placeholder="Pilih jenis pekerjaan" data-allow-clear="true">
-                                    <option></option>
-                                    @foreach ($mks2 as $key => $data)
-                                        <option value="{{ $data->mkm_kode2 }}">{{ $data->mkm_ket2 }}</option>
-                                    @endforeach
-                                </select> --}}
-                                <input type="text" class="easyui-combobox" name="msoc_mekanisme2" id="msoc_mekanisme2" data-options="prompt:'Pilih mkanisme 2'" style="width: 100%; height: 38px;" />
+                                <select class="easyui-combobox" name="msoc_mekanisme2" id="msoc_mekanisme2" data-options="prompt:'Pilih mekanisme 2'" style="width: 100%; height: 38px;">
+                                    <option selected disabled>Pilih mekanisme 2</option>
+                                    {{ optSql("SELECT mkm_kode2 kode, mkm_ket2 nama FROM emst.mst_mekanisme2 WHERE 1=1 ORDER BY 1", "kode", "nama") }}
+                                </select>
+                                {{-- <input type="text" class="easyui-combobox" name="msoc_mekanisme2" id="msoc_mekanisme2" data-options="prompt:'Pilih mkanisme 2'" style="width: 100%; height: 38px;" /> --}}
                                 <span class="text-danger error-text msoc_mekanisme2_err"></span>
                             </div>
                         </div>
@@ -173,10 +169,6 @@
                                     <option selected disabled>Pilih saluran distribusi</option>
                                     {{ optSql("SELECT mslr_kode kode,mslr_ket ket FROM emst.mst_saluran_distribusi ORDER BY 1", "kode", "ket") }}
                                 </select>
-                                {{-- <select class="form-select form-select-solid" data-control="select2" name="msoc_mslr_kode" id="msoc_mslr_kode" data-placeholder="Pilih">
-                                    <option selected disabled>Pilih saluran distribusi</option>
-                                    {{ optSql("SELECT mslr_kode kode,mslr_ket ket FROM emst.mst_saluran_distribusi ORDER BY 1", "kode", "ket") }}
-                                </select> --}}
                                 <input type="text" class="form-control form-control-solid" name="endors" id="endors" placeholder="endors" />
                                 <span class="text-danger error-text msoc_mslr_kode_err"></span>
                             </div>
@@ -226,7 +218,7 @@
                                     <div class="mb-5">
                                         <label class="required form-label">Penanggung Pajak Fee</label>
                                         <select class="easyui-combobox" name="msoc_pajakfee" id="msoc_pajakfee" data-options="prompt:'Pilih pajak fee'" style="width: 100%; height: 38px;">
-                                            <option selected disabled>Pilih</option>
+                                            <option selected disabled>Pilih pajak fee</option>
                                             <option value="0">-</option>
                                             <option value="1">PPN & PPH Tidak Potongan/Nambah Kontribusi</option>
                                             <option value="2">Rekanan</option>
@@ -449,8 +441,8 @@
                         <div class="col-md-6">
                             <div class="mb-5">
                                 <label class="form-label">Kode SOC</label>
-                                <input type="text" class="form-control form-control-solid" name="msoc_kode" id="msoc_kode" placeholder="Kode SOC" />
-                                <span class="text-danger error-text msoc_kode_err"></span>
+                                <input type="text" class="form-control form-control-solid" name="msoc_kode_x" id="msoc_kode_x" placeholder="Kode SOC" />
+                                <span class="text-danger error-text msoc_kode_x_err"></span>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -460,7 +452,7 @@
                                     <div class="col-md-4">
                                         <div class="mb-5">
                                             <select class="form-select form-select-solid" data-control="select2" name="msoc_jenis_tarif" id="msoc_jenis_tarif" data-placeholder="Pilih">
-                                                <option></option>
+                                                <option selected disabled>Pilih</option>
                                                 <option value="0">Usia</option>
                                                 <option value="1">Masa</option>
                                             </select>
@@ -492,7 +484,7 @@
                                     <div class="col-md-4">
                                         <div class="mb-5">
                                             <select class="form-select form-select-solid" data-control="select2" name="msoc_tipe_uw" id="msoc_tipe_uw" data-placeholder="Pilih">
-                                                <option></option>
+                                                <option selected disabled>Pilih</option>
                                                 <option value="0">Usia</option>
                                                 <option value="1">X+N</option>
                                             </select>
@@ -630,10 +622,6 @@
                         setText('msoc_mspaj_nomor', row.mspaj_nomor);
                     }
                 );
-                selectBox('msoc_mekanisme', 'POST', '{{ url("api/tehnik/soc/entry-soc/select-meka1") }}', 'mkm_kode', 'mkm_nama', function(rec) {
-                    hidePesan('msoc_mekanisme');
-                });
-                selectBox('msoc_mekanisme2', 'POST', '{{ url("api/tehnik/soc/entry-soc/select-meka2") }}', 'mkm_kode2', 'mkm_ket2');
                 // selectBox('msoc_jns_perusahaan', 'POST', '{{ url("api/tehnik/soc/entry-soc/select-jnskerja") }}', 'mker_kode', 'mker_nama', function(rec) {
                 //     hidePesan('msoc_jns_perusahaan');
                 //     cekpolis();
@@ -776,7 +764,7 @@
                     if (kode !== "" && kode !== null) {
                         openModal('modalLihatTarif');
                         titleAction('titleLihatTarif', 'Table Tarif');
-                        setAttr("tbTarif", "src", "{{ url('api/tehnik/soc/entry-soc/rpt_lihattarif') }}" + "?nomor=" + kode);
+                        setAttr("#tbTarif", "src", "{{ url('api/tehnik/soc/entry-soc/rpt_lihattarif') }}" + "?nomor=" + kode);
                     } else {
                         message('error', 'Oops...', 'Pilih dulu ketentuan tarif!');
                     }
@@ -787,7 +775,7 @@
                     if (kode !== "" && kode !== null) {
                         openModal('modalLihatUw');
                         titleAction('titleLihatUw', 'Table Underwriting');
-                        setAttr("tbUw", "src", "{{ url('api/tehnik/soc/entry-soc/rpt_lihat_uw') }}" + "?nomor=" + kode);
+                        setAttr("#tbUw", "src", "{{ url('api/tehnik/soc/entry-soc/rpt_lihat_uw') }}" + "?nomor=" + kode);
                     } else {
                         message('error', 'Oops...', 'Pilih dulu ketentuan uw!');
                     }
@@ -829,7 +817,7 @@
                     },
                 );
 
-                submitImportSoc(
+                submitImport(
                     "frxx_uploadTarif",
                     "btnImportTarif_simpan",
                     "Apakah data yang di upload sudah benar?",
@@ -842,7 +830,7 @@
                         openModal("modalShowKonfirmTarif");
                         titleAction("titleShowKonfirmTarif", "Konfirmasi Tabel Tarif");
                         var kode = getText("kode_import_tarif");
-                        setAttr("showTbTarif", "src", "{{ url('api/tehnik/soc/entry-soc/rpt_lihattarif') }}" + "?nomor=" + kode);
+                        setAttr("#showTbTarif", "src", "{{ url('api/tehnik/soc/entry-soc/rpt_lihattarif') }}" + "?nomor=" + kode);
                         reSelGrid('e_tarif', '{{ url("api/tehnik/soc/entry-soc/select-tarifimport") }}');
                     },
                 );
@@ -863,7 +851,7 @@
                     },
                 );
 
-                submitImportSoc(
+                submitImport(
                     "frxx_uploadUw",
                     "btnImportUw_simpan",
                     "Apakah data yang di upload sudah benar?",
@@ -876,7 +864,7 @@
                         openModal("modalShowKonfirmUw");
                         titleAction("titleShowKonfirmUw", "Konfirmasi Tabel UW");
                         var kode = getText("kode_import_uw");
-                        setAttr("showTbUw", "src", "{{ url('api/tehnik/soc/entry-soc/rpt_lihat_uw') }}" + "?nomor=" + kode);
+                        setAttr("#showTbUw", "src", "{{ url('api/tehnik/soc/entry-soc/rpt_lihat_uw') }}" + "?nomor=" + kode);
                         reSelGrid('e_uw', '{{ url("api/tehnik/soc/entry-soc/select-underwritingimport") }}');
                     },
                 );

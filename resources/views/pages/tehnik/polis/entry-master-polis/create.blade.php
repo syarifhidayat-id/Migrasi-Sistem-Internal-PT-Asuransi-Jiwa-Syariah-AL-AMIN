@@ -80,6 +80,7 @@
                         <div class="mb-5">
                             <label class="form-label">Pembayaran Kontribusi</label>
                             <select class="easyui-combobox" name="mpol_jenis_bayar" id="mpol_jenis_bayar" data-options="prompt:'Pilih kontribusi'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih kontribusi</option>
                                 <option value="0">Sekaligus</option>
                                 <option value="1">Per Tahun</option>
                                 <option value="2">Per Bulan</option>
@@ -91,6 +92,7 @@
                         <div class="mb-5">
                             <label class="form-label">Mekanisme</label>
                             <select class="easyui-combobox" name="mpol_mekanisme" id="mpol_mekanisme" data-options="prompt:'Pilih mekanisme'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih mekanisme</option>
                                 {{ optSql("SELECT mkm_kode kode, mkm_nama nama FROM emst.mst_mekanisme WHERE mkm_aktif!=1 ORDER BY 1", "kode", "nama") }}
                             </select>
                             <span class="text-danger error-text mpol_mekanisme_err"></span>
@@ -100,6 +102,7 @@
                         <div class="mb-5">
                             <label class="form-label">Manfaat Asuransi</label>
                             <select class="easyui-combobox" name="mpol_mft_kode" id="mpol_mft_kode" data-options="prompt:'Pilih manfaat asuransi', onSelect: function(rec){  }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih manfaat asuransi</option>
                                 {{ optSql("SELECT mft_kode kode, mft_nama nama FROM emst.mst_manfaat_plafond ORDER BY 1", "kode", "nama") }}
                             </select>
                             <span class="text-danger error-text mpol_mft_kode_err"></span>
@@ -109,6 +112,7 @@
                         <div class="mb-5">
                             <label class="form-label">Penutupan</label>
                             <select class="easyui-combobox" name="mpol_mekanisme2" id="mpol_mekanisme2" data-options="prompt:'Pilih penutupan'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih penutupan</option>
                                 <option value="1">KARYAWAN</option>
                                 <option value="2">NON KARYAWAN</option>
                             </select>
@@ -127,6 +131,7 @@
                         <div class="mb-5">
                             <label class="form-label">Jenis Pekerjaan</label>
                             <select class="easyui-combobox" name="mpol_jns_perusahaan" id="mpol_jns_perusahaan" data-options="prompt:'Pilih jenis pekerjaan'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih jenis pekerjaan</option>
                                 {{ optSql("SELECT mker_kode kode,mker_nama ket FROM emst.mst_pekerjaan ORDER BY 1", "kode", "ket") }}
                             </select>
                             <span class="text-danger error-text mpol_jns_perusahaan_err"></span>
@@ -153,6 +158,7 @@
                         <div class="mb-5">
                             <label class="form-label">Saluran Distribusi</label>
                             <select class="easyui-combobox" name="mpol_mslr_kode" id="mpol_mslr_kode" data-options="prompt:'Pilih saluran distribusi'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih saluran distribusi</option>
                                 {{ optSql("SELECT mslr_kode kode, mslr_ket ket FROM emst.mst_saluran_distribusi ORDER BY 1", "kode", "ket") }}
                             </select>
                             <input type="text" class="form-control form-control-solid" name="e_bersih" id="e_bersih" placeholder="e_bersih" />
@@ -198,6 +204,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Produk Induk Ojk</label>
                             <select class="easyui-combobox" name="mpol_mpojk_kode" id="mpol_mpojk_kode" data-options="prompt:'Pilih produk induk', onSelect: function(rec) { hidePesan('mpol_mpojk_kode') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih produk induk</option>
                                 {{ optSql("SELECT mpojk_kode kode, mpojk_nama ket FROM emst.mst_produk_ojk ORDER BY 1", "kode", "ket") }}
                             </select>
                             <span class="text-danger error-text mpol_mpojk_kode_err"></span>
@@ -207,6 +214,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Jenis Ausransi</label>
                             <select class="easyui-combobox" name="mpol_mja_kode" id="mpol_mja_kode" data-options="prompt:'Pilih jenis asuransi', onSelect: function(rec) { hidePesan('mpol_mja_kode') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih jenis asuransi</option>
                                 {{ optSql("SELECT mja_kode kode, mja_nama ket FROM emst.mst_jns_asu WHERE mja_kode IN (1,2) ORDER BY 1", "kode", "ket") }}
                             </select>
                             <span class="text-danger error-text mpol_mja_kode_err"></span>
@@ -216,6 +224,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Produk Segmen</label>
                             <select class="easyui-combobox" name="mpol_mgpp_kode" id="mpol_mgpp_kode" data-options="prompt:'Pilih produk segmen', onSelect: function(rec) { hidePesan('mpol_mgpp_kode') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih produk segmen</option>
                                 {{ optSql("SELECT mgpp_kode kode, mgpp_nama ket FROM emst.mst_grup_prodpolis ORDER BY 1", "kode", "ket") }}
                             </select>
                             <span class="text-danger error-text mpol_mgpp_kode_err"></span>
@@ -225,6 +234,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Kelompok Produk</label>
                             <select class="easyui-combobox" name="mpol_mgp_kode" id="mpol_mgp_kode" data-options="prompt:'Pilih kelompok produk', onSelect: function(rec) { hidePesan('mpol_mgp_kode') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih kelompok produk</option>
                                 {{ optSql("SELECT mgp_kode kode,mgp_nama ket FROM emst.mst_gruproduk ORDER BY 1", "kode", "ket") }}
                             </select>
                             <span class="text-danger error-text mpol_mgp_kode_err"></span>
@@ -234,6 +244,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Rekan Segmen</label>
                             <select class="easyui-combobox" name="mpol_mgs_kode" id="mpol_mgs_kode" data-options="prompt:'Pilih rekan segmen', onSelect: function(rec) { hidePesan('mpol_mgs_kode') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih rekan segmen</option>
                                 {{ optSql("SELECT mgs_kode kode,mgs_nama ket FROM emst.mst_grupsegmen ORDER BY 1", "kode", "ket") }}
                             </select>
                             <span class="text-danger error-text mpol_mgs_kode_err"></span>
@@ -243,6 +254,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Lini Usaha</label>
                             <select class="easyui-combobox" name="mpol_mlu_kode" id="mpol_mlu_kode" data-options="prompt:'Pilih lini usaha', onSelect: function(rec) { hidePesan('mpol_mlu_kode') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih lini usaha</option>
                                 {{ optSql("SELECT mlu_kode kode,mlu_nama ket FROM emst.mst_liniusaha ORDER BY 1", "kode", "ket") }}
                             </select>
                             <span class="text-danger error-text mpol_mlu_kode_err"></span>
@@ -252,6 +264,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Golongan</label>
                             <select class="easyui-combobox" name="mpol_mgol_kode" id="mpol_mgol_kode" data-options="prompt:'Pilih golongan', onSelect: function(rec) { hidePesan('mpol_mgol_kode') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih golongan</option>
                                 {{ optSql("SELECT mgol_kode kode,mgol_nama ket FROM emst.mst_golongan ORDER BY 1", "kode", "ket") }}
                             </select>
                             <span class="text-danger error-text mpol_mgol_kode_err"></span>
@@ -261,6 +274,7 @@
                         <div class="mb-5">
                             <label class="form-label">Status Aktif Polis</label>
                             <select class="easyui-combobox" name="mpol_aktif" id="mpol_aktif" data-options="prompt:'Pilih status', onSelect: function(rec){  }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih status</option>
                                 <option value="0">SUSPEND</option>
                                 <option value="1">AKTIF</option>
                                 <option value="2">MATI</option>
@@ -272,6 +286,7 @@
                         <div class="mb-5">
                             <label class="form-label">Online Polis Cabang</label>
                             <select class="easyui-combobox" name="mpol_online" id="mpol_online" data-options="prompt:'Pilih online cabang'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih online cabang</option>
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
                             </select>
@@ -282,6 +297,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Online Polis Rekan</label>
                             <select class="easyui-combobox" name="mpol_online_rekan" id="mpol_online_rekan" data-options="prompt:'Pilih online rekan', onSelect: function(rec) { hidePesan('mpol_online_rekan') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih online rekan</option>
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
                             </select>
@@ -298,7 +314,8 @@
                     <div class="col-md-2">
                         <div class="mb-5">
                             <label class="required form-label">Open Polis</label>
-                            <select class="easyui-combobox" name="mpol_openpolis" id="mpol_openpolis" data-options="prompt:'Pilih online rekan', onSelect: function(rec){ cekopenpolis(); }" style="width: 100%; height: 38px;">
+                            <select class="easyui-combobox" name="mpol_openpolis" id="mpol_openpolis" data-options="prompt:'Pilih open polis', onSelect: function(rec){ cekopenpolis(); }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih open polis</option>
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
                             </select>
@@ -361,6 +378,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Cetak Peserta Pengajuan</label>
                             <select class="easyui-combobox" name="mpol_jenis_cetak" id="mpol_jenis_cetak" data-options="prompt:'Pilih cetak peserta pengajuan', onSelect: function(rec) { hidePesan('mpol_jenis_cetak') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih cetak peserta pengajuan</option>
                                 {{ optSql("SELECT mpc_kode kode,mpc_nama ket FROM eopr.mst_polis_cetakan where mpc_tipe=0 ORDER BY 1", "kode", "ket") }}
                             </select>
                             <span class="text-danger error-text mpol_jenis_cetak_err"></span>
@@ -370,6 +388,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Cetak Peserta Lunas</label>
                             <select class="easyui-combobox" name="mpol_cetak_lunas" id="mpol_cetak_lunas" data-options="prompt:'Pilih cetak peserta lunas', onSelect: function(rec) { hidePesan('mpol_cetak_lunas') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih cetak peserta lunas</option>
                                 {{ optSql("SELECT mpc_kode kode,mpc_nama ket FROM eopr.mst_polis_cetakan where mpc_tipe=1 UNION ALL SELECT mpc_kode kode,mpc_nama ket FROM eopr.mst_polis_cetakan WHERE mpc_kode=16 ORDER BY 1", "kode", "ket") }}
                             </select>
                             <span class="text-danger error-text mpol_cetak_lunas_err"></span>
@@ -410,6 +429,7 @@
                         <div class="mb-5">
                             <label class="form-label">Buat Endors Soc Baru</label>
                             <select class="easyui-combobox" name="mpol_ins_soc" id="mpol_ins_soc" data-options="prompt:'Pilih endors baru'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih endors baru</option>
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
                             </select>
@@ -420,6 +440,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Pemasaran Group Usaha</label>
                             <select class="easyui-combobox" name="mpol_pemgroupusaha" id="mpol_pemgroupusaha" data-options="prompt:'Pilih pemasaran group usaha', onSelect: function(rec) { hidePesan('mpol_pemgroupusaha') }" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih pemasaran group usaha</option>
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
                             </select>
@@ -525,6 +546,7 @@
                             <div class="input-group input-group-solid flex-nowrap">
                                 <div class="overflow-hidden flex-grow-1">
                                     <select class="easyui-combobox" name="mpol_mut_kode" id="mpol_mut_kode" data-options="prompt:'Pilih up tambahan'" style="width: 100%; height: 38px;">
+                                        <option selected disabled>Pilih up tambahan</option>
                                         <option value="0">0</option>
                                         <option value="2.25">2.25</option>
                                     </select>
@@ -540,6 +562,7 @@
                             <div class="input-group input-group-solid flex-nowrap">
                                 <div class="overflow-hidden flex-grow-1">
                                     <select class="easyui-combobox" name="mpol_mujhrf_kode" id="mpol_mujhrf_kode" data-options="prompt:'Pilih ujrah referal'" style="width: 100%; height: 38px;">
+                                        <option selected disabled>Pilih ujrah referal</option>
                                         {{ optSql("SELECT mujhrf_tampil tampil, mujhrf_persen persen FROM emst.mst_ujrah_referal ORDER BY 1", "tampil", "persen") }}
                                     </select>
                                 </div>
@@ -552,6 +575,7 @@
                         <div class="mb-5">
                             <label class="form-label">Stnc Pelaporan</label>
                             <select class="easyui-combobox" name="mpol_lapor_stnc" id="mpol_lapor_stnc" data-options="prompt:'Pilih stnc pelaporan'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih stnc pelaporan</option>
                                 {{ optSql("SELECT mlst_kode kode, mlst_hari hari FROM emst.mst_lapor_stnc ORDER BY 1", "kode", "hari") }}
                             </select>
                             <span class="text-danger error-text mpol_lapor_stnc_err"></span>
@@ -562,7 +586,8 @@
                             <label class="form-label">Ujrah Treaty Reas</label>
                             <div class="input-group input-group-solid flex-nowrap">
                                 <div class="overflow-hidden flex-grow-1">
-                                    <select class="easyui-combobox" name="mpol_ujroh_treaty" id="mpol_ujroh_treaty" data-options="prompt:'Pilih stnc pelaporan'" style="width: 100%; height: 38px;">
+                                    <select class="easyui-combobox" name="mpol_ujroh_treaty" id="mpol_ujroh_treaty" data-options="prompt:'Pilih ujrah treaty'" style="width: 100%; height: 38px;">
+                                        <option selected disabled>Pilih ujrah treaty</option>
                                         {{ optSql("SELECT mujh_tampil tampil, mujh_persen persen FROM emst.mst_ujroh WHERE mujh_tipe='Ujroh' ORDER BY 1", "persen", "tampil") }}
                                     </select>
                                 </div>
@@ -575,6 +600,7 @@
                         <div class="mb-5">
                             <label class="form-label">Qty Dok. Klaim</label>
                             <select class="easyui-combobox" name="mpol_klaim_doc" id="mpol_klaim_doc" data-options="prompt:'Pilih qty dok. klaim'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Pilih qty dok. klaim</option>
                                 <option value="8">8</option>
                                 <option value="4">4</option>
                                 <option value="6">6</option>
@@ -809,6 +835,7 @@
                         <div class="mb-5">
                             <label class="form-label">Penanggung Jawab Fee</label>
                             <select class="easyui-combobox" name="mpol_pajakfee" id="mpol_pajakfee" data-options="prompt:'Penanggung jawab fee'" style="width: 100%; height: 38px;">
+                                <option selected disabled>Penanggung jawab fee</option>
                                 <option value="0">-</option>
                                 <option value="1">PPN & PPH TIDAK POTONG/NAMBAH KONTRIBUSI</option>
                                 <option value="2">REKANAN</option>
@@ -825,6 +852,7 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="easyui-combobox" name="mpol_handlingfee" id="mpol_handlingfee" data-options="prompt:'Fee ppn'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Fee ppn</option>
                                                 {{ optSql("SELECT mmfee_persen persen,mmfee_tampil tampil FROM emst.mst_manajemen_fee ORDER BY 1", "persen", "tampil") }}
                                             </select>
                                         </div>
@@ -839,6 +867,7 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="easyui-combobox" name="mpol_pajakfee_persen" id="mpol_pajakfee_persen" data-options="prompt:'Fee pph 23'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Fee pph 23</option>
                                                 {{ optSql("SELECT mmfee_persen persen,mmfee_tampil tampil FROM emst.mst_manajemen_fee ORDER BY 1", "persen", "tampil") }}
                                             </select>
                                         </div>
@@ -857,6 +886,7 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="easyui-combobox" name="mpol_mujh_persen" id="mpol_mujh_persen" data-options="prompt:'Ujrah'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Ujrah</option>
                                                 {{ optSql("SELECT mujh_tampil tampil, mujh_persen persen FROM emst.mst_ujroh where mujh_tipe='Ujroh' ORDER BY 1", "tampil", "persen") }}
                                             </select>
                                         </div>
@@ -871,6 +901,7 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="easyui-combobox" name="mpol_mmfe_persen" id="mpol_mmfe_persen" data-options="prompt:'Managemen fee'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Managemen fee</option>
                                                 {{ optSql("SELECT mmfee_persen persen,mmfee_tampil tampil FROM emst.mst_manajemen_fee ORDER BY 1", "persen", "tampil") }}
                                             </select>
                                         </div>
@@ -885,6 +916,7 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="easyui-combobox" name="mpol_overreding" id="mpol_overreding" data-options="prompt:'Overreding'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Overreding</option>
                                                 <option value="0">0</option>
                                                 <option value="2.5">2.5</option>
                                             </select>
@@ -904,6 +936,7 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="easyui-combobox" name="mpol_mkom_persen" id="mpol_mkom_persen" data-options="prompt:'Komisi tidak potong'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Komisi tidak potong</option>
                                                 {{ optSql("SELECT mkom_persen persen,mkom_tipe tipe FROM emst.mst_komisi ORDER BY 1", "persen", "tipe") }}
                                             </select>
                                         </div>
@@ -918,6 +951,7 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="easyui-combobox" name="mpol_referal" id="mpol_referal" data-options="prompt:'Referal'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Referal</option>
                                                 {{ optSql("SELECT mkom_persen persen,mkom_tipe tipe FROM emst.mst_komisi ORDER BY 1", "persen", "tipe") }}
                                             </select>
                                         </div>
@@ -932,6 +966,7 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="easyui-combobox" name="mpol_maintenance" id="mpol_maintenance" data-options="prompt:'Maintenance'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Maintenance</option>
                                                 {{ optSql("SELECT mdr_persen persen,mdr_tipe tipe FROM emst.mst_discount_rate ORDER BY 1", "persen", "tipe") }}
                                             </select>
                                         </div>
@@ -950,6 +985,7 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="easyui-combobox" name="mpol_mfee_persen" id="mpol_mfee_persen" data-options="prompt:'Feebase Tidak Potong'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Feebase Tidak Potong</option>
                                                 {{ optSql("SELECT mfee_persen persen,mfee_tipe tipe FROM emst.mst_fee ORDER BY 1", "persen", "tipe") }}
                                             </select>
                                         </div>
@@ -964,6 +1000,7 @@
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
                                             <select class="easyui-combobox" name="mpol_mdr_kode" id="mpol_mdr_kode" data-options="prompt:'Feebase Potong'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Feebase Potong</option>
                                                 {{ optSql("SELECT mdr_persen persen,mdr_tipe tipe FROM emst.mst_discount_rate ORDER BY 1", "persen", "tipe") }}
                                             </select>
                                         </div>
@@ -977,7 +1014,8 @@
                                     <label class="form-label">Komisi Potong Langsung</label>
                                     <div class="input-group input-group-solid flex-nowrap">
                                         <div class="overflow-hidden flex-grow-1">
-                                            <select class="easyui-combobox" name="mpol_mkomdisc_persen" id="mpol_mkomdisc_persen" data-options="prompt:'Feebase Potong'" style="width: 100%; height: 38px;">
+                                            <select class="easyui-combobox" name="mpol_mkomdisc_persen" id="mpol_mkomdisc_persen" data-options="prompt:'Komisi potong langsung'" style="width: 100%; height: 38px;">
+                                                <option selected disabled>Komisi potong langsung</option>
                                                 {{ optSql("SELECT mmfee_persen persen,mmfee_tampil tampil FROM emst.mst_manajemen_fee ORDER BY 1", "persen", "tampil") }}
                                             </select>
                                         </div>
@@ -992,7 +1030,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Berlaku Surplus U/W</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_surplus" id="mpol_surplus" data-placeholder="Pilih berlaku surplus u/w" data-allow-clear="true">
-                                <option></option>
+                                <option selected disabled>Pilih berlaku surplus u/w</option>
                                 <option value="0">0</option>
                                 <option value="1">30/40/30</option>
                                 <option value="2">20/30/50</option>
@@ -1015,7 +1053,7 @@
                         <div class="mb-5">
                             <label class="form-label">Virtual Account</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_va" id="mpol_va" data-placeholder="Pilih vistual account" data-allow-clear="true">
-                                <option></option>
+                                <option selected disabled>Pilih</option>
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
                             </select>
@@ -1045,7 +1083,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Pembayaran Online</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_payonline" id="mpol_payonline" data-placeholder="Pilih" data-allow-clear="true">
-                                <option></option>
+                                <option selected disabled>Pilih</option>
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
                             </select>
@@ -1075,7 +1113,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Pembayaran Agent</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_agent" id="mpol_agent" data-placeholder="Pilih" data-allow-clear="true">
-                                <option></option>
+                                <option selected disabled>Pilih</option>
                                 <option value="0">NO</option>
                                 <option value="1">YES</option>
                             </select>
@@ -1105,7 +1143,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Keterangan Refund</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_msrf_kode" id="mpol_msrf_kode" data-placeholder="Pilih keterangan" data-allow-clear="true">
-                                <option></option>
+                                <option selected disabled>Pilih keterangan</option>
                                 <option value="0">SISA DANA TABARRU YANG BELUM DIJALANI</option>
                                 <option value="1">TIDAK ADA REFUND</option>
                             </select>
@@ -1127,7 +1165,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Jenis Login Web</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_jenis_login" id="mpol_jenis_login" data-placeholder="Pilih jenis login" data-allow-clear="true">
-                                <option></option>
+                                <option selected disabled>Pilih jenis login</option>
                                 <option value="0">TIDAK ADA AKSES</option>
                                 <option value="1">MENU SISWA</option>
                                 <option value="2">MENU MAHASISWA</option>
@@ -1141,7 +1179,7 @@
                         <div class="mb-5">
                             <label class="required form-label">Persetujuan Teknik Klaim</label>
                             <select class="form-select form-select-solid" data-control="select2" name="mpol_acc_tek" id="mpol_acc_tek" data-placeholder="Pilih persetujuan" data-allow-clear="true">
-                                <option></option>
+                                <option selected disabled>Pilih persetujuan</option>
                                 <option value="0">Tampil</option>
                                 <option value="1">Tidak Tampil</option>
                             </select>
@@ -1176,7 +1214,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-5">
                                         <select class="form-select form-select-solid" data-control="select2" name="mpol_mprov_kode" id="mpol_mprov_kode" data-placeholder="Pilih berlaku" data-allow-clear="true">
-                                            <option></option>
+                                            <option selected disabled>Pilih berlaku</option>
                                             <option value="1">Seluruh Provinsi</option>
                                             <option value="0">Provinsi Tertentu</option></select>
                                         </select>
@@ -1226,7 +1264,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-5">
                                         <select class="form-select form-select-solid" data-control="select2" name="mpol_jns_tarif" id="mpol_jns_tarif" data-placeholder="Pilih">
-                                            <option></option>
+                                            <option selected disabled>Pilih</option>
                                             <option value="0">PER USIA</option>
                                             <option value="1">PER MASA</option>
                                         </select>
@@ -1255,7 +1293,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-5">
                                         <select class="form-select form-select-solid" data-control="select2" name="mpol_tipe_uw" id="mpol_tipe_uw" data-placeholder="Pilih">
-                                            <option></option>
+                                            <option selected disabled>Pilih</option>
                                             <option value="0">Usia</option>
                                             <option value="1">X+N</option>
                                         </select>
@@ -1516,7 +1554,7 @@
                 if (kode !== "" && kode !== null) {
                     openModal('modalLihatTarif');
                     titleAction('titleLihatTarif', 'Table Tarif');
-                    setAttr("tbTarif", "src", "{{ url('tehnik/polis/entry-master-polis/rpt_lihattarif') }}" + "?nomor=" + kode);
+                    setAttr("#tbTarif", "src", "{{ url('tehnik/polis/entry-master-polis/rpt_lihattarif') }}" + "?nomor=" + kode);
                 } else {
                     message('error', 'Oops...', 'Pilih dulu ketentuan tarif!');
                 }
@@ -1527,7 +1565,7 @@
                 if (kode !== "" && kode !== null) {
                     openModal('modalLihatUw');
                     titleAction('titleLihatUw', 'Table Underwriting');
-                    setAttr("tbUw", "src", "{{ url('tehnik/polis/entry-master-polis/rpt_lihat_uw') }}" + "?nomor=" + kode);
+                    setAttr("#tbUw", "src", "{{ url('tehnik/polis/entry-master-polis/rpt_lihat_uw') }}" + "?nomor=" + kode);
                 } else {
                     message('error', 'Oops...', 'Pilih dulu ketentuan uw!');
                 }

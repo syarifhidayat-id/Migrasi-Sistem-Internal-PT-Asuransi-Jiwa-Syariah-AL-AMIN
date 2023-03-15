@@ -16,72 +16,60 @@
     <meta property="og:url" content="https://keenthemes.com/metronic" />
     <meta property="og:site_name" content="Keenthemes | Metronic" />
     <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-    <link rel="shortcut icon" href="{{ asset('assets/media/logos/logo-new.png') }}" />
-    <link rel="icon" type="image/png" href="{{ asset('assets/media/logos/logo-new.png') }}"/>
+    <link rel="shortcut icon" href="{{ asset('ww.css/css.admin/assets/media/logos/logo-new.png') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('ww.css/css.admin/assets/media/logos/logo-new.png') }}"/>
 
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('dist/css/preload.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('ww.css/css.login/vendor/bootstrap-4.5.3/css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('ww.css/css.login/icons/material-design-icons/css/mdi.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('ww.css/css.admin/vendor/fonts/font-awesome-4.7.0/css/font-awesome.css') }}" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('ww.css/css.login/css/latform-style-7.min.css') }}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('ww.css/css.admin/dist/css/preload.min.css') }}" />
 
     @yield('style')
     @livewireStyles
 </head>
 
-<body class="bg-body">
+<body id="kt_body" class="bg-body">
 
     @include('layouts.preload')
 
-        <div class="d-flex flex-column flex-root">
-
-            <div class="d-flex flex-column flex-lg-row flex-column-fluid">
-
-                <div class="d-flex flex-column flex-lg-row-auto w-xl-600px positon-xl-relative" style="background-color: #171f30">
-
-                    <div class="d-flex flex-column position-xl-fixed top-0 bottom-0 w-xl-600px scroll-y">
-
-                        <div class="d-flex flex-row-fluid flex-column text-center p-10 pt-lg-20">
-
-                            <a href="/" class="py-9 mb-5">
-                                <img alt="Logo" src="{{ asset('assets/media/logos/logo-new.png') }}" class="h-60px" />
-                            </a>
-
-                            <h1 class="fw-bolder fs-2qx pb-5 pb-md-10" style="color: #fff;">Welcome to Al-Amin</h1>
-
-                            <p style="color: #fff;">Selamat datang di Official Website Online kami. Website ini berfungsi untuk melayani Semua Rekanan, Pemegang polis dan Kantor Cabang Pemasaran <br>PT. Asuransi Jiwa Syariah AL AMIN, adapun kemudahan yang di berikan dengan Website ini antara lain :  Kemudahan Pengajuan Peserta Asuransi, Pendaftaran Agen Asuransi, Pengajuan Klaim, Download Polis Asuransi,Tanya/Jawab tentang Produk Asuransi, Laporan Kepesertaan Asuransi dan Lain-lain. Jika ingin mendapatkan informasi lebih tentang kami, silahkan Email kami ke  alamat tanya@alamin.co.id atau Whatsapp di nomor 081-222-999-109.</p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="d-flex flex-column flex-lg-row-fluid py-10">
-                    <div class="d-flex flex-center flex-column flex-column-fluid">
-                        <div class="w-lg-500px p-10 p-lg-15 mx-auto" id="kt_body">
+    <div class="form-shape"></div>
+    <div class="form-wrapper">
+        <div class="container">
+            <div class="card">
+                <div class="row no-gutters">
+                    <div class="col">
+                        <div class="row">
                             @yield('content')
                         </div>
                     </div>
-
-                    <div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
-                        <div class="d-flex flex-center fw-bold fs-6">
-                            <a href="#" class="text-muted text-hover-primary px-2" target="_blank">About</a>
-                            <a href="#" class="text-muted text-hover-primary px-2" target="_blank">Support</a>
-                            <a href="#" class="text-muted text-hover-primary px-2" target="_blank">Purchase</a>
+                    <div class="col d-none d-lg-flex" style="background: url({{ asset('ww.css/css.login/images/cover-login.png') }})">
+                        <div class="logo">
+                            <img src="{{ asset('ww.css/css.login/images/logo-alm.png') }}" alt="logo">
                         </div>
+                        <div>
+                            <h3 class="font-weight-bold">Perlindungan yang Amanah dan Terpercaya</h3>
+                            <p class="my-5" align="justify"><b>PT. Asuransi Jiwa Syariah AL AMIN</b> merupakan perusahaan asuransi jiwa murni syariah yang menaruh perhatian bagi perkembangan perasuransian di Indonesia khususnya perkembangan dan kebutuhan masyarakat untuk dapat bermuamalah berdasarkan syariah Islam. Pemilihan nama Perusahaan didasarkan atas pertimbangan dan pengetahuan kami mengenai karakteristik industri perasuransian sebagai "bisnis kepercayaan". Komitmen kami untuk memenuhi perjanjian perlindungan asuransi syariah kepada Peserta Yang Diasuransikan dan/atau Pemegang Polis telah menjadi filosofi kami untuk berpegang teguh kepada prinsip-prinsip syariah Islam dan prinsip-prinsp asuransi terutama prinsip utmost good faith. Dengan komitmen kami yang dilandasi oleh itikad baik untuk menjalankan fungsinya dan kegiatan usaha secara sehat sesuai dengan ketentuan yang berlaku telah menjadi konsep dasar yang melatar belakangi nama Perusahaan, yaitu "AL AMIN" yang berarti "Terpercaya".</p>
+                        </div>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <a href="#">Privacy Policy</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#">Terms & Conditions</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-    {{-- </div> --}}
-    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
-    <script src="{{ asset('dist/js/preloader.js') }}"></script>
-    <script src="{{ asset('dist/js/jquery-config.min.js') }}"></script>
-
+    <script src="{{ asset('ww.css/css.login/vendor/jquery.min.js') }}"></script>
+    <script src="{{ asset('ww.css/css.login/vendor/bootstrap-4.5.3/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('ww.css/css.login/js/latform.min.js') }}"></script>
+    <script src="{{ asset('ww.css/css.admin/dist/js/preloader.js') }}"></script>
     @yield('script')
     @livewireScripts
 </body>

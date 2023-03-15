@@ -43,7 +43,7 @@
                                 <div class="mb-5">
                                     <label class="required form-label">Menu Main</label>
                                     <select class="form-select form-select-solid" name="wmn_key" id="wmn_key" data-dropdown-parent="#modalMenu" data-placeholder="ex. MAIN" data-allow-clear="true">
-                                        {{-- <option></option> --}}
+                                        <option></option>
                                     </select>
                                     <span class="text-danger error-text wmn_key_err"></span><br>
                                     <label class="required form-label">Isi MAIN jika menu utama</label>

@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Securimage;
+
+// use SimpleCaptcha\Builder;
+// use SimpleCaptcha\Builder;
+// use SimpleCaptcha\Helpers\Mime;
 
 class LoginController extends Controller
 {
@@ -66,13 +71,13 @@ class LoginController extends Controller
         $validasi = Validator::make($request->all(), [
             'email' => 'required',
             'password_n' => 'required',
-            'captcha' => 'required|captcha',
+            'ct_captcha' => 'required|captcha',
         ],
         [
             'email.required'=>'Username harus terisi!',
             'password_n.required'=>'Password harus terisi!',
-            'captcha.required'=>'Captcha harus terisi!',
-            'captcha.captcha'=>'Jawaban kamu salah!',
+            'ct_captcha.required'=>'Captcha harus terisi!',
+            'ct_captcha.captcha'=>'Jawaban anda salah!',
         ]);
 
         if ($validasi->fails()) {
@@ -80,20 +85,19 @@ class LoginController extends Controller
         } else {
             $validasi = $request->except(
                 '_token',
-                'captcha'
+                'ct_captcha'
             );
             if (Auth::attempt($validasi)) {
-                // return redirect()->intended(RouteServiceProvider::HOME);
                 return redirect()->intended('dashboard');
             } else {
                 return back()->withErrors([
                     'email' => 'Username anda salah, silahkan cek kembali!',
                     'password_n' => 'Password anda salah, silahkan cek kembali!',
-                    'captcha' => 'Jawaban kamu salah!',
+                    'ct_captcha' => 'Jawaban anda salah!',
                 ])->onlyInput(
                     'email',
                     'password_n',
-                    'captcha',
+                    'ct_captcha',
                 );
             }
         }
@@ -102,7 +106,7 @@ class LoginController extends Controller
     public function reloadCaptha()
     {
         return response()->json([
-            'captcha' => captcha_img('flat')
+            'captcha' => captcha_src('flat')
         ]);
     }
 

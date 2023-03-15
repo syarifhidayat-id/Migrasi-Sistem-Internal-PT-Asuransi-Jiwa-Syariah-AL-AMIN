@@ -1,72 +1,86 @@
 @extends('layouts.app')
 
 @section('content')
-<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" method="POST" action="{{ route('signin.store') }}">
-    @csrf
-
-    <div class="text-center mb-10">
-        <h1 class="text-dark mb-3">{{ __('Sign In to Al-Amin') }}</h1>
-        {{-- <div class="text-gray-400 fw-bold fs-4">New Here?
-        <a href="#" class="link-primary fw-bolder">{{ __('Create an Account') }}</a></div> --}}
+<div class="col-md-10 offset-md-1">
+    <div class="ltf-block-logo d-block d-lg-none text-center text-lg-left">
+        <img src="{{ asset('ww.css/css.login/images/logo-alm.png') }}" alt="logo">
     </div>
-
-    <div class="fv-row mb-10">
-        <label class="form-label fs-6 fw-bolder text-dark">{{ __('Username') }}</label>
-        <input class="form-control form-control-lg form-control-solid @error('email') is-invalid @enderror" type="text" name="email" value="{{ old('email') }}" placeholder="Masukkan username" required autocomplete="email" autofocus />
-
-        @error('email')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
+    <div class="my-5 text-center text-lg-left">
+        <h3 class="font-weight-bold text-center">Sign In</h3>
+        <p class="text-muted text-center">Sign in to PT. Asuransi Jiwa Syariah Al-Amin</p>
     </div>
-
-    <div class="fv-row mb-10">
-        <div class="d-flex flex-stack mb-2">
-            <label class="form-label fw-bolder text-dark fs-6 mb-0">{{ __('Password') }}</label>
-            @if (Route::has('password_n.request'))
-                {{-- <a href="{{ route('password.request') }}" class="link-primary fs-6 fw-bolder">{{ __('Forgot Password ?') }}</a> --}}
-            @endif
-        </div>
-        <input class="form-control form-control-lg form-control-solid @error('password_n') is-invalid @enderror" type="password" name="password_n" placeholder="Masukkan password" required autocomplete="password_n" />
-
-        @error('password_n')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-    </div>
-
-    <div class="fv-row mb-20">
-        <label class="form-label fs-6 fw-bolder text-dark">{{ __('Captcha') }}</label>
-        <div class="input-group mb-5">
-            <input class="form-control form-control-solid form-control-lg @error('captcha') is-invalid @enderror" type="text" name="captcha" id="captcha" maxlength="4" placeholder="Masukkan captcha" required autocomplete="captcha" autofocus />
-            <a id="reload" title="Reload Captcha"><span>{!! captcha_img('flat') !!}</span></a>
-
-            @error('captcha')
-                <span class="invalid-feedback" role="alert">
+    <form class="" action="{{ route('signin.store') }}" method="POST">
+        @csrf
+        <div class="form-group">
+            <div class="form-icon-wrapper">
+                <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ old('email') }}" placeholder="Enter username" autofocus>
+                <i class="form-icon-left mdi mdi-account"></i>
+            </div>
+            @error('email')
+                <span class="text-danger" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
         </div>
-    </div>
 
-    <div class="text-center">
-        <button type="submit" id="kt_sign_in_submit" class="btn btn-lg btn-primary w-100 mb-5">
-            <span class="indicator-label">{{ __('Login') }}</span>
-            <span class="indicator-progress">{{ __('Please wait...') }}
-            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-        </button>
+        <div class="form-group">
+            <div class="form-icon-wrapper">
+                <input type="password" class="form-control @error('password_n') is-invalid @enderror" name="password_n" id="password_n" placeholder="Enter password">
+                <i class="form-icon-left mdi mdi-lock"></i>
+                <a href="#" class="form-icon-right password-show-hide"
+                title="Hide or show password">
+                    <i class="mdi mdi-eye"></i>
+                </a>
+            </div>
+            @error('password_n')
+                <span class="text-danger" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+        <div class="row ">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="text-center">
+                        <a href="#" id="reload" title="Reload Captcha">
+                            <img src="{!! captcha_src('flat') !!}" alt="gambar" class="captcha-gbr" id="captcha_image" style="border-radius: 10px;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-icon-wrapper">
+                        <input type="text" class="form-control @error('ct_captcha') is-invalid @enderror" name="ct_captcha" id="ct_captcha" maxlength="4" placeholder="Enter captcha" autofocus>
+                        <i class="form-icon-left mdi mdi-history"></i>
+                    </div>
+                    @error('ct_captcha')
+                        <span class="text-danger" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-block mb-4">Sign In</button>
+        </div>
+    </form>
+    <div class="text-center mt-5">
+        <a href="#">Untuk Aktivasi User Web Email alamin.co.id <i class="fa fa-long-arrow-right"></i></a>
     </div>
-</form>
+</div>
 @endsection
 
 @section('script')
     <script>
-        tombol('click', 'reload', function() {
-            lodJson("GET", "{{ url('api/reload-captcha') }}", function (data) {
-                setHtml("#reload span", data.captcha);
+        $('body #reload').on('click', function(e) {
+            $.get("{{ url('api/reload-captcha') }}", function (data) {
+                $('#captcha_image').attr('src', data.captcha);
             });
+            return false;
         });
     </script>
 @endsection
