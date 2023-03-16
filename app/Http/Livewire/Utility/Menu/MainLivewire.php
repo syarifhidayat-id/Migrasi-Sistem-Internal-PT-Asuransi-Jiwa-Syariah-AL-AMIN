@@ -46,6 +46,12 @@ class MainLivewire extends Component
         // ORDER BY wmn_urut ASC";
         // $menulist = __dbAll($cmd);
 
+        // $cmd2 = "
+        // SELECT *
+        // FROM web_conf.web_menu
+        // WHERE wmn_key=wmn_kode";
+        // $child = __dbAll($cmd2);
+
         return view('livewire.utility.menu.main-livewire')->with([
             // 'menulist' => $this->loadData ? $menulist : [],
             'menulist' => $menulist,
