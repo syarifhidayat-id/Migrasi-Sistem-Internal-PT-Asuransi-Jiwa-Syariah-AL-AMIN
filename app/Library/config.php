@@ -33,7 +33,7 @@ function __getnx($num)
     return eval(base64_decode('CiBnb3RvIFJVYWp5OyBOWGFnazogZm9yICgkaSA9IDA7ICRpIDwgKCRsZW5ndGggPSAkbnVtKTsgJGkrKykgeyAka2V5IC49ICRjaGFyW3JhbmQoMCwgJGNoYXJMZW5ndGggLSAxKV07IH0gZ290byBsME1RazsgUk5Rdzk6ICRrZXkgPSAnJzsgZ290byBOWGFnazsgUlVhank6ICRjaGFyID0gIlx4MzBcNjFceDMyXDYzXHgzNFw2NVx4MzZcNjdcNzBceDM5IjsgZ290byBtNGxmbzsgbTRsZm86ICRjaGFyTGVuZ3RoID0gc3RybGVuKCRjaGFyKTsgZ290byBSTlF3OTsgbDBNUWs6IHJldHVybiAka2V5OyBnb3RvIHZxVENVOyB2cVRDVTog'));
 }
 
-function __get_no($cabang,$modul,$tgl,$jenis,$tambah)
+function __get_no($cabang, $modul, $tgl, $jenis, $tambah)
 {
     return eval(base64_decode('CiBnb3RvIHpwMDBnOyBRV3BrOTogJHJldCA9ICRyWyJcMTYwXHg2YiJdOyBnb3RvIHVYb3BUOyBMYzZaUDogJHIgPSBfX2RiUm93KCRjbWQpOyBnb3RvIFFXcGs5OyBxSXk1OTogaWYgKF9fcmlnaHQoJHRnbCwgMikgPT0gIlw1MFx4MjkiKSB7IH0gZWxzZSB7ICR0Z2wgPSAiXDQ3IiAuICR0Z2wgLiAiXDQ3IjsgfSBnb3RvIEVZaEMxOyB6cDAwZzogJHJldCA9ICcnOyBnb3RvIHFJeTU5OyBFWWhDMTogJGNtZCA9ICJceDUzXDEwNVwxMTRcMTA1XDEwM1x4NTRceDIwXHg2NVx4NzNcMTQ1XDE2NFx4MmVceDY2XDEzN1x4NjdceDY1XDE2NFwxMzdceDZlXDE1N1x4MjhceDI3eyRjYWJhbmd9XHgyN1x4MmNceDI3eyRtb2R1bH1ceDI3XHgyY3skdGdsfVx4MmNceDI3eyRqZW5pc31ceDI3XHgyY1w0N3skdGFtYmFofVw0N1w1MVx4MjBcMTYwXHg2YiI7IGdvdG8gTGM2WlA7IHVYb3BUOiByZXR1cm4gJHJldDsgZ290byBHcFg0RzsgR3BYNEc6IA=='));
 }
@@ -58,7 +58,8 @@ function __getHak($array)
     return eval(base64_decode('CiBnb3RvIHJuU0t1OyBTMFU2QjogJHJlcyA9IF9fZGJSb3coJGNtZCk7IGdvdG8gRGNIeW87IERjSHlvOiByZXR1cm4gJHJlc1skYXJyYXldOyBnb3RvIEl2Tnl3OyByblNLdTogJGNtZCA9ICJceGFcNDBceDIwXHgyMFx4MjBceDUzXHg0NVwxMTRceDQ1XDEwM1x4NTRcNDBceDJhXHhhXDQwXHgyMFw0MFw0MFwxMDZcMTIyXDExN1wxMTVcNDBcMTY3XDE0NVx4NjJceDVmXDE0M1wxNTdcMTU2XHg2Nlx4MmVceDc1XHg3M1wxNDVceDcyXHg1Zlx4NjFceDYzXDE0M1x4NmZcMTY1XDE1Nlx4NzRcMTYzXDEyXDQwXHgyMFx4MjBceDIwXDExNFwxMDVcMTA2XDEyNFw0MFx4NGFcMTE3XHg0OVx4NGVcNDBcMTQ1XHg3M1wxNDRcMTU1XDU2XDE2M1x4NjRcMTU1XDEzN1wxNTJcMTQxXHg2Mlx4NjFceDc0XDE0MVwxNTZcNDBcMTUyXHg2MVx4NjJceDIwXDExN1x4NGVceDIwXHg2YVx4NjFceDYyXHg2MVwxNjRcMTQxXHg2ZVx4M2RcMTYzXHg2YVx4NjFceDYyXDEzN1wxNTNcMTU3XDE0NFx4NjVcMTJceDIwXHgyMFw0MFx4MjBceDU3XHg0OFx4NDVceDUyXDEwNVx4MjBceDMxXHgzZFx4MzFcMTJceDIwXDQwXDQwXDQwXDEwMVx4NGVceDQ0XDQwXDE0NVwxNTVceDYxXHg2OVwxNTRcNzVcNDciIC4gX19nZXRVc2VyKCkgLiAiXDQ3XDEyXDQwXHgyMFx4MjBcNDBcMTAxXDExNlwxMDRceDIwXHg3M1x4NmFceDYxXHg2MlwxMzdcMTUzXHg2Zlx4NjRceDY1XDc1XHgyNyIgLiBfX2dldEphYigpIC4gIlx4MjdceGFceDIwXDQwXHgyMFx4MjBcMTE3XHg1MlwxMDRceDQ1XDEyMlw0MFx4NDJcMTMxXDQwXHg2OVwxNDRcNDBceDQxXHg1M1wxMDMiOyBnb3RvIFMwVTZCOyBJdk55dzog'));
 }
 
-function __getGroup() {
+function __getGroup()
+{
     return eval(base64_decode('CiByZXR1cm4gQXV0aDo6dXNlcigpLT5ncm91cHVzZXI7IA=='));
 }
 
@@ -67,7 +68,8 @@ function __getJab()
     return eval(base64_decode('CiByZXR1cm4gQXV0aDo6dXNlcigpLT5qYWJhdGFuOyA='));
 }
 
-function __getMnTp() {
+function __getMnTp()
+{
     return eval(base64_decode('CiByZXR1cm4gQXV0aDo6dXNlcigpLT5tZW51X3RpcGU7IA=='));
 }
 
@@ -86,15 +88,18 @@ function __now()
     return eval(base64_decode('CiByZXR1cm4gZGF0ZSgiXHg1OVx4MmRceDZkXDU1XHg2NFx4MjBcMTEwXDcyXHg2OVw3MlwxNjMiKTsg'));
 }
 
-function __right($array, $urut) {
+function __right($array, $urut)
+{
     return eval(base64_decode('CiByZXR1cm4gc3Vic3RyKCRhcnJheSwgOCwgJHVydXQpOyA='));
 }
 
-function __dtTables($res, $filter) {
+function __dtTables($res, $filter)
+{
     return eval(base64_decode('CiBnb3RvIFRLSDAwOyBqU2ZmRDogcmV0dXJuICR0YWJsZTsgZ290byBMWkVzcTsgWEh3a0I6IGlmICgkZmlsdGVyID09ICcnIHx8ICRmaWx0ZXIgPT0gbnVsbCkgeyAkdGFibGUgPSBEYXRhVGFibGVzOjpvZigkcmVzKS0+YWRkSW5kZXhDb2x1bW4oKS0+bWFrZSh0cnVlKTsgfSBlbHNlIHsgJHRhYmxlID0gRGF0YVRhYmxlczo6b2YoJHJlcyktPmFkZEluZGV4Q29sdW1uKCktPmZpbHRlcigkZmlsdGVyKS0+bWFrZSh0cnVlKTsgfSBnb3RvIGpTZmZEOyBUS0gwMDogJHRhYmxlID0gJyc7IGdvdG8gWEh3a0I7IExaRXNxOiA='));
 }
 
-function strContains($row, $get) {
+function strContains($row, $get)
+{
     return eval(base64_decode('CiByZXR1cm4gU3RyOjpjb250YWlucygkcm93LCAkZ2V0KSA/IHRydWUgOiBmYWxzZTsg'));
 }
 
@@ -130,35 +135,7 @@ function __dbAll($query)
 
 function __toSQL($tb, $field, $crud, $kon, $conf, $tmb)
 {
-
-    if ($crud=="I" && $conf==true) {
-        // $sql = __table($tb)->insert($field);
-        $arrKey = [];
-        $arrVal = [];
-        foreach ($field as $key => $value) {
-            $arrKey[] = "{$key}";
-            $arrVal[] = "'{$value}'";
-        }
-        $dataKey = implode(", ", $arrKey);
-        $dataVal = implode(", ", $arrVal);
-        $sql = "INSERT INTO $tb ($dataKey) VALUES ($dataVal)";
-        $cmd = __dbRow($sql);
-    }
-    if ($crud=="U" && $conf==true) {
-        $arr = [];
-        foreach ($field as $key => $value) {
-            $arr[] = "{$key}='{$value}'";
-        }
-        $data_arr = implode(", ", $arr);
-        $sql = "UPDATE $tb SET $data_arr $kon $tmb";
-        $cmd = __dbRow($sql);
-    }
-    if ($crud=="D" && $conf==true) {
-        $sql = "DELETE FROM $tb $kon $tmb";
-        $cmd = __dbRow($sql);
-    }
-    return $cmd;
-    // return eval(base64_decode('CiBnb3RvIE5qOVA2OyBOajlQNjogaWYgKCRjcnVkID09ICJcMTExIiAmJiAkY29uZiA9PSB0cnVlKSB7ICRhcnJLZXkgPSBhcnJheSgpOyAkYXJyVmFsID0gYXJyYXkoKTsgZm9yZWFjaCAoJGZpZWxkIGFzICRrZXkgPT4gJHZhbHVlKSB7ICRhcnJLZXlbXSA9ICJ7JGtleX0iOyAkYXJyVmFsW10gPSAiXHgyN3skdmFsdWV9XDQ3IjsgfSAkZGF0YUtleSA9IGltcGxvZGUoIlx4MmNcNDAiLCAkYXJyS2V5KTsgJGRhdGFWYWwgPSBpbXBsb2RlKCJcNTRceDIwIiwgJGFyclZhbCk7ICRzcWwgPSAiXHg0OVwxMTZcMTIzXHg0NVwxMjJceDU0XHgyMFwxMTFceDRlXHg1NFwxMTdcNDB7JHRifVw0MFx4Mjh7JGRhdGFLZXl9XHgyOVw0MFwxMjZcMTAxXHg0Y1wxMjVceDQ1XDEyM1x4MjBcNTB7JGRhdGFWYWx9XDUxIjsgJGNtZCA9IF9fZGJSb3coJHNxbCk7IH0gZ290byBOd2NUbzsgTndjVG86IGlmICgkY3J1ZCA9PSAiXHg1NSIgJiYgJGNvbmYgPT0gdHJ1ZSkgeyAkYXJyID0gYXJyYXkoKTsgZm9yZWFjaCAoJGZpZWxkIGFzICRrZXkgPT4gJHZhbHVlKSB7ICRhcnJbXSA9ICJ7JGtleX1cNzVceDI3eyR2YWx1ZX1ceDI3IjsgfSAkZGF0YV9hcnIgPSBpbXBsb2RlKCJcNTRcNDAiLCAkYXJyKTsgJHNxbCA9ICJceDU1XHg1MFwxMDRceDQxXDEyNFx4NDVceDIweyR0Yn1cNDBcMTIzXDEwNVx4NTRcNDB7JGRhdGFfYXJyfVw0MHska29ufVw0MHskdG1ifSI7ICRjbWQgPSBfX2RiUm93KCRzcWwpOyB9IGdvdG8gZWVsbFE7IGVlbGxROiBpZiAoJGNydWQgPT0gIlwxMDQiICYmICRjb25mID09IHRydWUpIHsgJHNxbCA9ICJceDQ0XDEwNVx4NGNcMTA1XDEyNFx4NDVceDIwXDEwNlx4NTJceDRmXDExNVw0MHskdGJ9XHgyMHska29ufVw0MHskdG1ifSI7ICRjbWQgPSBfX2RiUm93KCRzcWwpOyB9IGdvdG8gbVN4Mms7IG1TeDJrOiByZXR1cm4gJGNtZDsgZ290byBYRHU4UjsgWER1OFI6IA=='));
+    return eval(base64_decode('CiBnb3RvIGZWQUxsOyBOaTFaQTogcmV0dXJuICRjbWQ7IGdvdG8gVHowc1o7IHFtaVVHOiBpZiAoJGNydWQgPT0gIlx4NTUiICYmICRjb25mID09IHRydWUpIHsgJGFyciA9IGFycmF5KCk7IGZvcmVhY2ggKCRmaWVsZCBhcyAka2V5ID0+ICR2YWx1ZSkgeyAkYXJyW10gPSAieyRrZXl9XHgzZFx4Mjd7JHZhbHVlfVw0NyI7IH0gJGRhdGFfYXJyID0gaW1wbG9kZSgiXHgyY1x4MjAiLCAkYXJyKTsgJHNxbCA9ICJcMTI1XDEyMFx4NDRceDQxXHg1NFx4NDVceDIweyR0Yn1cNDBceDUzXHg0NVx4NTRceDIweyRkYXRhX2Fycn1cNDB7JGtvbn1ceDIweyR0bWJ9IjsgJGNtZCA9IF9fZGJSb3coJHNxbCk7IH0gZ290byBURzEyMjsgZlZBTGw6IGlmICgkY3J1ZCA9PSAiXHg0OSIgJiYgJGNvbmYgPT0gdHJ1ZSkgeyAkYXJyS2V5ID0gYXJyYXkoKTsgJGFyclZhbCA9IGFycmF5KCk7IGZvcmVhY2ggKCRmaWVsZCBhcyAka2V5ID0+ICR2YWx1ZSkgeyAkYXJyS2V5W10gPSAieyRrZXl9IjsgJGFyclZhbFtdID0gIlx4Mjd7JHZhbHVlfVx4MjciOyB9ICRkYXRhS2V5ID0gaW1wbG9kZSgiXDU0XDQwIiwgJGFycktleSk7ICRkYXRhVmFsID0gaW1wbG9kZSgiXDU0XDQwIiwgJGFyclZhbCk7ICRzcWwgPSAiXDExMVx4NGVceDUzXDEwNVwxMjJceDU0XDQwXDExMVwxMTZcMTI0XDExN1x4MjB7JHRifVw0MFx4Mjh7JGRhdGFLZXl9XDUxXDQwXHg1NlwxMDFceDRjXHg1NVwxMDVceDUzXHgyMFw1MHskZGF0YVZhbH1ceDI5IjsgJGNtZCA9IF9fZGJSb3coJHNxbCk7IH0gZ290byBxbWlVRzsgVEcxMjI6IGlmICgkY3J1ZCA9PSAiXDEwNCIgJiYgJGNvbmYgPT0gdHJ1ZSkgeyAkc3FsID0gIlx4NDRceDQ1XDExNFwxMDVceDU0XDEwNVx4MjBcMTA2XDEyMlwxMTdcMTE1XHgyMHskdGJ9XDQweyRrb259XDQweyR0bWJ9IjsgJGNtZCA9IF9fZGJSb3coJHNxbCk7IH0gZ290byBOaTFaQTsgVHowc1o6IA=='));
 }
 
 function __json($res)
