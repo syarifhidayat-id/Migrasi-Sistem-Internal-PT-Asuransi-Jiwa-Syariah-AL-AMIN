@@ -3,6 +3,9 @@
 use App\Http\Controllers\Keuangan\Kas\ApprovController;
 use App\Http\Controllers\Keuangan\Kas\ApprovKasAnggaranController;
 use App\Http\Controllers\Keuangan\Kas\BukuBesarController;
+use App\Http\Controllers\Keuangan\Kas\KasbonController;
+use App\Http\Controllers\Keuangan\Kas\ListTransaksiKasController;
+use App\Http\Controllers\Keuangan\Kas\ListVcrController;
 use App\Http\Controllers\Keuangan\Komisi\ApprovalKomisiController;
 use App\Http\Controllers\Keuangan\Kas\MasterKasController;
 use App\Http\Controllers\Keuangan\Kas\RincianTransaksiController;
@@ -79,15 +82,33 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('/lod_bukber', [BukuBesarController::class, 'lod_bukber']);
             Route::get('getjurnalkasfull', [BukuBesarController::class, 'getjurnalkasfull']);
             Route::get('i_jurkas', [BukuBesarController::class, 'i_jurkas']);
+            Route::get('get_kasdetil', [BukuBesarController::class, 'get_kasdetil']);
+            Route::get('lov_polis', [BukuBesarController::class, 'lov_polis']);
+            Route::get('p_jurkas_cek', [BukuBesarController::class, 'p_jurkas_cek']);
         });
         Route::group(['prefix' => '/approv-kas-anggaran', 'as' => 'approv-kas-anggaran.'], function () {
             Route::get('cabang_alamin', [ApprovKasAnggaranController::class, 'selectCabang']);
             Route::get('api_dtl_approv_kas', [ApprovKasAnggaranController::class, 'api_dtl_approv_kas']);
+            Route::get('api_approv_kas_anggaran', [ApprovKasAnggaranController::class, 'api_approv_kas_anggaran']);
+            Route::get('get_kaskeu', [ApprovKasAnggaranController::class, 'get_kaskeu']);
+            Route::get('selectKeterangan', [ApprovKasAnggaranController::class, 'selectKeterangan']);
+            Route::get('selectTipeAnggaran', [ApprovKasAnggaranController::class, 'selectTipeAnggaran']);
+            Route::get('selectKelompokKas', [ApprovKasAnggaranController::class, 'selectKelompokKas']);
+            Route::get('op_file_danaju', [ApprovKasAnggaranController::class, 'op_file_danaju']);
+            
         });
 
-
-
-
+        Route::group(['prefix' => '/list-vcr', 'as' => 'list-vcr.'], function () {
+            Route::get('rpt_kas', [ListVcrController::class, 'rpt_kas']);
+        });
+        Route::group(['prefix' => '/list-trs', 'as' => 'list-trs.'], function () {
+            Route::get('rpt_kasbb', [ListTransaksiKasController::class, 'rpt_kasbb']);
+        });
+        Route::group(['prefix' => '/kasbon', 'as' => 'kasbon.'], function () {
+            Route::get('lod_ang_realisasi', [KasbonController::class, 'lod_ang_realisasi']);
+            Route::get('grd_lihat_kasbon', [KasbonController::class, 'grd_lihat_kasbon']);
+        });
+        
     });
 
 });

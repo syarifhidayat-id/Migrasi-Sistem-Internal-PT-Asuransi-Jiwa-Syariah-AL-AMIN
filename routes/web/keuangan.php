@@ -3,6 +3,9 @@
 use App\Http\Controllers\Keuangan\Kas\ApprovController;
 use App\Http\Controllers\Keuangan\Kas\ApprovKasAnggaranController;
 use App\Http\Controllers\Keuangan\Kas\BukuBesarController;
+use App\Http\Controllers\Keuangan\Kas\KasbonController;
+use App\Http\Controllers\Keuangan\Kas\ListTransaksiKasController;
+use App\Http\Controllers\Keuangan\Kas\ListVcrController;
 use App\Http\Controllers\Keuangan\Komisi\ApprovalKomisiController;
 use App\Http\Controllers\Keuangan\Komisi\InputPajakController;
 use App\Http\Controllers\Keuangan\Komisi\InputBayarController;
@@ -45,11 +48,22 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
         Route::post('upload', [ApprovController::class, 'upload']);
         Route::resource('buku-besar-kas', BukuBesarController::class);
         Route::resource('approv-kas-anggaran', ApprovKasAnggaranController::class);
+        Route::resource('list-vcr-kas', ListVcrController::class);
+        Route::resource('list-trs-kas', ListTransaksiKasController::class);
+        Route::resource('kasbon', KasbonController::class);
 
         Route::group(['prefix' => '/buku-besar-kas', 'as' => 'buku-besar-kas.'], function () {
             Route::get('/api-kantor-cabang', [BukuBesarController::class, 'kantor_cabang']);
             Route::get('/lod_bukber', [BukuBesarController::class, 'lod_bukber']);
+            Route::post('jurnalkasfinal', [BukuBesarController::class, 'jurnalkasfinal']);
+            Route::post('p_ubah_akunkas', [BukuBesarController::class, 'p_ubah_akunkas']);
+            Route::post('p_approv_kaskeu', [ApprovKasAnggaranController::class, 'p_approv_kaskeu']);
+            
         });
+    });
+
+    Route::group(['prefix' => '/list-vcr', 'as' => 'list-vcr.'], function () {
+        // Route::post('rpt_kas', [ListVcrController::class, 'rpt_kas']);
     });
 
 });

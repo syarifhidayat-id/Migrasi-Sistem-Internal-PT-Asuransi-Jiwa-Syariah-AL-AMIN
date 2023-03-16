@@ -39,6 +39,8 @@ class OjkController extends Controller
      */
     public function store(Request $request)
     {
+        extract($_POST);
+        $vtable = "emst.mst_ojk";
          // $validasi = Validator::make(
         //     $request->all(),
         //     [
@@ -64,33 +66,39 @@ class OjkController extends Controller
 
             if ($request->mojk_pk == "") {
                 $kode = __getKey(14);
-                $data = $request->all();
-                $data = request()->except(['_token']);
+                // $data = $request->all();
+                // $data = request()->except(['_token']);
 
-                if ($request->hasFile('mojk_file1')) {
+                if (!empty($_FILES['mojk_file1']['name'])) {
                     $dokumen = $request->file('mojk_file1');
                     $dir = 'public/legal/ojk/file1';
                     $fileOri = $dokumen->getClientOriginalName();
                     $nameBukti = $kode . '_dok_' . $fileOri;
                     $path = Storage::putFileAs($dir, $dokumen, $nameBukti);
-                    $data['mojk_file1'] = $nameBukti;
+                    $_POST['mojk_file1'] = $nameBukti;
                 }
-                if ($request->hasFile('mojk_file2')) {
+                if (!empty($_FILES['mojk_file2']['name'])) {
                     $dokumen = $request->file('mojk_file2');
                     $dir = 'public/legal/ojk/file2';
                     $fileOri = $dokumen->getClientOriginalName();
                     $nameBukti = $kode . '_dok_' . $fileOri;
                     $path = Storage::putFileAs($dir, $dokumen, $nameBukti);
-                    $data['mojk_file2'] = $nameBukti;
+                    $_POST['mojk_file2'] = $nameBukti;
                 }
 
-                $data['mojk_pk'] = $kode;
-                $data['mojk_ins_date'] = date('Y-m-d H:i:s');
-                $data['mojk_ins_user'] = $request->user()->email;
+                $_POST['mojk_pk'] = $kode;
+                $_POST['mojk_ins_date'] = date('Y-m-d H:i:s');
+                $_POST['mojk_ins_user'] = $request->user()->email;
 
-                $insert = DB::table('emst.mst_ojk')->insert($data);
+                $field = __getKode("mojk_", $_POST);
+                $cmd = __toSQL($vtable, $field, "I", "", true, "");
+                
+                //contoh query update
+                // $cmd = __toSQL($vtable, $field, "U", "WHERE msoc_kode='".$_POST['msoc_kode']."'", true, ""); 
+
+                // $insert = DB::table('emst.mst_ojk')->insert($data);
                 return response()->json([
-                    'success' => 'Data berhasil disimpan dengan Kode ' . $kode . '!'
+                    'success' => 'Data berhasil disimpan dengan Kode ' . $_POST['mojk_pk'] . '!'
                 ]);
             } else {
                 $data = $request->all();

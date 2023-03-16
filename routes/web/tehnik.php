@@ -97,7 +97,7 @@ Route::group(['prefix' => '/tehnik', 'as' => 'tehnik.'], function () {
         Route::get('/rpt_lihat_uw', [Rpt::class, 'rpt_lihat_uw']);
     });
     Route::group(['prefix' => 'lihat-polis', 'as' => 'lihat-polis.'], function() {
-        Route::resource('/', PolisController::class);
+        // Route::resource('/', PolisController::class);
     });
     Route::resource('/approval-master-polis', ApprovalMasterPolisController::class);
   });
