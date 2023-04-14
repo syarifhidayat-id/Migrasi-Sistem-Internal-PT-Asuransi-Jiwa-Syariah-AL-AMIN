@@ -21,74 +21,7 @@
     <link rel="shortcut icon" href="{{ asset('ww.css/css.admin/assets/media/logos/logo-new.png') }}" />
     <link rel="icon" type="image/png" href="{{ asset('ww.css/css.admin/assets/media/logos/logo-new.png') }}" />
 
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/accordion.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/combobox.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/combo.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/datagrid.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/datalist.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/layout.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/dialog.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/drawer.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/pagination.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/panel.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/progressbar.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/propertygrid.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/searchbox.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/spinner.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/textbox.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/timepicker.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/tooltip.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/tree.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/validatebox.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/themes/bootstrap/window.css') }}">
-
-    {{--
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/default/easyui.css') }}">
-    --}}
-    {{--
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('assets/plugins/custom/jquery/themes/bootstrap/easyui.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/jquery/themes/icon.css') }}"> --}}
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-    <link href="{{ asset('ww.css/css.admin/assets/plugins/custom/inputpicker/jquery.inputpicker.css') }}"
-        rel="stylesheet" type="text/css" />
-    <link href="{{ asset('ww.css/css.admin/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}"
-        rel="stylesheet" type="text/css" />
-    <link href="{{ asset('ww.css/css.admin/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
-        type="text/css" />
-    {{--
-    <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
-    --}}
-    <link href="{{ asset('ww.css/css.admin/assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{ asset('ww.css/css.admin/assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('ww.css/css.admin/vendor/fontawesome-6.2.0/css/all.min.css') }}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{ asset('ww.css/css.admin/dist/css/custom.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('ww.css/css.admin/assets/plugins/global/sweetalert/sweetalert2-custom.css') }}"
-        rel="stylesheet" type="text/css" />
-    <link href="{{ asset('ww.css/css.admin/dist/css/preload.min.css') }}" rel="stylesheet" type="text/css" />
+    @include('layouts.head')
 
     @yield('style')
     @livewireStyles
@@ -138,7 +71,7 @@
                             id="#kt_aside_menu" data-kt-menu="true" data-kt-menu-expand="false">
 
                             @if (Route::has('signin.store'))
-                            @livewire('utility.menu.main-livewire')
+                                @livewire('utility.menu.main-livewire')
                             @endif
 
                         </div>
@@ -153,8 +86,8 @@
                             <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px"
                                 id="kt_aside_mobile_toggle">
                                 <span class="svg-icon svg-icon-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none">
                                         <path
                                             d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z"
                                             fill="black" />
@@ -168,7 +101,8 @@
 
                         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                             <a href="{{ route('dashboard') }}" class="d-lg-none">
-                                <img alt="Logo" src="{{ asset('ww.css/css.admin/assets/media/logos/logo-new.png') }}"
+                                <img alt="Logo"
+                                    src="{{ asset('ww.css/css.admin/assets/media/logos/logo-new.png') }}"
                                     class="h-30px" />
                             </a>
                         </div>
@@ -180,8 +114,9 @@
                                     data-kt-drawer-name="header-menu"
                                     data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true"
                                     data-kt-drawer-width="{default:'200px', '300px': '250px'}"
-                                    data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_header_menu_mobile_toggle"
-                                    data-kt-swapper="true" data-kt-swapper-mode="prepend"
+                                    data-kt-drawer-direction="end"
+                                    data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true"
+                                    data-kt-swapper-mode="prepend"
                                     data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
                                     <!--begin::Menu-->
                                     <div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch"
@@ -204,11 +139,11 @@
                                             <div
                                                 class="btn btn-icon btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px">
                                                 <span class="svg-icon svg-icon-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none">
-                                                        <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546"
-                                                            height="2" rx="1" transform="rotate(45 17.0365 15.1223)"
-                                                            fill="black" />
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none">
+                                                        <rect opacity="0.5" x="17.0365" y="15.1223"
+                                                            width="8.15546" height="2" rx="1"
+                                                            transform="rotate(45 17.0365 15.1223)" fill="black" />
                                                         <path
                                                             d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
                                                             fill="black" />
@@ -220,15 +155,16 @@
                                         <div data-kt-search-element="content"
                                             class="menu menu-sub menu-sub-dropdown p-7 w-325px w-md-375px">
                                             <div data-kt-search-element="wrapper">
-                                                <form data-kt-search-element="form" class="w-100 position-relative mb-3"
-                                                    autocomplete="off">
+                                                <form data-kt-search-element="form"
+                                                    class="w-100 position-relative mb-3" autocomplete="off">
 
                                                     <span
                                                         class="svg-icon svg-icon-2 svg-icon-lg-1 svg-icon-gray-500 position-absolute top-50 translate-middle-y ms-0">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none">
-                                                            <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546"
-                                                                height="2" rx="1" transform="rotate(45 17.0365 15.1223)"
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none">
+                                                            <rect opacity="0.5" x="17.0365" y="15.1223"
+                                                                width="8.15546" height="2" rx="1"
+                                                                transform="rotate(45 17.0365 15.1223)"
                                                                 fill="black" />
                                                             <path
                                                                 d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
@@ -254,10 +190,12 @@
                                                         <span class="svg-icon svg-icon-2 svg-icon-lg-1 me-0">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none">
-                                                                <rect opacity="0.5" x="6" y="17.3137" width="16"
-                                                                    height="2" rx="1" transform="rotate(-45 6 17.3137)"
+                                                                <rect opacity="0.5" x="6" y="17.3137"
+                                                                    width="16" height="2" rx="1"
+                                                                    transform="rotate(-45 6 17.3137)"
                                                                     fill="black" />
-                                                                <rect x="7.41422" y="6" width="16" height="2" rx="1"
+                                                                <rect x="7.41422" y="6" width="16"
+                                                                    height="2" rx="1"
                                                                     transform="rotate(45 7.41422 6)" fill="black" />
                                                             </svg>
                                                         </span>
@@ -270,7 +208,8 @@
                                                             data-bs-toggle="tooltip" title="Show search preferences">
                                                             <span class="svg-icon svg-icon-1">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none">
+                                                                    height="24" viewBox="0 0 24 24"
+                                                                    fill="none">
                                                                     <path opacity="0.3"
                                                                         d="M22.1 11.5V12.6C22.1 13.2 21.7 13.6 21.2 13.7L19.9 13.9C19.7 14.7 19.4 15.5 18.9 16.2L19.7 17.2999C20 17.6999 20 18.3999 19.6 18.7999L18.8 19.6C18.4 20 17.8 20 17.3 19.7L16.2 18.9C15.5 19.3 14.7 19.7 13.9 19.9L13.7 21.2C13.6 21.7 13.1 22.1 12.6 22.1H11.5C10.9 22.1 10.5 21.7 10.4 21.2L10.2 19.9C9.4 19.7 8.6 19.4 7.9 18.9L6.8 19.7C6.4 20 5.7 20 5.3 19.6L4.5 18.7999C4.1 18.3999 4.1 17.7999 4.4 17.2999L5.2 16.2C4.8 15.5 4.4 14.7 4.2 13.9L2.9 13.7C2.4 13.6 2 13.1 2 12.6V11.5C2 10.9 2.4 10.5 2.9 10.4L4.2 10.2C4.4 9.39995 4.7 8.60002 5.2 7.90002L4.4 6.79993C4.1 6.39993 4.1 5.69993 4.5 5.29993L5.3 4.5C5.7 4.1 6.3 4.10002 6.8 4.40002L7.9 5.19995C8.6 4.79995 9.4 4.39995 10.2 4.19995L10.4 2.90002C10.5 2.40002 11 2 11.5 2H12.6C13.2 2 13.6 2.40002 13.7 2.90002L13.9 4.19995C14.7 4.39995 15.5 4.69995 16.2 5.19995L17.3 4.40002C17.7 4.10002 18.4 4.1 18.8 4.5L19.6 5.29993C20 5.69993 20 6.29993 19.7 6.79993L18.9 7.90002C19.3 8.60002 19.7 9.39995 19.9 10.2L21.2 10.4C21.7 10.5 22.1 11 22.1 11.5ZM12.1 8.59998C10.2 8.59998 8.6 10.2 8.6 12.1C8.6 14 10.2 15.6 12.1 15.6C14 15.6 15.6 14 15.6 12.1C15.6 10.2 14 8.59998 12.1 8.59998Z"
                                                                         fill="black" />
@@ -286,7 +225,8 @@
                                                             data-bs-toggle="tooltip" title="Show more search options">
                                                             <span class="svg-icon svg-icon-2">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none">
+                                                                    height="24" viewBox="0 0 24 24"
+                                                                    fill="none">
                                                                     <path
                                                                         d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z"
                                                                         fill="black" />
@@ -427,7 +367,8 @@
 
                                                             <div
                                                                 class="d-flex flex-column justify-content-start fw-bold">
-                                                                <span class="fs-6 fw-bold">Business Analytics App</span>
+                                                                <span class="fs-6 fw-bold">Business Analytics
+                                                                    App</span>
                                                                 <span
                                                                     class="fs-7 fw-bold text-muted">Administration</span>
                                                             </div>
@@ -477,16 +418,19 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M19 22H5C4.4 22 4 21.6 4 21V3C4 2.4 4.4 2 5 2H14L20 8V21C20 21.6 19.6 22 19 22ZM12.5 18C12.5 17.4 12.6 17.5 12 17.5H8.5C7.9 17.5 8 17.4 8 18C8 18.6 7.9 18.5 8.5 18.5L12 18C12.6 18 12.5 18.6 12.5 18ZM16.5 13C16.5 12.4 16.6 12.5 16 12.5H8.5C7.9 12.5 8 12.4 8 13C8 13.6 7.9 13.5 8.5 13.5H15.5C16.1 13.5 16.5 13.6 16.5 13ZM12.5 8C12.5 7.4 12.6 7.5 12 7.5H8C7.4 7.5 7.5 7.4 7.5 8C7.5 8.6 7.4 8.5 8 8.5H12C12.6 8.5 12.5 8.6 12.5 8Z"
                                                                                 fill="black" />
-                                                                            <rect x="7" y="17" width="6" height="2"
+                                                                            <rect x="7" y="17"
+                                                                                width="6" height="2"
                                                                                 rx="1" fill="black" />
-                                                                            <rect x="7" y="12" width="10" height="2"
+                                                                            <rect x="7" y="12"
+                                                                                width="10" height="2"
                                                                                 rx="1" fill="black" />
-                                                                            <rect x="7" y="7" width="6" height="2"
+                                                                            <rect x="7" y="7"
+                                                                                width="6" height="2"
                                                                                 rx="1" fill="black" />
                                                                             <path
                                                                                 d="M15 8H20L14 2V7C14 7.6 14.4 8 15 8Z"
@@ -509,15 +453,20 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
-                                                                            <rect x="8" y="9" width="3" height="10"
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
+                                                                            <rect x="8" y="9"
+                                                                                width="3" height="10"
                                                                                 rx="1.5" fill="black" />
-                                                                            <rect opacity="0.5" x="13" y="5" width="3"
-                                                                                height="14" rx="1.5" fill="black" />
-                                                                            <rect x="18" y="11" width="3" height="8"
+                                                                            <rect opacity="0.5" x="13"
+                                                                                y="5" width="3"
+                                                                                height="14" rx="1.5"
+                                                                                fill="black" />
+                                                                            <rect x="18" y="11"
+                                                                                width="3" height="8"
                                                                                 rx="1.5" fill="black" />
-                                                                            <rect x="3" y="13" width="3" height="6"
+                                                                            <rect x="3" y="13"
+                                                                                width="3" height="6"
                                                                                 rx="1.5" fill="black" />
                                                                         </svg>
                                                                     </span>
@@ -537,14 +486,16 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M20 3H4C2.89543 3 2 3.89543 2 5V16C2 17.1046 2.89543 18 4 18H4.5C5.05228 18 5.5 18.4477 5.5 19V21.5052C5.5 22.1441 6.21212 22.5253 6.74376 22.1708L11.4885 19.0077C12.4741 18.3506 13.6321 18 14.8167 18H20C21.1046 18 22 17.1046 22 16V5C22 3.89543 21.1046 3 20 3Z"
                                                                                 fill="black" />
-                                                                            <rect x="6" y="12" width="7" height="2"
+                                                                            <rect x="6" y="12"
+                                                                                width="7" height="2"
                                                                                 rx="1" fill="black" />
-                                                                            <rect x="6" y="7" width="12" height="2"
+                                                                            <rect x="6" y="7"
+                                                                                width="12" height="2"
                                                                                 rx="1" fill="black" />
                                                                         </svg>
                                                                     </span>
@@ -564,8 +515,8 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12ZM12 7C10.3 7 9 8.3 9 10C9 11.7 10.3 13 12 13C13.7 13 15 11.7 15 10C15 8.3 13.7 7 12 7Z"
                                                                                 fill="black" />
@@ -597,15 +548,16 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path
                                                                                 d="M2 16C2 16.6 2.4 17 3 17H21C21.6 17 22 16.6 22 16V15H2V16Z"
                                                                                 fill="black" />
                                                                             <path opacity="0.3"
                                                                                 d="M21 3H3C2.4 3 2 3.4 2 4V15H22V4C22 3.4 21.6 3 21 3Z"
                                                                                 fill="black" />
-                                                                            <path opacity="0.3" d="M15 17H9V20H15V17Z"
+                                                                            <path opacity="0.3"
+                                                                                d="M15 17H9V20H15V17Z"
                                                                                 fill="black" />
                                                                         </svg>
                                                                     </span>
@@ -625,8 +577,8 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M14 3V21H10V3C10 2.4 10.4 2 11 2H13C13.6 2 14 2.4 14 3ZM7 14H5C4.4 14 4 14.4 4 15V21H8V15C8 14.4 7.6 14 7 14Z"
                                                                                 fill="black" />
@@ -651,8 +603,8 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path
                                                                                 d="M13 5.91517C15.8 6.41517 18 8.81519 18 11.8152C18 12.5152 17.9 13.2152 17.6 13.9152L20.1 15.3152C20.6 15.6152 21.4 15.4152 21.6 14.8152C21.9 13.9152 22.1 12.9152 22.1 11.8152C22.1 7.01519 18.8 3.11521 14.3 2.01521C13.7 1.91521 13.1 2.31521 13.1 3.01521V5.91517H13Z"
                                                                                 fill="black" />
@@ -677,8 +629,8 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M20 8L12.5 5L5 14V19H20V8Z"
                                                                                 fill="black" />
@@ -703,8 +655,8 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path
                                                                                 d="M6 8.725C6 8.125 6.4 7.725 7 7.725H14L18 11.725V12.925L22 9.725L12.6 2.225C12.2 1.925 11.7 1.925 11.4 2.225L2 9.725L6 12.925V8.725Z"
                                                                                 fill="black" />
@@ -729,8 +681,8 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path
                                                                                 d="M20 19.725V18.725C20 18.125 19.6 17.725 19 17.725H5C4.4 17.725 4 18.125 4 18.725V19.725H3C2.4 19.725 2 20.125 2 20.725V21.725H22V20.725C22 20.125 21.6 19.725 21 19.725H20Z"
                                                                                 fill="black" />
@@ -755,8 +707,8 @@
                                                                 <span class="symbol-label bg-light">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M20 8L12.5 5L5 14V19H20V8Z"
                                                                                 fill="black" />
@@ -925,8 +877,8 @@
                                                         class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack">
                                                         <span
                                                             class="form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2">Projects</span>
-                                                        <input class="form-check-input" type="checkbox" value="1"
-                                                            checked="checked" />
+                                                        <input class="form-check-input" type="checkbox"
+                                                            value="1" checked="checked" />
                                                     </label>
                                                 </div>
 
@@ -935,8 +887,8 @@
                                                         class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack">
                                                         <span
                                                             class="form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2">Targets</span>
-                                                        <input class="form-check-input" type="checkbox" value="1"
-                                                            checked="checked" />
+                                                        <input class="form-check-input" type="checkbox"
+                                                            value="1" checked="checked" />
                                                     </label>
                                                 </div>
 
@@ -946,7 +898,8 @@
                                                         <span
                                                             class="form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2">Affiliate
                                                             Programs</span>
-                                                        <input class="form-check-input" type="checkbox" value="1" />
+                                                        <input class="form-check-input" type="checkbox"
+                                                            value="1" />
                                                     </label>
                                                 </div>
 
@@ -955,8 +908,8 @@
                                                         class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack">
                                                         <span
                                                             class="form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2">Referrals</span>
-                                                        <input class="form-check-input" type="checkbox" value="1"
-                                                            checked="checked" />
+                                                        <input class="form-check-input" type="checkbox"
+                                                            value="1" checked="checked" />
                                                     </label>
                                                 </div>
 
@@ -965,7 +918,8 @@
                                                         class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack">
                                                         <span
                                                             class="form-check-label text-gray-700 fs-6 fw-bold ms-0 me-2">Users</span>
-                                                        <input class="form-check-input" type="checkbox" value="1" />
+                                                        <input class="form-check-input" type="checkbox"
+                                                            value="1" />
                                                     </label>
                                                 </div>
 
@@ -973,7 +927,8 @@
                                                     <button type="reset"
                                                         class="btn btn-sm btn-light fw-bolder btn-active-light-primary me-2"
                                                         data-kt-search-element="preferences-dismiss">Cancel</button>
-                                                    <button type="submit" class="btn btn-sm fw-bolder btn-primary">Save
+                                                    <button type="submit"
+                                                        class="btn btn-sm fw-bolder btn-primary">Save
                                                         Changes</button>
                                                 </div>
                                             </form>
@@ -991,8 +946,10 @@
                                                 <path opacity="0.3"
                                                     d="M20 3H4C2.89543 3 2 3.89543 2 5V16C2 17.1046 2.89543 18 4 18H4.5C5.05228 18 5.5 18.4477 5.5 19V21.5052C5.5 22.1441 6.21212 22.5253 6.74376 22.1708L11.4885 19.0077C12.4741 18.3506 13.6321 18 14.8167 18H20C21.1046 18 22 17.1046 22 16V5C22 3.89543 21.1046 3 20 3Z"
                                                     fill="black" />
-                                                <rect x="6" y="12" width="7" height="2" rx="1" fill="black" />
-                                                <rect x="6" y="7" width="12" height="2" rx="1" fill="black" />
+                                                <rect x="6" y="12" width="7" height="2"
+                                                    rx="1" fill="black" />
+                                                <rect x="6" y="7" width="12" height="2"
+                                                    rx="1" fill="black" />
                                             </svg>
                                         </span>
 
@@ -1020,7 +977,8 @@
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link text-white opacity-75 opacity-state-100 pb-4"
-                                                        data-bs-toggle="tab" href="#kt_topbar_notifications_3">Logs</a>
+                                                        data-bs-toggle="tab"
+                                                        href="#kt_topbar_notifications_3">Logs</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -1035,8 +993,8 @@
                                                                 <span class="symbol-label bg-light-primary">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M11 6.5C11 9 9 11 6.5 11C4 11 2 9 2 6.5C2 4 4 2 6.5 2C9 2 11 4 11 6.5ZM17.5 2C15 2 13 4 13 6.5C13 9 15 11 17.5 11C20 11 22 9 22 6.5C22 4 20 2 17.5 2ZM6.5 13C4 13 2 15 2 17.5C2 20 4 22 6.5 22C9 22 11 20 11 17.5C11 15 9 13 6.5 13ZM17.5 13C15 13 13 15 13 17.5C13 20 15 22 17.5 22C20 22 22 20 22 17.5C22 15 20 13 17.5 13Z"
                                                                                 fill="black" />
@@ -1065,15 +1023,21 @@
                                                                 <span class="symbol-label bg-light-danger">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-danger">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
-                                                                            <rect opacity="0.3" x="2" y="2" width="20"
-                                                                                height="20" rx="10" fill="black" />
-                                                                            <rect x="11" y="14" width="7" height="2"
-                                                                                rx="1" transform="rotate(-90 11 14)"
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
+                                                                            <rect opacity="0.3" x="2"
+                                                                                y="2" width="20"
+                                                                                height="20" rx="10"
                                                                                 fill="black" />
-                                                                            <rect x="11" y="17" width="2" height="2"
-                                                                                rx="1" transform="rotate(-90 11 17)"
+                                                                            <rect x="11" y="14"
+                                                                                width="7" height="2"
+                                                                                rx="1"
+                                                                                transform="rotate(-90 11 14)"
+                                                                                fill="black" />
+                                                                            <rect x="11" y="17"
+                                                                                width="2" height="2"
+                                                                                rx="1"
+                                                                                transform="rotate(-90 11 17)"
                                                                                 fill="black" />
                                                                         </svg>
                                                                     </span>
@@ -1098,8 +1062,8 @@
                                                                 <span class="symbol-label bg-light-warning">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-warning">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M20 15H4C2.9 15 2 14.1 2 13V7C2 6.4 2.4 6 3 6H21C21.6 6 22 6.4 22 7V13C22 14.1 21.1 15 20 15ZM13 12H11C10.5 12 10 12.4 10 13V16C10 16.5 10.4 17 11 17H13C13.6 17 14 16.6 14 16V13C14 12.4 13.6 12 13 12Z"
                                                                                 fill="black" />
@@ -1129,8 +1093,8 @@
                                                                 <span class="symbol-label bg-light-success">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-success">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M5 15C3.3 15 2 13.7 2 12C2 10.3 3.3 9 5 9H5.10001C5.00001 8.7 5 8.3 5 8C5 5.2 7.2 3 10 3C11.9 3 13.5 4 14.3 5.5C14.8 5.2 15.4 5 16 5C17.7 5 19 6.3 19 8C19 8.4 18.9 8.7 18.8 9C18.9 9 18.9 9 19 9C20.7 9 22 10.3 22 12C22 13.7 20.7 15 19 15H5ZM5 12.6H13L9.7 9.29999C9.3 8.89999 8.7 8.89999 8.3 9.29999L5 12.6Z"
                                                                                 fill="black" />
@@ -1152,7 +1116,8 @@
                                                                 <a href="#"
                                                                     class="fs-6 text-gray-800 text-hover-primary fw-bolder">Project
                                                                     Redux</a>
-                                                                <div class="text-gray-400 fs-7">New frontend admin theme
+                                                                <div class="text-gray-400 fs-7">New frontend admin
+                                                                    theme
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1166,8 +1131,8 @@
                                                                 <span class="symbol-label bg-light-primary">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-primary">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M6 22H4V3C4 2.4 4.4 2 5 2C5.6 2 6 2.4 6 3V22Z"
                                                                                 fill="black" />
@@ -1197,8 +1162,8 @@
                                                                 <span class="symbol-label bg-light-info">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-info">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none">
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z"
                                                                                 fill="black" />
@@ -1228,8 +1193,8 @@
                                                                 <span class="symbol-label bg-light-warning">
                                                                     <span class="svg-icon svg-icon-2 svg-icon-warning">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="25" viewBox="0 0 24 25"
-                                                                            fill="none">
+                                                                            width="24" height="25"
+                                                                            viewBox="0 0 24 25" fill="none">
                                                                             <path opacity="0.3"
                                                                                 d="M8.9 21L7.19999 22.6999C6.79999 23.0999 6.2 23.0999 5.8 22.6999L4.1 21H8.9ZM4 16.0999L2.3 17.8C1.9 18.2 1.9 18.7999 2.3 19.1999L4 20.9V16.0999ZM19.3 9.1999L15.8 5.6999C15.4 5.2999 14.8 5.2999 14.4 5.6999L9 11.0999V21L19.3 10.6999C19.7 10.2999 19.7 9.5999 19.3 9.1999Z"
                                                                                 fill="black" />
@@ -1256,13 +1221,14 @@
 
                                                 <div class="py-3 text-center border-top">
                                                     <a href="../../demo1/dist/pages/user-profile/activity.html"
-                                                        class="btn btn-color-gray-600 btn-active-color-primary">View All
+                                                        class="btn btn-color-gray-600 btn-active-color-primary">View
+                                                        All
                                                         <span class="svg-icon svg-icon-5">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none">
-                                                                <rect opacity="0.5" x="18" y="13" width="13" height="2"
-                                                                    rx="1" transform="rotate(-180 18 13)"
-                                                                    fill="black" />
+                                                                <rect opacity="0.5" x="18" y="13"
+                                                                    width="13" height="2" rx="1"
+                                                                    transform="rotate(-180 18 13)" fill="black" />
                                                                 <path
                                                                     d="M15.4343 12.5657L11.25 16.75C10.8358 17.1642 10.8358 17.8358 11.25 18.25C11.6642 18.6642 12.3358 18.6642 12.75 18.25L18.2929 12.7071C18.6834 12.3166 18.6834 11.6834 18.2929 11.2929L12.75 5.75C12.3358 5.33579 11.6642 5.33579 11.25 5.75C10.8358 6.16421 10.8358 6.83579 11.25 7.25L15.4343 11.4343C15.7467 11.7467 15.7467 12.2533 15.4343 12.5657Z"
                                                                     fill="black" />
@@ -1272,7 +1238,8 @@
                                                 </div>
                                             </div>
 
-                                            <div class="tab-pane fade" id="kt_topbar_notifications_2" role="tabpanel">
+                                            <div class="tab-pane fade" id="kt_topbar_notifications_2"
+                                                role="tabpanel">
                                                 <div class="d-flex flex-column px-9">
                                                     <div class="pt-10 pb-0">
                                                         <h3 class="text-dark text-center fw-bolder">Get Pro Access</h3>
@@ -1295,7 +1262,8 @@
                                                 </div>
                                             </div>
 
-                                            <div class="tab-pane fade" id="kt_topbar_notifications_3" role="tabpanel">
+                                            <div class="tab-pane fade" id="kt_topbar_notifications_3"
+                                                role="tabpanel">
                                                 <div class="scroll-y mh-325px my-5 px-8">
                                                     <div class="d-flex flex-stack py-4">
                                                         <div class="d-flex align-items-center me-2">
@@ -1456,13 +1424,14 @@
 
                                                 <div class="py-3 text-center border-top">
                                                     <a href="../../demo1/dist/pages/user-profile/activity.html"
-                                                        class="btn btn-color-gray-600 btn-active-color-primary">View All
+                                                        class="btn btn-color-gray-600 btn-active-color-primary">View
+                                                        All
                                                         <span class="svg-icon svg-icon-5">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none">
-                                                                <rect opacity="0.5" x="18" y="13" width="13" height="2"
-                                                                    rx="1" transform="rotate(-180 18 13)"
-                                                                    fill="black" />
+                                                                <rect opacity="0.5" x="18" y="13"
+                                                                    width="13" height="2" rx="1"
+                                                                    transform="rotate(-180 18 13)" fill="black" />
                                                                 <path
                                                                     d="M15.4343 12.5657L11.25 16.75C10.8358 17.1642 10.8358 17.8358 11.25 18.25C11.6642 18.6642 12.3358 18.6642 12.75 18.25L18.2929 12.7071C18.6834 12.3166 18.6834 11.6834 18.2929 11.2929L12.75 5.75C12.3358 5.33579 11.6642 5.33579 11.25 5.75C10.8358 6.16421 10.8358 6.83579 11.25 7.25L15.4343 11.4343C15.7467 11.7467 15.7467 12.2533 15.4343 12.5657Z"
                                                                     fill="black" />
@@ -1480,29 +1449,26 @@
                                     <div class="cursor-pointer symbol symbol-30px symbol-md-40px"
                                         data-kt-menu-trigger="click" data-kt-menu-attach="parent"
                                         data-kt-menu-placement="bottom-end">
-                                        @if(file_exists(
-                                        public_path().'/storage/utility/daftar-user/foto/'.__getGlbVal('img_foto') ))
-                                        <img src="{{ asset('storage/utility/daftar-user/foto/'.__getGlbVal('img_foto')) }}"
-                                            alt="user" />
+                                        @if (file_exists(public_path() . '/storage/utility/daftar-user/foto/' . __getGlbVal('img_foto')))
+                                            <img src="{{ asset('storage/utility/daftar-user/foto/' . __getGlbVal('img_foto')) }}"
+                                                alt="user" />
                                         @else
-                                        <img src="{{ asset('ww.css/css.admin/assets/media/avatars/blank.png') }}"
-                                            alt="user" />
+                                            <img src="{{ asset('ww.css/css.admin/assets/media/avatars/blank.png') }}"
+                                                alt="user" />
                                         @endif
                                     </div>
 
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-350px"
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px"
                                         data-kt-menu="true">
                                         <div class="menu-item px-3">
                                             <div class="menu-content d-flex align-items-center px-3">
                                                 <div class="symbol symbol-50px me-5">
-                                                    @if(file_exists(
-                                                    public_path().'/storage/utility/daftar-user/foto/'.__getGlbVal('img_foto')
-                                                    ))
-                                                    <img src="{{ asset('storage/utility/daftar-user/foto/'.__getGlbVal('img_foto')) }}"
-                                                        alt="user" />
+                                                    @if (file_exists(public_path() . '/storage/utility/daftar-user/foto/' . __getGlbVal('img_foto')))
+                                                        <img src="{{ asset('storage/utility/daftar-user/foto/' . __getGlbVal('img_foto')) }}"
+                                                            alt="user" />
                                                     @else
-                                                    <img src="{{ asset('ww.css/css.admin/assets/media/avatars/blank.png') }}"
-                                                        alt="user" />
+                                                        <img src="{{ asset('ww.css/css.admin/assets/media/avatars/blank.png') }}"
+                                                            alt="user" />
                                                     @endif
                                                 </div>
 
@@ -1512,8 +1478,9 @@
                                                         <span
                                                             class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2"></span>
                                                     </div>
-                                                    <a href="#" class="fw-bold text-muted text-hover-primary fs-7">{{
-                                                        __getGlbVal('email_user') }}</a>
+                                                    <a href="#"
+                                                        class="fw-bold text-muted text-hover-primary fs-7"
+                                                        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 165px;">{{ __getGlbVal('email_user') }}</a>
                                                 </div>
 
                                             </div>
@@ -1533,10 +1500,9 @@
                                         <div class="menu-item px-5">
                                             <div class="menu-content px-5">
                                                 <a href="{{ route('signout') }}" class="btn btn-danger d-block"
-                                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{
-                                                    __('Sign Out') }}</a>
-                                                <form id="logout-form" action="{{ route('signout') }}" method="POST"
-                                                    class="d-none">
+                                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Sign Out') }}</a>
+                                                <form id="logout-form" action="{{ route('signout') }}"
+                                                    method="POST" class="d-none">
                                                     @csrf
                                                 </form>
                                             </div>
@@ -1554,13 +1520,13 @@
 
                         <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
 
-                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
+                            {{-- <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
                                 data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
                                 class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
-                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">@yield('title')</h1>
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">@yield('title')
+                                </h1>
 
-                                {{-- @livewire('sparator-live-wire') --}}
-                                {{-- <span class="h-20px border-gray-300 border-start mx-4"></span>
+                                <span class="h-20px border-gray-300 border-start mx-4"></span>
                                 <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
                                     <li class="breadcrumb-item text-muted">
                                         <a href="{{ route('dashboard') }}"
@@ -1577,8 +1543,10 @@
                                     $curent = Request::route()->getName();
                                     @endphp
                                     <li class="breadcrumb-item text-dark">{{ $curent }}</li>
-                                </ul> --}}
-                            </div>
+                                </ul>
+                            </div> --}}
+
+                            @livewire('utility.menu.slug')
 
                             {{-- <div class="d-flex align-items-center gap-2 gap-lg-3">
                                 <div class="m-0">
@@ -1679,7 +1647,8 @@
 
                         <div class="text-dark order-2 order-md-1">
                             <span class="text-muted fw-bold me-1">2022©</span>
-                            <a href="https://alamin.co.id" target="_blank" class="text-gray-800 text-hover-primary">PT.
+                            <a href="https://alamin.co.id" target="_blank"
+                                class="text-gray-800 text-hover-primary">PT.
                                 Asuransi Jiwa Syariah AL AMIN</a>
                         </div>
 
@@ -1705,9 +1674,10 @@
 
         <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
             <span class="svg-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)"
-                        fill="black" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none">
+                    <rect opacity="0.5" x="13" y="6" width="13" height="2"
+                        rx="1" transform="rotate(90 13 6)" fill="black" />
                     <path
                         d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z"
                         fill="black" />
@@ -1717,33 +1687,8 @@
 
     </div>
 
+    @include('layouts.footer')
 
-    <script>
-        var hostUrl = "assets/";
-        // var $eui = $.noConflict(true);
-    </script>
-    <script src="{{ asset('ww.css/css.admin/dist/js/jquery-3.6.1.min.js') }}"></script>
-    {{-- <script src="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/jquery.min.js') }}"></script> --}}
-    <script src="{{ asset('ww.css/css.admin/assets/plugins/global/plugins.bundle.js') }}"></script>
-    <script src="{{ asset('ww.css/css.admin/assets/js/scripts.bundle.js') }}"></script>
-    {{-- <script src="{{ asset('ww.css/css.admin/assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script> --}}
-    <script src="{{ asset('ww.css/css.admin/assets/plugins/custom/jquery/jquery.easyui.min.js') }}"></script>
-    <script src="{{ asset('ww.css/css.admin/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('ww.css/css.admin/assets/js/datatables-serverside.min.js') }}"></script>
-    <script src="{{ asset('ww.css/css.admin/assets/plugins/global/formjs/formToJson.min.js') }}"></script>
-    <script src="{{ asset('ww.css/css.admin/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
-    <script src="{{ asset('ww.css/css.admin/assets/plugins/custom/pdf-view/pdf.min.js') }}"></script>
-    <script src="{{ asset('ww.css/css.admin/dist/js/preloader.js') }}"></script>
-    <script src="{{ asset('ww.css/css.admin/dist/js/jquery-config.min.js') }}"></script>
-    <script src="{{ asset('ww.css/css.admin/dist/js/jquery-attr-num.min.js') }}"></script>
-    <script src="{{ asset('ww.css/css.admin/dist/js/jquery.capitalize.js') }}"></script>
-
-    <script>
-        $('.menu-title').capitalize();
-        window.onbeforeunload = function () {
-            window.scrollTo(0, 0);
-        }
-    </script>
     @yield('script')
     @livewireScripts
 </body>

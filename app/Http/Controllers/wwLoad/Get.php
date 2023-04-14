@@ -13,56 +13,56 @@ class Get extends Controller
         $tambah = "";
 
         if (isset($_GET['pmgpolis'])) {
-            if ($_GET['pmgpolis']!="") {
-                $tambah = $tambah.=" and msli_mrkn_kode='".$_GET['pmgpolis']."'";
+            if ($_GET['pmgpolis'] != "") {
+                $tambah = $tambah .= " and msli_mrkn_kode='" . $_GET['pmgpolis'] . "'";
             }
         }
 
         if (isset($_GET['nopolis'])) {
-            if ($_GET['nopolis']!="") {
-                $tambah = $tambah.=" and msli_nomor='".$_GET['nopolis']."'";
+            if ($_GET['nopolis'] != "") {
+                $tambah = $tambah .= " and msli_nomor='" . $_GET['nopolis'] . "'";
             }
         }
 
         if (isset($_GET['nasabah'])) {
-            if ($_GET['nasabah']!="") {
-                $tambah = $tambah.=" and msli_mjns_kode='".$_GET['nasabah']."'";
+            if ($_GET['nasabah'] != "") {
+                $tambah = $tambah .= " and msli_mjns_kode='" . $_GET['nasabah'] . "'";
             }
         }
 
         if (isset($_GET['mft'])) {
-            if ($_GET['mft']!="") {
-                $tambah = $tambah.=" and msoc_mft_kode='".$_GET['mft']."'";
+            if ($_GET['mft'] != "") {
+                $tambah = $tambah .= " and msoc_mft_kode='" . $_GET['mft'] . "'";
             }
         }
 
         if (isset($_GET['mekanisme'])) {
-            if ($_GET['mekanisme']!="") {
-                $tambah = $tambah.=" and msoc_mekanisme='".$_GET['mekanisme']."'";
+            if ($_GET['mekanisme'] != "") {
+                $tambah = $tambah .= " and msoc_mekanisme='" . $_GET['mekanisme'] . "'";
             }
         }
 
         if (isset($_GET['mekanisme2'])) {
-            if ($_GET['mekanisme2']!="") {
-                $tambah = $tambah.=" and msoc_mekanisme2='".$_GET['mekanisme2']."'";
+            if ($_GET['mekanisme2'] != "") {
+                $tambah = $tambah .= " and msoc_mekanisme2='" . $_GET['mekanisme2'] . "'";
             }
         }
 
         if (isset($_GET['perus'])) {
-            if ($_GET['perus']!="") {
-                $tambah = $tambah.=" and msoc_jns_perusahaan='".$_GET['perus']."'";
+            if ($_GET['perus'] != "") {
+                $tambah = $tambah .= " and msoc_jns_perusahaan='" . $_GET['perus'] . "'";
             }
         }
 
         if (isset($_GET['jns_bayar'])) {
-            if ($_GET['jns_bayar']!="") {
-                $tambah = $tambah.=" and msoc_jenis_bayar='".$_GET['jns_bayar']."'";
+            if ($_GET['jns_bayar'] != "") {
+                $tambah = $tambah .= " and msoc_jenis_bayar='" . $_GET['jns_bayar'] . "'";
             }
         }
 
         if (isset($_GET['mrkn_nama'])) {
-            if ($_GET['mrkn_nama']!="" && $_GET['pmgpolis']=="") {
-                $tambah = $tambah.=" and msli_mrkn_nama='".$_GET['mrkn_nama']."'";
+            if ($_GET['mrkn_nama'] != "" && $_GET['pmgpolis'] == "") {
+                $tambah = $tambah .= " and msli_mrkn_nama='" . $_GET['mrkn_nama'] . "'";
             }
         }
 
@@ -76,7 +76,7 @@ class Get extends Controller
         FROM eopr.mst_soc_induk
         LEFT JOIN eopr.mst_soc msoc ON msoc.msoc_nomor=msli_nomor
         LEFT JOIN emst.mst_rekanan rkn ON mrkn_kode=msli_mrkn_kode
-        WHERE 1=1 and msli_status_endos in (0,1,2) ".$tambah."";
+        WHERE 1=1 and msli_status_endos in (0,1,2) " . $tambah . "";
         $res = __dbRow($cmd);
 
         if (!empty($res)) {
@@ -95,74 +95,74 @@ class Get extends Controller
         extract($_GET);
         $tambah = "";
 
-        if ($_GET['id']=="msoc_kode") {
+        if ($_GET['id'] == "msoc_kode") {
             if (isset($_GET['pmgpolis'])) {
-                if ($_GET['pmgpolis']!="") {
-                    $tambah.=" and msoc_mrkn_kode='".$_GET['pmgpolis']."'";
+                if ($_GET['pmgpolis'] != "") {
+                    $tambah .= " and msoc_mrkn_kode='" . $_GET['pmgpolis'] . "'";
                 }
             }
 
             if (isset($_GET['nopolis'])) {
-                if ($_GET['nopolis']!="") {
-                    $tambah.=" and msoc_nomor='".$_GET['nopolis']."'";
+                if ($_GET['nopolis'] != "") {
+                    $tambah .= " and msoc_nomor='" . $_GET['nopolis'] . "'";
                 }
             }
 
             if (isset($_GET['jns_bayar'])) {
-                if ($_GET['jns_bayar']!="") {
-                    $tambah.=" and msoc_jenis_bayar='".$_GET['jns_bayar']."'";
+                if ($_GET['jns_bayar'] != "") {
+                    $tambah .= " and msoc_jenis_bayar='" . $_GET['jns_bayar'] . "'";
                 }
             }
 
             if (isset($_GET['mekanisme'])) {
-                if ($_GET['mekanisme']!="") {
-                    $tambah.=" and msoc_mekanisme='".$_GET['mekanisme']."'";
+                if ($_GET['mekanisme'] != "") {
+                    $tambah .= " and msoc_mekanisme='" . $_GET['mekanisme'] . "'";
                 }
             }
 
             if (isset($_GET['jns_perusahaan'])) {
-                if ($_GET['jns_perusahaan']!="") {
-                    $tambah.=" and msoc_jns_perusahaan='".$_GET['jns_perusahaan']."'";
+                if ($_GET['jns_perusahaan'] != "") {
+                    $tambah .= " and msoc_jns_perusahaan='" . $_GET['jns_perusahaan'] . "'";
                 }
             }
 
             if (isset($_GET['nasabah'])) {
-                if ($_GET['nasabah']!="") {
-                    $tambah.=" and msoc_mjns_kode='".$_GET['nasabah']."'";
+                if ($_GET['nasabah'] != "") {
+                    $tambah .= " and msoc_mjns_kode='" . $_GET['nasabah'] . "'";
                 }
             }
 
             if (isset($_GET['mft'])) {
-                if ($_GET['mft']!="") {
-                    $tambah.=" and msoc_mft_kode='".$_GET['mft']."'";
+                if ($_GET['mft'] != "") {
+                    $tambah .= " and msoc_mft_kode='" . $_GET['mft'] . "'";
                 }
             }
 
             if (isset($_GET['mjm'])) {
-                if ($_GET['mjm']!="") {
-                    $tambah.=" and msoc_mjm_kode='".$_GET['mjm']."'";
+                if ($_GET['mjm'] != "") {
+                    $tambah .= " and msoc_mjm_kode='" . $_GET['mjm'] . "'";
                 }
             }
 
             if (isset($_GET['mrkn_nama'])) {
-                if ($_GET['mrkn_nama']!="" && $_GET['pmgpolis']=="") {
-                    $tambah.=" and msoc_mrkn_nama='".$_GET['mrkn_nama']."'";
+                if ($_GET['mrkn_nama'] != "" && $_GET['pmgpolis'] == "") {
+                    $tambah .= " and msoc_mrkn_nama='" . $_GET['mrkn_nama'] . "'";
                 }
             }
 
             if (isset($_GET['pras'])) {
-                if ($_GET['pras']!="") {
-                    $tambah.=" and msoc_mpras_kode='".$_GET['pras']."'";
+                if ($_GET['pras'] != "") {
+                    $tambah .= " and msoc_mpras_kode='" . $_GET['pras'] . "'";
                 }
             }
 
             if (isset($_GET['mekanisme2'])) {
-                if ($_GET['mekanisme2']!="") {
-                    $tambah.=" and msoc_mekanisme2='".$_GET['mekanisme2']."'";
+                if ($_GET['mekanisme2'] != "") {
+                    $tambah .= " and msoc_mekanisme2='" . $_GET['mekanisme2'] . "'";
                 }
             }
 
-            $tambah=" and msoc_kode='".$_GET['kode']."'" ;
+            $tambah = " and msoc_kode='" . $_GET['kode'] . "'";
             $cmd = "
             SELECT
             msoc_nomor,
@@ -200,7 +200,7 @@ class Get extends Controller
             msoc_mdr_kode,
             msoc_mpras_kode,
             msoc_status,
-            IF('".$_GET['endos']."'='2','0',msoc_approve) msoc_approve,
+            IF('" . $_GET['endos'] . "'='2','0',msoc_approve) msoc_approve,
             msoc_no_endors,
             IF(IFNULL(msoc_mrkn_nama,'')='',mrkn_nama,msoc_mrkn_nama)  msoc_mrkn_nama,
             mlok_nama e_cabalamin,
@@ -220,7 +220,7 @@ class Get extends Controller
             LEFT JOIN esdm.sdm_karyawan_new mkr ON mkr.skar_pk=msoc_mkar_kode_mkr
             LEFT JOIN emst.mst_tarif trf ON trf.mth_nomor=msoc_mth_nomor
             LEFT JOIN eopr.mst_spaj_polis spaj ON spaj.mspaj_nomor=msoc_mspaj_nomor
-            WHERE 1=1 AND msoc_endos IN (0,1,2) ".$tambah."";
+            WHERE 1=1 AND msoc_endos IN (0,1,2) " . $tambah . "";
             $res = __dbRow($cmd);
 
             if (!empty($res)) {
@@ -265,21 +265,21 @@ class Get extends Controller
     public function get_oldpolis()
     {
         extract($_GET);
-        $tambah="";
+        $tambah = "";
 
-        $msoc2=$msoc;
+        $msoc2 = $msoc;
         if (isset($_GET['pmgpolis'])) {
-            if ($_GET['pmgpolis']!="") {
-                $tambah.=" and mpol_mrkn_kode='".$_GET['pmgpolis']."'";
+            if ($_GET['pmgpolis'] != "") {
+                $tambah .= " and mpol_mrkn_kode='" . $_GET['pmgpolis'] . "'";
             }
         }
 
         if (isset($_GET['mrkn_nama'])) {
-            if ($_GET['mrkn_nama']!="" && $_GET['pmgpolis']=="") {
-                $tambah.=" and mpol_mrkn_nama='".$_GET['mrkn_nama']."'";
+            if ($_GET['mrkn_nama'] != "" && $_GET['pmgpolis'] == "") {
+                $tambah .= " and mpol_mrkn_nama='" . $_GET['mrkn_nama'] . "'";
             }
         }
-        $tambah.=" and mpol_msoc_kode='".$msoc."' ";
+        $tambah .= " and mpol_msoc_kode='" . $msoc . "' ";
 
         $cmd = "
         SELECT
@@ -357,7 +357,7 @@ class Get extends Controller
         LEFT JOIN emst.mst_produk_induk mpid ON mpid.mpid_kode=mpol_mpid_kode
         LEFT JOIN emst.mst_jenis_nasabah mjns ON mjns.mjns_kode=mpol_mjns_kode
         LEFT JOIN emst.mst_produk_segment mssp ON mssp.mssp_kode=mpol_mssp_nama
-        WHERE 1=1 AND mpol_endos!='3' and mpol_kode='".$nomor."'";
+        WHERE 1=1 AND mpol_endos!='3' and mpol_kode='" . $nomor . "'";
         $res = __dbRow($cmd);
 
         return __json($res);
@@ -367,43 +367,43 @@ class Get extends Controller
     {
         extract($_GET);
         $tambah = "";
-        $_GET['msoc']=$msoc;
-        $cek = substr($_GET['msoc'],0,4);
-        $cek2 = substr($_GET['msoc'],0,5);
+        $_GET['msoc'] = $msoc;
+        $cek = substr($_GET['msoc'], 0, 4);
+        $cek2 = substr($_GET['msoc'], 0, 5);
 
-        $resmsoc = "SELECT msoc_mjns_kode mjns FROM eopr.mst_soc WHERE msoc_kode='".$_GET['msoc']."'";
+        $resmsoc = "SELECT msoc_mjns_kode mjns FROM eopr.mst_soc WHERE msoc_kode='" . $_GET['msoc'] . "'";
         $resjns = __dbRow($resmsoc);
         // return __json($resjns);
 
-        if ($cek=='EDS.') {
+        if ($cek == 'EDS.') {
             $msoc = substr($_GET['msoc'], 4, 2);
         }
-        if ($cek2=='EDS1.' || $cek2=='EDS2.' || $cek2=='EDS3.') {
+        if ($cek2 == 'EDS1.' || $cek2 == 'EDS2.' || $cek2 == 'EDS3.') {
             $msoc = substr($_GET['msoc'], 5, 2);
         }
         if (isset($pmgpolis)) {
             if (!empty($pmgpolis)) {
-                $tambah.="and mpli_mrkn_kode='".$pmgpolis."'";
+                $tambah .= "and mpli_mrkn_kode='" . $pmgpolis . "'";
             }
         }
         if (isset($nopolis)) {
             if (!empty($nopolis)) {
-                $tambah.="and mpli_nomor='".$nopolis."'";
+                $tambah .= "and mpli_nomor='" . $nopolis . "'";
             }
         }
         if (isset($mekanisme)) {
             if (!empty($mekanisme)) {
-                $tambah.="and mpol_mekanisme='".$mekanisme."'";
+                $tambah .= "and mpol_mekanisme='" . $mekanisme . "'";
             }
         }
         if (isset($jns_bayar)) {
             if (!empty($jns_bayar)) {
-                $tambah.="and mpol_jenis_bayar='".str_replace(".","",$jns_bayar)."'";
+                $tambah .= "and mpol_jenis_bayar='" . str_replace(".", "", $jns_bayar) . "'";
             }
         }
         if (isset($mrkn_nama)) {
-            if (!empty($mrkn_nama) && empty($pmgpolis) ) {
-                $tambah.="and mpli_mrkn_nama='".$mrkn_nama."' ";
+            if (!empty($mrkn_nama) && empty($pmgpolis)) {
+                $tambah .= "and mpli_mrkn_nama='" . $mrkn_nama . "' ";
             }
         }
 
@@ -417,14 +417,14 @@ class Get extends Controller
         FROM eopr.mst_polis_induk
         LEFT JOIN eopr.mst_polis ON mpol_nomor=mpli_nomor
         LEFT JOIN emst.mst_rekanan rkn ON mrkn_kode=mpli_mrkn_kode
-        WHERE 1=1 and mpli_mjns_kode='".$resjns['mjns']."' and mpli_status_endos in (0,1,2) ".$tambah." ";
+        WHERE 1=1 and mpli_mjns_kode='" . $resjns['mjns'] . "' and mpli_status_endos in (0,1,2) " . $tambah . " ";
         $res = __dbRow($cmd);
 
         if (!empty($res)) {
             return __json($res);
         } else {
-            $cmd=" select '' mpol_nomor, '' mpli_kode " ;
-	        $res=__dbRow($cmd);
+            $cmd = " select '' mpol_nomor, '' mpli_kode ";
+            $res = __dbRow($cmd);
             return __json($res);
         }
     }
@@ -435,30 +435,30 @@ class Get extends Controller
         $tambah = "";
         $judul = $_GET['msoc'];
         if (isset($_GET['pmgpolis'])) {
-            if ($_GET['pmgpolis']!="") {
-                $tambah.=" and msli_mrkn_kode='".$_GET['pmgpolis']."'";
+            if ($_GET['pmgpolis'] != "") {
+                $tambah .= " and msli_mrkn_kode='" . $_GET['pmgpolis'] . "'";
             }
         }
-        if ((trim($judul))=="3") {
-            if ($_GET['msoc']!="") {
-                $tambah.=" and msoc_kode='".str_replace("EDS.", "",$_GET['msoc'])."'";
+        if ((trim($judul)) == "3") {
+            if ($_GET['msoc'] != "") {
+                $tambah .= " and msoc_kode='" . str_replace("EDS.", "", $_GET['msoc']) . "'";
             }
         } else {
-            $tambah.=" and msoc_kode='".str_replace(".C.2", "",$_GET['msoc'])."'";
+            $tambah .= " and msoc_kode='" . str_replace(".C.2", "", $_GET['msoc']) . "'";
         }
         if (isset($_GET['nopolis'])) {
-            if ($_GET['nopolis']!="") {
-                $tambah.=" and msli_nomor='".$_GET['nopolis']."'";
+            if ($_GET['nopolis'] != "") {
+                $tambah .= " and msli_nomor='" . $_GET['nopolis'] . "'";
             }
         }
         if (isset($_GET['nasabah'])) {
-            if ($_GET['nasabah']!="") {
-                $tambah.=" and msli_mjns_kode='".$_GET['nasabah']."'";
+            if ($_GET['nasabah'] != "") {
+                $tambah .= " and msli_mjns_kode='" . $_GET['nasabah'] . "'";
             }
         }
         if (isset($_GET['mrkn_nama'])) {
-            if ($_GET['mrkn_nama']!="" && $_GET['pmgpolis']=="") {
-                $tambah.=" and msli_mrkn_nama='".$_GET['mrkn_nama']."'";
+            if ($_GET['mrkn_nama'] != "" && $_GET['pmgpolis'] == "") {
+                $tambah .= " and msli_mrkn_nama='" . $_GET['mrkn_nama'] . "'";
             }
         }
 
@@ -527,73 +527,73 @@ class Get extends Controller
     public function get_kodepolis()
     {
         extract($_GET);
-        if ($_GET['id']=="mpol_kode") {
+        if ($_GET['id'] == "mpol_kode") {
             $tambah = "";
-            $judul=$_GET['judul'];
+            $judul = $_GET['judul'];
 
-            $cek=substr($_GET['kdsoc'],0,4);
-            $cek2=substr($_GET['kdsoc'],0,5);
-            $len="select LENGTH('".$_GET['kdsoc']."') len";
+            $cek = substr($_GET['kdsoc'], 0, 4);
+            $cek2 = substr($_GET['kdsoc'], 0, 5);
+            $len = "select LENGTH('" . $_GET['kdsoc'] . "') len";
 
-            $rlen=__dbrow($len);
+            $rlen = __dbrow($len);
 
-            $msoc=substr($_GET['kdsoc'],0,25);
+            $msoc = substr($_GET['kdsoc'], 0, 25);
 
-            if ($judul=='3') {
-                if ($cek=='EDS.') {
-                    $msoc=substr($_GET['kdsoc'],4,21);
+            if ($judul == '3') {
+                if ($cek == 'EDS.') {
+                    $msoc = substr($_GET['kdsoc'], 4, 21);
                 }
-                if ($cek2=='EDS1.' || $cek2=='EDS2.' || $cek2=='EDS3.') {
-                    if($rlen['len']!='23') {
-                        $msoc=substr($_GET['kdsoc'],5,21) ;
+                if ($cek2 == 'EDS1.' || $cek2 == 'EDS2.' || $cek2 == 'EDS3.') {
+                    if ($rlen['len'] != '23') {
+                        $msoc = substr($_GET['kdsoc'], 5, 21);
                     } else {
-                        $msoc=substr($_GET['kdsoc'],5,21) ;
+                        $msoc = substr($_GET['kdsoc'], 5, 21);
                     }
                 }
-                if ($cek2=='EDS1.' || $cek2=='EDS2.' || $cek2=='EDS3.') {
-                    $msoc2=str_replace('EDS1.',"EDS.", $_GET['kdsoc']);
+                if ($cek2 == 'EDS1.' || $cek2 == 'EDS2.' || $cek2 == 'EDS3.') {
+                    $msoc2 = str_replace('EDS1.', "EDS.", $_GET['kdsoc']);
                 }
 
-                if ($cek2=='EDS2.') {
-                    $msoc2=str_replace('EDS2.',"EDS1.", $_GET['kdsoc']);
+                if ($cek2 == 'EDS2.') {
+                    $msoc2 = str_replace('EDS2.', "EDS1.", $_GET['kdsoc']);
                 }
-                if ($cek2=='EDS3.') {
-                    $msoc2=str_replace('EDS3.',"EDS2.", $_GET['kdsoc']);
+                if ($cek2 == 'EDS3.') {
+                    $msoc2 = str_replace('EDS3.', "EDS2.", $_GET['kdsoc']);
                 }
             }
-            $msoc2=$msoc;
-            $socxx="";
-            $socx="";
-            if($cek2=='EDS1.') {
-                $socxx=str_replace('EDS1','EDS', $_GET['kdsoc']);
-                $socx=str_replace('EDS1.','', $_GET['kdsoc']);
-            } else if($cek2=='EDS2.') {
-                $socx=str_replace('EDS2','EDS1', $_GET['kdsoc']);
-            } else if($cek2=='EDS3.') {
-                $socx=str_replace('EDS3','EDS2', $_GET['kdsoc']);
-            } else if($cek2=='EDS4.') {
-                $socx=str_replace('EDS4','EDS3', $_GET['kdsoc']);
-            } else if($cek2=='EDS5.') {
-                $socx=str_replace('EDS5','EDS4', $_GET['kdsoc']);
-            } else if($cek2=='EDS6.') {
-                $socx=str_replace('EDS6','EDS5', $_GET['kdsoc']);
-            } else if($cek2=='EDS7.') {
-                $socx=str_replace('EDS7','EDS6', $_GET['kdsoc']);
-            } else if($cek2=='EDS8.') {
-                $socx=str_replace('EDS8','EDS7', $_GET['kdsoc']);
+            $msoc2 = $msoc;
+            $socxx = "";
+            $socx = "";
+            if ($cek2 == 'EDS1.') {
+                $socxx = str_replace('EDS1', 'EDS', $_GET['kdsoc']);
+                $socx = str_replace('EDS1.', '', $_GET['kdsoc']);
+            } else if ($cek2 == 'EDS2.') {
+                $socx = str_replace('EDS2', 'EDS1', $_GET['kdsoc']);
+            } else if ($cek2 == 'EDS3.') {
+                $socx = str_replace('EDS3', 'EDS2', $_GET['kdsoc']);
+            } else if ($cek2 == 'EDS4.') {
+                $socx = str_replace('EDS4', 'EDS3', $_GET['kdsoc']);
+            } else if ($cek2 == 'EDS5.') {
+                $socx = str_replace('EDS5', 'EDS4', $_GET['kdsoc']);
+            } else if ($cek2 == 'EDS6.') {
+                $socx = str_replace('EDS6', 'EDS5', $_GET['kdsoc']);
+            } else if ($cek2 == 'EDS7.') {
+                $socx = str_replace('EDS7', 'EDS6', $_GET['kdsoc']);
+            } else if ($cek2 == 'EDS8.') {
+                $socx = str_replace('EDS8', 'EDS7', $_GET['kdsoc']);
             }
 
-            $tambah.=" and (mpol_msoc_kode='".str_replace(".C.2", "",$socx)."' OR mpol_msoc_kode='".str_replace(".C.2", "",$socxx)."')";
+            $tambah .= " and (mpol_msoc_kode='" . str_replace(".C.2", "", $socx) . "' OR mpol_msoc_kode='" . str_replace(".C.2", "", $socxx) . "')";
 
             if (isset($_GET['pmgpolis'])) {
-                if ($_GET['pmgpolis']!="") {
-                    $tambah.=" and mpol_mrkn_kode='".$_GET['pmgpolis']."'";
+                if ($_GET['pmgpolis'] != "") {
+                    $tambah .= " and mpol_mrkn_kode='" . $_GET['pmgpolis'] . "'";
                 }
             }
 
             if (isset($_GET['mrkn_nama'])) {
-                if ($_GET['mrkn_nama']!="" && $_GET['pmgpolis']=="" ) {
-                    $tambah.=" and mpol_mrkn_nama='".$_GET['mrkn_nama']."'";
+                if ($_GET['mrkn_nama'] != "" && $_GET['pmgpolis'] == "") {
+                    $tambah .= " and mpol_mrkn_nama='" . $_GET['mrkn_nama'] . "'";
                 }
             }
 
@@ -702,7 +702,7 @@ class Get extends Controller
             LEFT JOIN emst.mst_produk_induk mpid ON mpid.mpid_kode=mpol_mpid_kode
             LEFT JOIN emst.mst_jenis_nasabah mjns ON mjns.mjns_kode=mpol_mjns_kode
             LEFT JOIN emst.mst_produk_segment mssp ON mssp.mssp_kode=mpol_mssp_nama
-            WHERE 1=1 AND mpol_endos!='3' ".$tambah.")
+            WHERE 1=1 AND mpol_endos!='3' " . $tambah . ")
             UNION ALL(
             SELECT
                 if(mpol_mkomdisc_persen='',0,mpol_mkomdisc_persen) mpol_mkomdisc_persen,
@@ -808,7 +808,7 @@ class Get extends Controller
             LEFT JOIN emst.mst_produk_induk mpid ON mpid.mpid_kode=mpol_mpid_kode
             LEFT JOIN emst.mst_jenis_nasabah mjns ON mjns.mjns_kode=mpol_mjns_kode
             LEFT JOIN emst.mst_produk_segment mssp ON mssp.mssp_kode=mpol_mssp_nama
-            WHERE 1=1 and mpol_endos!='3' and mpol_msoc_kode='".$_GET['kdsoc']."' and mpol_mrkn_kode='".$_GET['pmgpolis']."')";
+            WHERE 1=1 and mpol_endos!='3' and mpol_msoc_kode='" . $_GET['kdsoc'] . "' and mpol_mrkn_kode='" . $_GET['pmgpolis'] . "')";
             $res = __dbRow($cmd);
 
             if (!empty($res)) {
@@ -926,10 +926,10 @@ class Get extends Controller
         LEFT JOIN emst.mst_polis_uwtable ON mpuw_nomor=msotd_mpuw_nomor
         WHERE 1=1
         AND msotd_status='0'
-        AND msotd_tipe='".$tipe."'
-        AND msotd_msoc_kode='".$msoc."'
-        AND msotd_mlok_kode='".$mlok."'
-        ".$tambah."";
+        AND msotd_tipe='" . $tipe . "'
+        AND msotd_msoc_kode='" . $msoc . "'
+        AND msotd_mlok_kode='" . $mlok . "'
+        " . $tambah . "";
 
         $res = __dbRow($cmd);
 
@@ -949,8 +949,8 @@ class Get extends Controller
 
         $tambah = "";
 
-        $tambah.=" and msoc_kode='".$_GET['kodepolis']."'";
-        $cmd= "
+        $tambah .= " and msoc_kode='" . $_GET['kodepolis'] . "'";
+        $cmd = "
         SELECT
             msoc_nomor,
             msoc_kode,
@@ -1020,13 +1020,13 @@ class Get extends Controller
         LEFT JOIN emst.mst_produk_induk mpid ON mpid.mpid_kode=msoc_mpid_kode
         LEFT JOIN emst.mst_saluran_distribusi mslr ON mslr.mslr_kode=msoc_mslr_kode
         WHERE 1=1 AND msoc_endos IN (0,1,2)
-        ".$tambah."";
+        " . $tambah . "";
         $res = __dbRow($cmd);
 
         if (!empty($res)) {
             return __json($res);
         } else {
-            $cmd="
+            $cmd = "
             SELECT
             ''  nm_polis,
             ''  msoc_jns_perusahaan,
@@ -1062,14 +1062,14 @@ class Get extends Controller
 
         $tambah = "";
 
-        $tambah.= "and msoc_nomor='".$_GET['kodepolis']."'";
+        $tambah .= "and msoc_nomor='" . $_GET['kodepolis'] . "'";
         $cmd = "
         SELECT
         msoc_nomor,
         msoc_kode
         FROM eopr.mst_soc
         LEFT JOIN eopr.mst_polis msoc ON msoc.mpol_msoc_kode=msoc_kode
-        WHERE 1=1 ".$tambah."";
+        WHERE 1=1 " . $tambah . "";
         $res = __dbRow($cmd);
         if (!empty($res)) {
             return __json($res);
@@ -1081,6 +1081,233 @@ class Get extends Controller
             FROM eopr.mst_soc
             LEFT JOIN eopr.mst_polis msoc ON msoc.mpol_msoc_kode=msoc_kode
             WHERE 1=1";
+            $res = __dbRow($cmd);
+            return __json($res);
+        }
+    }
+
+    public function get_polisfull2()
+    {
+        extract($_GET);
+        $group = __getgroup();
+        $tambah = "";
+
+        $tambah .= "and mpol_kode='" . $_GET['kode'] . "'";
+        $cmd = "
+        SELECT
+            '' mpol_approv_ketusreas,
+            mpol_status_polis,
+            mpol_surplus,
+            mpol_handlingfee,
+            mpol_kode,
+            mpol_penerima_manfaat,
+            mpol_nomor,
+            mpol_jl,
+            mpol_jl_pst,
+            mpol_jl_pasangan,
+            mpol_lapor_data,
+            mpol_byr_premi,
+            mpol_no_endors,
+            mpol_file_polis,
+            mpol_mspaj_nomor,
+            mpol_mrkn_kode,
+            mpol_produkbank,
+            mpol_mprov_kode,
+            mpid.mpid_nama e_jenisprrod,
+            jenprod.mpid_nama jenprod,
+            mpol_mjm_kode,
+            mpol_usia_max,
+            mpol_usia_min,
+            mpol_tenor_max,
+            mpol_jatuh_tempo,
+            mpol_mmft_kode_gu,
+            mpol_mmft_kode_wp_pns,
+            mpol_mmft_kode_wp_swasta,
+            mpol_mmft_kode_phk_swasta,
+            mpol_mmft_kode_phk_pns,
+            mpol_mmft_kode_tlo,
+            mpol_mmft_kode_fire,
+            mpol_mmft_kode_jiwa,
+            mpol_mft_kode,
+            mpol_mnfa_kode,
+            mpol_mujh_persen,
+            mpol_mmfe_persen,
+            mpol_mfee_persen,
+            mpol_mkom_persen,
+            mpol_overreding,
+            mpol_tgl_terbit,
+            mpol_tgl_awal_polis,
+            mpol_tgl_ahir_polis,
+            #date_format(mpol_tgl_terbit,'%d-%m-%Y') mpol_tgl_terbit,
+            #date_format(mpol_tgl_awal_polis,'%d-%m-%Y') mpol_tgl_awal_polis,
+            #date_format(mpol_tgl_ahir_polis,'%d-%m-%Y') mpol_tgl_ahir_polis,
+            mpol_endors,
+            mpol_mkar_kode_pim,
+            mpol_mkar_kode_mkr,
+            mpol_mlok_kode,
+            mpol_mth_nomor,
+            mpol_mssp_kode,
+            mpol_mrpm_nomor,
+            mjns.mjns_Keterangan e_nasabah2,
+            mpol_ket_endors,
+            mpol_msrf_kode,
+            mpol_mpuw_nomor,
+            mpol_mujhrf_kode,
+            mpol_mdr_kode,
+            mpol_max_pst,
+            mpol_kadaluarsa_klaim,
+            pras.mpras_nama e_pras2,
+            if(ifnull(mpol_mrkn_nama,'')='',mrkn_nama,mpol_mrkn_nama)  mpol_mrkn_nama,
+            mpol_mut_kode,
+            mjm_bundling,
+            mjm_jiwa,
+            mpol_openpolis,
+            mjm_gu,
+            mjm_phk,
+            mjm_tlo,
+            mjm_fire,
+            mjm_wp,
+            mjm_umut,
+            mpol_mmft_kode_phk_pensiun,
+            mpol_mmft_kode_wp_pensiun,
+            mpol_penerima_manfaat,
+            mpol_aprove_fc,
+            mpol_jenis_cetak,
+            mlok_nama e_cabalamin2,
+            pnc.skar_nama e_pinca,
+            mkr.skar_nama e_marketing,
+            uw.mpuw_nama e_uw,
+            trf.mth_ket e_tarif,
+            mpol_mssp_nama,
+            mpol_msoc_kode,
+            mpol_max_bayar_klaim,
+            mpol_lapor_stnc,
+            mpol_penerima_manfaat,
+            spaj.mspaj_mrkn_nama mpol_mspaj_nama,
+            pras.mpras_nama e_pras,
+            jmn.mjm_nama e_manfaat2,
+            '' mpol_jns_ketusreas1,
+            '' mpol_jns_ketusreas2,
+            '' mpol_mrea_kode1,
+            '' mpol_mrea_kode2,
+            '' mpol_tgl_ketusreas1,
+            '' mpol_tgl_ketusreas2,
+            mpol_jenis_login,
+            ''  mpol_nilai_ketusreas1,
+            ''  mpol_nilai_ketusreas2,
+            ''  mpol_note_ketusreas
+        FROM eopr.mst_polis
+        LEFT JOIN emst.mst_produk_induk mpid ON mpid.mpid_kode=mpol_mpid_kode
+        left join emst.mst_produk_induk jenprod ON jenprod.mpid_kode=mpol_mpid_kode
+        LEFT JOIN emst.mst_jenis_nasabah mjns ON mjns.mjns_kode=mpol_mjns_kode
+        LEFT JOIN emst.mst_polis_uwtable uw on uw.mpuw_nomor=mpol_mpuw_nomor
+        LEFT JOIN emst.mst_jaminan jmn on jmn.mjm_kode=mpol_mjm_kode
+        left join emst.mst_rekanan rkn on rkn.mrkn_kode=mpol_mrkn_kode
+        LEFT JOIN emst.mst_lokasi lok  on lok.mlok_kode=mpol_mlok_kode
+        LEFT JOIN esdm.sdm_karyawan pnc on pnc.skar_nip=mpol_mkar_kode_pim
+        LEFT JOIN esdm.sdm_karyawan mkr on mkr.skar_nip=mpol_mkar_kode_mkr
+        LEFT JOIN emst.mst_tarif trf on trf.mth_nomor=mpol_mth_nomor
+        LEFT JOIN eopr.mst_spaj_polis spaj on spaj.mspaj_nomor=mpol_mspaj_nomor
+        LEFT JOIN emst.mst_program_asuransi pras on pras.mpras_kode=mpol_mpras_kode
+        WHERE 1=1 " . $tambah . "";
+        $res = __dbRow($cmd);
+
+        if (!empty($res)) {
+            return __json($res);
+        } else {
+            $cmd = "
+            SELECT
+            '' mpol_approv_ketusreas,
+            ''  mpol_surplus,
+            '0' mpol_handlingfee,
+            ''  mpol_kode,
+            ''  mpol_penerima_manfaat,
+            ''  mpol_nomor,
+            ''  mpol_jl,
+            '' mpol_produkbank,
+            ''  mpol_jl_pst,
+            '' mpol_jl_pasangan,
+            ''  jenprod,
+            '-'  mpol_no_endors,
+            '0'  mpol_lapor_data,
+            '0'  mpol_byr_premi,
+            '0' mpol_usia_max,
+            '0' mpol_usia_min,
+            '0' mpol_tenor_max,
+            '0' mpol_jatuh_tempo,
+            ''   mpol_mmft_kode_gu,
+            '0'  mpol_mmft_kode_wp_pns,
+            '0'  mpol_mmft_kode_wp_swasta,
+            '0'  mpol_mmft_kode_phk_swasta,
+            '0'  mpol_mmft_kode_phk_pns,
+            ''   mpol_mmft_kode_tlo,
+            ''   mpol_mmft_kode_fire,
+            ''   mpol_mmft_kode_jiwa,
+            ''  mpol_mnfa_kode,
+            '0' mpol_mujh_persen,
+            '0' mpol_mmfe_persen,
+            '0' mpol_mfee_persen,
+            '0' mpol_mkom_persen,
+            '0' mpol_overreding,
+            ''  mpol_endors,
+            ''  mpol_mth_nomor,
+            ''  mpol_mrpm_nomor,
+            ''  mpol_ket_endors,
+            ''  mpol_msrf_kode,
+            ''  mpol_mpuw_nomor,
+            ''  mpol_mujhrf_kode,
+            ''  mpol_mdr_kode,
+            '0' mpol_kadaluarsa_klaim,
+            '0'  mpol_mut_kode,
+            ''   e_tarif,
+            ''   e_uw,
+            '1' mpol_openpolis,
+            ''  mpol_mssp_kode,
+            ''  mpol_mlok_kode,
+            ''  mpol_mkar_kode_mkr,
+            ''  mpol_mprov_kode,
+            '30'mpol_lapor_data,
+            '30'mpol_byr_premi,
+            date_format(curdate(),'%d-%m-%Y')  mpol_tgl_terbit,
+            date_format(curdate(),'%d-%m-%Y')  mpol_tgl_awal_polis,
+            date_format(curdate(),'%d-%m-%Y')  mpol_tgl_ahir_polis,
+            '100'mpol_max_pst,
+            ''   mpol_mkar_kode_pim,
+            ''   mpol_mprov_tipe,
+            ''   e_cabalamin,
+            ''   e_pinca,
+            ''   e_marketing,
+            ''   mpol_mssp_nama,
+            ''   mpol_file_polis";
+            $res = __dbRow($cmd);
+            return __json($res);
+        }
+    }
+
+    public function get_kodepoliskodeapprov()
+    {
+        extract($_GET);
+        $group = __getgroup();
+        $tambah = "";
+
+        $tambah .= "and mpol_nomor='" . $_GET['kodepolis'] . "'";
+        $cmd = "
+        SELECT
+            mpol_nomor,
+            mpol_msoc_kode msoc_kode,
+            msoc_nomor
+            FROM eopr.mst_polis
+        LEFT JOIN eopr.mst_soc ON msoc_kode=mpol_msoc_kode
+        WHERE 1=1 " . $tambah . "";
+        $res = __dbRow($cmd);
+        if (!empty($res)) {
+            return __json($res);
+        } else {
+            $cmd = "
+            SELECT
+            '' mpol_nomor,
+            '' msoc_kode,
+            '' msoc_nomor";
             $res = __dbRow($cmd);
             return __json($res);
         }

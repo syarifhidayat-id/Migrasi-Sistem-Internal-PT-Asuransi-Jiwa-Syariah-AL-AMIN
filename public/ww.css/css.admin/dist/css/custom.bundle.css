@@ -29,32 +29,33 @@ form span .selection .select2-selection .required_sel {
 form span .selection .select2-selection .readonly_sel {
     background-color: #ffcc8a83;
 }
-.textbox-required .textbox-text{
+
+.textbox-required .textbox-text {
     /* background-color: rgba(255, 204, 138, 0.514); */
     background-color: #ffc8c883;
 }
 
-.textbox-readonly .textbox-text{
+.textbox-readonly .textbox-text {
     /* background-color: rgba(255, 204, 138, 0.514); */
     background-color: #ffcc8a83;
 }
 
-.combobox-required .combobox-text{
+.combobox-required .combobox-text {
     /* background-color: rgba(255, 204, 138, 0.514); */
     background-color: #ffc8c883;
 }
 
-.combobox-readonly .combobox-text{
+.combobox-readonly .combobox-text {
     /* background-color: rgba(255, 204, 138, 0.514); */
     background-color: #ffcc8a83;
 }
 
-.combogrid-required .combogrid-text{
+.combogrid-required .combogrid-text {
     /* background-color: rgba(255, 204, 138, 0.514); */
     background-color: #ffc8c883;
 }
 
-.combogrid-readonly .combogrid-text{
+.combogrid-readonly .combogrid-text {
     /* background-color: rgba(255, 204, 138, 0.514); */
     background-color: #ffcc8a83;
 }
@@ -88,6 +89,7 @@ form span .selection .select2-selection .readonly_sel {
 }
 
 @media screen and (max-width: 600px) {
+
     .modal-combo-1,
     .modal-combo-2,
     .modal-combo-3,

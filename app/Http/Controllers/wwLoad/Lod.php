@@ -1258,6 +1258,62 @@ class Lod extends Controller
         return __json($res);
     }
 
+    public function lod_user_tax()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $tambah = "";
+        $vtable = "";
+
+        if (!empty($_GET['q'])) {
+            if (isset($_GET['q'])) {
+                $e_value = $_GET['q'];
+            }
+
+            // if (isset($_GET['e_cab'])) {
+            //     $tambah .= "and mrkn_mlok_kode ='" . $_GET['e_cab'] . "'";
+            // }
+
+            $vidxkey = "mtx_kode";
+            $vfldname = "mtx_nama";
+
+            $vfield = "
+            mtx_kode kode,
+            mtx_npwp npwp,
+            mtx_nama nama,
+            format(ifnull(msalk_saldo,0),2) mtx_saldo,
+            case mtx_status 
+                when '0' then 'Karyawan'
+                when '1' then 'Non Karyawan'
+            end ket,
+            mtx_status sts";
+
+            $vtable = "
+            emst.mst_tax
+            LEFT JOIN emst.mst_saldo_komisi ON mtx_kode=msalk_mtx_kode
+            AND msalk_tahun=YEAR(CURDATE())
+            #AND IF(mtx_status=1,msalk_mtx_kode!='',msalk_tahun=IF(MONTH(CURDATE())='01',YEAR(CURDATE())-1,YEAR(CURDATE())))";
+
+            if (!empty($e_value)) {
+                $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+            }
+
+            $cmd = "
+            SELECT
+            $vfield
+            FROM $vtable
+            WHERE $vidxkey<>'' $tambah
+            LIMIT $offset,$rows";
+
+            $res = __dbAll($cmd);
+
+            return __json($res);
+        }
+    }
+
     public function coba()
     {
         // $cmd = "

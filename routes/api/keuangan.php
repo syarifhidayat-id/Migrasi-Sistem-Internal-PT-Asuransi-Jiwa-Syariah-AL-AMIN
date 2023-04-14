@@ -14,22 +14,25 @@ use App\Http\Controllers\Keuangan\Komisi\InputBayarController;
 use App\Http\Controllers\Keuangan\Komisi\InputPajakController;
 use App\Http\Controllers\Keuangan\LampiranJurnalPembayaran\LampiranKlaimController;
 use App\Http\Controllers\wwLoad\Lod;
+use App\Http\Controllers\wwRpt\Grd;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
-    Route::group(['prefix' => '/komisi-overriding', 'as' => 'komisi-overriding.'], function() {
+    Route::group(['prefix' => '/komisi-overriding', 'as' => 'komisi-overriding.'], function () {
 
-        Route::group(['prefix' => '/input-pajak-overriding', 'as' => 'input-pajak-overriding.'], function() {
-            Route::get('/lod-input-komisioverriding', [InputPajakController::class, 'lodInputKomisi']);
+        Route::group(['prefix' => '/input-pajak-overriding', 'as' => 'input-pajak-overriding.'], function () {
+            Route::get('/grd_pjkomisi', [Grd::class, 'grd_pjkomisi']);
+            // Route::get('/lod-input-komisioverriding', [InputPajakController::class, 'lodInputKomisi']);
             Route::get('/cari-tax', [InputPajakController::class, 'cariTax']);
-            Route::get('/lod-user-tax', [InputPajakController::class, 'userTax']);
+            // Route::get('/lod-user-tax', [InputPajakController::class, 'userTax']);
+            Route::get('/lod_user_tax', [Lod::class, 'lod_user_tax']);
             Route::get('/export-input', [InputPajakController::class, 'exportInput']);
             Route::get('/lod_cabalamin', [Lod::class, 'lod_cabalamin']);
             // Route::get('/post-pjkomisi', [InputPajakController::class, 'postPjKomisi']);
             // Route::get('/lod_pmg_polis', [Lod::class, 'lod_pmg_polis']);
         });
 
-        Route::group(['prefix' => 'input-bayar-overriding', 'as' => 'input-bayar-overriding.'], function() {
+        Route::group(['prefix' => 'input-bayar-overriding', 'as' => 'input-bayar-overriding.'], function () {
             Route::resource('/', InputBayarController::class);
             Route::get('/lod-input-bayar', [InputBayarController::class, 'lodInputBayar']);
             Route::get('/lod_cabalamin', [Lod::class, 'lod_cabalamin']);
@@ -37,14 +40,13 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             // Route::get('/lod_pmg_polis', [Lod::class, 'lod_pmg_polis']);
         });
 
-        Route::group(['prefix' => '/approval-komisi-overriding', 'as' => 'approval-komisi-overriding.'], function() {
+        Route::group(['prefix' => '/approval-komisi-overriding', 'as' => 'approval-komisi-overriding.'], function () {
             Route::get('/list-komisi', [ApprovalKomisiController::class, 'listKomisi']);
         });
-
     });
 
-    Route::group(['prefix' => '/lampiran-jurnal-pembayaran', 'as' => 'lampiran-jurnal-pembayaran.'], function() {
-        Route::group(['prefix' => '/lampiran-klaim', 'as' => 'lampiran-klaim.'], function() {
+    Route::group(['prefix' => '/lampiran-jurnal-pembayaran', 'as' => 'lampiran-jurnal-pembayaran.'], function () {
+        Route::group(['prefix' => '/lampiran-klaim', 'as' => 'lampiran-klaim.'], function () {
             Route::get('/table-lampiran-klaim', [LampiranKlaimController::class, 'lodLampiranKlaim']);
         });
     });
@@ -95,7 +97,6 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('selectTipeAnggaran', [ApprovKasAnggaranController::class, 'selectTipeAnggaran']);
             Route::get('selectKelompokKas', [ApprovKasAnggaranController::class, 'selectKelompokKas']);
             Route::get('op_file_danaju', [ApprovKasAnggaranController::class, 'op_file_danaju']);
-            
         });
 
         Route::group(['prefix' => '/list-vcr', 'as' => 'list-vcr.'], function () {
@@ -108,7 +109,5 @@ Route::group(['prefix' => '/keuangan', 'as' => 'keuangan.'], function () {
             Route::get('lod_ang_realisasi', [KasbonController::class, 'lod_ang_realisasi']);
             Route::get('grd_lihat_kasbon', [KasbonController::class, 'grd_lihat_kasbon']);
         });
-        
     });
-
 });
