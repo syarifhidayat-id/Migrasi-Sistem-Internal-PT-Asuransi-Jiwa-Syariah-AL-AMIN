@@ -8,6 +8,41 @@ use Illuminate\Http\Request;
 class Grd extends Controller
 {
 
+    public function grd_listmenu()
+    {
+
+        extract($_GET);
+        $tambah = "";
+        $cab = __getLokasi();
+        $menutipe = __getGlbVal("menu_tipe");
+
+        if (isset($_GET['e_keyboard'])) {
+            $tambah = $tambah . " and (wmn_tipe LIKE '%" . $_GET['e_keyboard'] . "%' OR wmn_descp LIKE '%" . $_GET['e_keyboard'] . "%')";
+        }
+        if (isset($_GET['c_tipe'])) {
+            $tambah = $tambah . "and wmn_tipe='" . $_GET['e_tipe'] . "'";
+        }
+        if (isset($_GET['c_des'])) {
+            $tambah = $tambah . "and wmn_kode='" . $_GET['e_des'] . "'";
+        }
+
+        $cmd = "
+        SELECT *
+        FROM web_conf.web_menu
+        WHERE 1=1
+        " . $tambah . "
+        #ORDER BY wmn_urut ASC
+        LIMIT " . $_GET['e_baris'] . "
+        ";
+
+        $res = __dbAll($cmd);
+
+        // return __json($res);
+        return view('pages.utility.membuat-menu.tables', [
+            'res' => $res
+        ]);
+    }
+
     public function grd_segmen()
     {
         extract($_GET);

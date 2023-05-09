@@ -998,6 +998,7 @@
                             '?mlok=' + kode);
                     }
                 );
+
                 selectGrid(
                     'e_marketing',
                     'GET',
@@ -1035,6 +1036,7 @@
                         muncul4(row.skar_komisi, row.skar_overreding);
                     }
                 );
+
                 selectGrid('e_tarif', 'GET', '{{ url('api/tehnik/soc/entry-soc/select-tarifimport') }}', 'kode',
                     'nama', [{
                             field: 'kode',
@@ -1051,7 +1053,9 @@
                     function(i, row) {
                         hidePesan('e_tarif');
                         setText('msoc_mth_nomor', row.kode);
-                    });
+                    }
+                );
+
                 selectGrid('e_uw', 'GET', '{{ url('api/tehnik/soc/entry-soc/select-underwritingimport') }}', 'kode',
                     'nama', [{
                             field: 'kode',
@@ -1068,7 +1072,8 @@
                     function(i, row) {
                         hidePesan('e_uw');
                         setText('msoc_mpuw_nomor', row.kode);
-                    });
+                    }
+                );
 
                 tombol('click', 'importTarif', function() {
                     openModal('modalTarif');
@@ -1108,7 +1113,8 @@
 
                 tombol('change', 'msoc_dok', function(e) {
                     var _this = e.target.files[0];
-                    showObj('viewPdfFile', 'data', _this);
+                    console.log(_this);
+                    showObj('#viewPdfFile', 'data', _this);
                 });
 
                 tombol('click', 'lihatDocSoc', function() {
@@ -1206,7 +1212,6 @@
                     },
                 );
             });
-
 
             function cekForm(tipe) {
                 clear_f();
@@ -1756,7 +1761,6 @@
 
             function close_lihatDoc() {
                 closeModal('modalLihatDoc');
-                $('#lihatFileDoc').attr("data", "");
             }
         </script>
     @endsection

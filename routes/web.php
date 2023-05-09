@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     // require __DIR__ . '/web/master.php';
     require __DIR__ . '/web/tehnik.php';
     // require __DIR__ . '/web/sdm.php';
+    require __DIR__ . '/web/sdm.php';
     require __DIR__ . '/web/layanan.php';
     require __DIR__ . '/web/utility.php';
     // require __DIR__ . '/web/sekper.php';

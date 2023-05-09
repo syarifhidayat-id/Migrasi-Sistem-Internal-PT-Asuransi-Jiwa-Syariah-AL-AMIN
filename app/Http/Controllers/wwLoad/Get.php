@@ -7,6 +7,20 @@ use Illuminate\Http\Request;
 
 class Get extends Controller
 {
+    public function get_editmenu()
+    {
+        extract($_GET);
+        $tambah = "";
+
+        $cmd = "
+        SELECT *
+        FROM web_conf.web_menu
+        WHERE wmn_kode= '" . $_GET['kode'] . "' ";
+        $res = __dbRow($cmd);
+
+        return __json($res);
+    }
+
     public function get_nosoc()
     {
         extract($_GET);

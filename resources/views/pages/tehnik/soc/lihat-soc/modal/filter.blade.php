@@ -25,9 +25,9 @@
                                 <div class="mb-10">
                                     <label class="form-label fs-6 fw-bold">Baris yang Tampil</label>
                                     <select class="form-select form-select-solid fw-bolder" id="e_baris"
-                                        name="e_baris" data-control="select2" data-kt-select2="true"
+                                        name="e_baris" data-control="select2" data-dropdown-parent="#modalFilter"
                                         data-kt-datatable-table-filter="e_baris" data-placeholder="Pilih jumlah"
-                                        data-allow-clear="true" data-hide-search="false">
+                                        data-allow-clear="true" data-hide-search="true">
                                         <option value="20">20</option>
                                         <option value="50">50</option>
                                         <option selected value="100">100</option>
@@ -70,10 +70,9 @@
                                             data-checkbox="c_jaminan" />
                                     </label>
                                     <select class="form-select form-select-solid fw-bolder" id="e_jaminan"
-                                        name="e_jaminan" data-control="select2" data-kt-select2="true"
+                                        name="e_jaminan" data-control="select2" data-dropdown-parent="#modalFilter"
                                         data-kt-datatable-table-filter="e_jaminan"
-                                        data-placeholder="Pilih jenis nasabah" data-allow-clear="true"
-                                        data-hide-search="false">
+                                        data-placeholder="Pilih jenis nasabah" data-allow-clear="true">
                                         <option></option>
                                         {{ optSql('SELECT mjm_kode kode,mjm_nama nama FROM emst.mst_jaminan ORDER BY 1', 'kode', 'nama') }}
                                     </select>
@@ -85,13 +84,13 @@
                                 <label class="form-label fs-6 fw-bold">Jenis Nasabah</label>
                                 <div class="d-flex flex-stack">
                                     <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                                        <input class="form-check-input" id="c_jnas" name="c_jnas"
-                                            type="checkbox" data-checkbox="c_jnas" />
+                                        <input class="form-check-input" id="c_jnas" name="c_jnas" type="checkbox"
+                                            data-checkbox="c_jnas" />
                                     </label>
                                     <select class="form-select form-select-solid fw-bolder" id="e_jnas"
-                                        name="e_jnas" data-control="select2" data-kt-select2="true"
+                                        name="e_jnas" data-control="select2" data-dropdown-parent="#modalFilter"
                                         data-kt-datatable-table-filter="e_jnas" data-placeholder="Pilih jenis nasabah"
-                                        data-allow-clear="true" data-hide-search="false">
+                                        data-allow-clear="true">
                                         <option></option>
                                         {{ optSql('SELECT mjns_kode kode,mjns_keterangan nama FROM emst.mst_jenis_nasabah ORDER BY 1', 'kode', 'nama') }}
                                     </select>
@@ -107,10 +106,9 @@
                                             type="checkbox" data-checkbox="c_pmgpolis" />
                                     </label>
                                     <select class="form-select form-select-solid fw-bolder" id="e_pmgpolis"
-                                        name="e_pmgpolis" data-control="select2" data-kt-select2="true"
+                                        name="e_pmgpolis" data-control="select2" data-dropdown-parent="#modalFilter"
                                         data-kt-datatable-table-filter="e_pmgpolis"
-                                        data-placeholder="Pilih pemegang polis" data-allow-clear="true"
-                                        data-hide-search="false">
+                                        data-placeholder="Pilih pemegang polis" data-allow-clear="true">
                                         <option></option>
                                     </select>
                                 </div>
