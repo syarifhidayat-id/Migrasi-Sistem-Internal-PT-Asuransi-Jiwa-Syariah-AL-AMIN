@@ -106,22 +106,74 @@
                     });
             });
 
-            selectSide('wmn_tipe', false, '{{ url('api/utility/menu/select-tipemenu') }}', function(d) {
-                return {
-                    id: d.wmt_kode,
-                    text: d.wmt_nama
-                }
-            }, function(e) {
-                var data = e.params.data.id;
-                selectSide('wmn_key', false, '{{ url('api/utility/menu/select-menu') }}' + '?tipe=' + data,
-                    function(d) {
-                        return {
-                            // selectSide('wmn_key', false, '{{ url('api/utility/menu/select-menu') }}' + '?tipe=' + getText('wmn_tipe'), function(d) { return {
-                            id: d.wmn_descp,
-                            text: d.wmn_descp
-                        }
-                    });
-            });
+            // onSelect('wmn_tipe', function(e) {
+            //     var kode = e.params.data.id;
+            //     console.log(kode);
+            //     selectSide('wmn_key', false, "{{ url('api/utility/menu/select-menu') }}" + '?tipe=' + kode,
+            //         function(d) {
+            //             return {
+            //                 id: d.wmn_descp,
+            //                 text: d.wmn_descp
+            //             }
+            //         });
+            // });
+
+            selectGrid('wmn_tipe', 'GET', "{{ url('api/utility/menu/lod_menutipe') }}", 'kode', 'nama',
+                [{
+                        field: 'kode',
+                        title: 'Kode',
+                        align: 'left',
+                        width: 180
+                    },
+                    {
+                        field: 'nama',
+                        title: 'Nama',
+                        align: 'left',
+                        width: 280
+                    },
+                ],
+                function(i, row) {
+                    hidePesan('msoc_mrkn_nama');
+                    reSelBox('wmn_key', "{{ url('api/utility/menu/lod_mainmenu') }}" + '?' +
+                        '&mjns=' + getText("e_nasabah"));
+                });
+
+            selectGrid('wmn_key', 'GET', "{{ url('api/utility/menu/lod_mainmenu') }}", 'nama', 'nama',
+                [{
+                        field: 'kode',
+                        title: 'Kode',
+                        align: 'left',
+                        width: 180
+                    },
+                    {
+                        field: 'nama',
+                        title: 'Nama',
+                        align: 'left',
+                        width: 280
+                    },
+                ],
+                function(i, row) {
+                    hidePesan('msoc_mrkn_nama');
+                    reSelBox('msoc_mssp_nama', '{{ url('tehnik/soc/entry-soc/grd_segmen') }}' + '?' +
+                        '&mjns=' + getText("e_nasabah"));
+                });
+
+            // selectSide('wmn_tipe', false, "{{ url('api/utility/menu/select-tipemenu') }}", function(d) {
+            //     return {
+            //         id: d.wmt_kode,
+            //         text: d.wmt_nama
+            //     }
+            // }, function(e) {
+            //     var data = e.params.data.id;
+            //     selectSide('wmn_key', false, "{{ url('api/utility/menu/select-menu') }}" + '?tipe=' + data,
+            //         function(d) {
+            //             return {
+            //                 // selectSide('wmn_key', false, '{{ url('api/utility/menu/select-menu') }}' + '?tipe=' + getText('wmn_tipe'), function(d) { return {
+            //                 id: d.wmn_descp,
+            //                 text: d.wmn_descp
+            //             }
+            //         });
+            // });
 
             tombol('click', 'omodTam', function() {
                 openModal('modalMenu');
@@ -132,43 +184,6 @@
                 setHide('btn_reset', false);
             });
 
-            // tombol('click', 'omodEdit', function() {
-            //     var kode = $(this).attr('data-resouce');
-            //     lodJson("GET", "{{ route('utility.menu.index') }}" + "/" + kode + "/edit", function(data) {
-            //         openModal('modalMenu');
-            //         titleAction('tModMenu', 'Edit Menu');
-            //         bsimpan('btn_simpan', 'Update');
-            //         setHide('btn_reset', true);
-
-            //         var tipe = "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe;
-            //         var key = "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key;
-            //         jsonForm('formMenu', data);
-            //         lodJson("GET", "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe,
-            //             function(res) {
-            //                 if ($('#wmn_tipe').find("option[value='" + res.wmt_kode + "']")
-            //                     .length) {
-            //                     $('#wmn_tipe').val(res.wmt_kode).trigger('change');
-            //                 } else {
-            //                     selectEdit('wmn_tipe', res.wmt_kode, res.wmt_nama);
-            //                 }
-            //             });
-            //         if (data.wmn_key == "MAIN") {
-            //             selectEdit('wmn_key', 'MAIN', 'MAIN');
-            //         } else {
-            //             lodJson("GET", "{{ url('api/utility/menu/key-menu') }}" + "/" + data
-            //                 .wmn_key,
-            //                 function(res) {
-            //                     if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']")
-            //                         .length) {
-            //                         $('#wmn_key').val(res.wmn_kode).trigger('change');
-            //                     } else {
-            //                         selectEdit('wmn_key', res.wmn_kode, res.wmn_descp);
-            //                     }
-            //                 });
-            //         }
-            //     });
-            // });
-
             submitForm("formMenu", "btn_simpan", "POST", "{{ route('utility.menu.store') }}", (resSuccess) => {
                 clearForm("formMenu");
                 bsimpan('btn_simpan', 'Simpan');
@@ -176,17 +191,6 @@
                 loadMenu();
                 closeModal('modalMenu');
             });
-
-            // tombol('click', 'omodDelete', function() {
-            //     var kode = $(this).attr('data-resouce'),
-            //         url = "{{ route('utility.menu.store') }}" + "/" + kode;
-            //     submitDelete(kode, url, function(resSuccess) {
-            //         lodTable("dataMenu");
-            //         // console.log(resSuccess);
-            //     }, function(resError) {
-            //         // console.log(resError);
-            //     });
-            // });
         });
 
         function loadMenu() {
@@ -205,29 +209,27 @@
                 var tipe = "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe;
                 var key = "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key;
                 jsonForm('formMenu', data);
-                lodJson("GET", "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe,
-                    function(res) {
-                        if ($('#wmn_tipe').find("option[value='" + res.wmt_kode + "']")
-                            .length) {
-                            $('#wmn_tipe').val(res.wmt_kode).trigger('change');
-                        } else {
-                            selectEdit('wmn_tipe', res.wmt_kode, res.wmt_nama);
-                        }
-                    });
-                if (data.wmn_key == "MAIN") {
-                    selectEdit('wmn_key', 'MAIN', 'MAIN');
-                } else {
-                    lodJson("GET", "{{ url('api/utility/menu/key-menu') }}" + "/" + data
-                        .wmn_key,
-                        function(res) {
-                            if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']")
-                                .length) {
-                                $('#wmn_key').val(res.wmn_kode).trigger('change');
-                            } else {
-                                selectEdit('wmn_key', res.wmn_kode, res.wmn_descp);
-                            }
-                        });
-                }
+                // lodJson("GET", "{{ url('api/utility/menu/tipe-menu') }}" + "/" + data.wmn_tipe,
+                //     function(res) {
+                //         if ($('#wmn_tipe').find("option[value='" + res.wmt_kode + "']")
+                //             .length) {
+                //             $('#wmn_tipe').val(res.wmt_kode).trigger('change');
+                //         } else {
+                //             selectEdit('wmn_tipe', res.wmt_kode, res.wmt_nama);
+                //         }
+                //     });
+                // if (data.wmn_key == "MAIN") {
+                //     selectEdit('wmn_key', 'MAIN', 'MAIN');
+                // } else {
+                //     lodJson("GET", "{{ url('api/utility/menu/key-menu') }}" + "/" + data.wmn_key, function(res) {
+                //         if ($('#wmn_key').find("option[value='" + res.wmn_kode + "']")
+                //             .length) {
+                //             $('#wmn_key').val(res.wmn_kode).trigger('change');
+                //         } else {
+                //             selectEdit('wmn_key', res.wmn_kode, res.wmn_descp);
+                //         }
+                //     });
+                // }
             });
         };
 

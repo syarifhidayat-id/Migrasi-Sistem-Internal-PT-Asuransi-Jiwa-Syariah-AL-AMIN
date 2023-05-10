@@ -7,6 +7,87 @@ use Illuminate\Http\Request;
 
 class Lod extends Controller
 {
+    public function lod_menutipe()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $tambah = "";
+        $vtable = "";
+
+        if (isset($_GET['q'])) {
+            $e_value = $_GET['q'];
+        }
+
+        $vidxkey = "wmt_kode";
+        $vfldname = "wmt_nama";
+
+        $vfield = "
+        wmt_kode kode,
+        wmt_nama nama";
+
+        $vtable = "wob_conf.web_menu_tipe";
+
+        if (!empty($e_value)) {
+            $tambah .= $tambah . "and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+        }
+
+        $cmd = "
+        SELECT
+        $vfield
+        FROM $vtable
+        WHERE $vidxkey<>'' $tambah
+        LIMIT $offset,$rows";
+
+        $res = __dbAll($cmd);
+
+        return __json($res);
+    }
+
+    public function lod_mainmenu()
+    {
+        extract($_GET);
+        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+        $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 100;
+        $offset = ($page - 1) * $rows;
+
+        $tambah = "";
+        $vtable = "";
+
+        if (isset($_GET['q'])) {
+            $e_value = $_GET['q'];
+        }
+
+        $vidxkey = "wmn_tipe";
+        $vfldname = "wmn_descp";
+
+        $vfield = "
+        wmn_tipe kode,
+        wmn_descp nama";
+
+        $vtable = "web_conf.web_menu";
+
+        if (!empty($e_value)) {
+            $tambah .= $tambah . " and ($vidxkey like '%$e_value%' or $vfldname like '%$e_value%')";
+        }
+        if (!empty($tipe)) {
+            $tambah .= $tambah . " and wmn_tipe='" . $tipe . "'";
+        }
+
+        $cmd = "
+        SELECT
+        $vfield
+        FROM $vtable
+        WHERE $vidxkey<>'' $tambah
+        LIMIT $offset,$rows";
+
+        $res = __dbAll($cmd);
+
+        return __json($res);
+    }
+
     public function lod_cabalamin()
     {
         extract($_GET);
@@ -1285,7 +1366,7 @@ class Lod extends Controller
             mtx_npwp npwp,
             mtx_nama nama,
             format(ifnull(msalk_saldo,0),2) mtx_saldo,
-            case mtx_status 
+            case mtx_status
                 when '0' then 'Karyawan'
                 when '1' then 'Non Karyawan'
             end ket,

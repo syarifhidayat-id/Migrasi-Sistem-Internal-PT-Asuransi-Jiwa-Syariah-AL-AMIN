@@ -15,6 +15,7 @@ class Get extends Controller
         $cmd = "
         SELECT *
         FROM web_conf.web_menu
+        #LEFT JOIN web_conf.web_menu_tipe ON wmt_kode = wmn_tipe
         WHERE wmn_kode= '" . $_GET['kode'] . "' ";
         $res = __dbRow($cmd);
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\Utility\DaftarUserController;
 use App\Http\Controllers\Utility\MenuController;
 use App\Http\Controllers\Utility\WewenangJabatanController;
 use App\Http\Controllers\wwLoad\Get;
+use App\Http\Controllers\wwLoad\Lod;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/utility', 'as' => 'utility.'], function () {
@@ -12,10 +13,10 @@ Route::group(['prefix' => '/utility', 'as' => 'utility.'], function () {
     Route::group(['prefix' => '/menu', 'as' => 'menu.'], function () {
         Route::get('/select-tipemenu', [MenuController::class, 'selectTipeMenu']);
         Route::get('/select-menu', [MenuController::class, 'selectMenu']);
-        Route::get('/lihat-menu', [MenuController::class, 'grd_listmenu']);
+        // Route::get('/lihat-menu', [MenuController::class, 'grd_listmenu']);
         Route::get('/edit', [Get::class, 'get_editmenu']);
-        Route::get('/tipe-menu/{id}', [MenuController::class, 'tipeMenu']);
-        Route::get('/key-menu/{id}', [MenuController::class, 'keyMenu']);
+        Route::get('/lod_menutipe', [Lod::class, 'lod_menutipe']);
+        Route::get('/lod_mainmenu', [Lod::class, 'lod_mainmenu']);
     });
 
     Route::group(['prefix' => '/daftar-user', 'as' => 'daftar-user.'], function () {
